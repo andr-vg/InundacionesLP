@@ -1,2 +1,2 @@
 # Grupo 22
-Echeverria Tomas
+Echeverria Toma

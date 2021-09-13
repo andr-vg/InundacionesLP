@@ -1,3 +1,6 @@
 # Grupo 22
-Echeverria Tomas 17293/9
-Luciano Zarate 16991/5
+
+- Andrea Goyechea (17344/2)
+- Echeverria Tomas (17293/9)
+- Luciano Zarate (16991/5)
+

@@ -1,33 +1,25 @@
-class User(object):
-    @classmethod
-    def all(cls, conn):
-        sql = "SELECT * FROM users"
-        cursor = conn.cursor()
-        cursor.execute(sql)
+import datetime
 
-        return cursor.fetchall()
+from app.db import db
+from sqlalchemy import Column,Integer,String,DateTime,Boolean
+from sqlalchemy.orm import relationship
 
-    @classmethod
-    def create(cls, conn, data):
-        sql = """
-            INSERT INTO users (email, password, first_name, last_name)
-            VALUES (%s, %s, %s, %s)
-        """
 
-        cursor = conn.cursor()
-        cursor.execute(sql, list(data.values()))
-        conn.commit()
+class User(db.Model):
+    __tablename__ = "usuarios"
+    id = Column(Integer, primary_key = True)
+    firstname = Column(String(30))
+    lastname = Column(String(30))
+    username = Column(String(30), unique = True)
+    email = Column(String(30), unique = True)
+    password = Column(String(30))
+    active = Column(Boolean, default = True)
+    updated_at = Column(DateTime, default = None)
+    created_at = Column(DateTime, default = datetime.datetime.utcnow)
 
-        return True
-
-    @classmethod
-    def find_by_email_and_pass(cls, conn, email, password):
-        sql = """
-            SELECT * FROM users AS u
-            WHERE u.email = %s AND u.password = %s
-        """
-
-        cursor = conn.cursor()
-        cursor.execute(sql, (email, password))
-
-        return cursor.fetchone()
+    def __init__(self, email, password, username , firstname=None, lastname=None):
+        self.email = email
+        self.password = password
+        self.username = username
+        self.firstname = firstname
+        self.lastname = lastname

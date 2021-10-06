@@ -19,9 +19,9 @@
 -- Current Database: `proyecto`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `proyecto` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `grupo22` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
-USE `proyecto`;
+USE `grupo22`;
 
 --
 -- Table structure for table `categories`

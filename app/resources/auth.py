@@ -1,5 +1,4 @@
 from flask import redirect, render_template, request, url_for, abort, session, flash
-from app.db import connection
 from app.models.user import User
 
 
@@ -8,10 +7,10 @@ def login():
 
 
 def authenticate():
-    conn = connection()
-    params = request.form
 
-    user = User.find_by_email_and_pass(conn, params["email"], params["password"])
+    params=request.form
+
+    user=User.query.filter(User.email == params["email"] and User.password == params["password"]).first()
 
     if not user:
         flash("Usuario o clave incorrecto.")

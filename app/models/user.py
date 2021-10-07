@@ -1,15 +1,13 @@
 import datetime
 
-from sqlalchemy.sql.expression import null
-
 from app.db import db
 from sqlalchemy import Table,ForeignKey,Column,Integer,String,DateTime,Boolean
 from sqlalchemy.orm import relationship
-
+from app.models.rol import Rol
 
 user_roles = Table('usuario_tiene_rol',db.Model.metadata,
-    Column('usuarios',Integer,ForeignKey('usuarios.id'),primary_key=True),
-    Column('roles',Integer,ForeignKey('roles.id'),primary_key=True)
+    Column('usuarios_id',Integer,ForeignKey('usuarios.id'),primary_key=True),
+    Column('roles_id',Integer,ForeignKey('roles.id'),primary_key=True)
 )
 
 class User(db.Model):
@@ -20,7 +18,7 @@ class User(db.Model):
     username = Column(String(30), unique=True)
     email = Column(String(30), unique=True)
     password = Column(String(30))
-    roles = relationship('Rol',secondary='usuario_tiene_rol')
+    roles = relationship("Rol",secondary='usuario_tiene_rol',back_populates='users')
     active = Column(Boolean, default=True)
     updated_at = Column(DateTime, default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)

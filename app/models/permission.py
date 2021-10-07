@@ -9,6 +9,6 @@ class Permission(db.Model):
     __tablename__ = 'permisos'
     id = Column(Integer, primary_key = True)
     name = Column(String(30), unique = True)
-    roles = relationship('Rol',secondary='rol_tiene_permiso')
+    roles = relationship('Rol',secondary='rol_tiene_permiso',back_populates='permissions')
     def __init__(self, name):
         self.name = name

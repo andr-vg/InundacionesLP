@@ -6,9 +6,11 @@ from app import db
 from app.resources import issue
 from app.resources import user
 from app.resources import auth
+from app.resources import rol
 from app.resources.api.issue import issue_api
 from app.helpers import handler
 from app.helpers import auth as helper_auth
+import logging
 
 
 def create_app(environment="development"):
@@ -25,6 +27,11 @@ def create_app(environment="development"):
 
     # Configure db
     db.init_app(app)
+
+    #Logs de la BD
+    logging.basicConfig()
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+
 
     # Funciones que se exportan al contexto de Jinja2
     app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated)
@@ -45,6 +52,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios", "user_index", user.index)
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
+
 
     # Ruta para el Home (usando decorator)
     @app.route("/")

@@ -11,7 +11,6 @@ def config_db(app):
     @app.before_first_request
     def init_database():
         db.create_all()
-        db.session.commit()
 
     @app.teardown_request
     def close_session(exception=None):

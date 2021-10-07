@@ -1,14 +1,14 @@
 from app.db import db
 from sqlalchemy import Column,Integer,String
-
+from sqlalchemy.orm import relationship
 
 
 
 
 class Permission(db.Model):
-    __tablename__ = "Permisos"
+    __tablename__ = 'permisos'
     id = Column(Integer, primary_key = True)
     name = Column(String(30), unique = True)
-
+    roles = relationship('Rol',secondary='rol_tiene_permiso')
     def __init__(self, name):
         self.name = name

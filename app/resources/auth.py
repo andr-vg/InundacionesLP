@@ -16,7 +16,7 @@ def authenticate():
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))
 
-    session["user"] = user["email"]
+    session["user"] = user.email
     flash("La sesión se inició correctamente.")
 
     return redirect(url_for("home"))

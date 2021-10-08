@@ -6,8 +6,8 @@ from sqlalchemy.orm import relationship
 from app.models.rol import Rol
 
 user_roles = Table('usuario_tiene_rol',db.Model.metadata,
-    Column('usuarios_id',Integer,ForeignKey('usuarios.id'),primary_key=True),
-    Column('roles_id',Integer,ForeignKey('roles.id'),primary_key=True)
+    Column('usuarios_id',ForeignKey('usuarios.id'),primary_key=True),
+    Column('roles_id',ForeignKey('roles.id'),primary_key=True)
 )
 
 class User(db.Model):

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block title %}Asignar Rol{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Asignar roles a usuario</h1>
+  <form action="{{ url_for('rol_user_assign') }}" method="POST">
+    {% for rol in roles %}
+    <p>
+      <input name="rol" type="checkbox" value="{{ rol.name }}"/> {{ rol.name }}
+    </p>
+    {% endfor %}
+    <input name="email" type="hidden" value="{{ user.email }}"/> 
+    <p>
+      <input type="submit" value="Crear">
+      <button type="reset">Limpiar</button>
+    </p>
+  </form>
+  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+{% endblock %}

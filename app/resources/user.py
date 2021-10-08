@@ -1,21 +1,24 @@
 from flask import redirect, render_template, request, url_for, session, abort
 from app.models.user import User
+from app.models.rol import Permission
 from app.helpers.auth import authenticated
 from app.db import db
+from app.resources import rol
 
 
 # Protected resources
 def index():
 #    if not authenticated(session):
 #        abort(401)
-    users=User.query.all()
+    users = User.query.all()
     return render_template("user/index.html", users=users)
 
 
 def new():
 #    if not authenticated(session):
 #        abort(401)
-
+#  
+# 
     return render_template("user/new.html")
 
 

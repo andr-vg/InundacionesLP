@@ -53,6 +53,11 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
 
+    # Rutas de Roles
+    app.add_url_rule("/asignar", "rol_assign", rol.rol_assign, methods=["POST"])
+    app.add_url_rule("/asignar_rol", "rol_user_assign", rol.rol_user_assign, methods=["POST"])
+    
+
     # Rutas de Puntos de encuentro
     app.add_url_rule("/puntos_encuentro", "puntos_encuentro_index", puntos_encuentro.index)
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])

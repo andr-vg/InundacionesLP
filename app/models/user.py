@@ -1,16 +1,36 @@
 import datetime
 
 from app.db import db
-from sqlalchemy import Table,ForeignKey,Column,Integer,String,DateTime,Boolean
+from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select
 from sqlalchemy.orm import relationship
 from app.models.rol import Rol
 
-user_roles = Table('usuario_tiene_rol',db.Model.metadata,
-    Column('usuarios_id',Integer,ForeignKey('usuarios.id'),primary_key=True),
-    Column('roles_id',Integer,ForeignKey('roles.id'),primary_key=True)
+user_roles = Table('usuario_tiene_rol', db.Model.metadata,
+    Column('usuarios_id', Integer, ForeignKey('usuarios.id'), primary_key=True),
+    Column('roles_id', Integer, ForeignKey('roles.id'), primary_key=True)
 )
 
 class User(db.Model):
+    @classmethod
+    def has_permission(cls, user_id, permission):
+        sql = text("SELECT p.name \
+                FROM usuarios u  \
+                INNER JOIN usuario_tiene_rol utr ON(utr.usuarios_id = u.id) \
+                INNER JOIN roles r ON(r.id = utr.roles_id) \
+                INNER JOIN rol_tiene_permiso rtp ON (rtp.roles_id = r.id) \
+                INNER JOIN permisos p ON (p.id = rtp.permisos_id) \
+                WHERE u.id = :user_id")
+        permissions = [elem[0] for elem in db.session.execute(sql, {"user_id": user_id})]
+        return permission in permissions
+    
+    @classmethod
+    def get_id_from_email(cls, user_email):
+        sql = text("SELECT id \
+                    FROM usuarios \
+                    WHERE email = :user_email")
+        id = list(db.session.execute(sql, {"user_email": user_email})) 
+        return id[0][0]
+
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
     firstname = Column(String(30))
@@ -18,7 +38,7 @@ class User(db.Model):
     username = Column(String(30), unique=True)
     email = Column(String(30), unique=True)
     password = Column(String(30))
-    roles = relationship("Rol",secondary='usuario_tiene_rol',back_populates='users')
+    roles = relationship("Rol",secondary='usuario_tiene_rol', back_populates='users')
     active = Column(Boolean, default=True)
     updated_at = Column(DateTime, default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)

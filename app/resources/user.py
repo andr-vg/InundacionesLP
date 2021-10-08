@@ -1,13 +1,21 @@
 from flask import redirect, render_template, request, url_for, session, abort
 from app.models.user import User
 from app.helpers.auth import authenticated
+from app.helpers.permission import check as check_permission
 from app.db import db
 
 
 # Protected resources
 def index():
-#    if not authenticated(session):
-#        abort(401)
+
+    user_email = authenticated(session)
+    id = User.get_id_from_email(user_email)
+    if not user_email:
+        abort(401)
+
+    if not check_permission(id, "user_index"):
+        abort(401)
+        
     users=User.query.all()
     return render_template("user/index.html", users=users)
 

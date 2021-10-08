@@ -3,7 +3,7 @@ from flask import Flask, render_template, g, Blueprint
 from flask_session import Session
 from config import config
 from app import db
-from app.resources import issue
+from app.resources import issue, puntos_encuentro
 from app.resources import user
 from app.resources import auth
 from app.resources import rol
@@ -52,6 +52,11 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios", "user_index", user.index)
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
+
+    # Rutas de Puntos de encuentro
+    app.add_url_rule("/puntos_encuentro", "puntos_encuentro_index", puntos_encuentro.index)
+    app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
+    app.add_url_rule("/puntos_encuentro/nuevo", "punto_encuentro_new", puntos_encuentro.new)
 
 
     # Ruta para el Home (usando decorator)

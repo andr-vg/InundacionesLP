@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Puntos de encuentro{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Crear un punto de encuentro</h1>
+  <form action="{{ url_for('punto_encuentro_create') }}" method="POST">
+    <p>
+      <label>Nombre<label></br>
+      <input name="name" placeholder="Nombre"/>
+    </p>
+    <p>
+      <label>Dirección<label></br>
+      <input name="address" placeholder="Dirección"/>
+    </p>
+    <p>
+      <label>Teléfono<label></br>
+      <input name="tel" placeholder="Teléfono"/>
+    </p>
+    <p>
+      <label>Email<label></br>
+      <input name="email" placeholder="Email"/>
+    </p>
+    <p>
+      <label>Coordenadas<label></br>
+      <input name="coords" placeholder="Coordenadas"/>
+    </p>
+    <p>
+      <input type="submit" value="Crear">
+      <button type="reset">Limpiar</button>
+    </p>
+  </form>
+  <a href="{{ url_for('puntos_encuentro_index') }}" class="link">Volver</a>
+{% endblock %}

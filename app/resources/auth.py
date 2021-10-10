@@ -28,3 +28,4 @@ def logout():
     flash("La sesión se cerró correctamente.")
 
     return redirect(url_for("auth_login"))
+

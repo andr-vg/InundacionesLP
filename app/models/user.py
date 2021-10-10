@@ -8,7 +8,7 @@ from app.models.rol import Rol
 
 user_roles = Table('usuario_tiene_rol',db.Model.metadata,
     Column('usuarios_id',ForeignKey('usuarios.id'),primary_key=True),
-    Column('roles_id',ForeignKey('roles.id'),primary_key=True)
+    Column('roles_id',ForeignKey('roles.id'),primary_key=True))
 
 
 class User(db.Model):
@@ -31,6 +31,11 @@ class User(db.Model):
                     WHERE email = :user_email")
         id = list(db.session.execute(sql, {"user_email": user_email})) 
         return id[0][0]
+    
+    @classmethod
+    def exists_user(cls, params):
+        user = User.query.filter((User.email == params["email"]) | (User.username == params["username"])).first()
+        return user
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)

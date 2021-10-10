@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     {% block head %}
+    <!-- botones de editar, borrar -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- estilos de la pagina -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}

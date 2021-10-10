@@ -4,7 +4,54 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-  <h1>usuarios</h1>
+  <h1>Usuarios</h1>
+  <a href="{{ url_for('home') }}" class="link">Volver</a>
+  <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre de usuario</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Mail</th>
+        <th>Estado</th>
+        <th>Roles</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr> <!-- ver de poner id o email como id del tr de cada user-->
+        <td> {{ user.username }} </td>
+        <td> {{ user.firstname }} </td>
+        <td> {{ user.lastname }} </td>
+        <td> {{ user.email }} </td>
+        <td> {% if user.active == 1 %}
+               Activo 
+             {% else %}
+               Inactivo 
+             {% endif %}
+        </td>
+        {% set roles = [] %}
+        <td> {% for rol in user.roles %}
+               {{ rol.name }}   
+               {{ roles.append(rol.id) or "" }}
+             {% endfor %}
+        </td>    
+        <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
+        <td id="actions">
+          {% if 1 not in roles and user.active == 1 %}
+            <a href="" class="link">bloquear</a>
+          {% elif 1 not in roles %}
+            <a href="" class="link">desbloquear</a>
+          {% endif %}
+          <a href=""><button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button></a>
+          <a href=""><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
   {% for user in users %}
   <li>{{user.email}} - {{ user.first_name }} - {{ user.last_name }} - {{ user.password }} - 
     <form action="{{ url_for('rol_assign') }}" method="POST">
@@ -13,6 +60,4 @@
     </form>
 </li>
   {% endfor %}
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
-  <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
 {% endblock %}

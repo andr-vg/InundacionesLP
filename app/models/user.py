@@ -46,6 +46,7 @@ class User(db.Model):
     password = Column(String(30))
     roles = relationship("Rol",secondary='usuario_tiene_rol', back_populates='users')
     active = Column(Boolean, default=True)
+    deleted = Column(Boolean, default=False)
     updated_at = Column(DateTime, default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 

@@ -17,7 +17,7 @@ def index():
     if not check_permission(id, "user_index"):
         abort(401)
         
-    users=User.query.all()
+    users=User.query.filter(User.deleted==False)
     return render_template("user/index.html", users=users)
 
 
@@ -28,8 +28,6 @@ def new():
         abort(401)
     if not check_permission(id, "user_new"):
         abort(401)
-    # chequeo que el usuario no exista
- 
     return render_template("user/new.html", user=None)
 
 
@@ -48,3 +46,16 @@ def create():
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for("user_index"))
+
+
+def soft_delete(id):
+    user_email = authenticated(session)
+    user_id = User.get_id_from_email(user_email)
+    if not user_email:
+        abort(401)
+    if not check_permission(user_id,'user_destroy'):
+        abort(401)
+    user = User.query.filter(User.id==id).first()
+    user.deleted = True
+    db.session.commit()
+    return redirect(url_for("user_index"))

@@ -10,23 +10,19 @@ def index():
     return render_template("rol/index.html", roles=roles)
 
 
-def rol_assign():
+def rol_assign(id):
     roles = Rol.query.all()
-    email=request.form["email"]
-    user=User.query.filter(User.email==email).first()
+    user=User.query.filter(User.id==id).first()
     return render_template("rol/rol_assign.html", user=user, roles=roles)    
-
 
 
 def rol_user_assign():
     if not authenticated(session):
         abort(401)
     roles = request.form.getlist("rol")
-    email = request.form["email"]
-    user = User.query.filter(User.email==email).first()
+    user = User.query.filter(User.id==request.form['id']).first()
     for name in roles:
         rol = Rol.query.filter(Rol.name==name).first()
-        print(rol)
         user.roles.append(rol)
     db.session.commit()
     return redirect(url_for("user_index"))

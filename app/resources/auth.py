@@ -1,5 +1,6 @@
 from flask import redirect, render_template, request, url_for, abort, session, flash
 from app.models.user import User
+from sqlalchemy import and_
 
 
 def login():
@@ -10,8 +11,10 @@ def authenticate():
 
     params=request.form
 
-    user=User.query.filter(User.email == params["email"] and User.password == params["password"]).first()
-
+    user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
+    .filter(and_(User.email == params["email"],User.password == params["password"])).first()
+    )
+    print(user)
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))

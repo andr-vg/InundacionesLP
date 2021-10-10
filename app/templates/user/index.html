@@ -46,7 +46,7 @@
             <a href="" class="link"> desbloquear </a>
           {% endif %}
           <a href=""><button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button></a>
-          <a href=""><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+          <a href="{{ url_for('user_soft_delete', id=user.id) }}"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
         </td>
       </tr>
       {% endfor %}
@@ -54,10 +54,7 @@
   </table>
   {% for user in users %}
   <li>{{user.email}} - {{ user.first_name }} - {{ user.last_name }} - {{ user.password }} - 
-    <form action="{{ url_for('rol_assign') }}" method="POST">
-        <input name="email" type="hidden" value="{{ user.email }}"/> 
-        <input type="submit" value="Asignar rol">
-    </form>
+    <a href="{{ url_for('rol_assign', id=user.id) }}" class="link">Asignar rol</a>
 </li>
   {% endfor %}
 {% endblock %}

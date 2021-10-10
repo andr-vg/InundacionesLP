@@ -3,7 +3,7 @@ from flask import Flask, render_template, g, Blueprint
 from flask_session import Session
 from config import config
 from app import db
-from app.resources import issue, puntos_encuentro, user, auth, rol
+from app.resources import configuration, issue, puntos_encuentro, user, auth, rol
 from app.resources.api.issue import issue_api
 from app.helpers import handler
 from app.helpers import auth as helper_auth
@@ -49,10 +49,11 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios", "user_index", user.index)
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
+    app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete)
 
     # Rutas de Roles
-    app.add_url_rule("/asignar", "rol_assign", rol.rol_assign, methods=["POST"])
-    app.add_url_rule("/asignar_rol", "rol_user_assign", rol.rol_user_assign, methods=["POST"])
+    app.add_url_rule("/asignar/<int:id>/", "rol_assign", rol.rol_assign)
+    app.add_url_rule("/asignar", "rol_user_assign", rol.rol_user_assign, methods=["POST"])
    
 
     # Rutas de Puntos de encuentro
@@ -60,6 +61,10 @@ def create_app(environment="development"):
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/nuevo", "punto_encuentro_new", puntos_encuentro.new)
 
+
+    # Rutas de Puntos de encuentro
+    app.add_url_rule("/configuracion", "configuration_update", configuration.update)
+    app.add_url_rule("/config", "configuration_confirm_update", configuration.confirm_update, methods=["POST"])
 
     # Ruta para el Home (usando decorator)
     @app.route("/")

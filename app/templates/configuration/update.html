@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Configuracion del sistema{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Configuracion del sistema</h1>
+<form action="{{ url_for('configuration_confirm_update') }}" method="POST">
+<input name="elements_per_page" type="number"  value="{{config.elements_per_page}}">
+<select name="ordered_by" value="{{config.ordered_by}}">
+    <option value="Ascendente">Ascendente</option>
+    <option value="Descendente">Descendente</option>
+</select>
+<select name="css_private" value="{{config.css_private}}">
+    <option value="app/static/style.css">app/static/style.css</option>
+    <option value="Descendente">Descendente</option>
+</select>
+<select name="css_public" value="{{config.css_public}}">
+    <option value="app/static/style.css">app/static/style.css</option>
+    <option value="Descendente">Descendente</option>
+</select>
+<p>
+    <input type="submit" value="Crear">
+    <button type="reset">Limpiar</button>
+  </p>
+</form>
+<a href="{{ url_for('home') }}" class="link">Volver</a>
+</form>
+
+{% endblock %}

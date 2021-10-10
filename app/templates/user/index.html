@@ -41,9 +41,9 @@
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
         <td id="actions">
           {% if 1 not in roles and user.active == 1 %}
-            <a href="" class="link">bloquear</a>
+            <a href="" class="link"> bloquear </a>
           {% elif 1 not in roles %}
-            <a href="" class="link">desbloquear</a>
+            <a href="" class="link"> desbloquear </a>
           {% endif %}
           <a href=""><button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button></a>
           <a href=""><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>

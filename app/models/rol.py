@@ -7,8 +7,8 @@ from app.models.permission import Permission
 
 
 rol_permissions = Table('rol_tiene_permiso',db.Model.metadata,
-    Column('roles_id',Integer,ForeignKey('roles.id'),primary_key=True),
-    Column('permisos_id',Integer,ForeignKey('permisos.id'),primary_key=True)
+    Column('roles_id',ForeignKey('roles.id'),primary_key=True),
+    Column('permisos_id',ForeignKey('permisos.id'),primary_key=True)
 )
 
 

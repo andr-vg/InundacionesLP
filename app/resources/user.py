@@ -48,15 +48,21 @@ def create():
         abort(401)
     # ver si necesita tmb chequear permiso de este boton
     # chequeo que el usuario no exista
-    if User.exists_user(request.form):
+    if not User.email_validation(request.form["email"]):
+        flash("Ingrese un email valido")
+        return render_template("user/new.html", user=request.form)
+    user = User.exists_user(request.form)
+    if user and not user.deleted:
         flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
         return render_template("user/new.html", user=request.form)
+    elif user and user.deleted:
+        user.deleted = False
     else:
         new_user = User(**request.form)
         db.session.add(new_user)
-        db.session.commit()
-        flash("El usuario ha sido creado correctamente.")
-        return redirect(url_for("user_index"))
+    db.session.commit()
+    flash("El usuario ha sido creado correctamente.")
+    return redirect(url_for("user_index"))
 
 
 def soft_delete(id):

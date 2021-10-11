@@ -9,6 +9,7 @@ from app.helpers import handler
 from app.helpers import auth as helper_auth
 from app.helpers import permission as helper_permission
 import logging
+from flask_wtf.csrf import CSRFProtect
 
 
 def create_app(environment="development"):

@@ -13,7 +13,7 @@ user_roles = Table('usuario_tiene_rol',db.Model.metadata,
 
 class User(db.Model):
     @classmethod
-    def has_permission(cls, user_id, permission):
+    def get_permissions(cls, user_id):
         sql = text("SELECT p.name \
                 FROM usuarios u  \
                 INNER JOIN usuario_tiene_rol utr ON(utr.usuarios_id = u.id) \
@@ -22,7 +22,11 @@ class User(db.Model):
                 INNER JOIN permisos p ON (p.id = rtp.permisos_id) \
                 WHERE u.id = :user_id")
         permissions = [elem[0] for elem in db.session.execute(sql, {"user_id": user_id})]
-        return permission in permissions
+        return permissions
+
+    @classmethod
+    def has_permission(cls, user_id, permission):
+        return permission in User.get_permissions(user_id)
     
     @classmethod
     def get_id_from_email(cls, user_email):

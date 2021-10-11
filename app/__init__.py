@@ -7,6 +7,7 @@ from app.resources import configuration, issue, puntos_encuentro, user, auth, ro
 from app.resources.api.issue import issue_api
 from app.helpers import handler
 from app.helpers import auth as helper_auth
+from app.helpers import permission as helper_permission
 import logging
 
 
@@ -32,6 +33,7 @@ def create_app(environment="development"):
 
     # Funciones que se exportan al contexto de Jinja2
     app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated)
+    app.jinja_env.globals.update(has_permission=helper_permission.has_permission)
 
     # Autenticación
     app.add_url_rule("/iniciar_sesion", "auth_login", auth.login)
@@ -51,6 +53,8 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
     app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete)
+    app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
+
 
     # Rutas de Roles
     app.add_url_rule("/asignar/<int:id>/", "rol_assign", rol.rol_assign)

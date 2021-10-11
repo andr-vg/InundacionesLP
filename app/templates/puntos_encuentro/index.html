@@ -5,6 +5,14 @@
 {% endblock %}
 {% block content %}
   <h1>Puntos de encuentro</h1>
+  <form action="{{ url_for('punto_encuentro_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
+    <input type="text" name="name">
+    <input type="checkbox" name="active" value="true"> <label> Activo</label>
+    <input type="checkbox" name="inactive" value="false"> <label> Inactivo</label>
+    <p>
+      <input type="submit" value="Buscar">
+    </p>
+  </form>
   {% for punto in puntos_encuentro %}
   <li>{{ punto.name }} - {{ punto.address }} - {{ punto.email }} - {{ punto.state }}</li>
   {% endfor %}

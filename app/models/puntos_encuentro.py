@@ -23,3 +23,8 @@ class PuntosDeEncuentro(db.Model):
         self.name = name
         self.tel = tel
         self.coords = coords
+
+    @classmethod
+    def unique_fields(cls,params):
+        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==params["name"]) | (PuntosDeEncuentro.address==params["address"]) | (PuntosDeEncuentro.tel==params["tel"]) | (PuntosDeEncuentro.email==params["email"]) | (PuntosDeEncuentro.coords==params["coords"]))
+        return punto_encuentro

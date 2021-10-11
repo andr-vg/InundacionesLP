@@ -26,13 +26,10 @@ def index(page=1):
     print(config)
     try:
         users=User.query.filter(User.deleted==False).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
-        print(users)
     except OperationalError:
         flash("No hay usuarios aún.")
         users = None
-    #return users
     return render_template("user/index.html", users=users)
-
 
 def new():
     user_email = authenticated(session)

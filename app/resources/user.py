@@ -58,4 +58,5 @@ def soft_delete(id):
     user = User.query.filter(User.id==id).first()
     user.deleted = True
     db.session.commit()
+    flash("Usuario eliminado correctamente.")
     return redirect(url_for("user_index"))

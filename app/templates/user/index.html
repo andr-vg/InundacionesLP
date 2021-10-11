@@ -46,7 +46,7 @@
             <a href="" class="link"> desbloquear </a>
           {% endif %}
           <a href=""><button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button></a>
-          <a href="{{ url_for('user_soft_delete', id=user.id) }}"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+          <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
         </td>
       </tr>
       {% endfor %}

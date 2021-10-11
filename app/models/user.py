@@ -32,9 +32,6 @@ class User(db.Model):
                     WHERE email = :user_email")
         id = list(db.session.execute(sql, {"user_email": user_email})) 
         return id[0][0]
-    @classmethod
-    def email_validation(cls,email):
-        return re.fullmatch("[a-zA-Z0-9.]+@[a-zA-Z0-9]+.[a-zA-Z0-9]+", email)
 
     @classmethod
     def exists_user(cls, params):

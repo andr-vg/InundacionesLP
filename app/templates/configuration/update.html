@@ -6,7 +6,7 @@
 {% block content %}
 <h1>Configuracion del sistema</h1>
 <form action="{{ url_for('configuration_confirm_update') }}" method="POST">
-<input name="elements_per_page" type="number"  value="{{config.elements_per_page}}">
+<input name="elements_per_page" type="number" max="30" min="1" value="{{config.elements_per_page}}">
 <select name="ordered_by" value="{{config.ordered_by}}">
     <option value="Ascendente">Ascendente</option>
     <option value="Descendente">Descendente</option>

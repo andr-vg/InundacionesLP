@@ -23,5 +23,8 @@ def confirm_update():
     config.css_private = request.form["css_private"]
     config.css_public = request.form["css_public"]
     db.session.commit()
+    # actualizo los params de configuracion en la sesión
+    session["config"] = Configuration.query.filter().first()
     flash("La configuracion ha sido guardada")
     return  redirect(url_for("configuration_update"))
+

@@ -8,6 +8,7 @@ from app.resources.api.issue import issue_api
 from app.helpers import handler
 from app.helpers import auth as helper_auth
 import logging
+from flask_wtf.csrf import CSRFProtect
 
 
 def create_app(environment="development"):

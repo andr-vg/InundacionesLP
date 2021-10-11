@@ -10,14 +10,14 @@
   <!-- previous page -->
   {% if users.has_prev %}
   <li>
-    <a href="{{ url_for('users', page=users.prev_num) }}">Previous</a>
+    <a href="{{ url_for('user_index', page=users.prev_num) }}">Previous</a>
   </li>
   {% endif %}
 
   <!-- next page -->
   {% if users.has_next %}
   <li>
-    <a href="{{ url_for('users', page=users.next_num) }}">Next</a>
+    <a href="{{ url_for('user_index', page=users.next_num) }}">Next</a>
   </li>
   {% endif %}
   

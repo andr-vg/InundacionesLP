@@ -73,13 +73,6 @@ def create_app(environment="development"):
     def home():
         return render_template("home.html")
 
-    # pagination in user_index
-    #@app.route("/usuarios")
-    #@app.route("/usuarios/<int:page>")
-    #def users(page=1):
-    #    users = user.index()
-    #    return render_template("user_index", users=users)
-
     # Rutas de API-REST (usando Blueprints)
     api = Blueprint("api", __name__, url_prefix="/api")
     api.register_blueprint(issue_api)

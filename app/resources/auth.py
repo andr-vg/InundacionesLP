@@ -9,7 +9,6 @@ def login():
 
 
 def authenticate():
-
     params=request.form
 
     user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
@@ -21,8 +20,10 @@ def authenticate():
         return redirect(url_for("auth_login"))
 
     session["user"] = user.email
-    # save configuration params to 
+    # save configuration params 
     session["config"] = Configuration.query.filter().first()
+    # save permissions
+    session["permissions"] = User.get_permissions(user_id=user.id)
     flash("La sesión se inició correctamente.")
 
     return redirect(url_for("home"))

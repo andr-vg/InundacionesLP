@@ -78,3 +78,17 @@ def soft_delete(id):
     db.session.commit()
     flash("Usuario eliminado correctamente.")
     return redirect(url_for("user_index"))
+
+def change_state(id):
+    user_email = authenticated(session)
+    user_id = User.get_id_from_email(user_email)
+    if not user_email:
+        abort(401)
+    if not check_permission(user_id,'user_active'):
+        abort(401)
+    user = User.query.filter(User.id==id).first()
+    user.active = not user.active
+    state = "reactivado" if user.active else "bloqueado"
+    db.session.commit()
+    flash("El usuario ha sido {} correctamente".format(state))
+    return redirect(url_for("user_index"))

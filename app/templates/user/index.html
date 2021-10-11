@@ -6,7 +6,9 @@
 {% block content %}
   <h1>Usuarios</h1>
   <a href="{{ url_for('home') }}" class="link">Volver</a>
-  <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
+  {% if has_permission('user_new', session) %}
+    <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
+  {% endif %}
   <!-- previous page -->
   {% if users.has_prev %}
   <li>
@@ -54,13 +56,19 @@
         </td>    
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
         <td id="actions">
-          {% if 1 not in roles and user.active == 1 %}
-            <a href="" class="link"> bloquear </a>
-          {% elif 1 not in roles %}
-            <a href="" class="link"> desbloquear </a>
+          {% if has_permission('user_active', session) %}
+            {% if 1 not in roles and user.active == 1 %}
+              <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea bloquear a este usuario?');" class="link"> bloquear </a>
+            {% elif 1 not in roles %}
+              <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea desbloquear a este usuario?');" class="link"> desbloquear </a>
+            {% endif %}
           {% endif %}
-          <a href=""><button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button></a>
-          <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+          {% if has_permission('user_edit', session) %}
+            <a href=""><button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button></a>
+          {% endif %}
+          {% if has_permission('user_destroy', session) %}
+            <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+          {% endif %}
         </td>
       </tr>
       {% endfor %}

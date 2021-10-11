@@ -1,14 +1,17 @@
 from flask import redirect, render_template, request, url_for, session, abort, flash
+from sqlalchemy.exc import OperationalError
 from app.models.user import User
 from app.models.rol import Permission
+from app.models.configuration import Configuration
 from app.helpers.auth import authenticated
 from app.helpers.permission import check as check_permission
+from app.helpers.configuration import get_configuration
 from app.db import db
 from app.resources import rol
 
 
 # Protected resources
-def index():
+def index(page=1):
     user_email = authenticated(session)
     id = User.get_id_from_email(user_email)
     if not user_email:
@@ -16,8 +19,18 @@ def index():
 
     if not check_permission(id, "user_index"):
         abort(401)
-        
-    users=User.query.filter(User.deleted==False)
+
+    # mostramos listado paginado:
+    # row con config actual
+    config = get_configuration(session) 
+    print(config)
+    try:
+        users=User.query.filter(User.deleted==False).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        print(users)
+    except OperationalError:
+        flash("No hay usuarios aún.")
+        users = None
+    #return users
     return render_template("user/index.html", users=users)
 
 
@@ -45,6 +58,7 @@ def create():
         new_user = User(**request.form)
         db.session.add(new_user)
         db.session.commit()
+        flash("El usuario ha sido creado correctamente.")
         return redirect(url_for("user_index"))
 
 

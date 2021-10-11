@@ -1,5 +1,6 @@
 from flask import redirect, render_template, request, url_for, abort, session, flash
 from app.models.user import User
+from app.models.configuration import Configuration
 from sqlalchemy import and_
 
 
@@ -20,6 +21,8 @@ def authenticate():
         return redirect(url_for("auth_login"))
 
     session["user"] = user.email
+    # save configuration params to 
+    session["config"] = Configuration.query.filter().first()
     flash("La sesión se inició correctamente.")
 
     return redirect(url_for("home"))

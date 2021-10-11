@@ -46,7 +46,8 @@ def create_app(environment="development"):
     app.add_url_rule("/consultas/nueva", "issue_new", issue.new)
 
     # Rutas de Usuarios
-    app.add_url_rule("/usuarios", "user_index", user.index)
+    app.add_url_rule("/usuarios", "user_index", user.index, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/usuarios/<int:page>", "user_index", user.index, methods=['GET'])
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
     app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete)
@@ -70,6 +71,13 @@ def create_app(environment="development"):
     @app.route("/")
     def home():
         return render_template("home.html")
+
+    # pagination in user_index
+    #@app.route("/usuarios")
+    #@app.route("/usuarios/<int:page>")
+    #def users(page=1):
+    #    users = user.index()
+    #    return render_template("user_index", users=users)
 
     # Rutas de API-REST (usando Blueprints)
     api = Blueprint("api", __name__, url_prefix="/api")

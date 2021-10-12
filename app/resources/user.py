@@ -4,6 +4,7 @@ from app.models.user import User
 from app.models.rol import Permission
 from app.models.configuration import Configuration
 from app.helpers.auth import authenticated
+from app.helpers.email import check as check_valid_email
 from app.helpers.permission import check as check_permission
 from app.helpers.configuration import get_configuration
 from app.db import db
@@ -11,7 +12,7 @@ from app.resources import rol
 
 
 # Protected resources
-def index(page=1):
+def index(page):
     user_email = authenticated(session)
     id = User.get_id_from_email(user_email)
     if not user_email:
@@ -48,7 +49,7 @@ def create():
         abort(401)
     # ver si necesita tmb chequear permiso de este boton
     # chequeo que el usuario no exista
-    if not User.email_validation(request.form["email"]):
+    if not check_valid_email(request.form["email"]):
         flash("Ingrese un email valido")
         return render_template("user/new.html", user=request.form)
     user = User.exists_user(request.form)

@@ -8,23 +8,23 @@
   <form action="{{ url_for('punto_encuentro_create') }}" method="POST">
     <p>
       <label>Nombre<label></br>
-      <input name="name" placeholder="Nombre"/>
+      <input name="name" placeholder="Nombre"  value="{{ puntos_encuentro['name']}}"/>
     </p>
     <p>
       <label>Dirección<label></br>
-      <input name="address" placeholder="Dirección"/>
+      <input name="address" placeholder="Dirección" value="{{ puntos_encuentro['address']}}"/>
     </p>
     <p>
       <label>Teléfono<label></br>
-      <input name="tel" placeholder="Teléfono"/>
+      <input name="tel" placeholder="Teléfono" value="{{ puntos_encuentro['tel']}}"/>
     </p>
     <p>
       <label>Email<label></br>
-      <input name="email" placeholder="Email"/>
+      <input name="email" placeholder="Email" value="{{ puntos_encuentro['email']}}"/>
     </p>
     <p>
       <label>Coordenadas<label></br>
-      <input name="coords" placeholder="Coordenadas"/>
+      <input name="coords" placeholder="Coordenadas" value="{{ puntos_encuentro['coords']}}"/>
     </p>
     <p>
       <input type="submit" value="Crear">

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Editar usuario</h1>
+  <form action="{{ url_for('user_update') }}" method="POST">
+    <p>
+      <label>Email<label></br>
+      <input type="email" name="email" placeholder="Correo" value="{{ user['email'] }}" required/>
+      <input type="hidden" name="id" value="{{ user['id'] }}"/>
+    </p>
+    <p>
+      <label>Clave<label></br>
+      <input type="password" name="password" placeholder="Clave" value="{{ user['password'] }}" required/>
+    </p>
+    <p>
+      <label>Nombre de usuario<label></br>
+      <input name="username" placeholder="Nombre de usuario" value="{{ user['username'] }}" required/>
+    </p>
+    <p>
+      <label>Nombre<label></br>
+      <input name="firstname" placeholder="Nombre" value="{{ user['firstname'] }}" required/>
+    </p>
+    <p>
+      <label>Apellido<label></br>
+      <input name="lastname" placeholder="Apellido" value="{{ user['lastname'] }}" required/>
+    </p>
+    <p>
+      <input type="submit" value="Editar">
+    </p>
+  </form>
+  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+{% endblock %}

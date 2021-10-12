@@ -64,6 +64,56 @@ def create():
     flash("El usuario ha sido creado correctamente.")
     return redirect(url_for("user_index"))
 
+def edit_user(user, params):
+    user.email = params["email"]
+    user.username = params["username"]
+    user.firstname = params["firstname"]
+    user.lastname = params["lastname"]
+    user.password = params["password"]
+    # ver asignacion y desasignacion de roles
+
+# para mostrar el editar
+def edit(id):
+    user_email = authenticated(session)
+    user_id = User.get_id_from_email(user_email)
+    if not user_email:
+        abort(401)
+    if not check_permission(user_id, "user_edit"):
+        abort(401)
+    
+    user = User.query.filter(User.id==id).first()
+    return render_template("user/edit.html", user=user)
+
+# para confirmar el editar
+def update():
+    user_email = authenticated(session)
+    user_id = User.get_id_from_email(user_email)
+    if not user_email:
+        abort(401)
+    # ver si necesita tmb chequear permiso de este boton
+    # checkeo de mail valido
+    if not User.email_validation(request.form["email"]):
+        flash("Ingrese un email valido")
+        return render_template("user/edit.html", user=request.form)
+    # chequeo que el usuario no exista
+    user = User.query.filter(User.id==request.form["id"]).first()
+    # checkeo si el email y username fueron modificados en el form
+    if request.form["email"] != user.email:
+        # checkeo que no exista ese mail ingresado
+        if User.exists_user_with_email(request.form["email"]):
+            flash("Ya existe un usuario con ese mail. Ingrese uno nuevo.")
+            return render_template("user/edit.html", user=request.form)
+    if request.form["username"] != user.username:
+        # checkeo que no exista ese username ingresado
+        if User.exists_user_with_username(request.form["username"]):
+            flash("Ya existe ese nombre de usuario. Ingrese uno nuevo.")
+            return render_template("user/edit.html", user=request.form)
+
+    edit_user(user, request.form)
+    db.session.commit()
+    flash("El usuario ha sido modificado correctamente.")
+    return redirect(url_for("user_index"))
+
 
 def soft_delete(id):
     user_email = authenticated(session)

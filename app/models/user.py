@@ -44,6 +44,14 @@ class User(db.Model):
     def exists_user(cls, params):
         user = User.query.filter((User.email == params["email"]) | (User.username == params["username"])).first()
         return user
+    
+    @classmethod
+    def exists_user_with_username(cls, username):
+        return User.query.filter(User.username == username).first()
+    
+    @classmethod
+    def exists_user_with_email(cls, email):
+        return User.query.filter(User.email == email).first()
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)

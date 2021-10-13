@@ -16,9 +16,10 @@ def authenticate():
     )
     print(user)
     if not user:
+        flash(user.email)
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))
-
+    flash(user.email)
     session["user"] = user.email
     # save configuration params 
     session["config"] = Configuration.query.filter().first()

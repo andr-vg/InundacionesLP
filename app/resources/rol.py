@@ -6,13 +6,15 @@ from app.db import db
 
 # Protected resources
 def index():    
-    roles = Rol.query.all()
+    roles = Rol.get_all_roles()
     return render_template("rol/index.html", roles=roles)
 
 
 def rol_assign(id):
-    roles = Rol.query.all()
-    user=User.query.filter(User.id==id).first()
+    #roles = Rol.query.all()
+    roles = Rol.get_all_roles()
+    #user=User.query.filter(User.id==id).first()
+    user=User.get_user_by_id(id)
     return render_template("rol/rol_assign.html", user=user, roles=roles)    
 
 
@@ -22,7 +24,8 @@ def rol_user_assign():
     roles = request.form.getlist("rol")
     user = User.get_user_by_id(request.form['id'])
     for name in roles:
-        rol = Rol.query.filter(Rol.name==name).first()
+        #rol = Rol.query.filter(Rol.name==name).first()
+        rol = Rol.get_rol_by_name(name)
         user.roles.append(rol)
     db.session.commit()
     return redirect(url_for("user_index"))

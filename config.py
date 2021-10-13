@@ -25,6 +25,10 @@ class ProductionConfig(Config):
     DB_USER = environ.get("DB_USER", "grupo22")
     DB_PASS = environ.get("DB_PASS", "MjE1NTM2NzUzYTBl")
     DB_NAME = environ.get("DB_NAME", "grupo22")
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = ( 
+        f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:3306/{DB_NAME}"
+        )
 
 
 class DevelopmentConfig(Config):

@@ -108,6 +108,7 @@ def update():
         user.email = form.email.data
         user.firstname = form.firstname.data
         user.lastname = form.lastname.data
+#        user.password = form.password.data
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles)-set(form.rol.data)
         for rol in roles_deleted:

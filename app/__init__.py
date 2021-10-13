@@ -3,6 +3,7 @@ from flask import Flask, render_template, g, Blueprint
 from flask_session import Session
 from config import config
 from app import db
+from flask_bcrypt import Bcrypt
 from app.resources import configuration, issue, puntos_encuentro, user, auth, rol
 from app.resources.api.issue import issue_api
 from app.helpers import handler
@@ -14,6 +15,9 @@ import logging
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
+    
+    # Carga libreria para encriptar las contraseñas
+    bcrypt = Bcrypt(app)
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)

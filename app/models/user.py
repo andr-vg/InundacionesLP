@@ -15,8 +15,8 @@ user_roles = Table('usuario_tiene_rol',db.Model.metadata,
 class User(db.Model):
     @classmethod
     def login(cls, params):
-        return User.query.filter(and_(User.deleted == False, User.active == True)) \
-        .filter(and_(User.email == params["email"],User.password == params["password"])) \
+        return User.query.filter(User.deleted == False and User.active == True) \
+        .filter(User.email == params["email"] and User.password == params["password"]) \
         .first()
 
 

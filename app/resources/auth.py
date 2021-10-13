@@ -12,7 +12,7 @@ def authenticate():
     params=request.form
     flash(params["email"])
     user=User.login(params=params)
-    flash(user.email)
+    flash(user)
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))

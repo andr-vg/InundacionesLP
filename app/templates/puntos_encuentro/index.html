@@ -15,16 +15,18 @@
   </form>
   {% for punto in puntos_encuentro %}
   <li>{{ punto.name }} - {{ punto.address }} - {{ punto.email }} - {{ punto.state }}</li>
- 
+    {% if has_permission("punto_encuentro_destroy",session) and not punto.state %}
     <form action="{{ url_for(('punto_encuentro_soft_delete')) }}" method="POST">
       <input name="id"  type="hidden" value="{{ punto.id }}"> 
       <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar este punto de encuentro?');"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button> 
     </form>
-  
+    {% endif %}
+    {% if has_permission("punto_encuentro_publish",session) and punto.state %}
     <form action="{{ url_for(('punto_encuentro_publish')) }}" method="POST">
       <input name="id"  type="hidden" value="{{ punto.id }}"> 
       <button class="btn btn-sm btn-success" type="submit" onclick="return confirm('Está seguro que desea publicar este punto de encuentro?');"><i class="glyphicon glyphicon-list-alt" display="table-cell"></i></button> 
     </form>
+    {% endif %}
   {% endfor %}
   <a href="{{ url_for('home') }}" class="link">Volver</a>
   <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo punto de encuentro</a>

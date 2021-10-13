@@ -209,4 +209,5 @@ def change_rol():
     session["permissions"] = Rol.get_permissions(rol_id=rol_id)
     print(session["rol_actual"])
     print(session["permissions"])
+    flash("El rol ha sido cambiado a {}.".format(session["roles"][rol_id]))
     return redirect(url_for("home"))

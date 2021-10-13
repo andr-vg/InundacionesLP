@@ -20,7 +20,7 @@ def rol_user_assign():
     if not authenticated(session):
         abort(401)
     roles = request.form.getlist("rol")
-    user = User.query.filter(User.id==request.form['id']).first()
+    user = User.get_user_by_id(request.form['id'])
     for name in roles:
         rol = Rol.query.filter(Rol.name==name).first()
         user.roles.append(rol)

@@ -21,3 +21,9 @@ class Rol(db.Model):
 
     def __init__(self, name):
         self.name = name
+
+    def get_all_roles():
+        return Rol.query.all()
+
+    def get_rol_by_id(id):
+        return Rol.query.filter(Rol.id==id).first()

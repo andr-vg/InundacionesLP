@@ -69,3 +69,6 @@ class User(db.Model):
         self.username = username
         self.firstname = firstname
         self.lastname = lastname
+
+    def get_user_by_id(id):
+        return User.query.filter(User.id==id).first()

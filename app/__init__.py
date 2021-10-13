@@ -37,7 +37,7 @@ def create_app(environment="development"):
     app.jinja_env.globals.update(has_permission=helper_permission.has_permission)
 
     # Autenticación
-    app.add_url_rule("/iniciar_sesion", "auth_login", auth.login)
+    app.add_url_rule("/iniciar_sesion/", "auth_login", auth.login)
     app.add_url_rule("/cerrar_sesion", "auth_logout", auth.logout)
     app.add_url_rule(
         "/autenticacion", "auth_authenticate", auth.authenticate, methods=["POST"]

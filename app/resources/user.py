@@ -26,7 +26,7 @@ def index(page):
     config = get_configuration(session) 
     print(config)
     try:
-        users=User.query.filter(User.deleted==False).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        users=User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
     except OperationalError:
         flash("No hay usuarios aún.")
         users = None

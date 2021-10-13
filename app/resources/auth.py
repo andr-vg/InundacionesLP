@@ -10,7 +10,7 @@ def login():
 
 def authenticate():
     params=request.form
-    flash(params.email)
+    flash(params["email"])
     user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
     .filter(and_(User.email == params["email"],User.password == params["password"])).first()
     )

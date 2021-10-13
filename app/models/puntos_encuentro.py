@@ -26,5 +26,5 @@ class PuntosDeEncuentro(db.Model):
 
     @classmethod
     def unique_fields(cls,params):
-        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==params["name"]) | (PuntosDeEncuentro.address==params["address"]) | (PuntosDeEncuentro.tel==params["tel"]) | (PuntosDeEncuentro.email==params["email"]) | (PuntosDeEncuentro.coords==params["coords"]))
+        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==params["name"]) | (PuntosDeEncuentro.address==params["address"]) | (PuntosDeEncuentro.tel==params["tel"]) | (PuntosDeEncuentro.email==params["email"]) | (PuntosDeEncuentro.coords==params["coords"])).first()
         return punto_encuentro

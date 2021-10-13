@@ -64,24 +64,19 @@
             {% endif %}
           {% endif %}
           {% if has_permission('user_edit', session) %}
-            <a href="{{ url_for('user_edit', id=user.id) }}"><button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button></a>
+            <form action="{{ url_for('user_edit') }}" method="POST">
+              <input name="id" type="hidden" value="{{ user.id }}">
+              <button class="btn btn-sm btn-info" type="submit"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button>
+              <!--<button class="btn btn-sm btn-info"><input type="submit"class="btn btn-sm btn-info" value="Editar"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button>-->
+            </form>
           {% endif %}
           {% if has_permission('user_destroy', session) %}
             <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
-          {% endif %}
-          <form action="{{ url_for('user_edit') }}" method="POST">
-            <input name="id" type="hidden" value="{{ user.id }}">
-            <input type="submit"class="btn btn-sm btn-info">
-          </form>
-          <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+          {% endif %}       
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
-  {% for user in users.items %}
-  <li>{{user.email}} - {{ user.first_name }} - {{ user.last_name }} - {{ user.password }} - 
-    <a href="{{ url_for('rol_assign', id=user.id) }}" class="link">Asignar rol</a>
-</li>
-  {% endfor %}
+  
 {% endblock %}

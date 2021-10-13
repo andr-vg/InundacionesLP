@@ -2,7 +2,7 @@ from flask import redirect, render_template, request, url_for, session, abort, f
 from app.models.configuration import Configuration
 from app.models.user import User
 from app.helpers.auth import authenticated
-from app.helpers.permission import check as check_permission
+from app.helpers.permission import has_permission as check_permission
 from app.db import db
 
 def update():
@@ -10,7 +10,7 @@ def update():
     id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "configuration_update"):
+    if not check_permission("configuration_update", session):
         abort(401)
     config=Configuration.get_configuration()
     return render_template("configuration/update.html",config=config)

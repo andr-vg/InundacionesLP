@@ -15,13 +15,24 @@
       <!-- mostrar nombre de usuario, rol con un select seleccionado en el rol por defecto, y botones correspondientes del nav:
       USUARIOS CONFIGURACION DEL SISTEMA PUNTOS DE ENCUENTRO .. MI PERFIL CERRAR SESIÓN -->
       {% if is_authenticated(session) %}
-      {{ session["username"] }}
-      {{ session["roles"] }}
-      <select name="rol" value=" {{ session['roles'][0][1] }} ">
-        {% for rol in session['roles'] %}
-          <option value="{{ rol[0] }}">{{ rol[1] }}</option>
-        {% endfor %}
-      </select>
+        {{ session["username"] }}
+        {% if session["roles"].keys()|length > 1 %}
+          <form action="{{ url_for('user_change_rol') }}" method="POST">
+            <select name="rol" value=" {{ session['rol_actual'][0] }} " >
+              {% for key, value in session['roles'].items() %}
+                {% if key == session["rol_actual"][0] %}
+                  <option value="{{ key }}" selected>{{ value }}</option>
+                {% else %}
+                  <option value="{{ key }}">{{ value }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <button class="btn btn-sm btn-info" type="submit">Cambiar rol</button>
+            <!--<button class="btn btn-sm btn-info"><input type="submit"class="btn btn-sm btn-info" value="Editar"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button>-->
+          </form>  
+        {% else %}    
+          {{ session["rol_actual"][1] }}          
+        {% endif %}
       {% endif %}
       {% endblock %}
     </div>

@@ -26,5 +26,5 @@ def confirm_update():
     # actualizo los params de configuracion en la sesión
     session["config"] = Configuration.get_configuration()
     flash("La configuracion ha sido guardada")
-    return  redirect(url_for("configuration_update"))
+    return redirect(url_for("configuration_update"))
 

@@ -202,3 +202,11 @@ def change_state(id):
     db.session.commit()
     flash("El usuario ha sido {} correctamente".format(state))
     return redirect(url_for("user_index"))
+
+def change_rol():
+    rol_id = int(request.form["rol"])
+    session["rol_actual"] = (rol_id, session["roles"][rol_id])
+    session["permissions"] = Rol.get_permissions(rol_id=rol_id)
+    print(session["rol_actual"])
+    print(session["permissions"])
+    return redirect(url_for("home"))

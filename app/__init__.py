@@ -37,43 +37,43 @@ def create_app(environment="development"):
     app.jinja_env.globals.update(has_permission=helper_permission.has_permission)
 
     # Autenticación
-    app.add_url_rule("/iniciar_sesion/", "auth_login", auth.login)
-    app.add_url_rule("/cerrar_sesion/", "auth_logout", auth.logout)
+    app.add_url_rule("/iniciar_sesion", "auth_login", auth.login)
+    app.add_url_rule("/cerrar_sesion", "auth_logout", auth.logout)
     app.add_url_rule(
-        "/autenticacion/", "auth_authenticate", auth.authenticate, methods=["POST"]
+        "/autenticacion", "auth_authenticate", auth.authenticate, methods=["POST"]
     )
 
     # Rutas de Consultas
-    app.add_url_rule("/consultas/", "issue_index", issue.index)
-    app.add_url_rule("/consultas/", "issue_create", issue.create, methods=["POST"])
-    app.add_url_rule("/consultas/nueva/", "issue_new", issue.new)
+    app.add_url_rule("/consultas", "issue_index", issue.index)
+    app.add_url_rule("/consultas", "issue_create", issue.create, methods=["POST"])
+    app.add_url_rule("/consultas/nueva", "issue_new", issue.new)
 
     # Rutas de Usuarios
-    app.add_url_rule("/usuarios/", "user_index", user.index, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/usuarios", "user_index", user.index, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/usuarios/<int:page>", "user_index", user.index, methods=['GET'])
-    app.add_url_rule("/usuarios/", "user_create", user.create, methods=["POST"])
-    app.add_url_rule("/usuarios/nuevo/", "user_new", user.new)
-    app.add_url_rule("/usuarios/editar/", "user_update", user.update, methods=["POST"])
-    app.add_url_rule("/usuarios/editar/<int:id>/", "user_edit", user.edit)
-    app.add_url_rule("/usuarios/eliminar/<int:id>/", "user_soft_delete", user.soft_delete)
-    app.add_url_rule("/usuarios/estado/<int:id>/", "user_change_state", user.change_state)
+    app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
+    app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
+    app.add_url_rule("/usuarios/editar", "user_update", user.update, methods=["POST"])
+    app.add_url_rule("/usuarios/editar/<int:id>", "user_edit", user.edit)
+    app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete)
+    app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
 
 
     # Rutas de Roles
     app.add_url_rule("/asignar/<int:id>/", "rol_assign", rol.rol_assign)
-    app.add_url_rule("/asignar/", "rol_user_assign", rol.rol_user_assign, methods=["POST"])
+    app.add_url_rule("/asignar", "rol_user_assign", rol.rol_user_assign, methods=["POST"])
    
 
     # Rutas de Puntos de encuentro
-    app.add_url_rule("/puntos_encuentro/", "puntos_encuentro_index", puntos_encuentro.index)
+    app.add_url_rule("/puntos_encuentro", "puntos_encuentro_index", puntos_encuentro.index)
     app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search)
-    app.add_url_rule("/puntos_encuentro/", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
-    app.add_url_rule("/puntos_encuentro/nuevo/", "punto_encuentro_new", puntos_encuentro.new)
+    app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
+    app.add_url_rule("/puntos_encuentro/nuevo", "punto_encuentro_new", puntos_encuentro.new)
 
 
     # Rutas de Puntos de encuentro
-    app.add_url_rule("/configuracion/", "configuration_update", configuration.update)
-    app.add_url_rule("/config/", "configuration_confirm_update", configuration.confirm_update, methods=["POST"])
+    app.add_url_rule("/configuracion", "configuration_update", configuration.update)
+    app.add_url_rule("/config", "configuration_confirm_update", configuration.confirm_update, methods=["POST"])
 
     # Ruta para el Home (usando decorator)
     @app.route("/")

@@ -1,6 +1,8 @@
 import re
 import datetime
 
+from sqlalchemy.sql.sqltypes import TIMESTAMP, Date
+
 from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select
 from sqlalchemy.orm import relationship
@@ -48,7 +50,7 @@ class User(db.Model):
     roles = relationship("Rol",secondary='usuario_tiene_rol', back_populates='users')
     active = Column(Boolean, default=True)
     deleted = Column(Boolean, default=False)
-    updated_at = Column(DateTime, default=None)
+    updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow,default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):
@@ -58,5 +60,14 @@ class User(db.Model):
         self.firstname = firstname
         self.lastname = lastname
 
+
     def get_user_by_id(id):
         return User.query.filter(User.id==id).first()
+
+
+    def get_user_by_email(email):
+        return User.query.filter(User.email==email).first()
+
+
+    def get_user_by_username(username):
+        return User.query.filter(User.username==username).first()

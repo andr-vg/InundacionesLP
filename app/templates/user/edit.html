@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Editar usuario</h1>
+  {% for field in form.errors %}
+  {% for error in form.errors[field] %}
+      <div class="alert alert-error">
+          <strong>Error! {{field}} {{error}} </strong> 
+      </div>
+  {% endfor %}
+  {% endfor %}
+  <form action="{{ url_for('user_update') }}" method="POST">
+      <div>
+        {{form.id}}
+      <p>Email {{ form.email }}</p>
+      <p>Nombre de usuario {{ form.username }}</p>
+      <p>Contraseña {{ form.password }}</p>
+      <p>Confirmacion {{ form.confirm }}</p>
+      <p>Nombre {{ form.firstname }}</p>
+      <p>Apellido {{ form.lastname }}</p>
+      <p>Roles: {% for rol in form.rol %}
+        {{rol}}{{rol.label}}
+        {% endfor %}
+      </p>
+      </div>
+      <input type="submit" value="Crear">
+      <button type="reset">Limpiar</button>
+    </p>
+  </form>
+  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+{% endblock %}

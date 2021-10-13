@@ -6,6 +6,14 @@ from sqlalchemy.orm import relationship
 
 
 class PuntosDeEncuentro(db.Model):
+    @classmethod
+    def get_all(cls):
+        return PuntosDeEncuentro.query.all()
+
+    @classmethod
+    def search_by_name(cls, name):
+        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name.like('%'+name+'%'))
+
     __tablename__ = "puntosEncuentro"
     id = Column(Integer, primary_key=True)
     name = Column(String(255), unique=True)

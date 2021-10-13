@@ -4,6 +4,10 @@ from app.db import db
 from sqlalchemy import Column,Integer,String
 
 class Configuration(db.Model):
+    @classmethod
+    def get_configuration(cls):
+        return Configuration.query.first()
+
     __tablename__ = 'configuracion'
     id = Column(Integer, primary_key=True)
     elements_per_page = Column(Integer,default=15)

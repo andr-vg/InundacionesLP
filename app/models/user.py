@@ -2,7 +2,7 @@ import re
 import bcrypt
 import datetime
 from app.db import db
-from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select
+from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_
 from sqlalchemy.orm import relationship
 from app.models.rol import Rol
 
@@ -14,7 +14,11 @@ user_roles = Table('usuario_tiene_rol',db.Model.metadata,
 
 class User(db.Model):
     @classmethod
-    def has_permission(cls, user_id, permission):
+    def login(cls, params):
+        return User.query.filter(and_(User.deleted==False,User.active==True)).filter(and_(User.email == params["email"],User.password == params["password"])).first()
+
+    @classmethod
+    def get_permissions(cls, user_id):
         sql = text("SELECT p.name \
                 FROM usuarios u  \
                 INNER JOIN usuario_tiene_rol utr ON(utr.usuarios_id = u.id) \
@@ -23,7 +27,11 @@ class User(db.Model):
                 INNER JOIN permisos p ON (p.id = rtp.permisos_id) \
                 WHERE u.id = :user_id")
         permissions = [elem[0] for elem in db.session.execute(sql, {"user_id": user_id})]
-        return permission in permissions
+        return permissions
+
+    @classmethod
+    def has_permission(cls, user_id, permission):
+        return permission in User.get_permissions(user_id)
     
     @classmethod
     def get_id_from_email(cls, user_email):
@@ -37,6 +45,14 @@ class User(db.Model):
     def exists_user(cls, params):
         user = User.query.filter((User.email == params["email"]) | (User.username == params["username"])).first()
         return user
+    
+    @classmethod
+    def exists_user_with_username(cls, username):
+        return User.query.filter(User.username == username).first()
+    
+    @classmethod
+    def exists_user_with_email(cls, email):
+        return User.query.filter(User.email == email).first()
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
@@ -73,3 +89,7 @@ class User(db.Model):
 
     def get_user_by_username(username):
         return User.query.filter(User.username==username).first()
+
+        
+    def get_index_users(id, page, config):
+        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)

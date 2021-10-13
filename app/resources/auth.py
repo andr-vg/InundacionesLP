@@ -9,20 +9,21 @@ def login():
 
 
 def authenticate():
-
     params=request.form
-
-    user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
-    .filter(and_(User.email == params["email"],User.password == params["password"])).first()
-    )
+ #   user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
+ #   .filter(and_(User.email == params["email"],User.password == params["password"])).first()
+ #   )
+    #user=Configuration.query.filter(and_(Configuration.elements_per_page==params["email"],Configuration.ordered_by==params["password"]))
+    user = User.login(params=params)
     print(user)
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))
-
     session["user"] = user.email
-    # save configuration params to 
-    session["config"] = Configuration.query.filter().first()
+    # save configuration params 
+    session["config"] = Configuration.get_configuration()
+    # save permissions
+    session["permissions"] = User.get_permissions(user_id=user.id)
     flash("La sesión se inició correctamente.")
 
     return redirect(url_for("home"))

@@ -53,6 +53,8 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/<int:page>", "user_index", user.index, methods=['GET'])
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
+    app.add_url_rule("/usuarios/editar", "user_update", user.update, methods=["POST"])
+    app.add_url_rule("/usuarios/editar/<int:id>", "user_edit", user.edit)
     app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete)
     app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
 

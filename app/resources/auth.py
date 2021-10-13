@@ -10,7 +10,7 @@ def login():
 
 def authenticate():
     params=request.form
-
+    flash(params["email"])
     user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
     .filter(and_(User.email == params["email"],User.password == params["password"])).first()
     )
@@ -18,7 +18,6 @@ def authenticate():
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))
-
     session["user"] = user.email
     # save configuration params 
     session["config"] = Configuration.query.filter().first()

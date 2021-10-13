@@ -32,8 +32,8 @@ def create_app(environment="development"):
     db.init_app(app)
 
     #Logs de la BD
-    logging.basicConfig()
-    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+    #logging.basicConfig()
+    #logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 
     # Funciones que se exportan al contexto de Jinja2

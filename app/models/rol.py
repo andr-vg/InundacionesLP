@@ -27,3 +27,6 @@ class Rol(db.Model):
 
     def get_rol_by_id(id):
         return Rol.query.filter(Rol.id==id).first()
+
+    def get_rol_by_name(name):
+        return Rol.query.filter(Rol.name==name).first()

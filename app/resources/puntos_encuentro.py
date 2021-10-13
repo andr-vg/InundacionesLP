@@ -17,7 +17,7 @@ def index():
         abort(401)
     if not check_permission(id, "punto_encuentro_index"):
         abort(401)
-    puntos_encuentro = PuntosDeEncuentro.query.all()
+    puntos_encuentro = PuntosDeEncuentro.get_all()
     return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro)
 
 
@@ -52,7 +52,7 @@ def search():
         abort(401)
     if not check_permission(id, "punto_encuentro_index"):
         abort(401)
-    puntos_encuentro = PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name.like('%'+request.args["name"]+'%'))
+    puntos_encuentro = PuntosDeEncuentro.search_by_name(request.args["name"])
     if "active" in request.args.keys():
         if request.args["active"]=="activo":
             puntos_encuentro = puntos_encuentro.filter(PuntosDeEncuentro.state==False)

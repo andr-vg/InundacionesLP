@@ -28,7 +28,8 @@ def index(page):
     config = get_configuration(session) 
     print(config)
     try:
-        users=User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        #users=User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        users=User.get_index_users(id, page, config)
     except OperationalError:
         flash("No hay usuarios aún.")
         users = None
@@ -87,7 +88,8 @@ def edit(id):
     if not check_permission(user_id, "user_edit"):
         abort(401)
     
-    user = User.query.filter(User.id==id).first()
+    #user = User.query.filter(User.id==id).first()
+    user = User.get_user_by_id(id)
     return render_template("user/edit.html", user=user)
 
 # para confirmar el editar
@@ -102,7 +104,8 @@ def update():
         flash("Ingrese un email valido")
         return render_template("user/edit.html", user=request.form)
     # chequeo que el usuario no exista
-    user = User.query.filter(User.id==request.form["id"]).first()
+    #user = User.query.filter(User.id==request.form["id"]).first()
+    user = User.get_user_by_id(request.form["id"])
     # checkeo si el email y username fueron modificados en el form
     if request.form["email"] != user.email:
         # checkeo que no exista ese mail ingresado
@@ -192,7 +195,8 @@ def change_state(id):
         abort(401)
     if not check_permission(user_id,'user_active'):
         abort(401)
-    user = User.query.filter(User.id==id).first()
+    #user = User.query.filter(User.id==id).first()
+    user = User.get_user_by_id(id)
     user.active = not user.active
     state = "reactivado" if user.active else "bloqueado"
     db.session.commit()

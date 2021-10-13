@@ -1,4 +1,5 @@
 import re
+import bcrypt
 import datetime
 from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select
@@ -50,16 +51,10 @@ class User(db.Model):
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow,default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    @property
-    def password(self):
-        return self.password
-    @password.setter
-    def password(self, password):
-        self.password_hash = bcrypt.generate_password_hash(password)
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):
         self.email = email
-        self.password = bcrypt.generate_password_hash(password=password)
+        self.password = bcrypt.generate_password_hash(password=password).decode('utf-8')
         self.username = username
         self.firstname = firstname
         self.lastname = lastname

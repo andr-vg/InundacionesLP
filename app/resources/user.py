@@ -1,4 +1,5 @@
 import datetime
+import bcrypt
 from flask import redirect, render_template, request, url_for, session, abort, flash
 from sqlalchemy.exc import OperationalError
 from app.forms.user import RegistrationUserForm,EditUserForm

@@ -14,7 +14,7 @@
       <a href="{{ url_for('user_index') }}" class="link">Usuarios</a>
     {% endif %}
     {% if has_permission('punto_encuentro_index', session) %}
-      <a href="{{ url_for('puntos_encuentro_index') }}" class="link">Puntos de encuentro</a>
+      <a href="{{ url_for('punto_encuentro_index') }}" class="link">Puntos de encuentro</a>
     {% endif %}
     <a href="{{ url_for('auth_logout') }}" class="link">Cerrar sesión</a>
   {% else %}

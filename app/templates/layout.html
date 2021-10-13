@@ -12,6 +12,17 @@
   <body>
     <div id="navbar">
       {% block navbar %}
+      <!-- mostrar nombre de usuario, rol con un select seleccionado en el rol por defecto, y botones correspondientes del nav:
+      USUARIOS CONFIGURACION DEL SISTEMA PUNTOS DE ENCUENTRO .. MI PERFIL CERRAR SESIÓN -->
+      {% if is_authenticated(session) %}
+      {{ session["username"] }}
+      {{ session["roles"] }}
+      <select name="rol" value=" {{ session['roles'][0][1] }} ">
+        {% for rol in session['roles'] %}
+          <option value="{{ rol[0] }}">{{ rol[1] }}</option>
+        {% endfor %}
+      </select>
+      {% endif %}
       {% endblock %}
     </div>
     <div id="content">
@@ -30,6 +41,7 @@
     </div>
     <div id="footer">
       {% block footer %}
+      Todos los derechos reservados.
       {% endblock %}
     </div>
   </body>

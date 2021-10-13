@@ -7,7 +7,7 @@ from app.models.rol import Rol
 from app.models.configuration import Configuration
 from app.helpers.auth import authenticated
 from app.helpers.email import check as check_valid_email
-from app.helpers.permission import check as check_permission
+from app.helpers.permission import has_permission as check_permission
 from app.helpers.configuration import get_configuration
 from app.db import db
 from app.resources import rol
@@ -20,7 +20,7 @@ def index(page):
     if not user_email:
         abort(401)
 
-    if not check_permission(id, "user_index"):
+    if not check_permission("user_index", session):
         abort(401)
 
     # mostramos listado paginado:
@@ -37,10 +37,10 @@ def index(page):
 
 def new():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "user_new"):
+    if not check_permission("user_new", session):
         abort(401)
     form = RegistrationUserForm()
     form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
@@ -82,10 +82,10 @@ def edit_user(user, params):
 # para mostrar el editar
 def edit(id):
     user_email = authenticated(session)
-    user_id = User.get_id_from_email(user_email)
+    #user_id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(user_id, "user_edit"):
+    if not check_permission("user_edit", session):
         abort(401)
     
     #user = User.query.filter(User.id==id).first()
@@ -126,10 +126,10 @@ def update():
 
 def edit():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "user_edit"):
+    if not check_permission("user_edit", session):
         abort(401)
     user = User.get_user_by_id(request.form['id'])
     form = EditUserForm(id=user.id,email=user.email,username=user.username,password=user.password,confirm=user.password,firstname=user.firstname,lastname=user.lastname)
@@ -140,10 +140,10 @@ def edit():
 
 def update():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "user_update"):
+    if not check_permission("user_update", session):
         abort(401)
     form = EditUserForm(request.form)
     form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
@@ -177,10 +177,10 @@ def update():
 
 def soft_delete(id):
     user_email = authenticated(session)
-    user_id = User.get_id_from_email(user_email)
+    #user_id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(user_id,'user_destroy'):
+    if not check_permission('user_destroy', session):
         abort(401)
     user = User.get_user_by_id(id)
     user.deleted = True
@@ -190,10 +190,10 @@ def soft_delete(id):
 
 def change_state(id):
     user_email = authenticated(session)
-    user_id = User.get_id_from_email(user_email)
+    #user_id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(user_id,'user_active'):
+    if not check_permission('user_active', session):
         abort(401)
     #user = User.query.filter(User.id==id).first()
     user = User.get_user_by_id(id)

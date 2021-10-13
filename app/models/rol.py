@@ -1,7 +1,7 @@
 
 
 from app.db import db
-from sqlalchemy import Table,ForeignKey,Column,Integer,String
+from sqlalchemy import Table,ForeignKey,Column,Integer,String, text
 from sqlalchemy.orm import relationship
 from app.models.permission import Permission
 
@@ -30,3 +30,11 @@ class Rol(db.Model):
 
     def get_rol_by_name(name):
         return Rol.query.filter(Rol.name==name).first()
+
+    def get_permissions(rol_id):
+        sql = text("SELECT p.name FROM roles r \
+                INNER JOIN rol_tiene_permiso rtp ON (rtp.roles_id = r.id) \
+                INNER JOIN permisos p ON (p.id = rtp.permisos_id) \
+                WHERE r.id = :rol_id")
+        permissions = [elem[0] for elem in db.session.execute(sql, {"rol_id": rol_id})]
+        return permissions

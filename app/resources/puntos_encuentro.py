@@ -3,7 +3,7 @@ from flask import redirect, render_template, request, url_for, session, abort
 from flask.helpers import flash
 from app.models.puntos_encuentro import PuntosDeEncuentro
 from app.models.user import User
-from app.helpers.permission import check as check_permission
+from app.helpers.permission import has_permission as check_permission
 from app.helpers.email import check as check_email
 from app.helpers.auth import authenticated
 from app.db import db
@@ -12,10 +12,10 @@ from app.db import db
 # Protected resources
 def index():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "punto_encuentro_index"):
+    if not check_permission("punto_encuentro_index", session):
         abort(401)
     puntos_encuentro = PuntosDeEncuentro.get_all()
     return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro)
@@ -23,10 +23,10 @@ def index():
 
 def new():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "punto_encuentro_new"):
+    if not check_permission("punto_encuentro_new", session):
         abort(401)
     return render_template("puntos_encuentro/new.html", puntos_encuentro=None)
 
@@ -47,10 +47,10 @@ def create():
 
 def search():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "punto_encuentro_index"):
+    if not check_permission("punto_encuentro_index", session):
         abort(401)
     puntos_encuentro = PuntosDeEncuentro.search_by_name(request.args["name"])
     if "active" in request.args.keys():

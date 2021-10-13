@@ -66,22 +66,22 @@ class User(db.Model):
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow,default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
-    @property
-    def password(self):
-        return self.password
-    @password.setter
-    def password(self, password):
-        self.password_hash = bcrypt.generate_password_hash(password)
+    #@property
+    #def password(self):
+    #    return self.password
+    #@password.setter
+    #def password(self, password):
+    #    self.password_hash = password
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):
         self.email = email
-        self.password = bcrypt.generate_password_hash(password=password)
+        self.password = password
         self.username = username
         self.firstname = firstname
         self.lastname = lastname
 
-    def check_pass(self,pass_candidate):
-       return bcrypt.check_password_hash(self.password,pass_candidate)
+    #def check_pass(self,pass_candidate):
+    #   return bcrypt.check_password_hash(self.password,pass_candidate)
 
 
     def get_user_by_id(id):

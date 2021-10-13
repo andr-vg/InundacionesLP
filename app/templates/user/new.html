@@ -5,28 +5,26 @@
 {% endblock %}
 {% block content %}
   <h1>Crear un usuario</h1>
+  {% for field in form.errors %}
+  {% for error in form.errors[field] %}
+      <div class="alert alert-error">
+          <strong>Error! {{field}} {{error}} </strong> 
+      </div>
+  {% endfor %}
+  {% endfor %}
   <form action="{{ url_for('user_create') }}" method="POST">
-    <p>
-      <label>Email<label></br>
-      <input type="email" name="email" placeholder="Correo" value="{{ user['email'] }}" required/>
-    </p>
-    <p>
-      <label>Clave<label></br>
-      <input type="password" name="password" placeholder="Clave" value="{{ user['password'] }}" required/>
-    </p>
-    <p>
-      <label>Nombre de usuario<label></br>
-      <input name="username" placeholder="Nombre de usuario" value="{{ user['username'] }}" required/>
-    </p>
-    <p>
-      <label>Nombre<label></br>
-      <input name="firstname" placeholder="Nombre" value="{{ user['firstname'] }}" required/>
-    </p>
-    <p>
-      <label>Apellido<label></br>
-      <input name="lastname" placeholder="Apellido" value="{{ user['lastname'] }}" required/>
-    </p>
-    <p>
+      <div>
+      <p>Email {{ form.email }}</p>
+      <p>Nombre de usuario {{ form.username }}</p>
+      <p>Contraseña {{ form.password }}</p>
+      <p>Confirmacion {{ form.confirm }}</p>
+      <p>Nombre {{ form.firstname }}</p>
+      <p>Apellido {{ form.lastname }}</p>
+      <p>Roles: {% for rol in form.rol %}
+        {{rol}}{{rol.label}}
+        {% endfor %}
+      </p>
+      </div>
       <input type="submit" value="Crear">
       <button type="reset">Limpiar</button>
     </p>

@@ -2,7 +2,7 @@ import re
 import datetime
 
 from app.db import db
-from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select
+from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_
 from sqlalchemy.orm import relationship
 from app.models.rol import Rol
 
@@ -13,6 +13,13 @@ user_roles = Table('usuario_tiene_rol',db.Model.metadata,
 
 
 class User(db.Model):
+    @classmethod
+    def login(cls, params):
+        return User.query.filter(and_(User.deleted == False, User.active == True)) \
+        .filter(and_(User.email == params["email"],User.password == params["password"])) \
+        .first()
+
+
     @classmethod
     def get_permissions(cls, user_id):
         sql = text("SELECT p.name \

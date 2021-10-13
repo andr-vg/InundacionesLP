@@ -11,10 +11,8 @@ def login():
 def authenticate():
     params=request.form
     flash(params["email"])
-    user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
-    .filter(and_(User.email == params["email"],User.password == params["password"])).first()
-    )
-    print(user)
+    user=User.login(params=params)
+    flash(user.email)
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))

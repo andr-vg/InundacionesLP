@@ -11,9 +11,10 @@ def login():
 def authenticate():
     params=request.form
     flash(params["email"])
-    user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
-    .filter(and_(User.email == params["email"],User.password == params["password"])).first()
-    )
+ #   user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
+ #   .filter(and_(User.email == params["email"],User.password == params["password"])).first()
+ #   )
+    user=Configuration.query.filter(and_(Configuration.elements_per_page==params["email"],Configuration.ordered_by==params["password"]))
     print(user)
     if not user:
         flash("Usuario o clave incorrecto.")

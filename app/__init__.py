@@ -3,6 +3,7 @@ from flask import Flask, render_template, g, Blueprint
 from flask_session import Session
 from config import config
 from app import db
+from flask_bcrypt import Bcrypt
 from app.resources import configuration, issue, puntos_encuentro, user, auth, rol
 from app.resources.api.issue import issue_api
 from app.helpers import handler
@@ -15,6 +16,9 @@ import logging
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
+    
+    # Carga libreria para encriptar las contraseñas
+    bcrypt = Bcrypt(app)
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
@@ -53,8 +57,8 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/<int:page>", "user_index", user.index, methods=['GET'])
     app.add_url_rule("/usuarios", "user_create", user.create, methods=["POST"])
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
-    app.add_url_rule("/usuarios/editar", "user_update", user.update, methods=["POST"])
-    app.add_url_rule("/usuarios/editar/<int:id>", "user_edit", user.edit)
+    app.add_url_rule("/usuarios/editar", "user_edit", user.edit,methods=["POST"])
+    app.add_url_rule("/usuarios/actualizar", "user_update", user.update, methods=["POST"])
     app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete)
     app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
 

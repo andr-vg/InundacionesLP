@@ -77,5 +77,5 @@ class User(db.Model):
     def get_user_by_id(id):
         return User.query.filter(User.id==id).first()
 
-    def get_users_index(id, page, config):
+    def get_index_users(id, page, config):
         return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)

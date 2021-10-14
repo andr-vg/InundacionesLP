@@ -1,5 +1,6 @@
 import re
 import bcrypt
+from flask_bcrypt import generate_password_hash,check_password_hash
 import datetime
 from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_
@@ -15,7 +16,11 @@ user_roles = Table('usuario_tiene_rol',db.Model.metadata,
 class User(db.Model):
     @classmethod
     def login(cls, params):
-        return User.query.filter(and_(User.deleted==False,User.active==True)).filter(and_(User.email == params["email"],User.password == params["password"])).first()
+        print()
+        user=User.query.filter(User.email == params["email"]).first()
+        if user and not user.deleted and user.active and user.verify_password(params["password"]):
+            return user
+        return None
 
     @classmethod
     def get_permissions(cls, user_id):
@@ -56,11 +61,11 @@ class User(db.Model):
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
-    firstname = Column(String(30))
-    lastname = Column(String(30))
-    username = Column(String(30), unique=True)
-    email = Column(String(30), unique=True)
-    password = Column(String(30))
+    firstname = Column(String(255))
+    lastname = Column(String(255))
+    username = Column(String(255), unique=True)
+    email = Column(String(255), unique=True)
+    password_hash = Column(String(128))
     roles = relationship("Rol",secondary='usuario_tiene_rol', back_populates='users')
     active = Column(Boolean, default=True)
     deleted = Column(Boolean, default=False)
@@ -70,14 +75,20 @@ class User(db.Model):
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):
         self.email = email
-        self.password = bcrypt.generate_password_hash(password=password).decode('utf-8')
+        self.password_hash = generate_password_hash(password).decode('utf-8')
         self.username = username
         self.firstname = firstname
         self.lastname = lastname
 
-    def check_pass(self,pass_candidate):
-       return bcrypt.check_password_hash(self.password,pass_candidate)
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
 
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password) 
 
     def get_user_by_id(id):
         return User.query.filter(User.id==id).first()

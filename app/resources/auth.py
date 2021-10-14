@@ -25,12 +25,10 @@ def authenticate():
     session["config"] = Configuration.get_configuration()
     # save roles from this user
     roles = [(rol.id, rol.name) for rol in user.roles]
-    print(roles)
     session["roles"] = roles
     # assign the permissions of the first rol by default
     #rol_id = next(iter(roles))
     rol_id = roles[0][0]
-    print(rol_id)
     # save permissions
     session["permissions"] = Rol.get_permissions(rol_id=rol_id)
     print(session["permissions"])

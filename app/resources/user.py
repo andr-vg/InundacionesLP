@@ -81,7 +81,7 @@ def edit():
     if not check_permission("user_edit", session):
         abort(401)
     user = User.get_user_by_id(request.form['id'])
-    form = EditUserForm(id=user.id,email=user.email,username=user.username,password=user.password,confirm=user.password,firstname=user.firstname,lastname=user.lastname)
+    form = EditUserForm(id=user.id,email=user.email,username=user.username,firstname=user.firstname,lastname=user.lastname)
     form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
     form.rol.data = [(rol.id) for rol in user.roles]
     return render_template("user/edit.html", form=form)
@@ -108,6 +108,8 @@ def update():
             return render_template("user/edit.html", form=form)
         user.username = form.username.data
         user.email = form.email.data
+        if form.password.data:
+            user.password=form.password.data
         user.firstname = form.firstname.data
         user.lastname = form.lastname.data
 #        user.password = form.password.data

@@ -4,8 +4,7 @@ from flask_session import Session
 from config import config
 from app import db
 from flask_bcrypt import Bcrypt
-from app.resources import configuration, issue, puntos_encuentro, user, auth, rol
-from app.resources.api.issue import issue_api
+from app.resources import configuration, puntos_encuentro, user, auth, rol
 from app.helpers import handler
 from app.helpers import auth as helper_auth
 from app.helpers import permission as helper_permission
@@ -46,11 +45,6 @@ def create_app(environment="development"):
     app.add_url_rule(
         "/autenticacion", "auth_authenticate", auth.authenticate, methods=["POST"]
     )
-
-    # Rutas de Consultas
-    app.add_url_rule("/consultas", "issue_index", issue.index)
-    app.add_url_rule("/consultas", "issue_create", issue.create, methods=["POST"])
-    app.add_url_rule("/consultas/nueva", "issue_new", issue.new)
 
     # Rutas de Usuarios
     app.add_url_rule("/usuarios", "user_index", user.index, defaults={'page': 1}, methods=['GET'])
@@ -95,10 +89,10 @@ def create_app(environment="development"):
         return render_template("home.html")
 
     # Rutas de API-REST (usando Blueprints)
-    api = Blueprint("api", __name__, url_prefix="/api")
-    api.register_blueprint(issue_api)
+    #api = Blueprint("api", __name__, url_prefix="/api")
+    #api.register_blueprint(issue_api)
 
-    app.register_blueprint(api)
+    #app.register_blueprint(api)
 
     # Handlers
     app.register_error_handler(404, handler.not_found_error)

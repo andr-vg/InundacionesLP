@@ -53,6 +53,10 @@ class User(db.Model):
     def exists_user_with_email(cls, email):
         return User.query.filter(User.email == email).first()
 
+    @classmethod
+    def search_by_name(cls, username):
+        return User.query.filter(User.username.like('%'+username+'%'))
+
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
     firstname = Column(String(30))

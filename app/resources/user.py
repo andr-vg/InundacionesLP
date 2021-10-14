@@ -202,3 +202,13 @@ def update_profile():
         flash("Su perfil ha sido actualizado.")
         return redirect(url_for("home"))       
     return render_template("user/profile.html", form=form)
+
+def show(username):
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_show", session):
+        abort(401)
+    
+    user = User.get_user_by_username(username)
+    return render_template("user/show.html", user=user)

@@ -64,6 +64,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/search/", "user_search", user.search, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/usuarios/search/<int:page>", "user_search", user.search, methods=['GET'])
     app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
+    app.add_url_rule("/usuarios/<username>", "user_show", user.show, methods=['GET'])
 
     # Rutas de perfil propio
     app.add_url_rule("/perfil", "user_edit_profile", user.edit_profile)
@@ -83,6 +84,7 @@ def create_app(environment="development"):
     app.add_url_rule("/puntos_encuentro/actualizar", "punto_encuentro_update", puntos_encuentro.update, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/eliminar", "punto_encuentro_soft_delete", puntos_encuentro.soft_delete,methods=["POST"])
     app.add_url_rule("/puntos_encuentro/publicar", "punto_encuentro_publish", puntos_encuentro.publish,methods=["POST"])
+    app.add_url_rule("/puntos_encuentro/<name>", "punto_encuentro_show", puntos_encuentro.show, methods=['GET'])
 
 
     # Rutas de Configuracion

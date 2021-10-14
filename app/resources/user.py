@@ -27,9 +27,7 @@ def index(page):
     # mostramos listado paginado:
     # row con config actual
     config = get_configuration(session) 
-    print(config)
     try:
-        #users=User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
         users=User.get_index_users(id, page, config)
     except OperationalError:
         flash("No hay usuarios aún.")
@@ -75,7 +73,6 @@ def create():
 
 def edit():
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("user_edit", session):
@@ -89,7 +86,6 @@ def edit():
 
 def update():
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("user_update", session):
@@ -112,7 +108,6 @@ def update():
             user.password=form.password.data
         user.firstname = form.firstname.data
         user.lastname = form.lastname.data
-#        user.password = form.password.data
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles)-set(form.rol.data)
         for rol in roles_deleted:

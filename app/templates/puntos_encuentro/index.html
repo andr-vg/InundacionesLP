@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
   <h1>Puntos de encuentro</h1>
-  <form action="{{ url_for('punto_encuentro_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
+  <form action="{{ url_for('punto_encuentro_index', name=name, active=active, inactive=inactive) }}" method="GET"> 
     <input type="text" name="name">
     <input type="radio" name="active" value="activo"> <label> Activo</label>
     <input type="radio" name="active" value="inactivo"> <label> Inactivo</label>
@@ -13,8 +13,28 @@
       <input type="submit" value="Buscar">
     </p>
   </form>
-  {% for punto in puntos_encuentro %}
+  {% if puntos_encuentro.has_prev %}
+  <li>
+    <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Previous</a>
+  </li>
+  {% endif %}
+
+  <!-- next page -->
+  {% if puntos_encuentro.has_next %}
+  <li>
+    <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Next</a>
+  </li>
+  {% endif %}
+
+
+  {% for punto in puntos_encuentro.items %}
   <li>{{ punto.name }} - {{ punto.address }} - {{ punto.email }} - {{ punto.state }}</li>
+  {% if has_permission('punto_encuentro_update',session) %}
+  <form action="{{ url_for('punto_encuentro_edit') }}" method="POST">
+    <input name="id" type="hidden" value="{{ punto.id }}">
+    <button class="btn btn-sm btn-info" type="submit" ><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button> 
+  </form>
+  {% endif %}
     {% if has_permission("punto_encuentro_destroy",session) and not punto.state %}
     <form action="{{ url_for(('punto_encuentro_soft_delete')) }}" method="POST">
       <input name="id"  type="hidden" value="{{ punto.id }}"> 

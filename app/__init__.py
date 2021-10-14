@@ -61,6 +61,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/actualizar", "user_update", user.update, methods=["POST"])
     app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete, methods=["POST"])
     app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
+    app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
 
 
     # Rutas de Roles

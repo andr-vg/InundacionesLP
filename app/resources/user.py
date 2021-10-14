@@ -27,9 +27,7 @@ def index(page):
     # mostramos listado paginado:
     # row con config actual
     config = get_configuration(session) 
-    print(config)
     try:
-        #users=User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
         users=User.get_index_users(id, page, config)
     except OperationalError:
         flash("No hay usuarios aún.")

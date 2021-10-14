@@ -40,3 +40,6 @@ class PuntosDeEncuentro(db.Model):
 
     def get_punto_by_id(id):
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.id==id).first()
+
+    def get_punto_by_name(name):
+        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name==name).first()

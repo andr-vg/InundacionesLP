@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Puntos de encuentro{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Detalle</h1>
+      <div>
+        <p>Nombre {{ pto.name }}</p>
+        <p>Dirección {{ pto.address }}</p>
+        <p>Coordenadas {{ pto.coords }}</p>
+        {% if pto.state %}
+            <p>Estado: publicado</p>
+        {% else %}
+            <p>Estado: despublicado</p>
+        {% endif %}
+        <p>Teléfono {{ pto.tel }}</p>
+        <p>Email {{ pto.email }}</p>
+      </div>
+    </p>
+  </form>
+  <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
+{% endblock %}

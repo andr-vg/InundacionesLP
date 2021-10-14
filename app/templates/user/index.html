@@ -38,7 +38,7 @@
     <tbody>
       {% for user in users.items %}
       <tr> <!-- ver de poner id o email como id del tr de cada user-->
-        <td> {{ user.username }} </td>
+        <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
         <td> {{ user.firstname }} </td>
         <td> {{ user.lastname }} </td>
         <td> {{ user.email }} </td>

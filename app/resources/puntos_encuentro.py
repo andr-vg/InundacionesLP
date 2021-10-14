@@ -86,3 +86,12 @@ def publish():
     flash("Punto de encuentro de encuentro publicado")
     return redirect(url_for("punto_encuentro_index"))
     
+def show(name):
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("punto_encuentro_show", session):
+        abort(401)
+    
+    punto = PuntosDeEncuentro.get_punto_by_name(name)
+    return render_template("puntos_encuentro/show.html", pto=punto)

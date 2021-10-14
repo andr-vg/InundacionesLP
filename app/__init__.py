@@ -62,6 +62,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete)
     app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
     app.add_url_rule("/usuarios/search/", "user_search", user.search, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/usuarios/search/<int:page>", "user_search", user.search, methods=['GET'])
 
     # Rutas de Roles
     app.add_url_rule("/asignar/<int:id>/", "rol_assign", rol.rol_assign)

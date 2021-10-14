@@ -104,9 +104,5 @@
       {% endfor %}
     </tbody>
   </table>
-  {% for user in users.items %}
-  <li>{{user.email}} - {{ user.first_name }} - {{ user.last_name }} - {{ user.password }} - 
-    <a href="{{ url_for('rol_assign', id=user.id) }}" class="link">Asignar rol</a>
-</li>
-  {% endfor %}
+  
 {% endblock %}

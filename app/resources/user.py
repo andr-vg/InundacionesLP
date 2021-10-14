@@ -1,13 +1,14 @@
 import datetime
+import bcrypt
 from flask import redirect, render_template, request, url_for, session, abort, flash
 from sqlalchemy.exc import OperationalError
-from app.forms.user import RegistrationUserForm,EditUserForm
+from app.forms.user import RegistrationUserForm,EditUserForm,EditProfileForm
 from app.models.user import User
 from app.models.rol import Rol
 from app.models.configuration import Configuration
 from app.helpers.auth import authenticated
 from app.helpers.email import check as check_valid_email
-from app.helpers.permission import check as check_permission
+from app.helpers.permission import has_permission as check_permission
 from app.helpers.configuration import get_configuration
 from app.db import db
 from app.resources import rol
@@ -20,7 +21,7 @@ def index(page):
     if not user_email:
         abort(401)
 
-    if not check_permission(id, "user_index"):
+    if not check_permission("user_index", session):
         abort(401)
 
     # mostramos listado paginado:
@@ -37,10 +38,10 @@ def index(page):
 
 def new():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "user_new"):
+    if not check_permission("user_new", session):
         abort(401)
     form = RegistrationUserForm()
     form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
@@ -71,68 +72,16 @@ def create():
         return redirect(url_for("user_index"))
     return render_template("user/new.html", form=form)
 
-def edit_user(user, params):
-    user.email = params["email"]
-    user.username = params["username"]
-    user.firstname = params["firstname"]
-    user.lastname = params["lastname"]
-    user.password = params["password"]
-    # ver asignacion y desasignacion de roles
-
-# para mostrar el editar
-def edit(id):
-    user_email = authenticated(session)
-    user_id = User.get_id_from_email(user_email)
-    if not user_email:
-        abort(401)
-    if not check_permission(user_id, "user_edit"):
-        abort(401)
-    
-    #user = User.query.filter(User.id==id).first()
-    user = User.get_user_by_id(id)
-    return render_template("user/edit.html", user=user)
-
-# para confirmar el editar
-def update():
-    user_email = authenticated(session)
-    user_id = User.get_id_from_email(user_email)
-    if not user_email:
-        abort(401)
-    # ver si necesita tmb chequear permiso de este boton
-    # checkeo de mail valido
-    if not User.email_validation(request.form["email"]):
-        flash("Ingrese un email valido")
-        return render_template("user/edit.html", user=request.form)
-    # chequeo que el usuario no exista
-    #user = User.query.filter(User.id==request.form["id"]).first()
-    user = User.get_user_by_id(request.form["id"])
-    # checkeo si el email y username fueron modificados en el form
-    if request.form["email"] != user.email:
-        # checkeo que no exista ese mail ingresado
-        if User.exists_user_with_email(request.form["email"]):
-            flash("Ya existe un usuario con ese mail. Ingrese uno nuevo.")
-            return render_template("user/edit.html", user=request.form)
-    if request.form["username"] != user.username:
-        # checkeo que no exista ese username ingresado
-        if User.exists_user_with_username(request.form["username"]):
-            flash("Ya existe ese nombre de usuario. Ingrese uno nuevo.")
-            return render_template("user/edit.html", user=request.form)
-
-    edit_user(user, request.form)
-    db.session.commit()
-    flash("El usuario ha sido modificado correctamente.")
-    return redirect(url_for("user_index"))
-
 
 def edit():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "user_edit"):
+    if not check_permission("user_edit", session):
         abort(401)
     user = User.get_user_by_id(request.form['id'])
-    form = EditUserForm(id=user.id,email=user.email,username=user.username,password=user.password,confirm=user.password,firstname=user.firstname,lastname=user.lastname)
+    form = EditUserForm(id=user.id,email=user.email,username=user.username,firstname=user.firstname,lastname=user.lastname)
     form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
     form.rol.data = [(rol.id) for rol in user.roles]
     return render_template("user/edit.html", form=form)
@@ -140,10 +89,10 @@ def edit():
 
 def update():
     user_email = authenticated(session)
-    id = User.get_id_from_email(user_email)
+    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "user_update"):
+    if not check_permission("user_update", session):
         abort(401)
     form = EditUserForm(request.form)
     form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
@@ -159,6 +108,8 @@ def update():
             return render_template("user/edit.html", form=form)
         user.username = form.username.data
         user.email = form.email.data
+        if form.password.data:
+            user.password=form.password.data
         user.firstname = form.firstname.data
         user.lastname = form.lastname.data
 #        user.password = form.password.data
@@ -177,10 +128,10 @@ def update():
 
 def soft_delete(id):
     user_email = authenticated(session)
-    user_id = User.get_id_from_email(user_email)
+    #user_id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(user_id,'user_destroy'):
+    if not check_permission('user_destroy', session):
         abort(401)
     user = User.get_user_by_id(id)
     user.deleted = True
@@ -190,10 +141,10 @@ def soft_delete(id):
 
 def change_state(id):
     user_email = authenticated(session)
-    user_id = User.get_id_from_email(user_email)
+    #user_id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(user_id,'user_active'):
+    if not check_permission('user_active', session):
         abort(401)
     #user = User.query.filter(User.id==id).first()
     user = User.get_user_by_id(id)
@@ -217,3 +168,41 @@ def search(page):
     elif request.args["active"]=="bloqueado":
         users = users.filter(User.active==False).order_by(User.id.asc())
     return render_template("user/index.html", users=users.paginate(page, per_page=config.elements_per_page))
+def change_rol():
+    rol_id = int(request.form["rol"])
+    session["rol_actual"] = (rol_id, session["roles"][rol_id])
+    session["permissions"] = Rol.get_permissions(rol_id=rol_id)
+    print(session["rol_actual"])
+    print(session["permissions"])
+    flash("El rol ha sido cambiado a {}.".format(session["roles"][rol_id]))
+    return redirect(url_for("home"))
+
+def edit_profile():
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_edit_profile", session):
+        abort(401)
+    
+    user = User.get_user_by_email(user_email)
+    form = EditProfileForm(id=user.id,firstname=user.firstname,lastname=user.lastname)
+    return render_template("user/profile.html", form=form)
+
+
+def update_profile():
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_update_profile", session):
+        abort(401)
+    form = EditProfileForm(request.form)
+    if form.validate():
+        user = User.get_user_by_id(form.id.data)
+        if form.password.data:
+            user.password=form.password.data
+        user.firstname = form.firstname.data
+        user.lastname = form.lastname.data
+        db.session.commit()
+        flash("Su perfil ha sido actualizado.")
+        return redirect(url_for("home"))       
+    return render_template("user/profile.html", form=form)

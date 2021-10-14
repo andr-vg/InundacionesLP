@@ -14,6 +14,12 @@ class PuntosDeEncuentro(db.Model):
     def search_by_name(cls, name):
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name.like('%'+name+'%'))
 
+
+    @classmethod
+    def unique_fields(cls,params):
+        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==params["name"]) | (PuntosDeEncuentro.address==params["address"]) | (PuntosDeEncuentro.tel==params["tel"]) | (PuntosDeEncuentro.email==params["email"]) | (PuntosDeEncuentro.coords==params["coords"])).first()
+        return punto_encuentro
+
     __tablename__ = "puntosEncuentro"
     id = Column(Integer, primary_key=True)
     name = Column(String(255), unique=True)
@@ -32,7 +38,5 @@ class PuntosDeEncuentro(db.Model):
         self.tel = tel
         self.coords = coords
 
-    @classmethod
-    def unique_fields(cls,params):
-        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==params["name"]) | (PuntosDeEncuentro.address==params["address"]) | (PuntosDeEncuentro.tel==params["tel"]) | (PuntosDeEncuentro.email==params["email"]) | (PuntosDeEncuentro.coords==params["coords"])).first()
-        return punto_encuentro
+    def get_punto_by_id(id):
+        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.id==id).first()

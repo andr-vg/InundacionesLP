@@ -18,7 +18,7 @@ def create_app(environment="development"):
     app = Flask(__name__)
     
     # Carga libreria para encriptar las contraseñas
-    #bcrypt = Bcrypt(app)
+#    bcrypt = Bcrypt(app)
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
@@ -59,10 +59,15 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
     app.add_url_rule("/usuarios/editar", "user_edit", user.edit,methods=["POST"])
     app.add_url_rule("/usuarios/actualizar", "user_update", user.update, methods=["POST"])
-    app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete)
+    app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete, methods=["POST"])
     app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
     app.add_url_rule("/usuarios/search/", "user_search", user.search, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/usuarios/search/<int:page>", "user_search", user.search, methods=['GET'])
+    app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
+
+    # Rutas de perfil propio
+    app.add_url_rule("/perfil", "user_edit_profile", user.edit_profile)
+    app.add_url_rule("/actualizar_perfil", "user_update_profile", user.update_profile, methods=["POST"])
 
     # Rutas de Roles
     app.add_url_rule("/asignar/<int:id>/", "rol_assign", rol.rol_assign)
@@ -70,10 +75,12 @@ def create_app(environment="development"):
    
 
     # Rutas de Puntos de encuentro
-    app.add_url_rule("/puntos_encuentro", "puntos_encuentro_index", puntos_encuentro.index)
+    app.add_url_rule("/puntos_encuentro", "punto_encuentro_index", puntos_encuentro.index)
     app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search)
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/nuevo", "punto_encuentro_new", puntos_encuentro.new)
+    app.add_url_rule("/puntos_encuentro/eliminar", "punto_encuentro_soft_delete", puntos_encuentro.soft_delete,methods=["POST"])
+    app.add_url_rule("/puntos_encuentro/publicar", "punto_encuentro_publish", puntos_encuentro.publish,methods=["POST"])
 
 
     # Rutas de Puntos de encuentro

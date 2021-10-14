@@ -2,7 +2,7 @@ import datetime
 import bcrypt
 from flask import redirect, render_template, request, url_for, session, abort, flash
 from sqlalchemy.exc import OperationalError
-from app.forms.user import RegistrationUserForm,EditUserForm
+from app.forms.user import RegistrationUserForm,EditUserForm,EditProfileForm
 from app.models.user import User
 from app.models.rol import Rol
 from app.models.configuration import Configuration
@@ -159,3 +159,33 @@ def change_rol():
     print(session["permissions"])
     flash("El rol ha sido cambiado a {}.".format(session["roles"][rol_id]))
     return redirect(url_for("home"))
+
+def edit_profile():
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_edit_profile", session):
+        abort(401)
+    
+    user = User.get_user_by_email(user_email)
+    form = EditProfileForm(id=user.id,firstname=user.firstname,lastname=user.lastname)
+    return render_template("user/profile.html", form=form)
+
+
+def update_profile():
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_update_profile", session):
+        abort(401)
+    form = EditProfileForm(request.form)
+    if form.validate():
+        user = User.get_user_by_id(form.id.data)
+        if form.password.data:
+            user.password=form.password.data
+        user.firstname = form.firstname.data
+        user.lastname = form.lastname.data
+        db.session.commit()
+        flash("Su perfil ha sido actualizado.")
+        return redirect(url_for("home"))       
+    return render_template("user/profile.html", form=form)

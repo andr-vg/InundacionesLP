@@ -63,6 +63,9 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
     app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
 
+    # Rutas de perfil propio
+    app.add_url_rule("/perfil", "user_edit_profile", user.edit_profile)
+    app.add_url_rule("/actualizar_perfil", "user_update_profile", user.update_profile, methods=["POST"])
 
     # Rutas de Roles
 

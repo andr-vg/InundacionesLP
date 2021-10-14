@@ -24,3 +24,10 @@ class EditUserForm(Form):
 )
     firstname = StringField('Nombre', [validators.regexp("^[a-zA-Z]+$")])
     lastname = StringField('Apellido', [validators.regexp("^[a-zA-Z]+$")])
+
+class EditProfileForm(Form):
+    id = HiddenField('Id')
+    firstname = StringField('Nombre', [validators.regexp("^[a-zA-Z]+$")])
+    lastname = StringField('Apellido', [validators.regexp("^[a-zA-Z]+$")])
+    password = PasswordField('Contraseña',[validators.EqualTo('confirm',message="Las contraseñas no coinciden")])
+    confirm = PasswordField('Confirmar contraseña')

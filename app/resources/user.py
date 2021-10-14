@@ -159,7 +159,7 @@ def search(page):
     id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission(id, "punto_encuentro_index"):
+    if not check_permission("user_index",session):
         abort(401)
     users = User.search_by_name(request.args["name"])
     config = get_configuration(session)     
@@ -168,6 +168,7 @@ def search(page):
     elif request.args["active"]=="bloqueado":
         users = users.filter(User.active==False).order_by(User.id.asc())
     return render_template("user/index.html", users=users.paginate(page, per_page=config.elements_per_page))
+
 def change_rol():
     rol_id = int(request.form["rol"])
     session["rol_actual"] = (rol_id, session["roles"][rol_id])

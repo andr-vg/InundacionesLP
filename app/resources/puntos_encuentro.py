@@ -1,6 +1,8 @@
 from operator import not_
 from flask import redirect, render_template, request, url_for, session, abort
 from flask.helpers import flash
+from app.helpers.configuration import get_configuration
+from sqlalchemy.exc import OperationalError
 from app.forms.puntos_encuentro import CreatePuntoEncuentro, EditPuntoEncuentro
 from app.forms.user import EditUserForm
 from app.models.puntos_encuentro import PuntosDeEncuentro
@@ -12,20 +14,24 @@ from app.db import db
 
 
 # Protected resources
-def index():
+def index(page):
     user_email = authenticated(session)
     #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("punto_encuentro_index", session):
         abort(401)
-    puntos_encuentro = PuntosDeEncuentro.get_all()
+    config = get_configuration(session) 
+    try:
+        puntos_encuentro=PuntosDeEncuentro.get_index_puntos_encuentro(page, config)
+    except OperationalError:
+        flash("No hay puntos de encuentro aún.")
+        puntos_encuentro = None
     return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro)
 
 
 def new():
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("punto_encuentro_new", session):
@@ -53,17 +59,14 @@ def create():
 
 def search():
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("punto_encuentro_index", session):
         abort(401)
+    config = get_configuration(session)
     puntos_encuentro = PuntosDeEncuentro.search_by_name(request.args["name"])
     if "active" in request.args.keys():
-        if request.args["active"]=="activo":
-            puntos_encuentro = puntos_encuentro.filter(PuntosDeEncuentro.state==False)
-        if request.args["active"]=="inactivo":
-            puntos_encuentro = puntos_encuentro.filter(PuntosDeEncuentro.state==True)
+        puntos_encuentro = PuntosDeEncuentro.filter_by_state(puntos_encuentro,request.args["active"])
     return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro)
 
 

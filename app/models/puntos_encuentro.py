@@ -14,6 +14,11 @@ class PuntosDeEncuentro(db.Model):
     def search_by_name(cls, name):
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name.like('%'+name+'%'))
 
+    @classmethod
+    def filter_by_state(cls,query,state):
+        if state=="activo":
+            return query.filter(PuntosDeEncuentro.state==False)
+        return query.filter(PuntosDeEncuentro.state==True)
 
     @classmethod
     def unique_fields(cls,params):
@@ -27,7 +32,7 @@ class PuntosDeEncuentro(db.Model):
     tel = Column(String(255))
     email = Column(String(255))
     state = Column(Boolean, default=False)
-    coords = Column(String(255), unique=True)
+    coords = Column(String(255))
     updated_at = Column(DateTime,onupdate=datetime.datetime.utcnow , default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
@@ -48,3 +53,7 @@ class PuntosDeEncuentro(db.Model):
     
     def get_punto_by_address(address):
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.address==address.upper()).first()
+
+    
+    def get_index_puntos_encuentro(page, config):
+        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.state==False).order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)

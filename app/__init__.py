@@ -70,20 +70,22 @@ def create_app(environment="development"):
     app.add_url_rule("/actualizar_perfil", "user_update_profile", user.update_profile, methods=["POST"])
 
     # Rutas de Roles
-    app.add_url_rule("/asignar/<int:id>/", "rol_assign", rol.rol_assign)
-    app.add_url_rule("/asignar", "rol_user_assign", rol.rol_user_assign, methods=["POST"])
+
    
 
     # Rutas de Puntos de encuentro
-    app.add_url_rule("/puntos_encuentro", "punto_encuentro_index", puntos_encuentro.index)
+    app.add_url_rule("/puntos_encuentro", "punto_encuentro_index", puntos_encuentro.index, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/puntos_encuentro/<int:page>", "punto_encuentro_index", puntos_encuentro.index, methods=['GET'])
     app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search)
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/nuevo", "punto_encuentro_new", puntos_encuentro.new)
+    app.add_url_rule("/puntos_encuentro/editar", "punto_encuentro_edit", puntos_encuentro.edit, methods=["POST"])
+    app.add_url_rule("/puntos_encuentro/actualizar", "punto_encuentro_update", puntos_encuentro.update, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/eliminar", "punto_encuentro_soft_delete", puntos_encuentro.soft_delete,methods=["POST"])
     app.add_url_rule("/puntos_encuentro/publicar", "punto_encuentro_publish", puntos_encuentro.publish,methods=["POST"])
 
 
-    # Rutas de Puntos de encuentro
+    # Rutas de Configuracion
     app.add_url_rule("/configuracion", "configuration_update", configuration.update)
     app.add_url_rule("/config", "configuration_confirm_update", configuration.confirm_update, methods=["POST"])
 

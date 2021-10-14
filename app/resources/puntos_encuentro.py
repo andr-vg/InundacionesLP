@@ -1,6 +1,8 @@
 from operator import not_
 from flask import redirect, render_template, request, url_for, session, abort
 from flask.helpers import flash
+from app.forms.puntos_encuentro import CreatePuntoEncuentro, EditPuntoEncuentro
+from app.forms.user import EditUserForm
 from app.models.puntos_encuentro import PuntosDeEncuentro
 from app.models.user import User
 from app.helpers.permission import has_permission as check_permission
@@ -28,22 +30,26 @@ def new():
         abort(401)
     if not check_permission("punto_encuentro_new", session):
         abort(401)
-    return render_template("puntos_encuentro/new.html", puntos_encuentro=None)
+    form = CreatePuntoEncuentro()
+    return render_template("puntos_encuentro/new.html", form=form)
 
 
 def create():
     if not authenticated(session):
         abort(401)
-    if not check_email(request.form["email"]):
-        flash("Ingrese un email valido")
-        return render_template("puntos_encuentro/new.html", puntos_encuentro=request.form)
-    if PuntosDeEncuentro.unique_fields(request.form):
-        flash("Uno o mas campos ya se encuentra cargado en el sistema")
-        return render_template("puntos_encuentro/new.html", puntos_encuentro=request.form)
-    new_punto = PuntosDeEncuentro(**request.form)
-    db.session.add(new_punto)
-    db.session.commit()
-    return redirect(url_for("punto_encuentro_index"))
+    if not check_permission("punto_encuentro_new", session):
+        abort(401)
+    form = CreatePuntoEncuentro(request.form)
+    if form.validate():
+        if PuntosDeEncuentro.unique_fields(request.form):
+            flash("Uno o mas campos ya se encuentra cargado en el sistema")
+            return render_template("puntos_encuentro/new.html", form=form)
+        new_punto = PuntosDeEncuentro(name=form.name.data.upper(),address=form.address.data.upper(),tel=form.tel.data,email=form.email.data,coords=form.coords.data)
+        db.session.add(new_punto)
+        db.session.commit()
+        return redirect(url_for("punto_encuentro_index"))
+    return render_template("puntos_encuentro/new.html",form=form)
+
 
 def search():
     user_email = authenticated(session)
@@ -61,6 +67,44 @@ def search():
     return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro)
 
 
+def edit():
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("punto_encuentro_update", session):
+        abort(401)
+    punto = PuntosDeEncuentro.get_punto_by_id(request.form['id'])
+    form = EditPuntoEncuentro(id=punto.id,name=punto.name,address=punto.address,tel=punto.tel,email=punto.email,coords=punto.coords)
+    return render_template("puntos_encuentro/edit.html", form=form)
+
+
+def update():
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("punto_encuentro_update", session):
+        abort(401)
+    form = EditPuntoEncuentro(request.form)
+    if form.validate:
+        punto = PuntosDeEncuentro.get_punto_by_id(form.id.data)
+        query = PuntosDeEncuentro.get_punto_by_name(form.name.data)
+        if query and punto.id!=query.id:
+            flash("Ya se encuentra un punto de encuentro con dicho nombre en el sistema")
+            return render_template("puntos_encuentro/new.html", form=form)
+        query = PuntosDeEncuentro.get_punto_by_address(form.address.data)
+        if query and punto.id!=query.id:
+            flash("Ya se encuentra un punto de encuentro con dicha direccion en el sistema")
+            return render_template("puntos_encuentro/new.html", form=form)
+        punto.name = form.name.data.upper()
+        punto.address = form.address.data.upper()
+        punto.tel = form.tel.data
+        punto.email = form.email.data
+        punto.coords = form.coords.data
+        db.session.commit()
+        return redirect(url_for("punto_encuentro_index"))
+    return render_template("puntos_encuentro/new.html", form=form)
+
+
 def soft_delete():
     user_email = authenticated(session)
     print(session.get("permissions"))
@@ -73,6 +117,7 @@ def soft_delete():
     db.session.commit()
     flash("Punto de encuentro de encuentro despublicado")
     return redirect(url_for("punto_encuentro_index"))
+
 
 def publish():
     user_email = authenticated(session)

@@ -15,6 +15,12 @@
   </form>
   {% for punto in puntos_encuentro %}
   <li>{{ punto.name }} - {{ punto.address }} - {{ punto.email }} - {{ punto.state }}</li>
+  {% if has_permission('punto_encuentro_update',session) %}
+  <form action="{{ url_for('punto_encuentro_edit') }}" method="POST">
+    <input name="id" type="hidden" value="{{ punto.id }}">
+    <button class="btn btn-sm btn-info" type="submit" ><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button> 
+  </form>
+  {% endif %}
     {% if has_permission("punto_encuentro_destroy",session) and not punto.state %}
     <form action="{{ url_for(('punto_encuentro_soft_delete')) }}" method="POST">
       <input name="id"  type="hidden" value="{{ punto.id }}"> 

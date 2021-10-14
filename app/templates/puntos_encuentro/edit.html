@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Punto de encuentro{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Editar punto de encuentro</h1>
+  {% for field in form.errors %}
+  {% for error in form.errors[field] %}
+      <div class="alert alert-error">
+          <strong>Error! {{field}} {{error}} </strong> 
+      </div>
+  {% endfor %}
+  {% endfor %}
+  <form action="{{ url_for('punto_encuentro_update') }}" method="POST">
+      <div>
+        {{form.id}}
+        <p>{{form.name.label}} {{ form.name }}</p>
+        <p>{{form.address.label}} {{ form.address }}</p>
+      <p>{{ form.email.label }} {{ form.email }}</p>
+      <p>{{form.tel.label}} {{ form.tel }}</p>
+      <p>{{form.coords.label}}{{ form.coords }}</p>
+      </div>
+      <input type="submit" value="Crear">
+      <button type="reset">Limpiar</button>
+    </p>
+  </form>
+  <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
+{% endblock %}

@@ -75,7 +75,6 @@ def create():
 
 def edit():
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("user_edit", session):
@@ -89,7 +88,6 @@ def edit():
 
 def update():
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("user_update", session):
@@ -112,7 +110,6 @@ def update():
             user.password=form.password.data
         user.firstname = form.firstname.data
         user.lastname = form.lastname.data
-#        user.password = form.password.data
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles)-set(form.rol.data)
         for rol in roles_deleted:

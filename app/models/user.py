@@ -69,7 +69,9 @@ class User(db.Model):
 
     @classmethod
     def search_paginate(cls, query, id, page, config):
-        return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        if config.ordered_by == "Ascendente":
+            return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.desc()).paginate(page, per_page=config.elements_per_page)
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
@@ -115,6 +117,9 @@ class User(db.Model):
 
         
     def get_index_users(id, page, config):
-        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        if config.ordered_by == "Ascendente":
+            return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.desc()).paginate(page, per_page=config.elements_per_page)
+
 
     

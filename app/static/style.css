@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
 @import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
 body {
-  background-color: #4B7399;
+  background-color: #4B7399 !important;
   font-family: 'Montserrat', Helvetica, sans-serif;
   font-size: 14px;
 }
@@ -31,10 +31,10 @@ body {
 a.link {
   text-transform: uppercase;
   font-size: 10px;
-  background-color: #92a4ad;
+  background-color: #92a4ad !important;
   padding: 10px 15px;
   border-radius: 0;
-  color: #416475;
+  color: #416475 !important;
   display: inline-block;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -43,3 +43,12 @@ a.link {
   margin-top: 50px;
   letter-spacing: 1px;
 }
+
+h4 {
+  font-size: 36px;
+  color: aliceblue;
+}
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }

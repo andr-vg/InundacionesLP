@@ -8,6 +8,7 @@
   <a href="{{ url_for('home') }}" class="link">Volver</a>
   {% if has_permission('user_new', session) %}
     <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
+ 
   {% endif %}
   <!-- previous page -->
   {% if users.has_prev %}
@@ -90,7 +91,7 @@
             {% endif %}
           {% endif %}
           {% if has_permission('user_destroy', session) %}
-            <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+            <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"> <span class="material-icons">&#xE872;</span> </button></a>
           {% endif %}
           {% if has_permission('user_edit',session) %}
           <form action="{{ url_for('user_edit') }}" method="POST">

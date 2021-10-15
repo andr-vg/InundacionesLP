@@ -110,28 +110,15 @@ def update():
 
 def soft_delete():
     user_email = authenticated(session)
-    print(session.get("permissions"))
     if not user_email:
         abort(401)
     if not check_permission('punto_encuentro_destroy',session):
         abort(401)
     punto_encuentro = PuntosDeEncuentro.get_punto_by_id(request.form['id'])
-    punto_encuentro.state = True
+    punto_encuentro.state = not punto_encuentro.state
     db.session.commit()
-    flash("Punto de encuentro de encuentro despublicado")
-    return redirect(url_for("punto_encuentro_index"))
-
-
-def publish():
-    user_email = authenticated(session)
-    if not user_email:
-        abort(401)
-    if not check_permission('punto_encuentro_publish',session):
-        abort(401)
-    punto_encuentro = PuntosDeEncuentro.get_punto_by_id(request.form['id'])
-    punto_encuentro.state = False
-    db.session.commit()
-    flash("Punto de encuentro de encuentro publicado")
+    state = "Publicado" if punto_encuentro.state else "Despublicado"
+    flash("El punto de encuentro ha sido {} correctamente".format(state))
     return redirect(url_for("punto_encuentro_index"))
     
 def show(name):

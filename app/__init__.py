@@ -77,7 +77,6 @@ def create_app(environment="development"):
     app.add_url_rule("/puntos_encuentro/editar", "punto_encuentro_edit", puntos_encuentro.edit, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/actualizar", "punto_encuentro_update", puntos_encuentro.update, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/eliminar", "punto_encuentro_soft_delete", puntos_encuentro.soft_delete,methods=["POST"])
-    app.add_url_rule("/puntos_encuentro/publicar", "punto_encuentro_publish", puntos_encuentro.publish,methods=["POST"])
     app.add_url_rule("/puntos_encuentro/<name>", "punto_encuentro_show", puntos_encuentro.show, methods=['GET'])
 
 

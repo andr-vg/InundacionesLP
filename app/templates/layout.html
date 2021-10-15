@@ -5,7 +5,10 @@
     <!-- botones de editar, borrar -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!-- estilos de la pagina -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    {% if is_authenticated(session) %}
+      {% set css_private = session["config"]["css_private"] %} 
+      <link rel="stylesheet" href="{{ url_for('static', filename=css_private) }}">   
+    {% endif %}
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
   </head>

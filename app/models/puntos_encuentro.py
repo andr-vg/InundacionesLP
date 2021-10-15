@@ -56,4 +56,6 @@ class PuntosDeEncuentro(db.Model):
 
     
     def get_index_puntos_encuentro(page, config):
-        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.state==False).order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
+        #return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.state==False).order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
+        return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
+

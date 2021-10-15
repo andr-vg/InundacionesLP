@@ -59,6 +59,20 @@ class User(db.Model):
     def exists_user_with_email(cls, email):
         return User.query.filter(User.email == email).first()
 
+    @classmethod
+    def search_by_name(cls, username):
+        return User.query.filter(User.username.like('%'+username+'%'))
+    
+    @classmethod
+    def get_with_state(cls, query, state):
+        return query.filter(User.active==state)
+
+    @classmethod
+    def search_paginate(cls, query, id, page, config):
+        if config.ordered_by == "Ascendente":
+            return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.desc()).paginate(page, per_page=config.elements_per_page)
+
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
     firstname = Column(String(255))
@@ -103,4 +117,9 @@ class User(db.Model):
 
         
     def get_index_users(id, page, config):
-        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        if config.ordered_by == "Ascendente":
+            return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.desc()).paginate(page, per_page=config.elements_per_page)
+
+
+    

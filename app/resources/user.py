@@ -27,9 +27,7 @@ def index(page):
     # mostramos listado paginado:
     # row con config actual
     config = get_configuration(session) 
-    print(config)
     try:
-        #users=User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
         users=User.get_index_users(id, page, config)
     except OperationalError:
         flash("No hay usuarios aún.")
@@ -75,7 +73,6 @@ def create():
 
 def edit():
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("user_edit", session):
@@ -89,7 +86,6 @@ def edit():
 
 def update():
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("user_update", session):
@@ -112,7 +108,6 @@ def update():
             user.password=form.password.data
         user.firstname = form.firstname.data
         user.lastname = form.lastname.data
-#        user.password = form.password.data
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles)-set(form.rol.data)
         for rol in roles_deleted:
@@ -154,6 +149,22 @@ def change_state(id):
     flash("El usuario ha sido {} correctamente".format(state))
     return redirect(url_for("user_index"))
 
+def search(page):
+    user_email = authenticated(session)
+    id = User.get_id_from_email(user_email)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_index",session):
+        abort(401)
+    config = get_configuration(session) 
+    users = User.search_by_name(request.args["name"])  
+    if request.args["active"]=="activo":
+        users = User.get_with_state(users, True)
+    elif request.args["active"]=="bloqueado":
+        users = User.get_with_state(users, False)
+    users = User.search_paginate(users, id, page, config)
+    return render_template("user/index.html", users=users)
+
 def change_rol():
     rol_id = int(request.form["rol"])
     session["rol_actual"] = (rol_id, session["roles"][rol_id])
@@ -161,7 +172,7 @@ def change_rol():
     print(session["rol_actual"])
     print(session["permissions"])
     flash("El rol ha sido cambiado a {}.".format(session["roles"][rol_id]))
-    return redirect(url_for("home"))
+    return render_template("home.html")
 
 def edit_profile():
     user_email = authenticated(session)
@@ -192,3 +203,13 @@ def update_profile():
         flash("Su perfil ha sido actualizado.")
         return redirect(url_for("home"))       
     return render_template("user/profile.html", form=form)
+
+def show(username):
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_show", session):
+        abort(401)
+    
+    user = User.get_user_by_username(username)
+    return render_template("user/show.html", user=user)

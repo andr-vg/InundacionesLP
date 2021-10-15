@@ -5,7 +5,11 @@
 {% endblock %}
 {% block content %}
   <h1>Puntos de encuentro</h1>
-  <form action="{{ url_for('punto_encuentro_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
+  <a href="{{ url_for('home') }}" class="link">Volver</a>
+  {% if has_permission('punto_encuentro_new', session) %}
+    <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo punto de encuentro</a>
+  {% endif %}
+  <form action="{{ url_for('punto_encuentro_index', name=name, active=active, inactive=inactive) }}" method="GET"> 
     <input type="text" name="name">
     <input type="radio" name="active" value="activo"> <label> Activo</label>
     <input type="radio" name="active" value="inactivo"> <label> Inactivo</label>
@@ -13,21 +17,63 @@
       <input type="submit" value="Buscar">
     </p>
   </form>
-  {% for punto in puntos_encuentro %}
-  <li>{{ punto.name }} - {{ punto.address }} - {{ punto.email }} - {{ punto.state }}</li>
-    {% if has_permission("punto_encuentro_destroy",session) and not punto.state %}
-    <form action="{{ url_for(('punto_encuentro_soft_delete')) }}" method="POST">
-      <input name="id"  type="hidden" value="{{ punto.id }}"> 
-      <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar este punto de encuentro?');"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button> 
-    </form>
-    {% endif %}
-    {% if has_permission("punto_encuentro_publish",session) and punto.state %}
-    <form action="{{ url_for(('punto_encuentro_publish')) }}" method="POST">
-      <input name="id"  type="hidden" value="{{ punto.id }}"> 
-      <button class="btn btn-sm btn-success" type="submit" onclick="return confirm('Está seguro que desea publicar este punto de encuentro?');"><i class="glyphicon glyphicon-list-alt" display="table-cell"></i></button> 
-    </form>
-    {% endif %}
-  {% endfor %}
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
-  <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo punto de encuentro</a>
+  {% if puntos_encuentro.has_prev %}
+  <li>
+    <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Previous</a>
+  </li>
+  {% endif %}
+
+  <!-- next page -->
+  {% if puntos_encuentro.has_next %}
+  <li>
+    <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Next</a>
+  </li>
+  {% endif %}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Dirección</th>
+        <th>Email</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for punto in puntos_encuentro.items %}
+      <tr>
+        <td><a href="{{ url_for('punto_encuentro_show', name=punto.name) }}"> {{ punto.name }} </a></td>
+        <td> {{ punto.address }} </td>
+        <td> {{ punto.email }} </td>
+        <td> {% if punto.state %}
+            Publicado
+             {% else %}
+            Despublicado
+             {% endif %}
+        </td>
+        <td>
+          {% if has_permission('punto_encuentro_update',session) %}
+            <form action="{{ url_for('punto_encuentro_edit') }}" method="POST">
+              <input name="id" type="hidden" value="{{ punto.id }}">
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+            </form>
+          {% endif %}
+          {% if has_permission("punto_encuentro_destroy",session) %}
+            <form action="{{ url_for(('punto_encuentro_soft_delete')) }}" method="POST">
+              <input name="id"  type="hidden" value="{{ punto.id }}"> 
+              {% if punto.state %}
+                <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar este punto de encuentro?');"> Despublicar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button> 
+              {% else %}
+                <button class="btn btn-sm btn-success" type="submit" onclick="return confirm('Está seguro que desea publicar este punto de encuentro?');"> Publicar <i class="glyphicon glyphicon-list-alt" display="table-cell"></i></button>               
+              {% endif %}
+            </form>
+          {% endif %}
+        </td>
+      {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+  
+  
   {% endblock %}

@@ -14,21 +14,26 @@ class PuntosDeEncuentro(db.Model):
     def search_by_name(cls, name):
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name.like('%'+name+'%'))
 
+    @classmethod
+    def filter_by_state(cls,query,state):
+        if state=="activo":
+            return query.filter(PuntosDeEncuentro.state==False)
+        return query.filter(PuntosDeEncuentro.state==True)
 
     @classmethod
     def unique_fields(cls,params):
-        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==params["name"]) | (PuntosDeEncuentro.address==params["address"]) | (PuntosDeEncuentro.tel==params["tel"]) | (PuntosDeEncuentro.email==params["email"]) | (PuntosDeEncuentro.coords==params["coords"])).first()
+        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==params["name"]) | (PuntosDeEncuentro.address==params["address"])).first()
         return punto_encuentro
 
     __tablename__ = "puntosEncuentro"
     id = Column(Integer, primary_key=True)
     name = Column(String(255), unique=True)
     address = Column(String(255), unique=True)
-    tel = Column(String(255), unique=True)
-    email = Column(String(255), unique=True)
+    tel = Column(String(255))
+    email = Column(String(255))
     state = Column(Boolean, default=False)
-    coords = Column(String(255), unique=True)
-    updated_at = Column(DateTime, default=None)
+    coords = Column(String(255))
+    updated_at = Column(DateTime,onupdate=datetime.datetime.utcnow , default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
     def __init__(self, name, address, tel, email, coords):
@@ -40,3 +45,20 @@ class PuntosDeEncuentro(db.Model):
 
     def get_punto_by_id(id):
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.id==id).first()
+    
+
+    def get_punto_by_name(name):
+        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name==name.upper()).first()
+
+    
+    def get_punto_by_address(address):
+        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.address==address.upper()).first()
+
+    
+    def get_index_puntos_encuentro(page, config):
+        #return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.state==False).order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
+        if config.ordered_by == "Ascendente":
+            return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
+        return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.desc()).paginate(page, per_page=config.elements_per_page)
+
+

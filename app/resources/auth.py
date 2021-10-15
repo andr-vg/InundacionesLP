@@ -36,7 +36,7 @@ def authenticate():
     session["permissions"] = Rol.get_permissions(rol_id=rol_id)
     flash("La sesión se inició correctamente.")
 
-    return redirect(url_for("home"))
+    return render_template("home.html")
 
 
 def logout():

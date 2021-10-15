@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Detalle</h1>
+      <div>
+        <p>Email {{ user.email }}</p>
+        <p>Nombre de usuario {{ user.username }}</p>
+        <p>Nombre {{ user.firstname }}</p>
+        <p>Apellido {{ user.lastname }}</p>
+        <p>Roles: {% for rol in user.roles %}
+             {{rol.name}}
+            {% endfor %}
+        </p>
+        {% if user.active %}
+            <p>Estado Activo</p>
+        {% else %}
+            <p>Estado Inactivo</p>
+        {% endif %}
+      </div>
+    </p>
+  </form>
+  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+{% endblock %}

@@ -7,29 +7,29 @@
   <h1>Crear un punto de encuentro</h1>
   <form action="{{ url_for('punto_encuentro_create') }}" method="POST">
     <p>
-      <label>Nombre<label></br>
-      <input name="name" placeholder="Nombre"  value="{{ puntos_encuentro['name']}}"/>
-    </p>
-    <p>
-      <label>Dirección<label></br>
-      <input name="address" placeholder="Dirección" value="{{ puntos_encuentro['address']}}"/>
-    </p>
-    <p>
-      <label>Teléfono<label></br>
-      <input name="tel" placeholder="Teléfono" value="{{ puntos_encuentro['tel']}}"/>
-    </p>
-    <p>
-      <label>Email<label></br>
-      <input name="email" placeholder="Email" value="{{ puntos_encuentro['email']}}"/>
-    </p>
-    <p>
-      <label>Coordenadas<label></br>
-      <input name="coords" placeholder="Coordenadas" value="{{ puntos_encuentro['coords']}}"/>
-    </p>
-    <p>
+      <p>
+        {{form.name.label}}
+        {{ form.name }}
+      </p>
+      <p>
+        {{form.address.label}}
+        {{ form.address }}
+      </p>
+      <p>
+        {{form.tel.label}}
+        {{ form.tel }}
+      </p>
+      <p>
+        {{form.email.label}}
+        {{ form.email }}
+      </p>
+      <p>
+        {{form.coords.label}}
+        {{ form.coords }}
+      </p>
       <input type="submit" value="Crear">
       <button type="reset">Limpiar</button>
     </p>
   </form>
-  <a href="{{ url_for('puntos_encuentro_index') }}" class="link">Volver</a>
+  <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
 {% endblock %}

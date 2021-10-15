@@ -3,7 +3,7 @@ import bcrypt
 from flask_bcrypt import generate_password_hash,check_password_hash
 import datetime
 from app.db import db
-from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_
+from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_
 from sqlalchemy.orm import relationship
 from app.models.rol import Rol
 
@@ -47,9 +47,8 @@ class User(db.Model):
         return id[0][0]
 
     @classmethod
-    def exists_user(cls, params):
-        user = User.query.filter((User.email == params["email"]) | (User.username == params["username"])).first()
-        return user
+    def exists_user(cls, email,username):
+        return User.query.filter((User.email==email) | (User.username==username)).first()
     
     @classmethod
     def exists_user_with_username(cls, username):

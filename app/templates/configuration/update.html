@@ -16,7 +16,7 @@ Ordenamiento:
       {% if elem == config.ordered_by %}
         <option value="{{ elem }}" selected>{{ elem }}</option>
       {% else %}
-        <option value="Descendente">Descendente</option>
+        <option value="{{ elem }}">{{ elem }}</option>
       {% endif %}
     {% endfor %}
 </select>

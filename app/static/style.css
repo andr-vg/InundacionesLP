@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
 @import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
 body {
-  background-color: #4B7399 !important;
+  background-color: #d4e0ec !important;
   font-family: 'Montserrat', Helvetica, sans-serif;
   font-size: 14px;
 }
@@ -12,7 +12,7 @@ body {
   overflow: hidden;
 }
 
-#footer {
+footer {
   width: 75%;
   margin: 0 auto;
   text-align: center;
@@ -28,13 +28,21 @@ body {
   min-height: 400px;
 }
 
+a {
+  color: #212529;
+}
+
+a:hover {
+  color: #92a4ad;
+}
+
 a.link {
   text-transform: uppercase;
   font-size: 10px;
   background-color: #92a4ad !important;
   padding: 10px 15px;
   border-radius: 0;
-  color: #416475 !important;
+  color: #dee6eb !important;
   display: inline-block;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -45,8 +53,13 @@ a.link {
 }
 
 h4 {
-  font-size: 36px;
+  font-size: 25px;
   color: aliceblue;
+}
+
+.material-icons { 
+  font-size: 19px;
+  padding: 0%;
 }
 .material-icons.md-18 { font-size: 18px; }
 .material-icons.md-24 { font-size: 24px; }

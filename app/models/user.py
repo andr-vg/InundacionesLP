@@ -62,6 +62,14 @@ class User(db.Model):
     @classmethod
     def search_by_name(cls, username):
         return User.query.filter(User.username.like('%'+username+'%'))
+    
+    @classmethod
+    def get_with_state(cls, query, state):
+        return query.filter(User.active==state)
+
+    @classmethod
+    def search_paginate(cls, query, id, page, config):
+        return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
@@ -108,3 +116,5 @@ class User(db.Model):
         
     def get_index_users(id, page, config):
         return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
+
+    

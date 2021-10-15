@@ -156,13 +156,14 @@ def search(page):
         abort(401)
     if not check_permission("user_index",session):
         abort(401)
-    users = User.search_by_name(request.args["name"])
-    config = get_configuration(session)     
+    config = get_configuration(session) 
+    users = User.search_by_name(request.args["name"])  
     if request.args["active"]=="activo":
-        users = users.filter(User.active==True).order_by(User.id.asc())
+        users = User.get_with_state(users, True)
     elif request.args["active"]=="bloqueado":
-        users = users.filter(User.active==False).order_by(User.id.asc())
-    return render_template("user/index.html", users=users.paginate(page, per_page=config.elements_per_page))
+        users = User.get_with_state(users, False)
+    users = User.search_paginate(users, id, page, config)
+    return render_template("user/index.html", users=users)
 
 def change_rol():
     rol_id = int(request.form["rol"])

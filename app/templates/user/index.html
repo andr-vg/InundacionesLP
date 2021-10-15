@@ -91,12 +91,14 @@
             {% endif %}
           {% endif %}
           {% if has_permission('user_destroy', session) %}
-            <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"> <span class="material-icons">&#xE872;</span> </button></a>
+            <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove">Borrar <span class="material-icons">&#xE872;</span> </button></a>
           {% endif %}
           {% if has_permission('user_edit',session) %}
           <form action="{{ url_for('user_edit') }}" method="POST">
             <input name="id" type="hidden" value="{{ user.id }}">
-            <input type="submit"class="btn btn-sm btn-info">
+            <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+
+           
           </form>
           {% endif %}
         </td>

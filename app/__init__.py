@@ -1,5 +1,5 @@
 from os import path, environ
-from flask import Flask, render_template, g, Blueprint
+from flask import Flask, render_template, g, Blueprint, redirect, url_for
 from flask_session import Session
 from config import config
 from app import db
@@ -89,6 +89,7 @@ def create_app(environment="development"):
     def home():
         return render_template("home.html")
 
+    
     # Rutas de API-REST (usando Blueprints)
     #api = Blueprint("api", __name__, url_prefix="/api")
     #api.register_blueprint(issue_api)

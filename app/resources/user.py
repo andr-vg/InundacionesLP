@@ -172,7 +172,7 @@ def change_rol():
     print(session["rol_actual"])
     print(session["permissions"])
     flash("El rol ha sido cambiado a {}.".format(session["roles"][rol_id]))
-    return redirect(url_for("home"))
+    return render_template("home.html")
 
 def edit_profile():
     user_email = authenticated(session)

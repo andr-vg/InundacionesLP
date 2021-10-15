@@ -6,6 +6,18 @@ body {
   font-size: 14px;
 }
 
+.logo {
+    max-width: 170px;
+}
+
+nav ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
 .clear {
   clear: both;
   height: 0;
@@ -52,8 +64,12 @@ a.link {
   letter-spacing: 1px;
 }
 
+ul {
+    list-style-type: none;
+}
+
 h4 {
-  font-size: 25px;
+  font-size: 15px;
   color: aliceblue;
 }
 

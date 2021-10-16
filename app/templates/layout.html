@@ -3,7 +3,7 @@
   <head>
     {% block head %}
     <!--Importe de iconos -->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- botones de editar, borrar -->
     <!--
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
@@ -53,7 +53,8 @@
               </select>
               <button class="btn btn-sm btn-info" type="submit">Cambiar rol</button>
               <!--<button class="btn btn-sm btn-info"><input type="submit"class="btn btn-sm btn-info" value="Editar"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button>-->
-            </form>  
+            </form> 
+    </header> 
           {% else %}    
             {{ session["rol_actual"][1] }}          
           {% endif %}
@@ -81,7 +82,6 @@
         {% endif %}          
         </ul>
       </nav>
-    </header>
     
     <div id="content">
       {% with messages = get_flashed_messages() %}

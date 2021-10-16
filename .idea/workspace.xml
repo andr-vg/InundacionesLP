@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7fe96508-acf1-4623-9e18-7e6b1a360771" name="Changes" comment="" />
+    <list default="true" id="7fe96508-acf1-4623-9e18-7e6b1a360771" name="Changes" comment="arreglo" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,6 +60,10 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="arreglo" />
+    <option name="LAST_COMMIT_MESSAGE" value="arreglo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

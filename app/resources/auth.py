@@ -1,7 +1,9 @@
 from flask import redirect, render_template, request, url_for, abort, session, flash
-from app.models.user import User
+from app.models.user import User, Rol
 from app.models.configuration import Configuration
 from sqlalchemy import and_
+
+from app.resources import rol
 
 
 def login():
@@ -10,23 +12,31 @@ def login():
 
 def authenticate():
     params=request.form
-
-    user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
-    .filter(and_(User.email == params["email"],User.password == params["password"])).first()
-    )
-    print(user)
+ #   user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
+ #   .filter(and_(User.email == params["email"],User.password == params["password"])).first()
+ #   )
+    #user=Configuration.query.filter(and_(Configuration.elements_per_page==params["email"],Configuration.ordered_by==params["password"]))
+    user = User.login(params=params)
+    
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))
-
     session["user"] = user.email
+    session["username"] = user.username
     # save configuration params 
-    session["config"] = Configuration.query.filter().first()
+    session["config"] = Configuration.get_configuration()
+    # save roles from this user
+    roles = {rol.id: rol.name for rol in user.roles}
+    session["roles"] = roles
+    # assign the permissions of the first rol by default
+    rol_id = next(iter(roles))
+    session["rol_actual"] = (rol_id, session["roles"][rol_id])
+    print(session["rol_actual"])
     # save permissions
-    session["permissions"] = User.get_permissions(user_id=user.id)
+    session["permissions"] = Rol.get_permissions(rol_id=rol_id)
     flash("La sesión se inició correctamente.")
 
-    return redirect(url_for("home"))
+    return render_template("home.html")
 
 
 def logout():

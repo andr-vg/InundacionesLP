@@ -8,6 +8,7 @@
   <a href="{{ url_for('home') }}" class="link">Volver</a>
   {% if has_permission('user_new', session) %}
     <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
+ 
   {% endif %}
   <!-- previous page -->
   {% if users.has_prev %}
@@ -22,9 +23,35 @@
     <a href="{{ url_for('user_index', page=users.next_num) }}">Next</a>
   </li>
   {% endif %}
-  
-  <table>
-    <thead>
+  <form action="{{ url_for('user_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-auto">
+            <input type="text" name="name">
+          </div>
+          <div class="col-sm-auto">  
+            <p>
+              <input type="submit" value="Buscar">
+            </p>
+          </div>
+          <div class="col-sm-auto">
+            <p>Filtrar por</p>
+          </div>
+          <div class="col-sm-auto">
+            <input type="radio" name="active" value="ninguno" checked> <label>Ninguno</label>
+          </div>
+          <div class="col-sm-auto">       
+            <input type="radio" name="active" value="activo"> <label> Activo</label>
+          </div>
+          <div class="col-sm-auto">  
+            <input type="radio" name="active" value="bloqueado"> <label> Bloqueado</label>
+          </div>
+        </div>
+    </div>
+  </form>
+
+  <table class="table table-sm">
+    <thead class="thead-dark">
       <tr>
         <th>Nombre de usuario</th>
         <th>Nombre</th>
@@ -38,7 +65,7 @@
     <tbody>
       {% for user in users.items %}
       <tr> <!-- ver de poner id o email como id del tr de cada user-->
-        <td> {{ user.username }} </td>
+        <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
         <td> {{ user.firstname }} </td>
         <td> {{ user.lastname }} </td>
         <td> {{ user.email }} </td>
@@ -56,27 +83,37 @@
         </td>    
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
         <td id="actions">
-          {% if has_permission('user_active', session) %}
-            {% if 1 not in roles and user.active == 1 %}
-              <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea bloquear a este usuario?');" class="link"> bloquear </a>
-            {% elif 1 not in roles %}
-              <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea desbloquear a este usuario?');" class="link"> desbloquear </a>
+          <div class="row">
+            {% if has_permission('user_active', session) %}
+              {% if 1 not in roles and user.active == 1 %}
+              <div class="column mx-1">
+                <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea bloquear a este usuario?');"> <button class="btn btn-sm btn-secondary"> bloquear </button> </a>
+              </div>
+                
+              {% elif 1 not in roles %}
+              <div class="column mx-1">
+                <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea desbloquear a este usuario?');"> <button class="btn btn-sm btn-secondary"> desbloquear</button> </a>
+              </div>
+
+              {% endif %}
             {% endif %}
-          {% endif %}
-          {% if has_permission('user_edit', session) %}
-            <a href=""><button class="btn btn-sm btn-info"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button></a>
-          {% endif %}
-          {% if has_permission('user_destroy', session) %}
-            <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove"><i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
-          {% endif %}
-        </td>
+            {% if has_permission('user_destroy', session) %}
+            <div class="column mx-1">
+              <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove">Borrar <span class="material-icons">&#xE872;</span> </button></a>
+            </div>
+
+            {% endif %}
+            {% if has_permission('user_edit',session) %}
+            <form action="{{ url_for('user_edit') }}" method="POST">
+              <input name="id" type="hidden" value="{{ user.id }}">
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+            
+            </form>
+            {% endif %}
+          </div>
+        </td>       
       </tr>
       {% endfor %}
     </tbody>
   </table>
-  {% for user in users.items %}
-  <li>{{user.email}} - {{ user.first_name }} - {{ user.last_name }} - {{ user.password }} - 
-    <a href="{{ url_for('rol_assign', id=user.id) }}" class="link">Asignar rol</a>
-</li>
-  {% endfor %}
 {% endblock %}

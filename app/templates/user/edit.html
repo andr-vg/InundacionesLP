@@ -4,7 +4,7 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-  <h1>Crear un usuario</h1>
+  <h1>Editar usuario</h1>
   {% for field in form.errors %}
   {% for error in form.errors[field] %}
       <div class="alert alert-error">
@@ -12,8 +12,9 @@
       </div>
   {% endfor %}
   {% endfor %}
-  <form action="{{ url_for('user_create') }}" method="POST">
+  <form action="{{ url_for('user_update') }}" method="POST">
       <div>
+        {{form.id}}
       <p>Email {{ form.email }}</p>
       <p>Nombre de usuario {{ form.username }}</p>
       <p>Contraseña {{ form.password }}</p>
@@ -25,8 +26,7 @@
         {% endfor %}
       </p>
       </div>
-      <input type="submit" value="Crear">
-      <button type="reset">Limpiar</button>
+      <input type="submit" value="Editar">
     </p>
   </form>
   <a href="{{ url_for('user_index') }}" class="link">Volver</a>

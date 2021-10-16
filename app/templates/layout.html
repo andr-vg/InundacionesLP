@@ -2,18 +2,87 @@
 <html lang="en">
   <head>
     {% block head %}
+    <!--Importe de iconos -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- botones de editar, borrar -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> 
+    -->
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <!-- jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>   
+    <!-- iconos -->
+    <script src="https://kit.fontawesome.com/e53bae01c6.js" crossorigin="anonymous"></script>
     <!-- estilos de la pagina -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    {% if is_authenticated(session) %}
+      {% set css_private = session["config"]["css_private"] %} 
+      <link rel="stylesheet" href="{{ url_for('static', filename=css_private) }}">   
+    {% endif %}
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
   </head>
   <body>
-    <div id="navbar">
-      {% block navbar %}
-      {% endblock %}
-    </div>
+    <header>
+      <div class="navbar navbar-dark bg-dark">
+        <!-- Navbar content -->
+        <div class="logo">
+          <a href="{{url_for('home')}}">
+          <figure>
+            <img class="logo" src="{{url_for('static', filename='logo.png')}}" alt="InundacionesLP">
+          </figure>
+          </a>
+        </div>
+        {% if is_authenticated(session) %}
+          <h4>
+            <span class="material-icons md-18">&#xe853;</span>
+            Bienvenido de nuevo <strong>{{ session["username"] }}</strong>
+          </h4>
+          {% if session["roles"].keys()|length > 1 %}
+            <form action="{{ url_for('user_change_rol') }}" method="POST">
+              <select name="rol" value=" {{ session['rol_actual'][0] }} " >
+                {% for key, value in session['roles'].items() %}
+                  {% if key == session["rol_actual"][0] %}
+                    <option value="{{ key }}" selected>{{ value }}</option>
+                  {% else %}
+                    <option value="{{ key }}">{{ value }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <button class="btn btn-sm btn-info" type="submit">Cambiar rol</button>
+              <!--<button class="btn btn-sm btn-info"><input type="submit"class="btn btn-sm btn-info" value="Editar"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button>-->
+            </form> 
+    </header> 
+          {% else %}    
+            {{ session["rol_actual"][1] }}          
+          {% endif %}
+        {% endif %}
+      </div>
+      <nav class="navbar-dark bg-dark">
+        <ul>
+        {% if is_authenticated(session) %}
+          {% if has_permission('configuration_update', session) %}
+            <li><a href="{{ url_for('configuration_update') }}" class="link">Configuracion del sistema</a></li>
+          {% endif %}
+          {% if has_permission('user_index', session) %}
+            <li><a href="{{ url_for('user_index') }}" class="link">Usuarios</a></li>
+          {% endif %}
+          {% if has_permission('punto_encuentro_index', session) %}
+            <li><a href="{{ url_for('punto_encuentro_index') }}" class="link">Puntos de encuentro</a></li>
+          {% endif %}
+          {% if has_permission('user_edit_profile', session) %}
+            <li><a href="{{ url_for('user_edit_profile') }}" class="link">Mi perfil</a></li>
+          {% endif %}
+          
+            <li><a href="{{ url_for('auth_logout') }}" class="link">Cerrar sesión</a></li>
+        {% else %}
+          <li><a href="{{ url_for('auth_login') }}" class="link">Iniciar sesión</a></li>
+        {% endif %}          
+        </ul>
+      </nav>
+    
     <div id="content">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -28,9 +97,13 @@
       {% block content %}
       {% endblock %}
     </div>
-    <div id="footer">
-      {% block footer %}
-      {% endblock %}
+    <footer>
+      <div class="links">
+        <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
     </div>
+    <p> Copyright 2021 © Todos los derechos reservados.</p>
+    </footer>
   </body>
 </html>

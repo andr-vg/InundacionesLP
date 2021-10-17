@@ -84,8 +84,8 @@ ul {
 }
 
 h4 {
-  font-size: 15px;
-  color: aliceblue;
+  font-size: 28px;
+  color: var(--secondary);
 }
 
 .material-icons { 

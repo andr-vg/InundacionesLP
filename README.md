@@ -12,7 +12,9 @@ Para acceder a la aplicación privada desde un usuario admin y/o operador se req
 
 |email|contraseña|
 |--|--|
-
+|luchi@gmail.com|1234|
+|mario@gmail.com|1234|
+|lucas@gmail.com|1234|
 
 ### Dependencias
 - Lenguaje: Python 3.8.10.

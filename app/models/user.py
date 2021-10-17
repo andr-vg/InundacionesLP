@@ -16,7 +16,6 @@ user_roles = Table('usuario_tiene_rol',db.Model.metadata,
 class User(db.Model):
     @classmethod
     def login(cls, params):
-        print()
         user=User.query.filter(User.email == params["email"]).first()
         if user and not user.deleted and user.active and user.verify_password(params["password"]):
             return user

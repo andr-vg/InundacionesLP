@@ -4,7 +4,9 @@ from app.db import db
 from sqlalchemy import Column,Integer,String
 
 class Configuration(db.Model):
+    """" Modelo que representa la configuracion del sistema """
     @classmethod
+    """ Retorna la configuracion del sistema """
     def get_configuration(cls):
         return Configuration.query.first()
 

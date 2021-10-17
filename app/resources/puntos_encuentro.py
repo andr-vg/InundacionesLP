@@ -72,8 +72,7 @@ def search():
         abort(401)
     if not check_permission("punto_encuentro_index", session):
         abort(401)
-    config = get_configuration(session)
-    form = SearchPuntoEncuento(request.args) 
+    
     puntos_encuentro = PuntosDeEncuentro.search_by_name(request.args["name"])
     if "active" in request.args.keys():
         puntos_encuentro = PuntosDeEncuentro.filter_by_state(puntos_encuentro,request.args["active"])

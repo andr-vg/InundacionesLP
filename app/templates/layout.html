@@ -26,7 +26,7 @@
   </head>
   <body>
     <header>
-      <div class="navbar navbar-dark bg-dark">
+      <div class="navcolor navbar navbar-dark bg-dark">
         <!-- Navbar content -->
         <div class="logo">
           <a href="{{url_for('home')}}">
@@ -60,7 +60,7 @@
           {% endif %}
         {% endif %}
       </div>
-      <nav class="navbar-dark bg-dark">
+      <nav class="navcolor navbar-dark bg-dark">
         <ul>
         {% if is_authenticated(session) %}
           {% if has_permission('configuration_update', session) %}

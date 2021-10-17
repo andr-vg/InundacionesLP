@@ -63,7 +63,7 @@ class PuntosDeEncuentro(db.Model):
     
 
     def get_punto_by_name(name):
-     """" Retorna el punto de encuentro con el name ingresado por parametro o None
+        """" Retorna el punto de encuentro con el name ingresado por parametro o None
      si no se encuentra ninguno con dicho nombre .
         :params name:String que representa el nombre del punto de encuentro. """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name==name.upper()).first()
@@ -84,5 +84,3 @@ class PuntosDeEncuentro(db.Model):
         if config.ordered_by == "Ascendente":
             return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
         return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.desc()).paginate(page, per_page=config.elements_per_page)
-
-

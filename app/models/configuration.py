@@ -6,8 +6,8 @@ from sqlalchemy import Column,Integer,String
 class Configuration(db.Model):
     """" Modelo que representa la configuracion del sistema """
     @classmethod
-    """ Retorna la configuracion del sistema """
     def get_configuration(cls):
+        """ Retorna la configuracion del sistema """
         return Configuration.query.first()
 
     __tablename__ = 'configuracion'

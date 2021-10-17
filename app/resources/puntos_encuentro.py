@@ -3,7 +3,7 @@ from flask import redirect, render_template, request, url_for, session, abort
 from flask.helpers import flash
 from app.helpers.configuration import get_configuration
 from sqlalchemy.exc import OperationalError
-from app.forms.puntos_encuentro import CreatePuntoEncuentro, EditPuntoEncuentro, SearchPuntoEncuento
+from app.forms.puntos_encuentro import CreatePuntoEncuentro, EditPuntoEncuentro
 from app.forms.user import EditUserForm
 from app.models.puntos_encuentro import PuntosDeEncuentro
 from app.models.user import User
@@ -65,8 +65,7 @@ def create():
 
 
 def search():
-    """Retorna el listado de puntos de encuentro filtrados con las opciones de búsqueda.
-    """
+    """Retorna el listado de puntos de encuentro filtrados con las opciones de búsqueda."""
     user_email = authenticated(session)
     if not user_email:
         abort(401)

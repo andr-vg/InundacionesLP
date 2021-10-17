@@ -37,9 +37,6 @@
           <div class="col-sm-auto">
             <p>Filtrar por</p>
           </div>
-          <div class="col-sm-auto">
-            <input type="radio" name="active" value="ninguno" checked> <label>Ninguno</label>
-          </div>
           <div class="col-sm-auto">       
             <input type="radio" name="active" value="activo"> <label> Activo</label>
           </div>
@@ -50,7 +47,7 @@
     </div>
   </form>
 
-  <table>
+  <table class="table table-sm">
     <thead>
       <tr>
         <th>Nombre de usuario</th>
@@ -83,25 +80,35 @@
         </td>    
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
         <td id="actions">
-          {% if has_permission('user_active', session) %}
-            {% if 1 not in roles and user.active == 1 %}
-              <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea bloquear a este usuario?');" class="link"> bloquear </a>
-            {% elif 1 not in roles %}
-              <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea desbloquear a este usuario?');" class="link"> desbloquear </a>
-            {% endif %}
-          {% endif %}
-          {% if has_permission('user_destroy', session) %}
-            <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove">Borrar <span class="material-icons">&#xE872;</span> </button></a>
-          {% endif %}
-          {% if has_permission('user_edit',session) %}
-          <form action="{{ url_for('user_edit') }}" method="POST">
-            <input name="id" type="hidden" value="{{ user.id }}">
-            <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+          <div class="row">
+            {% if has_permission('user_active', session) %}
+              {% if 1 not in roles and user.active == 1 %}
+              <div class="column mx-1">
+                <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea bloquear a este usuario?');"> <button class="btn btn-sm btn-secondary"> bloquear </button> </a>
+              </div>
+                
+              {% elif 1 not in roles %}
+              <div class="column mx-1">
+                <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea desbloquear a este usuario?');"> <button class="btn btn-sm btn-secondary"> desbloquear</button> </a>
+              </div>
 
-           
-          </form>
-          {% endif %}
-        </td>
+              {% endif %}
+            {% endif %}
+            {% if has_permission('user_destroy', session) %}
+            <div class="column mx-1">
+              <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove">Borrar <span class="material-icons">&#xE872;</span> </button></a>
+            </div>
+
+            {% endif %}
+            {% if has_permission('user_edit',session) %}
+            <form action="{{ url_for('user_edit') }}" method="POST">
+              <input name="id" type="hidden" value="{{ user.id }}">
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+            
+            </form>
+            {% endif %}
+          </div>
+        </td>       
       </tr>
       {% endfor %}
     </tbody>

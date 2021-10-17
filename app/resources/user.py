@@ -16,6 +16,12 @@ from app.resources import rol
 
 # Protected resources
 def index(page):
+    """
+    Renderizado del listado de usuarios de forma paginada
+
+    Args:
+        page(int): número de pagina
+    """
     user_email = authenticated(session)
     id = User.get_id_from_email(user_email)
     if not user_email:
@@ -35,8 +41,10 @@ def index(page):
     return render_template("user/index.html", users=users)
 
 def new():
+    """
+    Renderizado de la página de creación de un usuario
+    """
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("user_new", session):
@@ -47,13 +55,21 @@ def new():
 
 
 def create():
+    """
+    Lógica a realizar al momento de confirmar
+    la creación de un usuario 
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
     form = RegistrationUserForm(request.form)
     form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
-        user = User.exists_user(form)
+        user = User.exists_user(form.email.data,form.username.data)
+        print(user)
+        print(user)
+        print(user)
+        print(user)
         if user and not user.deleted:
             flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
             return render_template("user/new.html", form=form)
@@ -72,6 +88,9 @@ def create():
 
 
 def edit():
+    """
+    Renderizado de la página de edición de un usuario
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -85,6 +104,10 @@ def edit():
 
 
 def update():
+    """
+    Lógica a realizar al momento de confirmar
+    la edición de un usuario 
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -122,6 +145,13 @@ def update():
 
 
 def soft_delete(id):
+    """
+    Lógica a realizar al momento de eliminar
+    de manera lógica a un usuario
+
+    Args:
+        id(int): id del usuario a eliminar
+    """
     user_email = authenticated(session)
     #user_id = User.get_id_from_email(user_email)
     if not user_email:
@@ -135,6 +165,13 @@ def soft_delete(id):
     return redirect(url_for("user_index"))
 
 def change_state(id):
+    """
+    Lógica a realizar al momento de modificar el
+    estado de un usuario.
+
+    Args:
+        id(int): id del usuario 
+    """
     user_email = authenticated(session)
     #user_id = User.get_id_from_email(user_email)
     if not user_email:
@@ -150,6 +187,13 @@ def change_state(id):
     return redirect(url_for("user_index"))
 
 def search(page):
+    """
+    Lógica a realizar al momento de renderizar
+    un listado de búsqueda de usuarios paginado.
+
+    Args:
+        page(int): número de página
+    """
     user_email = authenticated(session)
     id = User.get_id_from_email(user_email)
     if not user_email:
@@ -157,15 +201,21 @@ def search(page):
     if not check_permission("user_index",session):
         abort(401)
     config = get_configuration(session) 
-    users = User.search_by_name(request.args["name"])  
-    if request.args["active"]=="activo":
-        users = User.get_with_state(users, True)
-    elif request.args["active"]=="bloqueado":
-        users = User.get_with_state(users, False)
+    users = User.search_by_name(request.args["name"])
+    if "active" in request.args.keys():
+        if request.args["active"]=="activo":
+            users = User.get_with_state(users, True)
+        elif request.args["active"]=="bloqueado":
+            users = User.get_with_state(users, False)
     users = User.search_paginate(users, id, page, config)
     return render_template("user/index.html", users=users)
 
 def change_rol():
+    """
+    Lógica a realizar al momento de modificar el
+    rol de un usuario.
+
+    """
     rol_id = int(request.form["rol"])
     session["rol_actual"] = (rol_id, session["roles"][rol_id])
     session["permissions"] = Rol.get_permissions(rol_id=rol_id)
@@ -175,6 +225,9 @@ def change_rol():
     return render_template("home.html")
 
 def edit_profile():
+    """
+    Renderizado de la página de edición del perfil de usuario
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -187,6 +240,10 @@ def edit_profile():
 
 
 def update_profile():
+    """
+    Lógica a realizar al momento de confirmar
+    la edición del perfil del usuario actual.
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -205,6 +262,12 @@ def update_profile():
     return render_template("user/profile.html", form=form)
 
 def show(username):
+    """
+    Renderiza el detalle con los datos de un dado usuario
+
+    Args:
+        username(string): nombre del usuario a detallar
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)

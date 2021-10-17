@@ -5,7 +5,8 @@ from app.helpers.auth import authenticated
 from app.helpers.permission import has_permission as check_permission
 from app.db import db
 
-def update():
+def update(): 
+    """" Renderiza el formulario para la actualización de la configuracion del sistema  """
     user_email = authenticated(session)
     id = User.get_id_from_email(user_email)
     if not user_email:
@@ -17,6 +18,7 @@ def update():
     
 
 def confirm_update():
+    """" Actualiza la configuración del sistema en la base de datos """
     config=Configuration.get_configuration()
     config.elements_per_page = request.form["elements_per_page"]
     config.ordered_by = request.form["ordered_by"]

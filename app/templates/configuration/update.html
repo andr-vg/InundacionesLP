@@ -34,7 +34,7 @@ Paleta de colores app privada:
 </select>
 <br>
 Paleta de colores app pública
-{% set css_public = {"celeste":"private1.css", "verde":"private2.css", "rojo":"private3.css"} %}
+{% set css_public = {"Tema Principal":"private1.css", "Tema Oscuro":"private2.css", "Tema Claro":"private3.css"} %}
 <select name="css_public" value="{{config.css_public}}">
   {% for key, value in css_public.items() %}
     {% if value == config.css_public %}

@@ -52,9 +52,8 @@
                 {% endfor %}
               </select>
               <button class="btn btn-sm btn-info" type="submit">Cambiar rol</button>
-              <!--<button class="btn btn-sm btn-info"><input type="submit"class="btn btn-sm btn-info" value="Editar"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button>-->
             </form> 
-    </header> 
+    
           {% else %}    
             {{ session["rol_actual"][1] }}          
           {% endif %}
@@ -82,7 +81,9 @@
         {% endif %}          
         </ul>
       </nav>
-    
+    </header> 
+    <main>
+
     <div id="content">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -97,6 +98,8 @@
       {% block content %}
       {% endblock %}
     </div>
+    </main>  
+
     <footer>
       <div class="links">
         <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>

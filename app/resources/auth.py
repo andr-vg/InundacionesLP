@@ -12,12 +12,7 @@ def login():
 
 def authenticate():
     params=request.form
- #   user=(User.query.filter(and_(User.deleted==False,User.active==True)) 
- #   .filter(and_(User.email == params["email"],User.password == params["password"])).first()
- #   )
-    #user=Configuration.query.filter(and_(Configuration.elements_per_page==params["email"],Configuration.ordered_by==params["password"]))
     user = User.login(params=params)
-    
     if not user:
         flash("Usuario o clave incorrecto.")
         return redirect(url_for("auth_login"))

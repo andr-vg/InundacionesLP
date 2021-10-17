@@ -65,7 +65,11 @@ def create():
     form = RegistrationUserForm(request.form)
     form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
-        user = User.exists_user(form)
+        user = User.exists_user(form.email.data,form.username.data)
+        print(user)
+        print(user)
+        print(user)
+        print(user)
         if user and not user.deleted:
             flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
             return render_template("user/new.html", form=form)
@@ -197,11 +201,12 @@ def search(page):
     if not check_permission("user_index",session):
         abort(401)
     config = get_configuration(session) 
-    users = User.search_by_name(request.args["name"])  
-    if request.args["active"]=="activo":
-        users = User.get_with_state(users, True)
-    elif request.args["active"]=="bloqueado":
-        users = User.get_with_state(users, False)
+    users = User.search_by_name(request.args["name"])
+    if "active" in request.args.keys():
+        if request.args["active"]=="activo":
+            users = User.get_with_state(users, True)
+        elif request.args["active"]=="bloqueado":
+            users = User.get_with_state(users, False)
     users = User.search_paginate(users, id, page, config)
     return render_template("user/index.html", users=users)
 

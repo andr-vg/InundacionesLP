@@ -3,7 +3,7 @@ import bcrypt
 from flask_bcrypt import generate_password_hash,check_password_hash
 import datetime
 from app.db import db
-from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_
+from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_
 from sqlalchemy.orm import relationship
 from app.models.rol import Rol
 

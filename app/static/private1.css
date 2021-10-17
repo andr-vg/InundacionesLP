@@ -1,9 +1,35 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
 @import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
+
+
+:root {
+  --primary: #17252A;
+  --secondary: #2B7A78;
+  --success: #3AAFA9;
+  --danger: #DEF2F1;
+  --info: #FEFFFF;
+}
+
 body {
-  background-color: #d4e0ec !important;
+  background-color: var(--success) !important;
   font-family: 'Montserrat', Helvetica, sans-serif;
-  font-size: 14px;
+  color: var(--info);
+  font-size: 18px;
+}
+
+.logo {
+    max-width: 170px;
+}
+
+.navcolor{
+  background-color: var(--primary) !important;
+}
+nav ul {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
 }
 
 .clear {
@@ -29,20 +55,21 @@ footer {
 }
 
 a {
-  color: #212529;
+  color: var(--danger);
+  font-weight: bolder;
 }
 
 a:hover {
-  color: #92a4ad;
+  color: var(--primary);
 }
 
 a.link {
   text-transform: uppercase;
-  font-size: 10px;
-  background-color: #92a4ad !important;
+  font-size: 14px;
+  background-color: var(--danger) !important;
   padding: 10px 15px;
   border-radius: 0;
-  color: #dee6eb !important;
+  color: var(--primary) !important;
   display: inline-block;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -52,8 +79,12 @@ a.link {
   letter-spacing: 1px;
 }
 
+ul {
+    list-style-type: none;
+}
+
 h4 {
-  font-size: 25px;
+  font-size: 28px;
   color: aliceblue;
 }
 
@@ -61,7 +92,33 @@ h4 {
   font-size: 19px;
   padding: 0%;
 }
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-18 { 
+  font-size: 18px; 
+}
+.material-icons.md-24 { 
+  font-size: 24px; 
+}
+.material-icons.md-36 { 
+  font-size: 36px; 
+  vertical-align: bottom;
+}
+.material-icons.md-48 { 
+  font-size: 48px; 
+}
+
+table.table> tbody > tr> td,
+table{
+color:var(--info);
+font-size: 16px;
+background-color: var(--secondary);
+border-color: var(--danger);
+}
+
+table.table-sm> thead > tr > th {
+color:var(--danger);
+font-weight: bolder;
+font-size: 16px;
+background-color: var(--primary);
+border-color: var(--primary);
+}
+

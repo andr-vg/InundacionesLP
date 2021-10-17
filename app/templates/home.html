@@ -6,22 +6,5 @@
 {% block content %}
   <h1>Inicio</h1>
   <p>Página de inicio de la aplicación</p>
-  {% if is_authenticated(session) %}
-    {% if has_permission('configuration_update', session) %}
-      <a href="{{ url_for('configuration_update') }}" class="link">Configuracion del sistema</a>
-    {% endif %}
-    {% if has_permission('user_index', session) %}
-      <a href="{{ url_for('user_index') }}" class="link">Usuarios</a>
-    {% endif %}
-    {% if has_permission('punto_encuentro_index', session) %}
-      <a href="{{ url_for('punto_encuentro_index') }}" class="link">Puntos de encuentro</a>
-    {% endif %}
-    {% if has_permission('user_edit_profile', session) %}
-      <a href="{{ url_for('user_edit_profile') }}" class="link">Mi perfil</a>
-    {% endif %}
-    <a href="{{ url_for('auth_logout') }}" class="link">Cerrar sesión</a>
-  {% else %}
-    <a href="{{ url_for('auth_login') }}" class="link">Iniciar sesión</a>
-  {% endif %}
 
 {% endblock %}

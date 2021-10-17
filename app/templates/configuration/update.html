@@ -16,13 +16,13 @@ Ordenamiento:
       {% if elem == config.ordered_by %}
         <option value="{{ elem }}" selected>{{ elem }}</option>
       {% else %}
-        <option value="Descendente">Descendente</option>
+        <option value="{{ elem }}">{{ elem }}</option>
       {% endif %}
     {% endfor %}
 </select>
 <br>
 Paleta de colores app privada: 
-{% set css_private = {"celeste":"private1.css", "verde": "private2.css", "rojo": "private3.css"} %}
+{% set css_private = {"Tema Principal":"private1.css", "Tema Oscuro": "private2.css", "Tema Claro": "private3.css"} %}
 <select name="css_private" value="{{config.css_private}}">
   {% for key, value in css_private.items() %}
     {% if value == config.css_private %}

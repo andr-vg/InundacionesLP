@@ -61,6 +61,7 @@ def create():
         db.session.add(new_punto)
         db.session.commit()
         return redirect(url_for("punto_encuentro_index"))
+    flash("El nuevo punto de encuentro ha sido creado correctamente.")
     return render_template("puntos_encuentro/new.html",form=form)
 
 
@@ -116,6 +117,7 @@ def update():
         punto.coords = form.coords.data
         db.session.commit()
         return redirect(url_for("punto_encuentro_index"))
+    flash("El punto de encuentro ha sido editado correctamente.")
     return render_template("puntos_encuentro/new.html", form=form)
 
 

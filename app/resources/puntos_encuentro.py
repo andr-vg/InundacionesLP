@@ -15,8 +15,12 @@ from app.db import db
 
 # Protected resources
 def index(page):
+    """Retorna y renderiza el listado de puntos de encuentro
+    :param page:Numero de pagina para el paginado del listado
+    :type page: int
+    :raises: OperationalError
+    """
     user_email = authenticated(session)
-    #id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission("punto_encuentro_index", session):
@@ -31,6 +35,7 @@ def index(page):
 
 
 def new():
+    """Retorna y renderiza el formulario para la creacion de un nuevo punto de encuentro"""
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -41,29 +46,33 @@ def new():
 
 
 def create():
+    """Contiene la logica para la creacion de un punto de encuentro, 
+    si el formulario es valido se carga en la base de datos."""
     if not authenticated(session):
         abort(401)
     if not check_permission("punto_encuentro_new", session):
         abort(401)
     form = CreatePuntoEncuentro(request.form)
     if form.validate():
-        if PuntosDeEncuentro.unique_fields(request.form):
+        if PuntosDeEncuentro.unique_fields(form.name.data,form.address.data):
             flash("Uno o mas campos ya se encuentra cargado en el sistema")
             return render_template("puntos_encuentro/new.html", form=form)
         new_punto = PuntosDeEncuentro(name=form.name.data.upper(),address=form.address.data.upper(),tel=form.tel.data,email=form.email.data,coords=form.coords.data)
         db.session.add(new_punto)
         db.session.commit()
         return redirect(url_for("punto_encuentro_index"))
+    flash("El nuevo punto de encuentro ha sido creado correctamente.")
     return render_template("puntos_encuentro/new.html",form=form)
 
 
 def search():
+    """Retorna el listado de puntos de encuentro filtrados con las opciones de búsqueda."""
     user_email = authenticated(session)
     if not user_email:
         abort(401)
     if not check_permission("punto_encuentro_index", session):
         abort(401)
-    config = get_configuration(session)
+    
     puntos_encuentro = PuntosDeEncuentro.search_by_name(request.args["name"])
     if "active" in request.args.keys():
         puntos_encuentro = PuntosDeEncuentro.filter_by_state(puntos_encuentro,request.args["active"])
@@ -71,6 +80,7 @@ def search():
 
 
 def edit():
+    """" Retorna y renderiza el formulario para la edicion de un punto de encuentro. """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -82,6 +92,7 @@ def edit():
 
 
 def update():
+    """" Contiene la logica para la actualizacion de un punto de encuentro """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -105,10 +116,12 @@ def update():
         punto.coords = form.coords.data
         db.session.commit()
         return redirect(url_for("punto_encuentro_index"))
+    flash("El punto de encuentro ha sido editado correctamente.")
     return render_template("puntos_encuentro/new.html", form=form)
 
 
 def soft_delete():
+    """" Elimina un punto de encuentro logicamente mantenido con la variable state. """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -122,6 +135,7 @@ def soft_delete():
     return redirect(url_for("punto_encuentro_index"))
     
 def show(name):
+    """"" Vista detallada de un punto de encuentro """
     user_email = authenticated(session)
     if not user_email:
         abort(401)

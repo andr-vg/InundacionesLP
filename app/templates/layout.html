@@ -26,7 +26,7 @@
   </head>
   <body>
     <header>
-      <div class="navbar navbar-dark bg-dark">
+      <div class="navcolor navbar navbar-dark bg-dark">
         <!-- Navbar content -->
         <div class="logo">
           <a href="{{url_for('home')}}">
@@ -37,7 +37,7 @@
         </div>
         {% if is_authenticated(session) %}
           <h4>
-            <span class="material-icons md-18">&#xe853;</span>
+            <span class="material-icons md-36">&#xe853;</span>
             Bienvenido de nuevo <strong>{{ session["username"] }}</strong>
           </h4>
           {% if session["roles"].keys()|length > 1 %}
@@ -52,15 +52,14 @@
                 {% endfor %}
               </select>
               <button class="btn btn-sm btn-info" type="submit">Cambiar rol</button>
-              <!--<button class="btn btn-sm btn-info"><input type="submit"class="btn btn-sm btn-info" value="Editar"><i class="glyphicon glyphicon-pencil" display="table-cell"></i></button>-->
             </form> 
-    </header> 
+    
           {% else %}    
             {{ session["rol_actual"][1] }}          
           {% endif %}
         {% endif %}
       </div>
-      <nav class="navbar-dark bg-dark">
+      <nav class="navcolor navbar-dark bg-dark">
         <ul>
         {% if is_authenticated(session) %}
           {% if has_permission('configuration_update', session) %}
@@ -82,7 +81,9 @@
         {% endif %}          
         </ul>
       </nav>
-    
+    </header> 
+    <main>
+
     <div id="content">
       {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -97,6 +98,8 @@
       {% block content %}
       {% endblock %}
     </div>
+    </main>  
+
     <footer>
       <div class="links">
         <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>

@@ -11,19 +11,33 @@
  
   {% endif %}
   <!-- previous page -->
-  {% if users.has_prev %}
-  <li>
-    <a href="{{ url_for('user_index', page=users.prev_num) }}">Previous</a>
-  </li>
+  {% if users.has_prev%}
+    {% if filter == 1 %}
+    <li>
+      <a href="{{ url_for('user_search', page=users.prev_num, name=parameters['name'], active =parameters['active'] ) }}">Previous_Busqueda</a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{{ url_for('user_index', page=users.prev_num) }}">Previous</a>
+    </li>
+    {% endif%}
+
   {% endif %}
 
   <!-- next page -->
   {% if users.has_next %}
-  <li>
-    <a href="{{ url_for('user_index', page=users.next_num) }}">Next</a>
-  </li>
+    {% if filter == 1 %}
+    <li>
+      <a href="{{ url_for('user_search', page=users.next_num, name=parameters['name'], active =parameters['active']) }}">Next_Busqueda</a>
+    </li>      
+    {% else %}
+    <li>
+      <a href="{{ url_for('user_index', page=users.next_num) }}">Next</a>
+    </li>
+    {% endif%}
+
   {% endif %}
-  <form action="{{ url_for('user_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
+  <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET"> 
     <div class="container-fluid">
         <div class="row">
           <div class="col-sm-auto">
@@ -37,9 +51,6 @@
           <div class="col-sm-auto">
             <p>Filtrar por</p>
           </div>
-          <div class="col-sm-auto">
-            <input type="radio" name="active" value="ninguno" checked> <label>Ninguno</label>
-          </div>
           <div class="col-sm-auto">       
             <input type="radio" name="active" value="activo"> <label> Activo</label>
           </div>
@@ -51,7 +62,7 @@
   </form>
 
   <table class="table table-sm">
-    <thead class="thead-dark">
+    <thead>
       <tr>
         <th>Nombre de usuario</th>
         <th>Nombre</th>

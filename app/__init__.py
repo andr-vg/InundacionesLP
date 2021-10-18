@@ -15,9 +15,6 @@ import logging
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
-    
-    # Carga libreria para encriptar las contraseñas
-#    bcrypt = Bcrypt(app)
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)

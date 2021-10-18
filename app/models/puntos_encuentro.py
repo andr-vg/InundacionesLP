@@ -6,23 +6,35 @@ from sqlalchemy.orm import relationship
 
 
 class PuntosDeEncuentro(db.Model):
+    """" Modelo de Puntos de encuentro """
+
     @classmethod
     def get_all(cls):
+        """" Retorna la consulta de todos los puntos de encuentro en la base de datos """
         return PuntosDeEncuentro.query.all()
 
     @classmethod
     def search_by_name(cls, name):
+        """" Retorna la consulta de los puntos de encuentro que contienen el nombre recibido por parametro
+        :param name:Cadena de string a buscar en los nombres de los puntos de encuentro.
+         """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name.like('%'+name+'%'))
 
     @classmethod
     def filter_by_state(cls,query,state):
+        """" Filtra los puntos de encuentro por estado.
+        :params: query: Consulta previa en la base de datos.
+        :params: state: String que representa el estado del punto de encuentro.  """
         if state=="activo":
             return query.filter(PuntosDeEncuentro.state==False)
         return query.filter(PuntosDeEncuentro.state==True)
 
     @classmethod
-    def unique_fields(cls,params):
-        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==params["name"]) | (PuntosDeEncuentro.address==params["address"])).first()
+    def unique_fields(cls,name,address):
+        """" Retorna los puntos de encuentro con el nombre o la direccion pasada por parametro.
+        :params name: String que representa el nombre del punto de encuentro.
+        :params address: String que representa la direccion del punto de encuentro. """
+        punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==name) | (PuntosDeEncuentro.address==address)).first()
         return punto_encuentro
 
     __tablename__ = "puntosEncuentro"
@@ -44,21 +56,31 @@ class PuntosDeEncuentro(db.Model):
         self.coords = coords
 
     def get_punto_by_id(id):
+        """" Retorna el punto de encuentro con el id ingresado por parametro o None si no 
+        se encuentra ninguno con dicho id.
+        :params id:Numero entero que representa el identificador del punto de encuentro. """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.id==id).first()
     
 
     def get_punto_by_name(name):
+        """" Retorna el punto de encuentro con el name ingresado por parametro o None
+     si no se encuentra ninguno con dicho nombre .
+        :params name:String que representa el nombre del punto de encuentro. """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name==name.upper()).first()
 
     
     def get_punto_by_address(address):
+        """" Retorna el punto de encuentro con el address ingresado por parametro o None si no se encuentra 
+        ninguno con dicha dirección .
+        :params address:String que representa la direccion del punto de encuentro. """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.address==address.upper()).first()
 
     
     def get_index_puntos_encuentro(page, config):
-        #return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.state==False).order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
+        """" Retorna el listado de puntos de encuentro ordenado con la configuracion del sistema y paginado con
+        la cantidad de elementos por pagina definidos en la configuracion del sistema.
+        :param page:Numero entero que representa la pagina.
+        :param config: Representa la configuracion del sistema. """
         if config.ordered_by == "Ascendente":
             return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
         return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.desc()).paginate(page, per_page=config.elements_per_page)
-
-

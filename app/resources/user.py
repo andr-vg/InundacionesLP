@@ -65,7 +65,8 @@ def create():
     form = RegistrationUserForm(request.form)
     form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
-        user = User.exists_user(form.email.data,form.username.data)
+        parameters = {"email":form.email, "username": form.username}
+        user = User.exists_user(parameters)
         print(user)
         print(user)
         print(user)
@@ -202,13 +203,19 @@ def search(page):
         abort(401)
     config = get_configuration(session) 
     users = User.search_by_name(request.args["name"])
+    parameters = {
+        "name": request.args["name"],
+        "active": "",
+    }
     if "active" in request.args.keys():
+        parameters["active"] == request.args["active"]
         if request.args["active"]=="activo":
             users = User.get_with_state(users, True)
         elif request.args["active"]=="bloqueado":
             users = User.get_with_state(users, False)
     users = User.search_paginate(users, id, page, config)
-    return render_template("user/index.html", users=users)
+
+    return render_template("user/index.html", users=users, filter=1, parameters= parameters)
 
 def change_rol():
     """

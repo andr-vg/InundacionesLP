@@ -17,18 +17,36 @@
       <input type="submit" value="Buscar">
     </p>
   </form>
+
+<!-- previous page -->
   {% if puntos_encuentro.has_prev %}
-  <li>
-    <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Previous</a>
-  </li>
+    {% if filter == 1 %}
+    <li>
+      <a href="{{ url_for('punto_encuentro_search', page=puntos_encuentro.prev_num, name=parameters['name'], active =parameters['active'] ) }}">Previous_Busqueda</a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Previous</a>
+    </li>
+    {% endif%}
+
   {% endif %}
 
-  <!-- next page -->
-  {% if puntos_encuentro.has_next %}
-  <li>
-    <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Next</a>
-  </li>
+
+<!-- next page -->
+{% if puntos_encuentro.has_next %}
+    {% if filter == 1 %}
+    <li>
+      <a href="{{ url_for('punto_encuentro_search', page=puntos_encuentro.next_num, name=parameters['name'], active =parameters['active']) }}">Next_Busqueda</a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Next</a>
+    </li>
+    {% endif%}
+
   {% endif %}
+
 
   <table class="table table-sm">
     <thead>

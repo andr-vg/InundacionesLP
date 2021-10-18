@@ -72,11 +72,17 @@ def search():
         abort(401)
     if not check_permission("punto_encuentro_index", session):
         abort(401)
-    
+    config = get_configuration(session)
     puntos_encuentro = PuntosDeEncuentro.search_by_name(request.args["name"])
+    parameters = {
+        "name": request.args["name"],
+        "active": "",
+    }
     if "active" in request.args.keys():
-        puntos_encuentro = PuntosDeEncuentro.filter_by_state(puntos_encuentro,request.args["active"])
-    return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro)
+        parameters["active"] == request.args["active"]
+    puntos_encuentro = PuntosDeEncuentro.filter_by_state(puntos_encuentro,request.args["active"])
+
+    return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro, filter=1, parameters= parameters)
 
 
 def edit():

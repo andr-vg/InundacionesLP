@@ -110,7 +110,10 @@
             {% endif %}
             {% if has_permission('user_destroy', session) %}
             <div class="column mx-1">
-              <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove">Borrar <span class="material-icons">&#xE872;</span> </button></a>
+              <form action="{{ url_for('user_soft_delete') }}" method="POST">
+                <input name="id" type="hidden" value="{{ user.id }}">
+                <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este usuario?')"> Borrar <span class="material-icons">&#xE150;</span> </button> 
+              </form>
             </div>
 
             {% endif %}

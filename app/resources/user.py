@@ -67,10 +67,6 @@ def create():
     if form.validate():
         parameters = {"email":form.email, "username": form.username}
         user = User.exists_user(parameters)
-        print(user)
-        print(user)
-        print(user)
-        print(user)
         if user and not user.deleted:
             flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
             return render_template("user/new.html", form=form)
@@ -145,7 +141,7 @@ def update():
     return render_template("user/edit.html", form=form)
 
 
-def soft_delete(id):
+def soft_delete():
     """
     Lógica a realizar al momento de eliminar
     de manera lógica a un usuario
@@ -159,7 +155,7 @@ def soft_delete(id):
         abort(401)
     if not check_permission('user_destroy', session):
         abort(401)
-    user = User.get_user_by_id(id)
+    user = User.get_user_by_id(request.form["id"])
     user.deleted = True
     db.session.commit()
     flash("Usuario eliminado correctamente.")

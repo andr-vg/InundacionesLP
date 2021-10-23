@@ -17,7 +17,7 @@ class PuntosDeEncuentro(db.Model):
     def search_by_name(cls, name):
         """" Retorna la consulta de los puntos de encuentro que contienen el nombre recibido por parametro
         :param name:Cadena de string a buscar en los nombres de los puntos de encuentro.
-         """
+        """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name.like('%'+name+'%'))
 
     @classmethod

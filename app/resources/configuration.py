@@ -1,5 +1,6 @@
 from flask import redirect, render_template, request, url_for, session, abort, flash
 from app.models.configuration import Configuration
+from app.forms.configuration import ConfigurationForm
 from app.models.user import User
 from app.helpers.auth import authenticated
 from app.helpers.permission import has_permission as check_permission
@@ -13,20 +14,24 @@ def update():
         abort(401)
     if not check_permission("configuration_update", session):
         abort(401)
-    config=Configuration.get_configuration()
-    return render_template("configuration/update.html",config=config)
+    config = Configuration.get_configuration()
+    form = ConfigurationForm(elements_per_page=config.elements_per_page,ordered_by=config.ordered_by,css_private=config.css_private,css_public=config.css_public)
+    return render_template("configuration/update.html",form=form)
     
 
 def confirm_update():
     """" Actualiza la configuración del sistema en la base de datos """
     config=Configuration.get_configuration()
-    config.elements_per_page = request.form["elements_per_page"]
-    config.ordered_by = request.form["ordered_by"]
-    config.css_private = request.form["css_private"]
-    config.css_public = request.form["css_public"]
-    db.session.commit()
+    form = ConfigurationForm(elements_per_page=request.form["elements_per_page"],ordered_by=request.form["ordered_by"],css_private=request.form["css_private"],css_public=request.form["css_public"])
+    if form.validate():
+        config.elements_per_page = request.form["elements_per_page"]
+        config.ordered_by = request.form["ordered_by"]
+        config.css_private = request.form["css_private"]
+        config.css_public = request.form["css_public"]
+        db.session.commit()
     # actualizo los params de configuracion en la sesión
-    session["config"] = Configuration.get_configuration()
-    flash("La configuracion ha sido guardada")
-    return redirect(url_for("configuration_update"))
+        session["config"] = Configuration.get_configuration()
+        flash("La configuracion ha sido guardada")
+        return render_template("configuration/update.html",form=form) 
+    return render_template("configuration/update.html",form=form) 
 

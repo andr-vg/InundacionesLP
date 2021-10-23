@@ -9,7 +9,7 @@
   {% if has_permission('punto_encuentro_new', session) %}
     <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo punto de encuentro</a>
   {% endif %}
-  <form action="{{ url_for('punto_encuentro_index', name=name, active=active, inactive=inactive) }}" method="GET"> 
+  <form action="{{ url_for('punto_encuentro_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
     <input type="text" name="name">
     <input type="radio" name="active" value="activo"> <label> Activo</label>
     <input type="radio" name="active" value="inactivo"> <label> Inactivo</label>

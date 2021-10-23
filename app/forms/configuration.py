@@ -19,3 +19,21 @@ class ConfigurationForm(FlaskForm):
         self.css_private.data=kwargs["css_private"]
         self.css_public.choices=[("private1.css","Tema Principal"),("private2.css","Tema Oscuro"),("private3.css","Tema Claro")]
         self.css_public.data=kwargs["css_public"]
+
+    def validate_ordered_by(form,field):
+        choices = dict(form.ordered_by.choices).keys()
+        print(not (field.data in choices))
+        if not (field.data in choices):
+            form.ordered_by.errors = (validators.ValidationError("Elija una opcion del listado"),)
+    
+    def validate_css_private(form,field):
+        choices = dict(form.css_private.choices).keys()
+        print(not (field.data in choices))
+        if not (field.data in choices):
+            form.ordered_by.errors = (validators.ValidationError("Elija una opcion del listado"),)
+    
+    def validate_css_public(form,field):
+        choices = dict(form.css_public.choices).keys()
+        print(not (field.data in choices))
+        if not (field.data in choices):
+            form.ordered_by.errors = (validators.ValidationError("Elija una opcion del listado"),)

@@ -7,17 +7,12 @@
 <h1>Configuracion del sistema</h1>
 <form action="{{ url_for('configuration_confirm_update') }}" method="POST">
 {{form.csrf_token}}
-  Cantidad de elementos por página:  
-{{form.elements_per_page}}
-<br>
-Ordenamiento:
-{{form.ordered_by}}
-<br>
-Paleta de colores app privada: 
-{{form.css_private}}
-<br>
-Paleta de colores app pública
-{{form.css_public}}
+{% for field in form if field.widget.input_type != 'hidden' %}
+{% for error in field.errors%}
+<p>{{error}}</p>
+{% endfor %}
+<p>{{field.label}} {{field}}</p>
+{% endfor %}
 <p>
   <input type="submit" value="Guardar">
 </p>

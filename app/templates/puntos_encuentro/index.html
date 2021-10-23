@@ -57,7 +57,7 @@
             {% if has_permission('punto_encuentro_update',session) %}
               <form action="{{ url_for('punto_encuentro_edit') }}" method="POST">
                 <input name="id" type="hidden" value="{{ punto.id }}">
-                <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+                <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
               </form>
             {% endif %}
             {% if has_permission("punto_encuentro_destroy",session) %}

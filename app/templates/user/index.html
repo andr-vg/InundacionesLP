@@ -111,6 +111,7 @@
             {% if has_permission('user_destroy', session) %}
             <div class="column mx-1">
               <form action="{{ url_for('user_soft_delete') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name="id" type="hidden" value="{{ user.id }}">
                 <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este usuario?')"> Borrar <span class="material-icons">&#xE150;</span> </button> 
               </form>
@@ -119,6 +120,7 @@
             {% endif %}
             {% if has_permission('user_edit',session) %}
             <form action="{{ url_for('user_edit') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input name="id" type="hidden" value="{{ user.id }}">
               <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
             

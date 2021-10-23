@@ -54,6 +54,16 @@ class PuntosDeEncuentro(db.Model):
         self.name = name
         self.tel = tel
         self.coords = coords
+        db.session.add(self)
+        db.session.commit()
+    
+    def update(self, name, address, tel, email, coords):
+        self.email = email
+        self.address = address
+        self.name = name
+        self.tel = tel
+        self.coords = coords
+        db.session.commit()
 
     def get_punto_by_id(id):
         """" Retorna el punto de encuentro con el id ingresado por parametro o None si no 

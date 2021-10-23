@@ -5,6 +5,16 @@ from wtforms.fields.core import SelectField
     
     
 class ConfigurationForm(FlaskForm):
+    """
+    Formulario para actualizar la configuracion
+
+    Args:
+        elements_per_page(int): cantidad de elementos por pagina
+        ordered_by(string): String que indica el orden de los listados
+        css_private(string): String que indica el CSS a utilizar en el sitio privado
+        css_public(string): String que indica el CSS a utilizar en el sitio público
+    """
+
     elements_per_page = IntegerField("Elementos por página",[validators.NumberRange(min=1,max=20,message="Numero inválido"),validators.DataRequired(message="Se requiere ingresar un numero de 1 a 20")])
     ordered_by = SelectField("Ordenado por")
     css_private = SelectField("CSS Privado")
@@ -21,19 +31,19 @@ class ConfigurationForm(FlaskForm):
         self.css_public.data=kwargs["css_public"]
 
     def validate_ordered_by(form,field):
+        """" Valida que el input recibido sea un valor dentro de las opciones """
         choices = dict(form.ordered_by.choices).keys()
-        print(not (field.data in choices))
         if not (field.data in choices):
             form.ordered_by.errors = (validators.ValidationError("Elija una opcion del listado"),)
     
     def validate_css_private(form,field):
+        """" Valida que el input recibido sea un valor dentro de las opciones """
         choices = dict(form.css_private.choices).keys()
-        print(not (field.data in choices))
         if not (field.data in choices):
             form.ordered_by.errors = (validators.ValidationError("Elija una opcion del listado"),)
     
     def validate_css_public(form,field):
+        """" Valida que el input recibido sea un valor dentro de las opciones """
         choices = dict(form.css_public.choices).keys()
-        print(not (field.data in choices))
         if not (field.data in choices):
             form.ordered_by.errors = (validators.ValidationError("Elija una opcion del listado"),)

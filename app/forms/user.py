@@ -21,7 +21,7 @@ class RegistrationUserForm(FlaskForm):
         validators.Email(message="email invalido"),
         validators.length(min=5,message="Debe tener al menos 5 caracteres")])
     username = StringField('Nombre de usuario', [validators.DataRequired(message="Ingrese un usuario valido"),
-        validators.length(min=5,message="Debe tener al menos 5 caracteres")])
+        validators.length(min=5,message="Debe tener al menos 5 caracteres"),validators.regexp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*$",message="Nombre de usuario inválido")])
     password = PasswordField('Contraseña', [validators.DataRequired(message="*"),
         validators.EqualTo('confirm',message="Las contraseñas no coinciden")])
     confirm = PasswordField('Confirmar contraseña')

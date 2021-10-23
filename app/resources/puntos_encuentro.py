@@ -59,8 +59,6 @@ def create():
             flash("Uno o mas campos ya se encuentra cargado en el sistema")
             return render_template("puntos_encuentro/new.html", form=form)
         new_punto = PuntosDeEncuentro(name=form.name.data.upper(),address=form.address.data.upper(),tel=form.tel.data,email=form.email.data,coords=form.coords.data)
-        db.session.add(new_punto)
-        db.session.commit()
         flash("El nuevo punto de encuentro ha sido creado correctamente.")
         return redirect(url_for("punto_encuentro_index"))
     return render_template("puntos_encuentro/new.html",form=form)

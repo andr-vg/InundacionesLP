@@ -121,3 +121,13 @@ background-color: var(--primary);
 border-color: var(--primary);
 }
 
+.page-link{
+  background-color: var(--primary) !important;
+  color:var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.page-link:hover{
+  color: var(--info);
+  border: 1px solid var(--info);
+}

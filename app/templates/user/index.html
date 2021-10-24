@@ -18,7 +18,7 @@
     </li>
     {% else %}
     <li>
-      <a href="{{ url_for('user_index', page=users.prev_num) }}">Previous</a>
+      <a href="{{ url_for('user_index', page=users.prev_num) }}">Anterior</a>
     </li>
     {% endif%}
 
@@ -32,7 +32,7 @@
     </li>      
     {% else %}
     <li>
-      <a href="{{ url_for('user_index', page=users.next_num) }}">Next</a>
+      <a href="{{ url_for('user_index', page=users.next_num) }}">Siguiente</a>
     </li>
     {% endif%}
 

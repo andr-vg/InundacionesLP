@@ -26,7 +26,7 @@
     </li>
     {% else %}
     <li>
-      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Previous</a>
+      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Anterior</a>
     </li>
     {% endif%}
 
@@ -41,7 +41,7 @@
     </li>
     {% else %}
     <li>
-      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Next</a>
+      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Siguiente</a>
     </li>
     {% endif%}
 

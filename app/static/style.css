@@ -64,7 +64,7 @@ a.link {
   letter-spacing: 1px;
 }
 
-ul {
+ul, li {
     list-style-type: none;
 }
 

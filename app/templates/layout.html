@@ -60,8 +60,6 @@
           {% endif %}
           
             <li><a href="{{ url_for('auth_logout') }}" class="link">Cerrar sesión</a></li>
-        {% else %}
-          <li><a href="{{ url_for('auth_login') }}" class="link">Iniciar sesión</a></li>
         {% endif %}          
         </ul>
       </nav>

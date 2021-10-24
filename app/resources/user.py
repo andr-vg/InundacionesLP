@@ -213,20 +213,6 @@ def search(page):
 
     return render_template("user/index.html", users=users, filter=1, parameters= parameters)
 
-def change_rol():
-    """
-    Lógica a realizar al momento de modificar el
-    rol de un usuario.
-
-    """
-    rol_id = int(request.form["rol"])
-    session["rol_actual"] = (rol_id, session["roles"][rol_id])
-    session["permissions"] = Rol.get_permissions(rol_id=rol_id)
-    print(session["rol_actual"])
-    print(session["permissions"])
-    flash("El rol ha sido cambiado a {}.".format(session["roles"][rol_id]))
-    return render_template("home.html")
-
 def edit_profile():
     """
     Renderizado de la página de edición del perfil de usuario

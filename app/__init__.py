@@ -62,7 +62,7 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
     app.add_url_rule("/usuarios/search/", "user_search", user.search, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/usuarios/search/<int:page>", "user_search", user.search, methods=['GET'])
-    app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
+    #app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
     app.add_url_rule("/usuarios/<username>", "user_show", user.show, methods=['GET'])
 
     # Rutas de perfil propio

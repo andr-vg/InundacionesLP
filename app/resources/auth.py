@@ -28,7 +28,6 @@ def authenticate():
     # assign the permissions of the first rol by default
     #rol_id = next(iter(roles))
     #session["rol_actual"] = (rol_id, session["roles"][rol_id])
-    #print(session["rol_actual"])
     # save permissions
     session["permissions"] = User.get_permissions(user_id=user.id)
     flash("La sesión se inició correctamente.")

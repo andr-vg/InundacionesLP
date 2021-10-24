@@ -22,7 +22,8 @@
       <p>Confirmacion {{ form.confirm }}</p>
       </div>
       <input type="submit" value="Guardar">
+      <a href="{{ url_for('home') }}" class="link">Volver</a>
+
     </p>
   </form>
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
 {% endblock %}

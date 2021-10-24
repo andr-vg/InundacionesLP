@@ -15,9 +15,8 @@
 {% endfor %}
 <p>
   <input type="submit" value="Guardar">
+  <a href="{{ url_for('home') }}" class="link">Volver</a>
+
 </p>
 </form>
-<a href="{{ url_for('home') }}" class="link">Volver</a>
-</form>
-
 {% endblock %}

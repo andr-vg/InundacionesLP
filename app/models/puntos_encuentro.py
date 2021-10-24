@@ -65,28 +65,28 @@ class PuntosDeEncuentro(db.Model):
         self.coords = coords
         db.session.commit()
 
-    def get_punto_by_id(self, id):
+    def get_punto_by_id(id):
         """" Retorna el punto de encuentro con el id ingresado por parametro o None si no 
         se encuentra ninguno con dicho id.
         :params id:Numero entero que representa el identificador del punto de encuentro. """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.id==id).first()
     
 
-    def get_punto_by_name(self, name):
+    def get_punto_by_name(name):
         """" Retorna el punto de encuentro con el name ingresado por parametro o None
      si no se encuentra ninguno con dicho nombre .
         :params name:String que representa el nombre del punto de encuentro. """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name==name.upper()).first()
 
     
-    def get_punto_by_address(self, address):
+    def get_punto_by_address(address):
         """" Retorna el punto de encuentro con el address ingresado por parametro o None si no se encuentra 
         ninguno con dicha dirección .
         :params address:String que representa la direccion del punto de encuentro. """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.address==address.upper()).first()
 
     
-    def get_index_puntos_encuentro(self, page, config):
+    def get_index_puntos_encuentro(page, config):
         """" Retorna el listado de puntos de encuentro ordenado con la configuracion del sistema y paginado con
         la cantidad de elementos por pagina definidos en la configuracion del sistema.
         :param page:Numero entero que representa la pagina.

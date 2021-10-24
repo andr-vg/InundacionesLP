@@ -40,24 +40,7 @@
             <span class="material-icons md-36">&#xe853;</span>
             Bienvenido de nuevo <strong>{{ get_username() }}</strong>
           </h4>
-          {% if get_roles().keys()|length > 1 %}
-            <form action="{{ url_for('user_change_rol') }}" method="POST">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              <select name="rol" value=" {{ get_rol_actual()[0] }} " >
-                {% for key, value in get_roles().items() %}
-                  {% if key == get_rol_actual()[0] %}
-                    <option value="{{ key }}" selected>{{ value }}</option>
-                  {% else %}
-                    <option value="{{ key }}">{{ value }}</option>
-                  {% endif %}
-                {% endfor %}
-              </select>
-              <button class="btn btn-sm btn-info" type="submit">Cambiar rol</button>
-            </form> 
-    
-          {% else %}    
-            {{ get_rol_actual()[1] }}          
-          {% endif %}
+          
         {% endif %}
       </div>
       <nav class="navcolor navbar-dark bg-dark">

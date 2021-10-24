@@ -40,8 +40,8 @@ def create_app(environment="development"):
     app.jinja_env.globals.update(is_authenticated=auth.authenticated)
     app.jinja_env.globals.update(has_permission=auth.has_permission)
     app.jinja_env.globals.update(get_configuration=configuration.get_session_configuration)
-    app.jinja_env.globals.update(get_rol_actual=rol.get_session_rol_actual)
-    app.jinja_env.globals.update(get_roles=rol.get_session_roles)
+    #app.jinja_env.globals.update(get_rol_actual=rol.get_session_rol_actual)
+    #app.jinja_env.globals.update(get_roles=rol.get_session_roles)
     app.jinja_env.globals.update(get_username=user.get_session_username)
 
     # Autenticación

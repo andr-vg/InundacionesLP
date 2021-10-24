@@ -3,7 +3,7 @@
 body {
   background-color: #d4e0ec !important;
   font-family: 'Montserrat', Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .logo {
@@ -50,7 +50,7 @@ a:hover {
 
 a.link {
   text-transform: uppercase;
-  font-size: 10px;
+  font-size: 14px;
   background-color: #92a4ad !important;
   padding: 10px 15px;
   border-radius: 0;
@@ -81,3 +81,8 @@ h4 {
 .material-icons.md-24 { font-size: 24px; }
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
+
+.required:after {
+  content:" *";
+  color: red;
+}

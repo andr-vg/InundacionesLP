@@ -279,3 +279,6 @@ def show(username):
     
     user = User.get_user_by_username(username)
     return render_template("user/show.html", user=user)
+
+def get_session_username():
+    return session["username"]

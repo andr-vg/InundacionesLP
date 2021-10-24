@@ -4,6 +4,7 @@ from app.forms.configuration import ConfigurationForm
 from app.models.user import User
 from app.helpers.auth import authenticated
 from app.helpers.permission import has_permission as check_permission
+from app.helpers.configuration import get_configuration as help_configuration
 from app.db import db
 
 def update(): 
@@ -34,4 +35,7 @@ def confirm_update():
         flash("La configuracion ha sido guardada")
         return render_template("configuration/update.html",form=form) 
     return render_template("configuration/update.html",form=form) 
+
+def get_session_configuration():
+    return help_configuration(session)
 

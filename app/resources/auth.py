@@ -2,6 +2,8 @@ from flask import redirect, render_template, request, url_for, abort, session, f
 from app.models.user import User, Rol
 from app.models.configuration import Configuration
 from sqlalchemy import and_
+from app.helpers.auth import authenticated as auth
+from app.helpers.permission import has_permission as perm
 
 from app.resources import rol
 
@@ -33,6 +35,11 @@ def authenticate():
 
     return render_template("home.html")
 
+def authenticated():
+    return auth(session)
+
+def has_permission(permission):
+    return perm(permission, session)
 
 def logout():
     del session["user"]

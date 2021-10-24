@@ -6,12 +6,12 @@
 {% block content %}
   <h1>Usuarios</h1>
   <a href="{{ url_for('home') }}" class="link">Volver</a>
-  {% if has_permission('user_new', session) %}
+  {% if has_permission('user_new') %}
     <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
  
   {% endif %}
   <!-- previous page -->
-  {% if users.has_prev%}
+  {% if users.has_prev %}
     {% if filter == 1 %}
     <li>
       <a href="{{ url_for('user_search', page=users.prev_num, name=parameters['name'], active =parameters['active'] ) }}">Previous_Busqueda</a>
@@ -95,7 +95,7 @@
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
         <td id="actions">
           <div class="row">
-            {% if has_permission('user_active', session) %}
+            {% if has_permission('user_active') %}
               {% if 1 not in roles and user.active == 1 %}
               <div class="column mx-1">
                 <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea bloquear a este usuario?');"> <button class="btn btn-sm btn-secondary"> bloquear </button> </a>
@@ -108,7 +108,7 @@
 
               {% endif %}
             {% endif %}
-            {% if has_permission('user_destroy', session) %}
+            {% if has_permission('user_destroy') %}
             <div class="column mx-1">
               <form action="{{ url_for('user_soft_delete') }}" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -118,7 +118,7 @@
             </div>
 
             {% endif %}
-            {% if has_permission('user_edit',session) %}
+            {% if has_permission('user_edit') %}
             <form action="{{ url_for('user_edit') }}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input name="id" type="hidden" value="{{ user.id }}">

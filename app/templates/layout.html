@@ -17,8 +17,8 @@
     <script src="https://kit.fontawesome.com/e53bae01c6.js" crossorigin="anonymous"></script>
     <!-- estilos de la pagina -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    {% if is_authenticated(session) %}
-      {% set css_private = session["config"]["css_private"] %} 
+    {% if is_authenticated() %}
+      {% set css_private = get_configuration().css_private %} 
       <link rel="stylesheet" href="{{ url_for('static', filename=css_private) }}">   
     {% endif %}
     <title>{% block title %}{% endblock %}</title>
@@ -35,17 +35,17 @@
           </figure>
           </a>
         </div>
-        {% if is_authenticated(session) %}
+        {% if is_authenticated() %}
           <h4>
             <span class="material-icons md-36">&#xe853;</span>
-            Bienvenido de nuevo <strong>{{ session["username"] }}</strong>
+            Bienvenido de nuevo <strong>{{ get_username() }}</strong>
           </h4>
-          {% if session["roles"].keys()|length > 1 %}
+          {% if get_roles().keys()|length > 1 %}
             <form action="{{ url_for('user_change_rol') }}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              <select name="rol" value=" {{ session['rol_actual'][0] }} " >
-                {% for key, value in session['roles'].items() %}
-                  {% if key == session["rol_actual"][0] %}
+              <select name="rol" value=" {{ get_rol_actual()[0] }} " >
+                {% for key, value in get_roles().items() %}
+                  {% if key == get_rol_actual()[0] %}
                     <option value="{{ key }}" selected>{{ value }}</option>
                   {% else %}
                     <option value="{{ key }}">{{ value }}</option>
@@ -56,23 +56,23 @@
             </form> 
     
           {% else %}    
-            {{ session["rol_actual"][1] }}          
+            {{ get_rol_actual()[1] }}          
           {% endif %}
         {% endif %}
       </div>
       <nav class="navcolor navbar-dark bg-dark">
         <ul>
-        {% if is_authenticated(session) %}
-          {% if has_permission('configuration_update', session) %}
+        {% if is_authenticated() %}
+          {% if has_permission('configuration_update') %}
             <li><a href="{{ url_for('configuration_update') }}" class="link">Configuracion del sistema</a></li>
           {% endif %}
-          {% if has_permission('user_index', session) %}
+          {% if has_permission('user_index') %}
             <li><a href="{{ url_for('user_index') }}" class="link">Usuarios</a></li>
           {% endif %}
-          {% if has_permission('punto_encuentro_index', session) %}
+          {% if has_permission('punto_encuentro_index') %}
             <li><a href="{{ url_for('punto_encuentro_index') }}" class="link">Puntos de encuentro</a></li>
           {% endif %}
-          {% if has_permission('user_edit_profile', session) %}
+          {% if has_permission('user_edit_profile') %}
             <li><a href="{{ url_for('user_edit_profile') }}" class="link">Mi perfil</a></li>
           {% endif %}
           

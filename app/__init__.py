@@ -6,8 +6,8 @@ from app import db
 from flask_bcrypt import Bcrypt
 from app.resources import configuration, puntos_encuentro, user, auth, rol
 from app.helpers import handler
-from app.helpers import auth as helper_auth
-from app.helpers import permission as helper_permission
+#from app.helpers import auth as helper_auth
+#from app.helpers import permission as helper_permission
 from flask_wtf.csrf import CSRFProtect
 import logging
 
@@ -37,8 +37,12 @@ def create_app(environment="development"):
 
 
     # Funciones que se exportan al contexto de Jinja2
-    app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated)
-    app.jinja_env.globals.update(has_permission=helper_permission.has_permission)
+    app.jinja_env.globals.update(is_authenticated=auth.authenticated)
+    app.jinja_env.globals.update(has_permission=auth.has_permission)
+    app.jinja_env.globals.update(get_configuration=configuration.get_session_configuration)
+    app.jinja_env.globals.update(get_rol_actual=rol.get_session_rol_actual)
+    app.jinja_env.globals.update(get_roles=rol.get_session_roles)
+    app.jinja_env.globals.update(get_username=user.get_session_username)
 
     # Autenticación
     app.add_url_rule("/iniciar_sesion", "auth_login", auth.login)

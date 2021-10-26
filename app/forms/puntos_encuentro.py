@@ -1,4 +1,5 @@
 from wtforms import StringField,validators
+from wtforms.fields.core import FloatField
 from wtforms.fields.simple import HiddenField
 from flask_wtf import FlaskForm
 
@@ -18,7 +19,8 @@ class CreatePuntoEncuentro(FlaskForm):
     address = StringField('Dirección',[validators.DataRequired(message="Campo requerido")])
     email = StringField('Email',[validators.Email(message="Email invalido")])
     tel = StringField('Teléfono',[validators.regexp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$",message="Numero de telefono inválido")])
-    coords = StringField('Coordenadas',[validators.DataRequired(message="Campo requerido")])
+    lat = StringField('Latitud')
+    long = StringField('Longitud')
 
 class EditPuntoEncuentro(CreatePuntoEncuentro):
     """
@@ -27,5 +29,5 @@ class EditPuntoEncuentro(CreatePuntoEncuentro):
     Args:
         id(int): id del punto de encuentro.
     """
-    id = HiddenField('Id')
+    id = HiddenField('Id',[validators.NumberRange(min=1)])
 

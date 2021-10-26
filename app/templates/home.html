@@ -4,6 +4,10 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+  {% if not is_authenticated() %}
+  <li><a href="{{ url_for('auth_login') }}" class="link">Iniciar sesión</a></li>
+  {% endif %}
+
   <h1>Inicio</h1>
   <p>Página de inicio de la aplicación</p>
 

@@ -6,24 +6,10 @@
 {% block content %}
   <h1>Usuarios</h1>
   <a href="{{ url_for('home') }}" class="link">Volver</a>
-  {% if has_permission('user_new', session) %}
+  {% if has_permission('user_new') %}
     <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
- 
   {% endif %}
-  <!-- previous page -->
-  {% if users.has_prev %}
-  <li>
-    <a href="{{ url_for('user_index', page=users.prev_num) }}">Previous</a>
-  </li>
-  {% endif %}
-
-  <!-- next page -->
-  {% if users.has_next %}
-  <li>
-    <a href="{{ url_for('user_index', page=users.next_num) }}">Next</a>
-  </li>
-  {% endif %}
-  <form action="{{ url_for('user_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
+  <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET"> 
     <div class="container-fluid">
         <div class="row">
           <div class="col-sm-auto">
@@ -47,6 +33,7 @@
     </div>
   </form>
 
+  {% if users.items %}
   <table class="table table-sm">
     <thead>
       <tr>
@@ -81,7 +68,7 @@
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
         <td id="actions">
           <div class="row">
-            {% if has_permission('user_active', session) %}
+            {% if has_permission('user_active') %}
               {% if 1 not in roles and user.active == 1 %}
               <div class="column mx-1">
                 <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea bloquear a este usuario?');"> <button class="btn btn-sm btn-secondary"> bloquear </button> </a>
@@ -94,16 +81,21 @@
 
               {% endif %}
             {% endif %}
-            {% if has_permission('user_destroy', session) %}
+            {% if has_permission('user_destroy') %}
             <div class="column mx-1">
-              <a href="{{ url_for('user_soft_delete', id=user.id) }}" onclick="return confirm('Está seguro que desea eliminar este usuario?');"><button class="btn btn-sm btn-danger remove">Borrar <span class="material-icons">&#xE872;</span> </button></a>
+              <form action="{{ url_for('user_soft_delete') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input name="id" type="hidden" value="{{ user.id }}">
+                <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este usuario?')"> Borrar <span class="material-icons">&#xE150;</span> </button> 
+              </form>
             </div>
 
             {% endif %}
-            {% if has_permission('user_edit',session) %}
+            {% if has_permission('user_edit') %}
             <form action="{{ url_for('user_edit') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input name="id" type="hidden" value="{{ user.id }}">
-              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
             
             </form>
             {% endif %}
@@ -113,4 +105,17 @@
       {% endfor %}
     </tbody>
   </table>
+  {#Mensaje En caso de que la busqueda no traiga resultados#}
+  {% else %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1> No se encontraron Resultados</h1>
+    </div>
+  </div>
+  {% endif %}
+
+  {% from "paginate_macro.html" import show_paginate_table%}
+
+  {{ show_paginate_table(users, filter, parameters) }}
+
 {% endblock %}

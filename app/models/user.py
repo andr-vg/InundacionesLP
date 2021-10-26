@@ -173,8 +173,8 @@ class User(db.Model):
 
         """
         if config.ordered_by == "Ascendente":
-            return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
-        return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.desc()).paginate(page, per_page=config.elements_per_page)
+            return query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.desc()).paginate(page, per_page=config.elements_per_page)
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
@@ -263,8 +263,8 @@ class User(db.Model):
             config(dict): diccionario con los datos de configuracion establecidos
         """
         if config.ordered_by == "Ascendente":
-            return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
-        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.desc()).paginate(page, per_page=config.elements_per_page)
+            return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.asc()).paginate(page, per_page=config.elements_per_page)
+        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.desc()).paginate(page, per_page=config.elements_per_page)
 
 
     

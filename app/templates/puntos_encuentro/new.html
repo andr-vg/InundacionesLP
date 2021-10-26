@@ -2,10 +2,23 @@
 {% block title %}Puntos de encuentro{% endblock %}
 {% block head %}
   {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+
+ <script type="module" src="{{ url_for('static', filename='js/puntos_encuentro/new/index.js')}}"></script>
 {% endblock %}
 {% block content %}
   <h1>Crear un punto de encuentro</h1>
-  <form action="{{ url_for('punto_encuentro_create') }}" method="POST">
+  <form action="{{ url_for('punto_encuentro_create') }}" method="POST" id="create-punto-encuentro">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+        <div class="warning">Token CSRF invalido</div>
+    {% endif %}
     <p>
       <p>
         {{form.name.label}}
@@ -23,13 +36,14 @@
         {{form.email.label}}
         {{ form.email }}
       </p>
-      <p>
-        {{form.coords.label}}
-        {{ form.coords }}
-      </p>
+        {{form.lat}}
+        {{form.long}}
+      <div class="map-container">
+      <div id="mapid"></div>
+      </div>
       <input type="submit" value="Crear">
       <button type="reset">Limpiar</button>
+      <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
     </p>
   </form>
-  <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
 {% endblock %}

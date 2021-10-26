@@ -6,10 +6,10 @@
 {% block content %}
   <h1>Puntos de encuentro</h1>
   <a href="{{ url_for('home') }}" class="link">Volver</a>
-  {% if has_permission('punto_encuentro_new', session) %}
+  {% if has_permission('punto_encuentro_new') %}
     <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo punto de encuentro</a>
   {% endif %}
-  <form action="{{ url_for('punto_encuentro_index', name=name, active=active, inactive=inactive) }}" method="GET"> 
+  <form action="{{ url_for('punto_encuentro_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
     <input type="text" name="name">
     <input type="radio" name="active" value="activo"> <label> Activo</label>
     <input type="radio" name="active" value="inactivo"> <label> Inactivo</label>
@@ -17,18 +17,36 @@
       <input type="submit" value="Buscar">
     </p>
   </form>
+
+<!-- previous page -->
   {% if puntos_encuentro.has_prev %}
-  <li>
-    <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Previous</a>
-  </li>
+    {% if filter == 1 %}
+    <li>
+      <a href="{{ url_for('punto_encuentro_search', page=puntos_encuentro.prev_num, name=parameters['name'], active =parameters['active'] ) }}">Previous_Busqueda</a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Anterior</a>
+    </li>
+    {% endif%}
+
   {% endif %}
 
-  <!-- next page -->
-  {% if puntos_encuentro.has_next %}
-  <li>
-    <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Next</a>
-  </li>
+
+<!-- next page -->
+{% if puntos_encuentro.has_next %}
+    {% if filter == 1 %}
+    <li>
+      <a href="{{ url_for('punto_encuentro_search', page=puntos_encuentro.next_num, name=parameters['name'], active =parameters['active']) }}">Next_Busqueda</a>
+    </li>
+    {% else %}
+    <li>
+      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Siguiente</a>
+    </li>
+    {% endif%}
+
   {% endif %}
+
 
   <table class="table table-sm">
     <thead>
@@ -54,14 +72,16 @@
         </td>
         <td>
           <div class="row">
-            {% if has_permission('punto_encuentro_update',session) %}
+            {% if has_permission('punto_encuentro_update') %}
               <form action="{{ url_for('punto_encuentro_edit') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name="id" type="hidden" value="{{ punto.id }}">
-                <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+                <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
               </form>
             {% endif %}
-            {% if has_permission("punto_encuentro_destroy",session) %}
+            {% if has_permission("punto_encuentro_destroy") %}
               <form action="{{ url_for(('punto_encuentro_soft_delete')) }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name="id"  type="hidden" value="{{ punto.id }}"> 
                 {% if punto.state %}
                   <div class="column mx-1">

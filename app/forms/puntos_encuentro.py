@@ -1,8 +1,10 @@
-from sqlalchemy.sql.sqltypes import String
-from wtforms import Form,StringField,PasswordField,validators,SelectMultipleField, widgets
+from wtforms import StringField,validators
+from wtforms.fields.core import FloatField
 from wtforms.fields.simple import HiddenField
+from flask_wtf import FlaskForm
 
-class CreatePuntoEncuentro(Form):
+
+class CreatePuntoEncuentro(FlaskForm):
     """
     Formulario para registrar un nuevo punto de encuentro
 
@@ -13,11 +15,12 @@ class CreatePuntoEncuentro(Form):
         tel(string): teléfono de contacto
         coords(string): coordenadas geográficas del lugar
     """
-    name = StringField('Nombre',[validators.DataRequired(message="*")])
-    address = StringField('Dirección',[validators.DataRequired(message="*")])
+    name = StringField('Nombre',[validators.DataRequired(message="Campo requerido")])
+    address = StringField('Dirección',[validators.DataRequired(message="Campo requerido")])
     email = StringField('Email',[validators.Email(message="Email invalido")])
     tel = StringField('Teléfono',[validators.regexp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$",message="Numero de telefono inválido")])
-    coords = StringField('Coordenadas',[validators.DataRequired()])
+    lat = StringField('Latitud')
+    long = StringField('Longitud')
 
 class EditPuntoEncuentro(CreatePuntoEncuentro):
     """
@@ -26,5 +29,5 @@ class EditPuntoEncuentro(CreatePuntoEncuentro):
     Args:
         id(int): id del punto de encuentro.
     """
-    id = HiddenField('Id')
+    id = HiddenField('Id',[validators.NumberRange(min=1)])
 

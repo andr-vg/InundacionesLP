@@ -6,8 +6,9 @@ from app import db
 from flask_bcrypt import Bcrypt
 from app.resources import configuration, puntos_encuentro, user, auth, rol
 from app.helpers import handler
-from app.helpers import auth as helper_auth
-from app.helpers import permission as helper_permission
+#from app.helpers import auth as helper_auth
+#from app.helpers import permission as helper_permission
+from flask_wtf.csrf import CSRFProtect
 import logging
 
 
@@ -15,6 +16,9 @@ import logging
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
+
+    # CSRF Setup
+    csrf = CSRFProtect(app)
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
@@ -33,8 +37,12 @@ def create_app(environment="development"):
 
 
     # Funciones que se exportan al contexto de Jinja2
-    app.jinja_env.globals.update(is_authenticated=helper_auth.authenticated)
-    app.jinja_env.globals.update(has_permission=helper_permission.has_permission)
+    app.jinja_env.globals.update(is_authenticated=auth.authenticated)
+    app.jinja_env.globals.update(has_permission=auth.has_permission)
+    app.jinja_env.globals.update(get_configuration=configuration.get_session_configuration)
+    #app.jinja_env.globals.update(get_rol_actual=rol.get_session_rol_actual)
+    #app.jinja_env.globals.update(get_roles=rol.get_session_roles)
+    app.jinja_env.globals.update(get_username=user.get_session_username)
 
     # Autenticación
     app.add_url_rule("/iniciar_sesion", "auth_login", auth.login)
@@ -50,11 +58,11 @@ def create_app(environment="development"):
     app.add_url_rule("/usuarios/nuevo", "user_new", user.new)
     app.add_url_rule("/usuarios/editar", "user_edit", user.edit,methods=["POST"])
     app.add_url_rule("/usuarios/actualizar", "user_update", user.update, methods=["POST"])
-    app.add_url_rule("/usuarios/eliminar/<int:id>", "user_soft_delete", user.soft_delete, methods=["POST"])
+    app.add_url_rule("/usuarios/eliminar", "user_soft_delete", user.soft_delete, methods=["POST"])
     app.add_url_rule("/usuarios/estado/<int:id>", "user_change_state", user.change_state)
     app.add_url_rule("/usuarios/search/", "user_search", user.search, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/usuarios/search/<int:page>", "user_search", user.search, methods=['GET'])
-    app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
+    #app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
     app.add_url_rule("/usuarios/<username>", "user_show", user.show, methods=['GET'])
 
     # Rutas de perfil propio

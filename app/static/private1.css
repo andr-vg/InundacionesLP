@@ -1,7 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
-@import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
-
-
 :root {
   --primary: #17252A;
   --secondary: #2B7A78;
@@ -12,46 +8,11 @@
 
 body {
   background-color: var(--success) !important;
-  font-family: 'Montserrat', Helvetica, sans-serif;
   color: var(--info);
-  font-size: 18px;
-}
-
-.logo {
-    max-width: 170px;
 }
 
 .navcolor{
   background-color: var(--primary) !important;
-}
-nav ul {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-}
-
-.clear {
-  clear: both;
-  height: 0;
-  overflow: hidden;
-}
-
-footer {
-  width: 75%;
-  margin: 0 auto;
-  text-align: center;
-}
-
-#container {
-  width: 75%;
-  margin: 0 auto;
-  background-color: #FFF;
-  padding: 20px 40px;
-  border: solid 1px black;
-  margin-top: 20px;
-  min-height: 400px;
 }
 
 a {
@@ -64,27 +25,11 @@ a:hover {
 }
 
 a.link {
-  text-transform: uppercase;
-  font-size: 14px;
   background-color: var(--danger) !important;
-  padding: 10px 15px;
-  border-radius: 0;
   color: var(--primary) !important;
-  display: inline-block;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  line-height: 1.5;
-  text-decoration: none;
-  margin-top: 50px;
-  letter-spacing: 1px;
-}
-
-ul {
-    list-style-type: none;
 }
 
 h4 {
-  font-size: 28px;
   color: aliceblue;
 }
 
@@ -94,9 +39,11 @@ h4 {
 }
 .material-icons.md-18 { 
   font-size: 18px; 
+  vertical-align: bottom;
 }
 .material-icons.md-24 { 
   font-size: 24px; 
+  vertical-align: bottom;
 }
 .material-icons.md-36 { 
   font-size: 36px; 
@@ -122,3 +69,28 @@ background-color: var(--primary);
 border-color: var(--primary);
 }
 
+<<<<<<< HEAD
+#mapid { height: 500px; width: 500px; }
+
+#lat, #long { 
+  display:none;
+}
+
+
+=======
+.page-link{
+  background-color: var(--primary) !important;
+  color:var(--info);
+  border: 1px solid var(--danger);
+}
+
+.page-link:hover{
+  color: var(--secondary);
+}
+
+.page-item.disabled .page-link{
+  background-color: var(--info) !important;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+>>>>>>> development

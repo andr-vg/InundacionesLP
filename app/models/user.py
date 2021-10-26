@@ -173,8 +173,8 @@ class User(db.Model):
 
         """
         if config.ordered_by == "Ascendente":
-            return query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.asc()).paginate(page, per_page=config.elements_per_page)
-        return query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.desc()).paginate(page, per_page=config.elements_per_page)
+            return query.filter(User.deleted == False).filter(User.id != id).order_by(User.username.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.filter(User.deleted == False).filter(User.id != id).order_by(User.username.desc()).paginate(page, per_page=config.elements_per_page)
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
@@ -188,6 +188,7 @@ class User(db.Model):
     deleted = Column(Boolean, default=False)
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow,default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+    complaints = relationship("Denuncia", secondary='usuario_tiene_denuncia', back_populates='assigned_to')
 
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):

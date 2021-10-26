@@ -13,6 +13,10 @@
   {% endfor %}
   {% endfor %}
   <form action="{{ url_for('user_create') }}" method="POST">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+        <div class="warning">Token CSRF invalido</div>
+    {% endif %}
       <div>
       <p>Email {{ form.email }}</p>
       <p>Nombre de usuario {{ form.username }}</p>
@@ -27,7 +31,7 @@
       </div>
       <input type="submit" value="Crear">
       <button type="reset">Limpiar</button>
+      <a href="{{ url_for('user_index') }}" class="link">Volver</a>
     </p>
   </form>
-  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
 {% endblock %}

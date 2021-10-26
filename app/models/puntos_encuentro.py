@@ -17,7 +17,7 @@ class PuntosDeEncuentro(db.Model):
     def search_by_name(cls, name):
         """" Retorna la consulta de los puntos de encuentro que contienen el nombre recibido por parametro
         :param name:Cadena de string a buscar en los nombres de los puntos de encuentro.
-         """
+        """
         return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.name.like('%'+name+'%'))
 
     @classmethod
@@ -54,6 +54,16 @@ class PuntosDeEncuentro(db.Model):
         self.name = name
         self.tel = tel
         self.coords = coords
+        db.session.add(self)
+        db.session.commit()
+    
+    def update(self, name, address, tel, email, coords):
+        self.email = email
+        self.address = address
+        self.name = name
+        self.tel = tel
+        self.coords = coords
+        db.session.commit()
 
     def get_punto_by_id(id):
         """" Retorna el punto de encuentro con el id ingresado por parametro o None si no 
@@ -82,5 +92,5 @@ class PuntosDeEncuentro(db.Model):
         :param page:Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema. """
         if config.ordered_by == "Ascendente":
-            return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.asc()).paginate(page, per_page=config.elements_per_page)
-        return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.id.desc()).paginate(page, per_page=config.elements_per_page)
+            return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.name.asc()).paginate(page, per_page=config.elements_per_page)
+        return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.name.desc()).paginate(page, per_page=config.elements_per_page)

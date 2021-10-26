@@ -13,6 +13,7 @@
   {% endfor %}
   {% endfor %}
   <form action="{{ url_for('user_update_profile') }}" method="POST">
+    {{form.csrf_token}}
       <div>
         {{form.id}}
       <p>Nombre {{ form.firstname }}</p>
@@ -21,7 +22,8 @@
       <p>Confirmacion {{ form.confirm }}</p>
       </div>
       <input type="submit" value="Guardar">
+      <a href="{{ url_for('home') }}" class="link">Volver</a>
+
     </p>
   </form>
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
 {% endblock %}

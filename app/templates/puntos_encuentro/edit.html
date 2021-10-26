@@ -13,6 +13,10 @@
   {% endfor %}
   {% endfor %}
   <form action="{{ url_for('punto_encuentro_update') }}" method="POST">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+        <div class="warning">Token CSRF invalido</div>
+    {% endif %}
       <div>
         {{form.id}}
         <p>{{form.name.label}} {{ form.name }}</p>
@@ -22,7 +26,9 @@
       <p>{{form.coords.label}}{{ form.coords }}</p>
       </div>
       <input type="submit" value="Editar">
+      <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
+
     </p>
+
   </form>
-  <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
 {% endblock %}

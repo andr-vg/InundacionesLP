@@ -6,8 +6,9 @@
 {% block content %}
   <h1>Iniciar sesión</h1>
   <form action="{{ url_for('auth_authenticate') }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <input name="email" placeholder="Correo" required/>
     <input type="password" name="password" placeholder="Clave" required/>
-    <input type="submit" value="Login">
+    <input type="submit" value="Iniciar sesión">
   </form>
 {% endblock %}

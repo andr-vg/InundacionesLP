@@ -67,10 +67,6 @@ def create():
     if form.validate():
         parameters = {"email":form.email, "username": form.username}
         user = User.exists_user(parameters)
-        print(user)
-        print(user)
-        print(user)
-        print(user)
         if user and not user.deleted:
             flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
             return render_template("user/new.html", form=form)
@@ -145,7 +141,7 @@ def update():
     return render_template("user/edit.html", form=form)
 
 
-def soft_delete(id):
+def soft_delete():
     """
     Lógica a realizar al momento de eliminar
     de manera lógica a un usuario
@@ -159,7 +155,7 @@ def soft_delete(id):
         abort(401)
     if not check_permission('user_destroy', session):
         abort(401)
-    user = User.get_user_by_id(id)
+    user = User.get_user_by_id(request.form["id"])
     user.deleted = True
     db.session.commit()
     flash("Usuario eliminado correctamente.")
@@ -217,20 +213,6 @@ def search(page):
 
     return render_template("user/index.html", users=users, filter=1, parameters= parameters)
 
-def change_rol():
-    """
-    Lógica a realizar al momento de modificar el
-    rol de un usuario.
-
-    """
-    rol_id = int(request.form["rol"])
-    session["rol_actual"] = (rol_id, session["roles"][rol_id])
-    session["permissions"] = Rol.get_permissions(rol_id=rol_id)
-    print(session["rol_actual"])
-    print(session["permissions"])
-    flash("El rol ha sido cambiado a {}.".format(session["roles"][rol_id]))
-    return render_template("home.html")
-
 def edit_profile():
     """
     Renderizado de la página de edición del perfil de usuario
@@ -283,3 +265,6 @@ def show(username):
     
     user = User.get_user_by_username(username)
     return render_template("user/show.html", user=user)
+
+def get_session_username():
+    return session["username"]

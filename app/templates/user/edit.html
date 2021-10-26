@@ -13,6 +13,10 @@
   {% endfor %}
   {% endfor %}
   <form action="{{ url_for('user_update') }}" method="POST">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+        <div class="warning">Token CSRF invalido</div>
+    {% endif %}
       <div>
         {{form.id}}
       <p>Email {{ form.email }}</p>
@@ -27,7 +31,7 @@
       </p>
       </div>
       <input type="submit" value="Editar">
+      <a href="{{ url_for('user_index') }}" class="link">Volver</a>
     </p>
   </form>
-  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
 {% endblock %}

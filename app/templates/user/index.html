@@ -8,34 +8,6 @@
   <a href="{{ url_for('home') }}" class="link">Volver</a>
   {% if has_permission('user_new') %}
     <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
- 
-  {% endif %}
-  <!-- previous page -->
-  {% if users.has_prev %}
-    {% if filter == 1 %}
-    <li>
-      <a href="{{ url_for('user_search', page=users.prev_num, name=parameters['name'], active =parameters['active'] ) }}">Previous_Busqueda</a>
-    </li>
-    {% else %}
-    <li>
-      <a href="{{ url_for('user_index', page=users.prev_num) }}">Anterior</a>
-    </li>
-    {% endif%}
-
-  {% endif %}
-
-  <!-- next page -->
-  {% if users.has_next %}
-    {% if filter == 1 %}
-    <li>
-      <a href="{{ url_for('user_search', page=users.next_num, name=parameters['name'], active =parameters['active']) }}">Next_Busqueda</a>
-    </li>      
-    {% else %}
-    <li>
-      <a href="{{ url_for('user_index', page=users.next_num) }}">Siguiente</a>
-    </li>
-    {% endif%}
-
   {% endif %}
   <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET"> 
     <div class="container-fluid">
@@ -61,6 +33,7 @@
     </div>
   </form>
 
+  {% if users.items %}
   <table class="table table-sm">
     <thead>
       <tr>
@@ -122,7 +95,7 @@
             <form action="{{ url_for('user_edit') }}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input name="id" type="hidden" value="{{ user.id }}">
-              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons">&#xE150;</span> </button> 
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
             
             </form>
             {% endif %}
@@ -132,4 +105,17 @@
       {% endfor %}
     </tbody>
   </table>
+  {#Mensaje En caso de que la busqueda no traiga resultados#}
+  {% else %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1> No se encontraron Resultados</h1>
+    </div>
+  </div>
+  {% endif %}
+
+  {% from "paginate_macro.html" import show_paginate_table%}
+
+  {{ show_paginate_table(users, filter, parameters) }}
+
 {% endblock %}

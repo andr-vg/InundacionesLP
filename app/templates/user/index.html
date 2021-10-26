@@ -33,6 +33,7 @@
     </div>
   </form>
 
+  {% if users.items %}
   <table class="table table-sm">
     <thead>
       <tr>
@@ -99,6 +100,14 @@
       {% endfor %}
     </tbody>
   </table>
+  {#Mensaje En caso de que la busqueda no traiga resultados#}
+  {% else %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1> No se encontraron Resultados</h1>
+    </div>
+  </div>
+  {% endif %}
 
   {% from "paginate_macro.html" import show_paginate_table%}
 

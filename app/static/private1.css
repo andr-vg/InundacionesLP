@@ -69,7 +69,6 @@ background-color: var(--primary);
 border-color: var(--primary);
 }
 
-<<<<<<< HEAD
 #mapid { height: 500px; width: 500px; }
 
 #lat, #long { 
@@ -77,7 +76,6 @@ border-color: var(--primary);
 }
 
 
-=======
 .page-link{
   background-color: var(--primary) !important;
   color:var(--info);
@@ -93,4 +91,3 @@ border-color: var(--primary);
   color: var(--primary);
   border: 1px solid var(--primary);
 }
->>>>>>> development

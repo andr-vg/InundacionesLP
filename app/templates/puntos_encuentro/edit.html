@@ -2,27 +2,38 @@
 {% block title %}Punto de encuentro{% endblock %}
 {% block head %}
   {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+
+ <script type="module" src="{{ url_for('static', filename='js/puntos_encuentro/new/edit.js')}}"></script>
 {% endblock %}
 {% block content %}
   <h1>Editar punto de encuentro</h1>
-  {% for field in form.errors %}
-  {% for error in form.errors[field] %}
-      <div class="alert alert-error">
-          <strong>Error! {{field}} {{error}} </strong> 
-      </div>
-  {% endfor %}
-  {% endfor %}
-  <form action="{{ url_for('punto_encuentro_update') }}" method="POST">
+  <form action="{{ url_for('punto_encuentro_update') }}" method="POST" id="edit-punto-encuentro">
     {{ form.csrf_token }}
+    {{ form.id }}
     {% if form.csrf_token.errors %}
         <div class="warning">Token CSRF invalido</div>
     {% endif %}
       <div>
-        {{form.id}}
-        <p>{{form.name.label}} {{ form.name }}</p>
-        <p>{{form.address.label}} {{ form.address }}</p>
-      <p>{{ form.email.label }} {{ form.email }}</p>
-      <p>{{form.tel.label}} {{ form.tel }}</p>
+        {% for field in form if field.widget.input_type != 'hidden' %}
+        {% for error in field.errors%}
+        <p>{{error}}</p>
+        {% endfor %}
+        {% if field.id!="lat" and field.id!="long" %}
+        <p>{{field.label}} {{field}}</p>
+        {% endif %}
+        {% endfor %}
+        {{ form.lat }}
+        {{ form.long }}
+        <div class="map-container">
+          <div id="mapid"></div>
+          </div>
       </div>
       <input type="submit" value="Editar">
       <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>

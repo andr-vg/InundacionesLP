@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_, Float
 
-class Denuncia(db.model):
+class Denuncia(db.Model):
     """
     
     """
@@ -17,4 +17,5 @@ class Denuncia(db.model):
     lat = Column(String(255))
     long = Column(String(255))
     state = Column(String(255))
-    assigned_to = Column(Integer, ForeignKey('users.id'))
+    assigned_to = Column(Integer, ForeignKey('usuarios.id'))
+    user_assign = relationship("User", back_populates="complaints")

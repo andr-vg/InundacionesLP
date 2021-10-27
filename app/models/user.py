@@ -6,6 +6,7 @@ from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_
 from sqlalchemy.orm import relationship
 from app.models.rol import Rol
+from app.models.denuncias import Denuncia
 
 
 user_roles = Table('usuario_tiene_rol',db.Model.metadata,
@@ -188,7 +189,7 @@ class User(db.Model):
     deleted = Column(Boolean, default=False)
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow,default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
-    complaints = relationship("Denuncia", secondary='usuario_tiene_denuncia', back_populates='assigned_to')
+    complaints = relationship("Denuncia", back_populates="user_assign")
 
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):

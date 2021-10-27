@@ -58,7 +58,9 @@ def create():
         if PuntosDeEncuentro.unique_fields(form.name.data,form.address.data):
             flash("Uno o mas campos ya se encuentra cargado en el sistema")
             return render_template("puntos_encuentro/new.html", form=form)
-        PuntosDeEncuentro(name=form.name.data.upper(),address=form.address.data.upper(),tel=form.tel.data,email=form.email.data,lat=form.lat.data,long=form.long.data)
+        punto = PuntosDeEncuentro(name=form.name.data.upper(),address=form.address.data.upper(),tel=form.tel.data,email=form.email.data,lat=form.lat.data,long=form.long.data)
+        punto.add_punto_encuentro()
+        punto.update()
         flash("El nuevo punto de encuentro ha sido creado correctamente.")
         return redirect(url_for("punto_encuentro_index"))
     return render_template("puntos_encuentro/new.html",form=form)
@@ -102,7 +104,7 @@ def update():
         abort(401)
     if not check_permission("punto_encuentro_update", session):
         abort(401)
-    form = EditPuntoEncuentro(request.form)
+    form = EditPuntoEncuentro(id=request.form["id"],name=request.form["name"],address=request.form["address"],email=request.form["email"],tel=request.form["tel"],lat=request.form["lat"],long=request.form["long"])
     if form.validate():
         punto = PuntosDeEncuentro.get_punto_by_id(form.id.data)
         query = PuntosDeEncuentro.get_punto_by_name(form.name.data)
@@ -113,13 +115,9 @@ def update():
         if query and punto.id!=query.id:
             flash("Ya se encuentra un punto de encuentro con dicha direccion en el sistema")
             return render_template("puntos_encuentro/new.html", form=form)
-        punto.name = form.name.data.upper()
-        punto.address = form.address.data.upper()
-        punto.tel = form.tel.data
-        punto.email = form.email.data
-        punto.lat=form.lat.data
-        punto.long=form.long.data
-        db.session.commit()
+        punto.edit(name = form.name.data.upper(),address = form.address.data.upper(),tel = form.tel.data,email = form.email.data
+        ,lat=form.lat.data,long=form.long.data)
+        punto.update()
         flash("El punto de encuentro ha sido editado correctamente.")
         return redirect(url_for("punto_encuentro_index"))
     return render_template("puntos_encuentro/edit.html", form=form)

@@ -58,16 +58,19 @@ class PuntosDeEncuentro(db.Model):
         self.tel = tel
         self.lat = lat
         self.long = long
-        db.session.add(self)
-        db.session.commit()
     
-    def update(self, name, address, tel, email, lat,long):
+    def edit(self, name, address, tel, email, lat,long):
         self.email = email
         self.address = address
         self.name = name
         self.tel = tel
         self.lat = lat
         self.long = long
+    
+    def add_punto_encuentro(self):
+        db.session.add(self)
+
+    def update(self):
         db.session.commit()
 
     def get_punto_by_id(id):

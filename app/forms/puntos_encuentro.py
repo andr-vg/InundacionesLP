@@ -29,5 +29,12 @@ class EditPuntoEncuentro(CreatePuntoEncuentro):
     Args:
         id(int): id del punto de encuentro.
     """
-    id = HiddenField('Id',[validators.NumberRange(min=1)])
+    id = HiddenField('Id')
+
+    def validate_id(form,field):
+        """" Valida que el input id recibido sea un valor mayor o igual a 1 """
+        
+        if (int(field.data)<1):
+            form.id.errors = (validators.ValidationError("Formulario invalido"),)
+
 

@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}Puntos de encuentro{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+
+ <script type="module" src="{{ url_for('static', filename='js/denuncias/new/new.js')}}"></script>
+{% endblock %}
+{% block content %}
+  <h1>Crear un punto de encuentro</h1>
+  <form action="{{ url_for('denuncia_create') }}" method="POST" id="create-denuncia">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+        <div class="warning">Token CSRF invalido</div>
+    {% endif %}
+    <p>
+      <p>
+        {{form.title.label}}
+        {{ form.title }}
+      </p>
+      <p>
+        {{form.category.label}}
+        {{ form.category }}
+      </p>
+      <p>
+        {{form.description.label}}
+        {{ form.description }}
+      </p>
+      <p>
+        {{form.firstname.label}}
+        {{ form.firstname }}
+      </p>
+      <p>
+        {{form.lastname.label}}
+        {{ form.lastname }}
+      </p>
+      <p>
+        {{form.tel.label}}
+        {{ form.tel }}
+      </p>
+      <p>
+        {{form.email.label}}
+        {{ form.email }}
+      </p>
+        {{form.lat}}
+        {{form.long}}
+      <div class="map-container">
+      <div id="mapid"></div>
+      </div>
+      <input type="submit" value="Crear">
+      <button type="reset">Limpiar</button>
+      <a href="{{ url_for('denuncia_index') }}" class="link">Volver</a>
+    </p>
+  </form>
+{% endblock %}

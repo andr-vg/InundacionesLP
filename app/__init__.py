@@ -4,7 +4,7 @@ from flask_session import Session
 from config import config
 from app import db
 from flask_bcrypt import Bcrypt
-from app.resources import configuration, puntos_encuentro, user, auth, rol
+from app.resources import configuration, puntos_encuentro, user, auth, rol,denuncias
 from app.helpers import handler
 #from app.helpers import auth as helper_auth
 #from app.helpers import permission as helper_permission
@@ -86,9 +86,18 @@ def create_app(environment="development"):
     app.add_url_rule("/puntos_encuentro/<name>", "punto_encuentro_show", puntos_encuentro.show, methods=['GET'])
 
 
+
+    # Rutas de Denuncias
+
+    app.add_url_rule("/denuncias", "denuncia_index", denuncias.index,defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/denuncias/<int:page>", "denuncia_index", denuncias.index, methods=['GET'])
+    app.add_url_rule("/denuncias/nuevo", "denuncia_new", denuncias.new)
+    app.add_url_rule("/denuncias", "denuncia_create", denuncias.create, methods=["POST"])
+
     # Rutas de Configuracion
     app.add_url_rule("/configuracion", "configuration_update", configuration.update)
     app.add_url_rule("/config", "configuration_confirm_update", configuration.confirm_update, methods=["POST"])
+    
 
     # Ruta para el Home (usando decorator)
     @app.route("/")

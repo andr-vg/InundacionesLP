@@ -1,7 +1,6 @@
 from operator import not_
 from flask import redirect, render_template, request, url_for, session, abort
 from flask.helpers import flash
-from sqlalchemy.sql.expression import false
 from app.helpers.configuration import get_configuration
 from sqlalchemy.exc import OperationalError
 from app.forms.puntos_encuentro import CreatePuntoEncuentro, EditPuntoEncuentro

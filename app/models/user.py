@@ -2,11 +2,14 @@ import re
 import bcrypt
 from flask_bcrypt import generate_password_hash,check_password_hash
 import datetime
+
+from sqlalchemy.sql.expression import false
 from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_
 from sqlalchemy.orm import relationship
 from app.models.rol import Rol
 from app.models.denuncias import Denuncia
+from app.models.seguimiento import Seguimiento
 
 
 user_roles = Table('usuario_tiene_rol',db.Model.metadata,
@@ -190,7 +193,7 @@ class User(db.Model):
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow,default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     complaints = relationship("Denuncia", back_populates="user_assign")
-
+    tracing = relationship("Seguimiento", uselist=False,backref="usuarios")
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):
         self.email = email

@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+
+
+<table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Titulo</th>
+        <th>Categoria</th>
+        <th>Fecha de creacion</th>
+        <th>Estado</th>
+        <th>Coordenadas</th>
+        <th>Email</th>
+        <th>Usuario Asignado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for denuncia in denuncias.items %}
+      <tr>
+        <td>{{ denuncia.title }} </a></td>
+        <td> {{ denuncia.category }} </td>
+        <td> {{ denuncia.created_at.strftime('%d-%m-%Y') }} </td>
+        <td> {{ denuncia.state }}</td>
+        <td> {{ denuncia.coords.lat }} 
+             {{ denuncia.coords.long }}
+             {{ denuncia.coords }}
+        </td>
+        <td>  {{ denuncia.email }}  </td>
+        <td>  {{ denuncia.assigned_to }}  </td>
+    </tr>
+
+      {% endfor %}
+
+      {% endblock %}
+
+
+
+
+
+
+<!-- previous page -->
+{% if denuncias.has_prev %}
+<li>
+  <a href="{{ url_for('denuncia_index', page=denuncias.prev_num) }}">Anterior</a>
+</li>
+{% endif %}
+
+
+<!-- next page -->
+{% if denuncias.has_next %}
+<li>
+  <a href="{{ url_for('denuncia_index', page=denuncias.next_num) }}">Siguiente</a>
+</li>
+{% endif %}

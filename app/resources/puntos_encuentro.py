@@ -128,7 +128,7 @@ def soft_delete():
     user_email = authenticated(session)
     if not user_email:
         abort(401)
-    if not check_permission('punto_encuentro_edit',session):
+    if not check_permission('punto_encuentro_update',session):
         abort(401)
     punto_encuentro = PuntosDeEncuentro.get_punto_by_id(request.form["id"])
     punto_encuentro.change_state()

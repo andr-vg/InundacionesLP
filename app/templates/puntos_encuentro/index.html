@@ -86,7 +86,7 @@
                 <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
               </form>
             {% endif %}
-            {% if has_permission("punto_encuentro_update") %}
+            {% if has_permission('punto_encuentro_update') %}
               <form action="{{ url_for(('punto_encuentro_soft_delete')) }}" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name="id"  type="hidden" value="{{ punto.id }}"> 

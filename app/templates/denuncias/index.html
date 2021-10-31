@@ -4,8 +4,7 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-
-
+{% if has_permission('denuncia_index') %}
 <table class="table table-sm">
     <thead>
       <tr>
@@ -27,21 +26,14 @@
         <td> {{ denuncia.state }}</td>
         <td> {{ denuncia.coords.lat }} 
              {{ denuncia.coords.long }}
-             {{ denuncia.coords }}
         </td>
         <td>  {{ denuncia.email }}  </td>
         <td>  {{ denuncia.assigned_to }}  </td>
+        <td> {{ denuncia.coords.constraint }} </td>
     </tr>
-
       {% endfor %}
-
-      {% endblock %}
-
-
-
-
-
-
+    </tbody>
+    </table>
 <!-- previous page -->
 {% if denuncias.has_prev %}
 <li>
@@ -56,3 +48,5 @@
   <a href="{{ url_for('denuncia_index', page=denuncias.next_num) }}">Siguiente</a>
 </li>
 {% endif %}
+{% endif %}
+{% endblock %}

@@ -63,8 +63,8 @@ class EditProfileForm(FlaskForm):
         confirm(string): repetición de contraseña
     """
     id = HiddenField('Id')
-    firstname = StringField('Nombre', [validators.regexp("^[a-zA-Z]+$")])
-    lastname = StringField('Apellido', [validators.regexp("^[a-zA-Z]+$")])
+    firstname = StringField('Nombre', [validators.regexp("^[a-zA-Z]+$", message="El nombre no puede estar vacío.")] )
+    lastname = StringField('Apellido', [validators.regexp("^[a-zA-Z]+$", message="El apellido no puede estar vacío.")])
     password = PasswordField('Contraseña', [validators.EqualTo('confirm',
         message="Las contraseñas no coinciden")])
     confirm = PasswordField('Confirmar contraseña')

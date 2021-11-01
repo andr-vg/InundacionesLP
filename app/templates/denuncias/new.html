@@ -10,23 +10,35 @@
  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
  crossorigin=""></script>
 
- <script type="module" src="{{ url_for('static', filename='js/puntos_encuentro/new/new.js')}}"></script>
+ <script type="module" src="{{ url_for('static', filename='js/denuncias/new/new.js')}}"></script>
 {% endblock %}
 {% block content %}
   <h1>Crear un punto de encuentro</h1>
-  <form action="{{ url_for('punto_encuentro_create') }}" method="POST" id="create-punto-encuentro">
+  <form action="{{ url_for('denuncia_create') }}" method="POST" id="create-denuncia">
     {{ form.csrf_token }}
     {% if form.csrf_token.errors %}
         <div class="warning">Token CSRF invalido</div>
     {% endif %}
     <p>
       <p>
-        {{form.name.label}}
-        {{ form.name }}
+        {{form.title.label}}
+        {{ form.title }}
       </p>
       <p>
-        {{form.address.label}}
-        {{ form.address }}
+        {{form.category.label}}
+        {{ form.category }}
+      </p>
+      <p>
+        {{form.description.label}}
+        {{ form.description }}
+      </p>
+      <p>
+        {{form.firstname.label}}
+        {{ form.firstname }}
+      </p>
+      <p>
+        {{form.lastname.label}}
+        {{ form.lastname }}
       </p>
       <p>
         {{form.tel.label}}
@@ -43,7 +55,7 @@
       </div>
       <input type="submit" value="Crear">
       <button type="reset">Limpiar</button>
-      <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
+      <a href="{{ url_for('denuncia_index') }}" class="link">Volver</a>
     </p>
   </form>
 {% endblock %}

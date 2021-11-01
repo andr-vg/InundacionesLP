@@ -34,6 +34,24 @@ h4 {
   color: var(--secondary);
 }
 
+.material-icons { 
+  font-size: 19px;
+  padding: 0%;
+}
+.material-icons.md-18 { 
+  font-size: 18px;
+  vertical-align: bottom;
+ }
+.material-icons.md-24 { 
+  font-size: 24px;
+  vertical-align: bottom;
+ }
+.material-icons.md-36 { 
+  font-size: 36px;
+  vertical-align: bottom;
+ }
+.material-icons.md-48 { font-size: 48px; }
+
 table.table> tbody > tr> td,
 table{
 color:var(--info);
@@ -48,4 +66,20 @@ font-weight: bolder;
 font-size: 16px;
 background-color: var(--primary);
 border-color: var(--primary);
+}
+
+#mapid { height: 500px; width: 500px; }
+
+#lat, #long { 
+  display:none;
+}
+
+.page-link{
+  background-color: var(--primary) !important;
+  color:var(--info);
+  border: 1px solid var(--danger);
+}
+
+.page-link:hover{
+  color: var(--secondary);
 }

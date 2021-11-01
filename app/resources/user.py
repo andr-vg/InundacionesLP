@@ -150,7 +150,6 @@ def soft_delete():
         id(int): id del usuario a eliminar
     """
     user_email = authenticated(session)
-    #user_id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission('user_destroy', session):
@@ -170,12 +169,10 @@ def change_state(id):
         id(int): id del usuario 
     """
     user_email = authenticated(session)
-    #user_id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
     if not check_permission('user_active', session):
         abort(401)
-    #user = User.query.filter(User.id==id).first()
     user = User.get_user_by_id(id)
     user.active = not user.active
     state = "reactivado" if user.active else "bloqueado"

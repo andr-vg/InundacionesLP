@@ -1,7 +1,6 @@
 from operator import not_
 from flask import redirect, render_template, request, url_for, session, abort
 from flask.helpers import flash
-from sqlalchemy.sql.expression import false
 from app.helpers.configuration import get_configuration
 from sqlalchemy.exc import OperationalError
 from app.forms.puntos_encuentro import CreatePuntoEncuentro, EditPuntoEncuentro
@@ -53,12 +52,14 @@ def create():
         abort(401)
     if not check_permission("punto_encuentro_new", session):
         abort(401)
-    form = CreatePuntoEncuentro(request.form)
+    form = CreatePuntoEncuentro(name=request.form["name"],address=request.form["address"],email=request.form["email"],tel=request.form["tel"],lat=request.form["lat"],long=request.form["long"])
     if form.validate():
         if PuntosDeEncuentro.unique_fields(form.name.data,form.address.data):
             flash("Uno o mas campos ya se encuentra cargado en el sistema")
             return render_template("puntos_encuentro/new.html", form=form)
-        new_punto = PuntosDeEncuentro(name=form.name.data.upper(),address=form.address.data.upper(),tel=form.tel.data,email=form.email.data,coords=form.coords.data)
+        punto = PuntosDeEncuentro(name=form.name.data.upper(),address=form.address.data.upper(),tel=form.tel.data,email=form.email.data,lat=form.lat.data,long=form.long.data)
+        punto.add_punto_encuentro()
+        punto.update()
         flash("El nuevo punto de encuentro ha sido creado correctamente.")
         return redirect(url_for("punto_encuentro_index"))
     return render_template("puntos_encuentro/new.html",form=form)
@@ -91,7 +92,7 @@ def edit():
     if not check_permission("punto_encuentro_update", session):
         abort(401)
     punto = PuntosDeEncuentro.get_punto_by_id(request.form['id'])
-    form = EditPuntoEncuentro(id=punto.id,name=punto.name,address=punto.address,tel=punto.tel,email=punto.email,coords=punto.coords)
+    form = EditPuntoEncuentro(id=punto.id,name=punto.name,address=punto.address,tel=punto.tel,email=punto.email,lat=punto.lat,long=punto.long)
     return render_template("puntos_encuentro/edit.html", form=form)
 
 
@@ -102,7 +103,8 @@ def update():
         abort(401)
     if not check_permission("punto_encuentro_update", session):
         abort(401)
-    form = EditPuntoEncuentro(request.form)
+    form = EditPuntoEncuentro(id=request.form["id"],name=request.form["name"],address=request.form["address"]
+    ,email=request.form["email"],tel=request.form["tel"],lat=request.form["lat"],long=request.form["long"])
     if form.validate():
         punto = PuntosDeEncuentro.get_punto_by_id(form.id.data)
         query = PuntosDeEncuentro.get_punto_by_name(form.name.data)
@@ -113,12 +115,9 @@ def update():
         if query and punto.id!=query.id:
             flash("Ya se encuentra un punto de encuentro con dicha direccion en el sistema")
             return render_template("puntos_encuentro/new.html", form=form)
-        punto.name = form.name.data.upper()
-        punto.address = form.address.data.upper()
-        punto.tel = form.tel.data
-        punto.email = form.email.data
-        punto.coords = form.coords.data
-        db.session.commit()
+        punto.edit(name = form.name.data.upper(),address = form.address.data.upper()
+        ,tel = form.tel.data,email = form.email.data,lat=form.lat.data,long=form.long.data)
+        punto.update()
         flash("El punto de encuentro ha sido editado correctamente.")
         return redirect(url_for("punto_encuentro_index"))
     return render_template("puntos_encuentro/edit.html", form=form)
@@ -129,15 +128,16 @@ def soft_delete():
     user_email = authenticated(session)
     if not user_email:
         abort(401)
-    if not check_permission('punto_encuentro_destroy',session):
+    if not check_permission('punto_encuentro_update',session):
         abort(401)
     punto_encuentro = PuntosDeEncuentro.get_punto_by_id(request.form["id"])
-    punto_encuentro.state = not punto_encuentro.state
-    db.session.commit()
+    punto_encuentro.change_state()
+    punto_encuentro.update()
     state = "Publicado" if punto_encuentro.state else "Despublicado"
     flash("El punto de encuentro ha sido {} correctamente".format(state))
     return redirect(url_for("punto_encuentro_index"))
-    
+
+
 def show(name):
     """"" Vista detallada de un punto de encuentro """
     user_email = authenticated(session)
@@ -145,6 +145,19 @@ def show(name):
         abort(401)
     if not check_permission("punto_encuentro_show", session):
         abort(401)
-    
     punto = PuntosDeEncuentro.get_punto_by_name(name)
     return render_template("puntos_encuentro/show.html", pto=punto)
+
+
+def delete():
+    """" Elimina un punto de encuentro fisicamente """
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission('punto_encuentro_destroy',session):
+        abort(401)
+    punto_encuentro = PuntosDeEncuentro.get_punto_by_id(request.form["id"])
+    punto_encuentro.delete()
+    punto_encuentro.update()
+    flash("El punto de encuentro ha sido eliminado correctamente")
+    return redirect(url_for("punto_encuentro_index"))

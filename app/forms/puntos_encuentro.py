@@ -1,4 +1,5 @@
 from wtforms import StringField,validators
+from wtforms.fields.core import FloatField
 from wtforms.fields.simple import HiddenField
 from flask_wtf import FlaskForm
 
@@ -18,7 +19,8 @@ class CreatePuntoEncuentro(FlaskForm):
     address = StringField('Dirección',[validators.DataRequired(message="Campo requerido")])
     email = StringField('Email',[validators.Email(message="Email invalido")])
     tel = StringField('Teléfono',[validators.regexp("^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$",message="Numero de telefono inválido")])
-    coords = StringField('Coordenadas',[validators.DataRequired(message="Campo requerido")])
+    lat = StringField('Latitud')
+    long = StringField('Longitud')
 
 class EditPuntoEncuentro(CreatePuntoEncuentro):
     """
@@ -28,4 +30,11 @@ class EditPuntoEncuentro(CreatePuntoEncuentro):
         id(int): id del punto de encuentro.
     """
     id = HiddenField('Id')
+
+    def validate_id(form,field):
+        """" Valida que el input id recibido sea un valor mayor o igual a 1 """
+        
+        if (int(field.data)<1):
+            form.id.errors = (validators.ValidationError("Formulario invalido"),)
+
 

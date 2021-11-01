@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}Zonas Inundables{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %} 
+
+<div class="container">
+    <h1>
+        Subir Archivo
+    </h1>
+    <form action="{{ url_for('zonas_inundables_upload') }}"enctype=multipart/form-data method="post">
+        <div class="form-group">
+            <label for="inputFile">Subir Archivo</label>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="file" name="inputFile">
+        </div>
+        <button type="submit" class="btn btn-secondary">
+            Submit
+        </button>
+    </form>
+</div>
+{% endblock  %}

@@ -4,7 +4,7 @@ from flask_session import Session
 from config import config
 from app import db
 from flask_bcrypt import Bcrypt
-from app.resources import configuration, puntos_encuentro, user, auth, rol, zonas_inundables
+from app.resources import configuration, puntos_encuentro, user, auth, rol, denuncias , zonas_inundables
 from app.helpers import handler
 #from app.helpers import auth as helper_auth
 #from app.helpers import permission as helper_permission
@@ -82,12 +82,25 @@ def create_app(environment="development"):
     app.add_url_rule("/puntos_encuentro/editar", "punto_encuentro_edit", puntos_encuentro.edit, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/actualizar", "punto_encuentro_update", puntos_encuentro.update, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/eliminar", "punto_encuentro_soft_delete", puntos_encuentro.soft_delete,methods=["POST"])
+    app.add_url_rule("/puntos_encuentro/baja", "punto_encuentro_delete", puntos_encuentro.delete,methods=["POST"])
     app.add_url_rule("/puntos_encuentro/<name>", "punto_encuentro_show", puntos_encuentro.show, methods=['GET'])
 
+
+
+    # Rutas de Denuncias
+
+    app.add_url_rule("/denuncias", "denuncia_index", denuncias.index,defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/denuncias/<int:page>", "denuncia_index", denuncias.index, methods=['GET'])
+    app.add_url_rule("/denuncias/nuevo", "denuncia_new", denuncias.new)
+    app.add_url_rule("/denuncias/baja/<int:id>", "denuncia_delete", denuncias.delete, methods=['GET'])
+    app.add_url_rule("/denuncias/actualizar/<int:id>", "denuncia_edit", denuncias.edit, methods=['GET'])
+    app.add_url_rule("/denuncias/editar/<int:id>", "denuncia_update", denuncias.update, methods=['POST'])
+    app.add_url_rule("/denuncias", "denuncia_create", denuncias.create, methods=["POST"])
 
     # Rutas de Configuracion
     app.add_url_rule("/configuracion", "configuration_update", configuration.update)
     app.add_url_rule("/config", "configuration_confirm_update", configuration.confirm_update, methods=["POST"])
+    
 
     #Rutas para Zonas_inundables
     app.add_url_rule("/zonas_inundables", "zonas_inundables_index", zonas_inundables.index, defaults={'page': 1})

@@ -55,6 +55,9 @@
           {% if has_permission('punto_encuentro_index') %}
             <li><a href="{{ url_for('punto_encuentro_index') }}" class="link">Puntos de encuentro</a></li>
           {% endif %}
+          {% if has_permission('denuncia_index') %}
+            <li><a href="{{ url_for('denuncia_index') }}" class="link">Denuncias</a></li>
+          {% endif %}
           {% if has_permission('user_edit_profile') %}
             <li><a href="{{ url_for('user_edit_profile') }}" class="link">Mi perfil</a></li>
           {% endif %}

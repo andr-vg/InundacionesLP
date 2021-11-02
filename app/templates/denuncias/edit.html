@@ -10,11 +10,11 @@
  integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
  crossorigin=""></script>
 
- <script type="module" src="{{ url_for('static', filename='js/denuncias/new/new.js')}}"></script>
+ <script type="module" src="{{ url_for('static', filename='js/denuncias/new/edit.js')}}"></script>
 {% endblock %}
 {% block content %}
-  <h1>Crear Denuncia</h1>
-  <form action="{{ url_for('denuncia_create') }}" method="POST" id="create-denuncia">
+  <h1>Editar denuncia</h1>
+  <form action="{{ url_for('denuncia_update', id=denuncia.id) }}" method="POST" id="edit-denuncia">
     {{ form.csrf_token }}
     {% if form.csrf_token.errors %}
         <div class="warning">Token CSRF invalido</div>

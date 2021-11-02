@@ -92,6 +92,9 @@ def create_app(environment="development"):
     app.add_url_rule("/denuncias", "denuncia_index", denuncias.index,defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/denuncias/<int:page>", "denuncia_index", denuncias.index, methods=['GET'])
     app.add_url_rule("/denuncias/nuevo", "denuncia_new", denuncias.new)
+    app.add_url_rule("/denuncias/baja/<int:id>", "denuncia_delete", denuncias.delete, methods=['GET'])
+    app.add_url_rule("/denuncias/actualizar/<int:id>", "denuncia_edit", denuncias.edit, methods=['GET'])
+    app.add_url_rule("/denuncias/editar/<int:id>", "denuncia_update", denuncias.update, methods=['POST'])
     app.add_url_rule("/denuncias", "denuncia_create", denuncias.create, methods=["POST"])
 
     # Rutas de Configuracion

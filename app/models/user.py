@@ -218,6 +218,11 @@ class User(db.Model):
         """
         self.password_hash = generate_password_hash(password)
 
+
+    def assign_complaints(self,complaint):
+        """ Asigna la denuncia a la relacion """
+        self.complaints.append(complaint)
+
     def verify_password(self, password):
         """
         Verifica si la contraseña por parámetro coincide
@@ -257,7 +262,12 @@ class User(db.Model):
         """
         return User.query.filter(User.username==username).first()
 
-        
+
+    def get_all():
+        """Retorna el listado de todos los usuarios no eliminados"""
+        return User.query.filter(User.deleted==False)
+
+
     def get_index_users(id, page, config):
         """
         Retorna los usuarios de manera paginada según la configuracion dada

@@ -110,11 +110,11 @@ def update():
         query = PuntosDeEncuentro.get_punto_by_name(form.name.data)
         if query and punto.id!=query.id:
             flash("Ya se encuentra un punto de encuentro con dicho nombre en el sistema")
-            return render_template("puntos_encuentro/new.html", form=form)
+            return render_template("puntos_encuentro/edit.html", form=form)
         query = PuntosDeEncuentro.get_punto_by_address(form.address.data)
         if query and punto.id!=query.id:
             flash("Ya se encuentra un punto de encuentro con dicha direccion en el sistema")
-            return render_template("puntos_encuentro/new.html", form=form)
+            return render_template("puntos_encuentro/edit.html", form=form)
         punto.edit(name = form.name.data.upper(),address = form.address.data.upper()
         ,tel = form.tel.data,email = form.email.data,lat=form.lat.data,long=form.long.data)
         punto.update()

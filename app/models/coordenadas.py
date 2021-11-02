@@ -30,7 +30,6 @@ class Coordenadas(db.Model):
 
     __tablename__ = 'coordenadas'
     id = Column(Integer, primary_key=True)
-    constraint =  relationship("Denuncia",back_populates="coords")
     lat = Column(String(255))
     long = Column(String(255))
 
@@ -41,5 +40,9 @@ class Coordenadas(db.Model):
 
     def assign_constraint(self,constraint):
         self.constraint.append(constraint)
+
+    
+    def get_by_id(id):
+        return Coordenadas.query.filter(Coordenadas.id==id).first()
     
 

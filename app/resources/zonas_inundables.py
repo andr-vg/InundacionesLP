@@ -13,19 +13,23 @@ def index(page):
     return render_template("zonas_inundables/index.html",page=1)
 
 def upload():
+    """
+    Recibe el archivo subido por el usuario, y se asegura que sea .csv para procesarlo
+    """
     file = request.files["inputFile"]
     file_content = io.TextIOWrapper(file.stream._file, "UTF8", newline=None)
-    print(check(file.filename))
     if check(file.filename):
-        _process_csv(file_content)
+        __process_csv(file_content)
     return file.filename
 
-def _process_csv(file):
-    #Path de zonas.csv
-    zonas_folder = Path.cwd().parent /'grupo22' /'app' / 'data'
-    json_file_path = zonas_folder / 'zonas.json'
-    #Lectura de zonas.csv
-    values = {}
+def __process_csv(file):
+    """
+    Procesa el archivo csv, crea las zonas_inundables, y las coordenadas.
+    Luego relaciona zonas y coordenadas, para luego guardarlas en la base de datos.
+
+    Args:
+        file: Archivo csv, previamente verificado.
+    """
     d_reader = csv.DictReader(file)
     for index,row in enumerate(d_reader):
         zones_list = json.loads(row['area'])
@@ -34,8 +38,3 @@ def _process_csv(file):
             coordenadas = Coordenadas(lat,long)
             coordenadas.assign_zonas_inundables(zona_inundable,coordenadas)
 
-
-"""        values[index] = row
-        values[index]["area"]= zones_list
-    with open(json_file_path,'w') as json_file:
-        json_file.write(json.dumps(values, indent=4))"""

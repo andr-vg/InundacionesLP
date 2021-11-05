@@ -20,7 +20,6 @@ class DenunciaSchema(object):
 
     @classmethod
     def _serialize(cls,obj):
-        print(obj)
         return {
             "categoria_id":obj.category_id,
             "coordenadas":str(obj.lat) +","+str(obj.long),

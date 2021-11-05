@@ -4,7 +4,8 @@ from flask_session import Session
 from config import config
 from app import db
 from flask_bcrypt import Bcrypt
-from app.resources import configuration, puntos_encuentro, user, auth, rol,denuncias
+from app.resources import configuration, puntos_encuentro, seguimiento, user, auth, rol,denuncias
+from app.resources.api.denuncias import denuncia_api
 from app.helpers import handler
 #from app.helpers import auth as helper_auth
 #from app.helpers import permission as helper_permission
@@ -12,13 +13,16 @@ from flask_wtf.csrf import CSRFProtect
 import logging
 
 
+csrf = CSRFProtect()
 
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
 
     # CSRF Setup
-    csrf = CSRFProtect(app)
+    csrf.init_app(app)
+    app.config["WTF_CSRF_CHECK_DEFAULT"] = False
+    #csrf = CSRFProtect(app)
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
@@ -91,11 +95,23 @@ def create_app(environment="development"):
 
     app.add_url_rule("/denuncias", "denuncia_index", denuncias.index,defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/denuncias/<int:page>", "denuncia_index", denuncias.index, methods=['GET'])
+    app.add_url_rule("/denuncias/seguimiento", "denuncia_tracking", denuncias.index_assigned,defaults={'page': 1},
+     methods=['GET'])
+    app.add_url_rule("/denuncias/seguimiento/<int:page>", "denuncia_tracking", denuncias.index_assigned, methods=['GET'])
     app.add_url_rule("/denuncias/nuevo", "denuncia_new", denuncias.new)
     app.add_url_rule("/denuncias/baja/<int:id>", "denuncia_delete", denuncias.delete, methods=['GET'])
     app.add_url_rule("/denuncias/actualizar/<int:id>", "denuncia_edit", denuncias.edit, methods=['GET'])
     app.add_url_rule("/denuncias/editar/<int:id>", "denuncia_update", denuncias.update, methods=['POST'])
     app.add_url_rule("/denuncias", "denuncia_create", denuncias.create, methods=["POST"])
+
+
+    # Rutas de Seguimientos
+    app.add_url_rule("/seguimiento/<int:id>", "seguimiento_index", seguimiento.index,defaults={'page': 1},
+     methods=['GET'])
+    app.add_url_rule("/seguimiento/<int:id>/<int:page>", "seguimiento_index", seguimiento.index, methods=['GET'])
+    app.add_url_rule("/seguimiento/nuevo/<int:id>", "seguimiento_new", seguimiento.new)
+    app.add_url_rule("/seguimiento/<int:id>", "seguimiento_create", seguimiento.create,methods=["POST"])
+
 
     # Rutas de Configuracion
     app.add_url_rule("/configuracion", "configuration_update", configuration.update)
@@ -109,10 +125,11 @@ def create_app(environment="development"):
 
     
     # Rutas de API-REST (usando Blueprints)
-    #api = Blueprint("api", __name__, url_prefix="/api")
-    #api.register_blueprint(issue_api)
+    api = Blueprint("api", __name__, url_prefix="/api")
+    api.register_blueprint(denuncia_api)
+    csrf.exempt(denuncia_api)
 
-    #app.register_blueprint(api)
+    app.register_blueprint(api)
 
     # Handlers
     app.register_error_handler(404, handler.not_found_error)

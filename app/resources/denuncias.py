@@ -25,9 +25,28 @@ def index(page):
     try:
         denuncias = Denuncia.get_index_denuncias(page, config)
     except OperationalError:
-        flash("No hay puntos de encuentro aún.")
+        flash("No hay denuncias aún.")
         denuncias = None
     return render_template("denuncias/index.html", denuncias=denuncias)
+
+
+def index_assigned(page):
+    """Retorna y renderiza el listado de denuncias
+    :param page:Numero de pagina para el paginado del listado
+    :type page: int
+    :raises: OperationalError
+    """
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("denuncias_index", session):
+        abort(401)
+    config = get_configuration(session) 
+    user_id = User.get_id_from_email(user_email)
+    denuncias = Denuncia.get_index_denuncias_assigned(page, config,user_id)
+    if not denuncias.items:
+        abort(401)
+    return render_template("denuncias/tracking.html", denuncias=denuncias)
 
 
 def new():
@@ -38,8 +57,6 @@ def new():
     if not check_permission("denuncias_new", session):
         abort(401)
     form = CreateDenunciaForm()
-    form.category.choices += [(category.id,category.name) for category in Categoria.get_all()]
-    form.user.choices += [(user.id,user.email) for user in User.get_with_state(User.get_all(),True)]
     return render_template("denuncias/new.html", form=form)
 
 
@@ -51,8 +68,6 @@ def create():
     if not check_permission("denuncias_new", session):
         abort(401)
     form = CreateDenunciaForm(request.form)
-    form.category.choices +=  [(category.id,category.name) for category in Categoria.get_all()]
-    form.user.choices +=  [(user.id,user.email) for user in User.get_with_state(User.get_all(),True)]
     if form.validate():
         if Denuncia.unique_field(form.title.data):
             flash("Ya se encuentra cargada una denuncia con dicho titulo en el sistema")
@@ -96,7 +111,7 @@ def edit(id):
         abort(401)
     denuncia = Denuncia.get_by_id(id)
     if not denuncia:
-        form = CreateDenunciaForm()
+        abort(400)
     else: 
         form = CreateDenunciaForm(title=denuncia.title,category=denuncia.category_id,description=denuncia.description,
         lat=denuncia.lat,long=denuncia.long,firstname=denuncia.firstname,lastname=denuncia.lastname,

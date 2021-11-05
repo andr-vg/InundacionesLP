@@ -193,7 +193,7 @@ class User(db.Model):
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow,default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     complaints = relationship("Denuncia", back_populates="user_assign")
-    tracing = relationship("Seguimiento", uselist=False,backref="usuarios")
+    tracking = relationship("Seguimiento",back_populates="user_assign")
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):
         self.email = email
@@ -222,6 +222,11 @@ class User(db.Model):
     def assign_complaints(self,complaint):
         """ Asigna la denuncia a la relacion """
         self.complaints.append(complaint)
+
+
+    def assign_tracking(self,tracking):
+        """ Asigna el seguimiento a la relacion """
+        self.tracking.append(tracking)
 
     def verify_password(self, password):
         """

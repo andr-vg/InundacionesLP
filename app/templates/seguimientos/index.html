@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Seguimientos</h1>
+<a href="{{ url_for('home') }}" class="link">Volver</a>
+
+<table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Descripcion</th>
+        <th>Fecha de creacion</th>
+        <th>Autor</th>
+    </tr>
+</thead>
+<tbody>
+  {% for seguimiento in seguimientos.items %}
+  <tr>
+    <td> {{ seguimiento.description }} </a></td>
+    <td> {{ seguimiento.created_at.strftime('%d-%m-%Y') }} </td>
+    <td> {{ seguimiento.assigned_to}} </td>
+</td>
+</tr>
+  {% endfor %}
+</tbody>
+</table>
+<!-- previous page -->
+{% if seguimientos.has_prev %}
+<li>
+<a href="{{ url_for('seguimiento_index', id=denuncia.id,page=seguimientos.prev_num) }}">Anterior</a>
+</li>
+{% endif %}
+
+
+<!-- next page -->
+{% if seguimientos.has_next %}
+<li>
+<a href="{{ url_for('seguimiento_index', id=denuncia.id,page=seguimientos.next_num) }}">Siguiente</a>
+</li>
+{% endif %}
+{% endblock %}

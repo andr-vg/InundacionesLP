@@ -1,7 +1,7 @@
 from wtforms import Form, StringField, PasswordField, validators, SelectMultipleField, widgets
 from wtforms.fields.core import BooleanField, SelectField
 from wtforms.fields.simple import HiddenField
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, csrf
 from app.models.categories import Categoria
 from app.models.user import User
 
@@ -10,7 +10,6 @@ class CreateDenunciaForm(FlaskForm):
     """"
     
     """
-
     title = StringField("Titulo",[validators.DataRequired(message="Debe ingresar un titulo")])
     category = SelectField("Categoria",coerce=int)
     description = StringField("Descripcion", [validators.DataRequired()],widget=widgets.TextArea())
@@ -40,11 +39,11 @@ class CreateDenunciaForm(FlaskForm):
             self.lastname.data = kwargs["lastname"]
             self.tel.data = kwargs["tel"]
             self.email.data = kwargs["email"]
-            if not kwargs["user"]:
+            if not "user" in kwargs.keys() or kwargs["user"]==None:
                 self.user.data = 0
             else:
                 self.user.data = int(kwargs["user"])
-            if not kwargs["category"]:
+            if not "category" in kwargs.keys() or kwargs["category"]==None:
                 self.category.data = 0
             else:
                 self.category.data = int(kwargs["category"])
@@ -60,3 +59,7 @@ class CreateDenunciaForm(FlaskForm):
         choices = dict(form.category.choices).keys()
         if not (field.data in choices):
             form.user.errors = (validators.ValidationError("Usuario invalido, elija una categoria valida"),)
+
+    
+        
+

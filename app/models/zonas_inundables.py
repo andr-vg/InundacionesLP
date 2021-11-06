@@ -39,5 +39,24 @@ class ZonaInundable(db.Model):
     def generate_code(self):
         return uuid.uuid4()
 
+    def get_zona_by_id(id):
+        """ 
+        Retorna la zona con el id recibido por parametro 
+        """
+        return ZonaInundable.query.filter(ZonaInundable.id==id).first()
+
+    def get_index_zonas(page, config):
+        """
+        Retorna el listado de zonas ordenado con la configuracion del sistema y paginado con
+        la cantidad de elementos por pagina definidos en la configuracion del sistema.
+        Args:
+            page: Numero entero que representa la pagina.
+            config: Representa la configuracion del sistema. 
+        """
+        if config.ordered_by == "Ascendente":
+            return ZonaInundable.query.order_by(ZonaInundable.name.asc()).paginate(page, per_page=config.elements_per_page)
+        return ZonaInundable.query.order_by(ZonaInundable.name.desc()).paginate(page, per_page=config.elements_per_page)
 
 
+    def get_zonas_paginated(page, elements_per_page):
+        return ZonaInundable.query.paginate(page, per_page=elements_per_page)

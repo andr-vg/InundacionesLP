@@ -6,6 +6,7 @@ from app import db
 from flask_bcrypt import Bcrypt
 from app.resources import configuration, puntos_encuentro, seguimiento, user, auth, rol,denuncias, zonas_inundables
 from app.resources.api.denuncias import denuncia_api
+from app.resources.api.zonas_inundables import zonas_inundables_api
 from app.helpers import handler
 #from app.helpers import auth as helper_auth
 #from app.helpers import permission as helper_permission
@@ -119,8 +120,12 @@ def create_app(environment="development"):
     
 
     #Rutas para Zonas_inundables
-    app.add_url_rule("/zonas_inundables", "zonas_inundables_index", zonas_inundables.index, defaults={'page': 1})
+    app.add_url_rule("/zonas_inundables", "zonas_inundables_index", zonas_inundables.index, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/<int:page>", "zonas_inundables_index", zonas_inundables.index, methods=['GET'])
     app.add_url_rule("/zonas_inundables/subir", "zonas_inundables_upload", zonas_inundables.upload, methods=["POST"])
+    app.add_url_rule("/zonas_inundables/baja/<int:id>", "zona_inundable_delete", zonas_inundables.delete, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/actualizar/", "zona_inundable_update", zonas_inundables.edit, methods=['POST'])
+
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
@@ -130,7 +135,9 @@ def create_app(environment="development"):
     # Rutas de API-REST (usando Blueprints)
     api = Blueprint("api", __name__, url_prefix="/api")
     api.register_blueprint(denuncia_api)
-    csrf.exempt(denuncia_api)
+    api.register_blueprint(zonas_inundables_api)
+    #csrf.exempt(denuncia_api)
+    
 
     app.register_blueprint(api)
 

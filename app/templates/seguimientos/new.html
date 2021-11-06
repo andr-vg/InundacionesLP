@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Denuncias{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<h1>Crear seguimiento </h1>
+<a href="{{ url_for('home') }}" class="link">Volver</a>
+  <form action="{{ url_for('seguimiento_create', id=denuncia.id) }}" method="POST" id="create_seguimiento">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+        <div class="warning">Token CSRF invalido</div>
+    {% endif %}
+    <p>
+      <p>
+        {{form.description.label}}*
+        {{ form.description }}
+      </p>
+      {% for error in form.description.errors%}
+      <p>{{error}}</p>
+    {% endfor %}</p>
+      <p>
+        <p>
+          {{form.state.label}}*
+          {{ form.state }}
+        </p>
+        {% for error in form.state.errors%}
+        <p>{{error}}</p>
+       {% endfor %}</p>
+        <p>* Campo requerido</p>
+        <input type="submit" value="Crear">
+        <button type="reset">Limpiar</button>
+        <a href="{{ url_for('seguimiento_index', id=denuncia.id) }}" class="link">Volver</a>
+      </p>
+    </form>
+{% endblock %}
+  

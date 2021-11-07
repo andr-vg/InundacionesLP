@@ -13,6 +13,19 @@ class ZonaInundable(db.Model):
     Column('zonasInundables_id', ForeignKey('zonasInundables.id'), primary_key=True),
     Column('coordenadas_id', ForeignKey('coordenadas.id'), primary_key=True)
 )
+    @classmethod
+    def exists_zona_inundable(cls, name):
+        """
+        Verifica si ya existe una zona inundable dado un nombre
+
+        Args:
+            name: Nombre de la zona inundable que se quiere verificar
+
+        Returns:
+            El resultado de la consulta con la zona inundable existente caso contrario None
+        """
+        zona_inundable = ZonaInundable.query.filter(ZonaInundable.name == name).first()
+        return zona_inundable
 
     __tablename__ = 'zonasInundables'
     id = Column(Integer, primary_key=True)
@@ -22,10 +35,11 @@ class ZonaInundable(db.Model):
     color = Column(String(255), nullable=True)
     coords = relationship('Coordenadas', secondary='zona_tiene_coords', backref='zonasInundables')
 
-    def __init__(self,name,state=True):
+    def __init__(self,name,state=True,color="Red"):
         self.code = self.generate_code()
         self.name = name
         self.state = state
+        self.color = color
 
 
     def add_zona_inundable(self):

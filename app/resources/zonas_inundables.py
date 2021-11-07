@@ -53,12 +53,15 @@ def __process_csv(file):
         file: Archivo csv, previamente verificado.
     """
     d_reader = csv.DictReader(file)
-    for index,row in enumerate(d_reader):
-        zones_list = json.loads(row['area'])
-        zona_inundable = ZonaInundable(row['name'])
-        for lat, long in zones_list:
-            coordenadas = Coordenadas(lat,long)
-            coordenadas.assign_zonas_inundables(zona_inundable,coordenadas)
+    for row in (d_reader):
+        zona = ZonaInundable.exists_zona_inundable(row['name'])
+        print(zona)
+        if not zona:
+            zones_list = json.loads(row['area'])
+            zona_inundable = ZonaInundable(row['name'])
+            for lat, long in zones_list:
+                coordenadas = Coordenadas(lat,long)
+                coordenadas.assign_zonas_inundables(zona_inundable,coordenadas)
 
 def edit(id):
     pass

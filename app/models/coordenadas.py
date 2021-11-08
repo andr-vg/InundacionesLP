@@ -3,7 +3,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import null
 from app.db import db
 from sqlalchemy import cast, Column, Integer, String, DateTime, Boolean, text, select, and_,or_, Float
-
+from app.models.zonas_inundables import ZonaInundable
+from app.models.recorridos_evacuacion import Recorridos
 
 class Coordenadas(db.Model):
     """
@@ -34,8 +35,8 @@ class Coordenadas(db.Model):
     long = Column(String(255))
 
     def __init__(self,lat,long):
-        self.lat = lat[:8]
-        self.long = long[:8]
+        self.lat = round(lat,8)
+        self.long = round(long,8)
 
 
     def assign_constraint(self,constraint):
@@ -44,5 +45,16 @@ class Coordenadas(db.Model):
     
     def get_by_id(id):
         return Coordenadas.query.filter(Coordenadas.id==id).first()
+
+    def assign_zonas_inundables(self,zona,coords):
+        Coordenadas.add_coords(coords)
+        self.zonasInundables.append(zona)
+        Coordenadas.update_coords()
+
+    def assign_recorridos_evacuacion(self, recorrido, coords):
+        Coordenadas.add_coords(coords)
+        self.recorridosEvacuacion.append(recorrido)
+        Coordenadas.update_coords()
+
     
 

@@ -2,13 +2,19 @@
 {% block title %}Puntos de encuentro{% endblock %}
 {% block head %}
   {{ super() }}
+  
 {% endblock %}
 {% block content %}
   <h1>Detalle</h1>
       <div>
         <p>Nombre {{ pto.name }}</p>
         <p>Dirección {{ pto.address }}</p>
-        <p>Coordenadas {{ pto.coords }}</p>
+        <p>Coordenadas</p>
+        <p id='lat' hidden>{{ pto.lat }}</p>
+        <p id='long' hidden>{{ pto.long }}</p>
+        <div class="map-container">
+          <iframe src="https://maps.google.com/maps?q={{ pto.lat }},{{ pto.long }}&hl=es&z=14&amp;output=embed"></iframe>
+        </div>
         {% if pto.state %}
             <p>Estado: publicado</p>
         {% else %}

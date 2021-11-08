@@ -4,8 +4,9 @@ from flask_session import Session
 from config import config
 from app import db
 from flask_bcrypt import Bcrypt
-from app.resources import configuration, puntos_encuentro, seguimiento, user, auth, rol,denuncias
+from app.resources import configuration, puntos_encuentro, seguimiento, user, auth, rol,denuncias, zonas_inundables, recorridos_evacuacion
 from app.resources.api.denuncias import denuncia_api
+from app.resources.api.zonas_inundables import zonas_inundables_api
 from app.helpers import handler
 #from app.helpers import auth as helper_auth
 #from app.helpers import permission as helper_permission
@@ -119,6 +120,26 @@ def create_app(environment="development"):
     app.add_url_rule("/config", "configuration_confirm_update", configuration.confirm_update, methods=["POST"])
     
 
+    #Rutas para Zonas_inundables
+    app.add_url_rule("/zonas_inundables", "zonas_inundables_index", zonas_inundables.index, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/<int:page>", "zonas_inundables_index", zonas_inundables.index, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/subir", "zonas_inundables_upload", zonas_inundables.upload, methods=["POST"])
+    app.add_url_rule("/zonas_inundables/baja/<int:id>", "zona_inundable_delete", zonas_inundables.delete, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/actualizar/", "zona_inundable_update", zonas_inundables.edit, methods=['POST'])
+
+    # Rutas para recorridos de evacuacion
+    app.add_url_rule("/recorridos_evacuacion", "recorridos_index", recorridos_evacuacion.index, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/recorridos_evacuacion/<int:page>", "recorridos_index", recorridos_evacuacion.index, methods=['GET'])
+    app.add_url_rule("/recorridos_evacuacion", "recorridos_create", recorridos_evacuacion.create, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/nuevo", "recorridos_new", recorridos_evacuacion.new)
+    app.add_url_rule("/recorridos_evacuacion/editar", "recorridos_edit", recorridos_evacuacion.edit,methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/actualizar", "recorridos_update", recorridos_evacuacion.update, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/eliminar", "recorridos_delete", recorridos_evacuacion.delete, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/estado/<int:id>", "recorridos_publicate", recorridos_evacuacion.change_state)
+    app.add_url_rule("/recorridos_evacuacion/search/", "recorridos_search", recorridos_evacuacion.search, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/recorridos_evacuacion/search/<int:page>", "recorridos_search", recorridos_evacuacion.search, methods=['GET'])
+    app.add_url_rule("/recorridos_evacuacion/<name>", "recorridos_show", recorridos_evacuacion.show, methods=['GET'])
+    
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
@@ -127,7 +148,7 @@ def create_app(environment="development"):
     
     # Rutas de API-REST (usando Blueprints)
     api = Blueprint("api", __name__, url_prefix="/api")
-
+    api.register_blueprint(zonas_inundables_api)
     api.register_blueprint(denuncia_api)
     app.register_blueprint(api)
     app.before_request(disable_csrf)

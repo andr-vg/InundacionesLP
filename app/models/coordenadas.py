@@ -4,6 +4,7 @@ from sqlalchemy.sql.expression import null
 from app.db import db
 from sqlalchemy import cast, Column, Integer, String, DateTime, Boolean, text, select, and_,or_, Float
 from app.models.zonas_inundables import ZonaInundable
+from app.models.recorridos_evacuacion import Recorridos
 
 class Coordenadas(db.Model):
     """
@@ -48,6 +49,11 @@ class Coordenadas(db.Model):
     def assign_zonas_inundables(self,zona,coords):
         Coordenadas.add_coords(coords)
         self.zonasInundables.append(zona)
+        Coordenadas.update_coords()
+
+    def assign_recorridos_evacuacion(self, recorrido, coords):
+        Coordenadas.add_coords(coords)
+        self.recorridosEvacuacion.append(recorrido)
         Coordenadas.update_coords()
 
     

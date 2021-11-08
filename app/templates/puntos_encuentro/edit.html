@@ -15,11 +15,7 @@
 {% block content %}
   <h1>Editar punto de encuentro</h1>
   <form action="{{ url_for('punto_encuentro_update') }}" method="POST" id="edit-punto-encuentro">
-    {{ form.csrf_token }}
-    {{ form.id }}
-    {% if form.csrf_token.errors %}
-        <div class="warning">Token CSRF invalido</div>
-    {% endif %}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       <div>
         {% for field in form if field.widget.input_type != 'hidden' %}
         {% for error in field.errors%}

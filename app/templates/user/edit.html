@@ -13,10 +13,7 @@
   {% endfor %}
   {% endfor %}
   <form action="{{ url_for('user_update') }}" method="POST">
-    {{ form.csrf_token }}
-    {% if form.csrf_token.errors %}
-        <div class="warning">Token CSRF invalido</div>
-    {% endif %}
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       <div>
         {{form.id}}
       <p>Email {{ form.email }}</p>

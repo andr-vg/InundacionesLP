@@ -65,7 +65,7 @@ def create():
     return render_template("puntos_encuentro/new.html",form=form)
 
 
-def search():
+def search(page):
     """Retorna el listado de puntos de encuentro filtrados con las opciones de búsqueda."""
     user_email = authenticated(session)
     if not user_email:
@@ -74,14 +74,13 @@ def search():
         abort(401)
     config = get_configuration(session)
     puntos_encuentro = PuntosDeEncuentro.search_by_name(request.args["name"])
-    parameters = {
-        "name": request.args["name"],
-        "active": "",
-    }
-    if "active" in request.args.keys():
-        parameters["active"] == request.args["active"]
-    puntos_encuentro = PuntosDeEncuentro.filter_by_state(puntos_encuentro,request.args["active"])
-    return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro, filter=1, parameters= parameters)
+    name = request.args["name"]
+    active = ""
+    if "active" in request.args.keys() and request.args["active"]!="":
+        active = request.args["active"]
+        puntos_encuentro = PuntosDeEncuentro.filter_by_state(puntos_encuentro,request.args["active"])
+    puntos_encuentro = PuntosDeEncuentro.search_paginate(puntos_encuentro,page,config)
+    return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro, filter=1, name=name,active=active)
 
 
 def edit():

@@ -15,10 +15,7 @@
 {% block content %}
   <h1>Crear Denuncia</h1>
   <form action="{{ url_for('denuncia_create') }}" method="POST" id="create-denuncia">
-    {{ form.csrf_token }}
-    {% if form.csrf_token.errors %}
-        <div class="warning">Token CSRF invalido</div>
-    {% endif %}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     <p>
       <p>
         {{form.title.label}}*

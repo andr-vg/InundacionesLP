@@ -124,7 +124,7 @@ def create_app(environment="development"):
     app.add_url_rule("/zonas_inundables/<int:page>", "zonas_inundables_index", zonas_inundables.index, methods=['GET'])
     app.add_url_rule("/zonas_inundables/subir", "zonas_inundables_upload", zonas_inundables.upload, methods=["POST"])
     app.add_url_rule("/zonas_inundables/baja/<int:id>", "zona_inundable_delete", zonas_inundables.delete, methods=['GET'])
-    app.add_url_rule("/zonas_inundables/actualizar/", "zona_inundable_update", zonas_inundables.update, methods=['POST'])
+    app.add_url_rule("/zonas_inundables/actualizar", "zona_inundable_update", zonas_inundables.update, methods=['POST'])
     app.add_url_rule("/zonas_inundables/editar/", "zona_inundable_edit", zonas_inundables.edit, methods=['POST'])
 
     # Ruta para el Home (usando decorator)

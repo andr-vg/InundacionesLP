@@ -6,7 +6,7 @@
 {% block content %} 
 <div class="container">
     <h1>Editar Zonas Inundables</h1>
-    <form action="{{ url_for('zona_inundable_update') }}" method="POST" id="edit-punto-encuentro">
+    <form action="{{ url_for('zona_inundable_update') }}" method="POST" id="edit-zona-inundable">
         {{ form.csrf_token }}
         {{ form.id }}
         {% if form.csrf_token.errors %}

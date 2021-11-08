@@ -41,6 +41,11 @@ class ZonaInundable(db.Model):
         self.state = state
         self.color = color
 
+    def edit(self,name,state=True,color="rojo"):
+        self.name = name
+        self.state = state
+        self.color = color
+
 
     def add_zona_inundable(self):
         db.session.add(self)
@@ -58,6 +63,12 @@ class ZonaInundable(db.Model):
         Retorna la zona con el id recibido por parametro 
         """
         return ZonaInundable.query.filter(ZonaInundable.id==id).first()
+
+    def get_zona_by_name(name):
+        """ 
+        Retorna la zona con el nombre recibido por parametro 
+        """
+        return ZonaInundable.query.filter(ZonaInundable.name==name).first()
 
     def get_index_zonas(page, config):
         """

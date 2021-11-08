@@ -76,11 +76,31 @@ def edit():
     if not check_permission("punto_encuentro_update", session):
         abort(401)
     zona = ZonaInundable.get_zona_by_id(request.form['id'])
-    form = EditZonaInundableForm(id=zona.id, name= zona.name, state = zona.state, color = zona.color)
+    
+    form = EditZonaInundableForm(id=zona.id, name= zona.name,
+    state = "Publicado" if zona.state else "Despublicado", color = zona.color)
     return(render_template('zonas_inundables/edit.html',form=form))
 
 def delete(id):
     pass
 
 def update():
-    pass
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("punto_encuentro_update", session):
+        abort(401)
+    form = EditZonaInundableForm(id=request.form['id'],
+    name= request.form['name'], state = request.form['state'], color = request.form['color'])
+    if form.validate():
+        zona = ZonaInundable.get_zona_by_id(form.id.data)
+        query = ZonaInundable.get_zona_by_name(form.name.id)
+        if query and query.id != zona.id:
+            flash("Ya se encuentra una Zona con dicho nombre en el sistema")
+            return render_template('zonas_inundables/edit.html',form=form)
+        zona.edit(name = form.name.data ,color = form.color.data ,
+        state = 1 if form.state.data == "Publicado" else 0)
+        zona.update_zona_inundable()
+        flash("La zona ha sido editada correctamente.")
+        return redirect(url_for("zonas_inundables_index"))
+    return render_template("zona_inundable/edit.html", form=form)

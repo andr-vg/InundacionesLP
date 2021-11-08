@@ -12,25 +12,6 @@ from app.models.seguimiento import Seguimiento
 from app.models.user import User
 
 
-def index(page,id):
-    """Retorna y renderiza el listado de seguimientos
-    :param page:Numero de pagina para el paginado del listado
-    :type page: int
-    :raises: OperationalError
-    """
-    user_email = authenticated(session)
-    if not user_email:
-        abort(401)
-    if not check_permission("denuncias_index", session):
-        abort(401)
-    config = get_configuration(session) 
-    try:
-        seguimientos = Seguimiento.get_tracking(page, config,id)
-        denuncia = Denuncia.get_by_id(id)
-    except OperationalError:
-        flash("No se ha realizado ningun seguimiento a la denuncia aún.")
-        seguimientos = None
-    return render_template("seguimientos/index.html", denuncia=denuncia,seguimientos=seguimientos)
 
 
 def new(id):
@@ -68,5 +49,5 @@ def create(id):
         denuncia.change_state(form.state.data)
         user.assign_tracking(seguimiento)
         seguimiento.update_seguimiento()
-    return redirect(url_for("seguimiento_index",page=1,id=denuncia.id))
+    return redirect(url_for("denuncia_tracking"))
 

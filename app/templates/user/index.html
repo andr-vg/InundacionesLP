@@ -68,6 +68,14 @@
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
         <td id="actions">
           <div class="row">
+            {% if has_permission('user_edit') %}
+            <form action="{{ url_for('user_edit') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <input name="id" type="hidden" value="{{ user.id }}">
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
+            
+            </form>
+            {% endif %}
             {% if has_permission('user_active') %}
               {% if 1 not in roles and user.active == 1 %}
               <div class="column mx-1">
@@ -90,14 +98,6 @@
               </form>
             </div>
 
-            {% endif %}
-            {% if has_permission('user_edit') %}
-            <form action="{{ url_for('user_edit') }}" method="POST">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              <input name="id" type="hidden" value="{{ user.id }}">
-              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
-            
-            </form>
             {% endif %}
           </div>
         </td>       

@@ -28,15 +28,19 @@
         <td> {{ denuncia.created_at.strftime('%d-%m-%Y') }} </td>
         <td> {{ denuncia.state.value }}</td>
         <td> {{ denuncia.email }} </td>
-        <td> {% if has_permission('denuncias_destroy') %}
-            <a href="{{url_for('denuncia_delete', id=denuncia.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta denuncia');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+        <td> 
+          {% if has_permission('denuncias_show') %}
+            <a href="{{url_for('denuncia_show', id=denuncia.id) }}"><button class="btn btn-sm btn-success"> Ver detalle <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
           {% endif%}
           {% if has_permission('denuncias_update') %}
             <a href="{{url_for('denuncia_edit', id=denuncia.id) }}"><button class="btn btn-sm btn-info"> Editar <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
           {% endif%}
           {% if has_permission('denuncias_update') %}
           <a href="{{url_for('seguimiento_new', id=denuncia.id) }}"><button class="btn btn-sm btn-info"> Realizar seguimiento <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
-        {% endif%}
+          {% endif%}
+          {% if has_permission('denuncias_destroy') %}
+            <a href="{{url_for('denuncia_delete', id=denuncia.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta denuncia');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+          {% endif%}
         </td>
     </tr>
       {% endfor %}

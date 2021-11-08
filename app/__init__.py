@@ -81,7 +81,8 @@ def create_app(environment="development"):
     # Rutas de Puntos de encuentro
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_index", puntos_encuentro.index, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/puntos_encuentro/<int:page>", "punto_encuentro_index", puntos_encuentro.index, methods=['GET'])
-    app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search)
+    app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/puntos_encuentro/search/<int:page>", "punto_encuentro_search", puntos_encuentro.search, methods=['GET'])
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/nuevo", "punto_encuentro_new", puntos_encuentro.new)
     app.add_url_rule("/puntos_encuentro/editar", "punto_encuentro_edit", puntos_encuentro.edit, methods=["POST"])

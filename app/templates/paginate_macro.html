@@ -1,4 +1,4 @@
-{% macro show_paginate_table(users, filter, parameters) %}
+{% macro show_paginate_table(users, filter, name,active) %}
     {#Filter indica que es una busqueda, parameters son los parametros de la busqueda#}
     <div class="container">
         <nav aria-label="pagination_table">
@@ -10,7 +10,7 @@
                     {%if users.page != page_num %}
                         {% if filter ==1 %}
                             <li class="page-item" >
-                                <a class="page-link" href="{{ url_for('user_search', page=page_num, name=parameters['name'], active =parameters['active'] ) }}">{{page_num}}</a>
+                                <a class="page-link" href="{{ url_for('user_search', page=page_num, name=name, active=active ) }}">{{page_num}}</a>
                             </li>
                         {% else %}
                         <li class="page-item" >

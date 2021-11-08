@@ -39,6 +39,23 @@ class PuntosDeEncuentro(db.Model):
         punto_encuentro = PuntosDeEncuentro.query.filter((PuntosDeEncuentro.name==name) | (PuntosDeEncuentro.address==address)).first()
         return punto_encuentro
 
+    @classmethod
+    def search_paginate(cls,query,page,config):
+        """
+        Busca puntos de encuentro respetando la configuracion y los retorna paginadamente
+
+        Args:
+            query(Query): puntos de encuentro a filtrar
+            page(int): número de página 
+            config(dict): diccionario con los datos de configuracion a respetar
+
+        """
+        if config.ordered_by == "Ascendente":
+            return query.order_by(PuntosDeEncuentro.name.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.order_by(PuntosDeEncuentro.name.desc()).paginate(page, per_page=config.elements_per_page)
+
+
+
     __tablename__ = "puntosEncuentro"
     id = Column(Integer, primary_key=True)
     name = Column(String(255), unique=True)

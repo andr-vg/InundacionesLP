@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+{% block title %}Recorridos de evacuación{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <h1>Usuarios</h1>
+  <a href="{{ url_for('home') }}" class="link">Volver</a>
+  {% if has_permission('recorridos_new') %}
+    <a href="{{ url_for('recorridos_new') }}" class="link">Nuevo recorrido</a>
+  {% endif %}
+  <form action="{{ url_for('recorridos_search', name=name, state=state) }}" method="GET"> 
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-auto">
+            <input type="text" name="name">
+          </div>
+          <div class="col-sm-auto">  
+            <p>
+              <input type="submit" value="Buscar">
+            </p>
+          </div>
+          <div class="col-sm-auto">
+            <p>Filtrar por</p>
+          </div>
+          <div class="col-sm-auto">       
+            <input type="radio" name="state" value="publicado"> <label>Publicado</label>
+          </div>
+          <div class="col-sm-auto">  
+            <input type="radio" name="state" value="despublicado"> <label>Despublicado</label>
+          </div>
+        </div>
+    </div>
+  </form>
+
+  {% if recorridos.items %}
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for recorrido in recorridos.items %}
+      <tr> <!-- ver de poner id o email como id del tr de cada user-->
+        <td> <a href="{{ url_for('recorridos_show', name=recorrido.name) }}"> {{ recorrido.name }} </a> </td>
+        <td> {% if user.state %}
+               Publicado 
+             {% else %}
+               Despublicado 
+             {% endif %}
+        </td>   
+        <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
+        <td id="actions">
+          <div class="row">
+            {% if has_permission('recorridos_publicate') %}
+            <div class="column mx-1"></div>
+              {% if recorrios.state %}
+              <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea despublicar este recorrido?');"> <button class="btn btn-sm btn-secondary"> despublicar </button> </a>
+              {% else %}
+                <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea publicar este recorrido?');"> <button class="btn btn-sm btn-secondary"> publicar </button> </a>
+              {% endif %}
+            </div>
+            {% endif %}
+            {% if has_permission('recorridos_destroy') %}
+            <div class="column mx-1">
+              <form action="{{ url_for('recorridos_delete') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input name="id" type="hidden" value="{{ recorrido.id }}">
+                <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este recorrido?')"> Borrar <span class="material-icons">&#xE150;</span> </button> 
+              </form>
+            </div>
+            {% endif %}
+            {% if has_permission('recorridos_edit') %}
+            <form action="{{ url_for('recorridos_edit') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <input name="id" type="hidden" value="{{ recorrido.id }}">
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
+            
+            </form>
+            {% endif %}
+          </div>
+        </td>       
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {#Mensaje En caso de que la busqueda no traiga resultados#}
+  {% else %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1> No se encontraron Resultados </h1>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- tabla de paginación -->
+  <div class="container">
+    <nav aria-label="pagination_table">
+    <ul class="pagination">
+        {% for page_num in recorridos.iter_pages() %}
+            {% if page_num %}
+                {% if recorridos.page != page_num %}
+                    {% if filter == 1 %}
+                        <li class="page-item" >
+                            <a class="page-link" href="{{ url_for('recorridos_search', page=page_num, name=parameters['name'], active=parameters['state'] ) }}">{{page_num}}</a>
+                        </li>
+                    {% else %}
+                    <li class="page-item" >
+                        <a class="page-link" href="{{url_for('recorridos_index', page=page_num)}}">{{page_num}}</a>
+                    </li>
+                    {% endif %}
+                {% else %}
+                    <li class="page-item disabled" >
+                    <a class="page-link" href="#">{{page_num}}</a>
+                    </li>
+                {% endif %}
+            {% endif %}
+
+        {% endfor %}
+    </ul>
+    </nav>
+  </div>  
+
+{% endblock %}

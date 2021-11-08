@@ -3,23 +3,29 @@ import uuid
 from sqlalchemy.orm import relationship
 from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_
-from app.models.coordenadas import Coordenadas
 
-class ZonaInundable(db.model):
+
+class ZonaInundable(db.Model):
     """
     
     """
+    zona_tiene_coords = Table('zona_tiene_coords', db.Model.metadata,
+    Column('zonasInundables_id', ForeignKey('zonasInundables.id'), primary_key=True),
+    Column('coordenadas_id', ForeignKey('coordenadas.id'), primary_key=True)
+)
+
     __tablename__ = 'zonasInundables'
     id = Column(Integer, primary_key=True)
     code = Column(String(255), unique=True)
     name = Column(String(255), unique=True)
     state = Column(Boolean, default=False)
-    color = Column(String(255))
+    color = Column(String(255), nullable=True)
     coords = relationship('Coordenadas', secondary='zona_tiene_coords', backref='zonasInundables')
 
-    def __init__(self,name):
+    def __init__(self,name,state=True):
         self.code = self.generate_code()
         self.name = name
+        self.state = state
 
 
     def add_zona_inundable(self):
@@ -31,6 +37,26 @@ class ZonaInundable(db.model):
 
 
     def generate_code(self):
-        self.code = uuid.uuid1()
+        return uuid.uuid4()
+
+    def get_zona_by_id(id):
+        """ 
+        Retorna la zona con el id recibido por parametro 
+        """
+        return ZonaInundable.query.filter(ZonaInundable.id==id).first()
+
+    def get_index_zonas(page, config):
+        """
+        Retorna el listado de zonas ordenado con la configuracion del sistema y paginado con
+        la cantidad de elementos por pagina definidos en la configuracion del sistema.
+        Args:
+            page: Numero entero que representa la pagina.
+            config: Representa la configuracion del sistema. 
+        """
+        if config.ordered_by == "Ascendente":
+            return ZonaInundable.query.order_by(ZonaInundable.name.asc()).paginate(page, per_page=config.elements_per_page)
+        return ZonaInundable.query.order_by(ZonaInundable.name.desc()).paginate(page, per_page=config.elements_per_page)
 
 
+    def get_zonas_paginated(page, elements_per_page):
+        return ZonaInundable.query.paginate(page, per_page=elements_per_page)

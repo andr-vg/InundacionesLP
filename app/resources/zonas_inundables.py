@@ -2,6 +2,7 @@ import csv
 from pathlib import Path
 from flask import redirect, render_template, request, url_for, session, abort, flash
 import json
+from app.forms.zonas_inundables import EditZonaInundableForm
 from app.helpers.csv_check import check
 from app.helpers.auth import authenticated
 from app.helpers.permission import has_permission as check_permission
@@ -38,11 +39,16 @@ def upload():
     """
     Recibe el archivo subido por el usuario, y se asegura que sea .csv para procesarlo
     """
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("zonas_inundables_new", session):
+        abort(401)
     file = request.files["inputFile"]
     file_content = io.TextIOWrapper(file.stream._file, "UTF8", newline=None)
     if check(file.filename):
         __process_csv(file_content)
-    return file.filename
+    return render_template("zonas_inundables/new.html",file_name = file.filename)
 
 def __process_csv(file):
     """
@@ -63,8 +69,15 @@ def __process_csv(file):
                 coordenadas = Coordenadas(lat,long)
                 coordenadas.assign_zonas_inundables(zona_inundable,coordenadas)
 
-def edit(id):
-    pass
+def edit():
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("punto_encuentro_update", session):
+        abort(401)
+    zona = ZonaInundable.get_zona_by_id(request.form['id'])
+    form = EditZonaInundableForm(id=zona.id, name= zona.name, state = zona.state, color = zona.color)
+    return(render_template('zonas_inundables/edit.html',form=form))
 
 def delete(id):
     pass

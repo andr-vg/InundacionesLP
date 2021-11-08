@@ -35,7 +35,7 @@ class ZonaInundable(db.Model):
     color = Column(String(255), nullable=True)
     coords = relationship('Coordenadas', secondary='zona_tiene_coords', backref='zonasInundables')
 
-    def __init__(self,name,state=True,color="Red"):
+    def __init__(self,name,state=True,color="rojo"):
         self.code = self.generate_code()
         self.name = name
         self.state = state

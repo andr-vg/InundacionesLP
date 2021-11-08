@@ -46,6 +46,13 @@
             <a href="{{url_for('zona_inundable_delete', id=zona.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta zona?');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
           {% endif%}
           {% if has_permission('zonas_inundables_update') %}
+          <form action="{{url_for('zona_inundable_edit')}}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input name="id"  type="hidden" value="{{ zona.id }}">
+            <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
+          </form>
+          {% endif %}
+          {% if has_permission('zonas_inundables_update') %}
               <form action="{{ url_for(('zona_inundable_update')) }}" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name="id"  type="hidden" value="{{ zona.id }}"> 

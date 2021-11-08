@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Subida de Zonas Inundables{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %} 
+<div class="container">
+    <h1>Editar Zonas Inundables</h1>
+    <form action="{{ url_for('zona_inundable_update') }}" method="POST" id="edit-punto-encuentro">
+        {{ form.csrf_token }}
+        {{ form.id }}
+        {% if form.csrf_token.errors %}
+            <div class="warning">Token CSRF invalido</div>
+        {% endif %}
+          <div>
+            {% for field in form if field.widget.input_type != 'hidden' %}
+            {% for error in field.errors%}
+            <p>{{error}}</p>
+            {% endfor %}
+            <p>{{field.label}} {{field}}</p>
+            {% endfor %}
+          </div>
+          <input type="submit" value="Editar">
+          <a href="{{ url_for('zonas_inundables_index') }}" class="link">Volver</a>
+    
+        </p>
+    
+      </form>
+</div>
+{% endblock %}

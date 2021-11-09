@@ -196,19 +196,17 @@ def search(page):
         abort(401)
     config = get_configuration(session) 
     users = User.search_by_name(request.args["name"])
-    parameters = {
-        "name": request.args["name"],
-        "active": "",
-    }
-    if "active" in request.args.keys():
-        parameters["active"] == request.args["active"]
+    name = request.args["name"]
+    active = ""
+    if "active" in request.args.keys() and request.args["active"]!="":
+        active = request.args["active"]
         if request.args["active"]=="activo":
             users = User.get_with_state(users, True)
         elif request.args["active"]=="bloqueado":
             users = User.get_with_state(users, False)
     users = User.search_paginate(users, id, page, config)
 
-    return render_template("user/index.html", users=users, filter=1, parameters= parameters)
+    return render_template("user/index.html", users=users, filter=1, name=name, active=active)
 
 def edit_profile():
     """

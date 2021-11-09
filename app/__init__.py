@@ -1,5 +1,5 @@
 from os import path, environ
-from flask import Flask, render_template, g, Blueprint, redirect, url_for
+from flask import Flask, render_template, g, Blueprint, redirect, url_for,request
 from flask_session import Session
 from config import config
 from app import db
@@ -13,7 +13,6 @@ from app.helpers import handler
 from flask_wtf.csrf import CSRFProtect
 import logging
 
-
 csrf = CSRFProtect()
 
 def create_app(environment="development"):
@@ -21,9 +20,10 @@ def create_app(environment="development"):
     app = Flask(__name__)
 
     # CSRF Setup
+   # csrf = CSRFProtect(app)
     csrf.init_app(app)
     app.config["WTF_CSRF_CHECK_DEFAULT"] = False
-    #csrf = CSRFProtect(app)
+    app.config["WTF_CSRF_ENABLED"] = False
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
@@ -81,7 +81,8 @@ def create_app(environment="development"):
     # Rutas de Puntos de encuentro
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_index", puntos_encuentro.index, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/puntos_encuentro/<int:page>", "punto_encuentro_index", puntos_encuentro.index, methods=['GET'])
-    app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search)
+    app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/puntos_encuentro/search/<int:page>", "punto_encuentro_search", puntos_encuentro.search, methods=['GET'])
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/nuevo", "punto_encuentro_new", puntos_encuentro.new)
     app.add_url_rule("/puntos_encuentro/editar", "punto_encuentro_edit", puntos_encuentro.edit, methods=["POST"])
@@ -147,12 +148,10 @@ def create_app(environment="development"):
     
     # Rutas de API-REST (usando Blueprints)
     api = Blueprint("api", __name__, url_prefix="/api")
-    api.register_blueprint(denuncia_api)
     api.register_blueprint(zonas_inundables_api)
-    #csrf.exempt(denuncia_api)
-    
-
+    api.register_blueprint(denuncia_api)
     app.register_blueprint(api)
+    app.before_request(disable_csrf)
 
     # Handlers
     app.register_error_handler(404, handler.not_found_error)
@@ -161,3 +160,7 @@ def create_app(environment="development"):
 
     # Retornar la instancia de app configurada
     return app
+
+def disable_csrf():
+    if request.blueprint != None and  not "api." in request.blueprint:
+        csrf.protect()

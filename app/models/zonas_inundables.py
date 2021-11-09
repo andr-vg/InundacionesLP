@@ -3,7 +3,7 @@ import uuid
 from sqlalchemy.orm import relationship
 from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_
-
+from app.helpers.colors import get_translated_color
 
 class ZonaInundable(db.Model):
     @classmethod
@@ -95,3 +95,6 @@ class ZonaInundable(db.Model):
         for c in self.coords:
             lista.append([c.lat, c.long])
         return lista
+
+    def get_color(self):
+        return get_translated_color(self.color)

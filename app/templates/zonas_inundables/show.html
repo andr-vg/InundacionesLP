@@ -12,7 +12,7 @@
  <script type="module" src="{{ url_for('static', filename='js/zonas_inundables/zoneMap.js')}}"></script>
  <script type="text/javascript">
   var coords = {{ coords | tojson }};
-  var color = '{{zona.color}}'
+  var color = '{{zona.get_color()}}'
 </script>
  {% endblock %}
 {% block content %}

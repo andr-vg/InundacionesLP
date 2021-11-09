@@ -1,10 +1,14 @@
 from flask import redirect, render_template, request, url_for, session, abort, flash
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.sql.operators import endswith_op
 from app.forms.recorridos_evacuacion import CreateRecorrido, EditRecorrido
 from app.models.recorridos_evacuacion import Recorridos
+from app.models.coordenadas import Coordenadas
 from app.helpers.auth import authenticated
 from app.helpers.permission import has_permission as check_permission
 from app.helpers.configuration import get_configuration
+import json
+
 
 # Protected resources
 def index(page):
@@ -53,17 +57,33 @@ def create():
     if not user_email:
         abort(401)
     form = CreateRecorrido(request.form)
+    # convierto el string de coordenadas en una lista de listas de coords
+    coordinates = json.loads(form.coordinates.data)
     if form.validate():
-        recorrido = Recorridos.unique_field(form.name)
+        recorrido = Recorridos.unique_field(form.name.data)
         if recorrido:
             flash("Ya existe un recorrido con ese nombre. Ingrese uno nuevo.")
             return render_template("recorridos_evacuacion/new.html", form=form)
-        else:
-            new_recorrido = Recorridos(name=form.name.data, description=form.description.data, coords=form.coordinates)
-            Recorridos.add_recorrido(new_recorrido)
-            Recorridos.update()
-            flash("El recorrido ha sido creado correctamente.")
+        elif len(coordinates) < 3:
+            flash("Debe seleccionar al menos 3 puntos.")
             return render_template("recorridos_evacuacion/new.html", form=form)
+        else:
+            new_recorrido = Recorridos(name=form.name.data, description=form.description.data)
+            for coords in coordinates:
+                # creo las coordenadas
+                new_coords = Coordenadas(coords[0], coords[1])
+                # se las agrego al recorrido
+                new_recorrido.add_coordinate(new_coords)
+                # agrego las coordenadas creadas a la tabla
+                Coordenadas.add_coords(new_coords)
+                # hago el commit en la tabla
+                Coordenadas.update_coords()
+            # agrego el recorrido a la tabla
+            new_recorrido.add_recorrido()
+            # hago el commit a la tabla
+            new_recorrido.update()
+            flash("El recorrido ha sido creado correctamente.")
+            return redirect(url_for("recorridos_index"))
     return render_template("recorridos_evacuacion/new.html", form=form)
 
 

@@ -6,6 +6,10 @@ from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boo
 
 
 class ZonaInundable(db.Model):
+    @classmethod
+    def get_all(cls):
+        return ZonaInundable.query.all()
+
     """
     
     """

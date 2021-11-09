@@ -126,7 +126,7 @@ def create_app(environment="development"):
     app.add_url_rule("/zonas_inundables/baja/<int:id>", "zona_inundable_delete", zonas_inundables.delete, methods=['GET'])
     app.add_url_rule("/zonas_inundables/actualizar", "zona_inundable_update", zonas_inundables.update, methods=['POST'])
     app.add_url_rule("/zonas_inundables/editar/", "zona_inundable_edit", zonas_inundables.edit, methods=['POST'])
-
+    app.add_url_rule("/zonas_inundables/<name>", "zona_inundable_show", zonas_inundables.show, methods=['GET'])
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():

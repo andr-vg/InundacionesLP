@@ -104,3 +104,12 @@ def update():
         flash("La zona ha sido editada correctamente.")
         return redirect(url_for("zonas_inundables_index"))
     return render_template("zona_inundable/edit.html", form=form)
+
+def show(name):
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_show", session):
+        abort(401)    
+    zona = ZonaInundable.get_zona_by_name(name)
+    return render_template("zonas_inundables/show.html", zona = zona)

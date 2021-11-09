@@ -33,7 +33,7 @@
     <tbody>
       {% for zona in zonas.items %}
       <tr>
-        <td> {{ zona.name }} </a></td>
+        <td> <a href="{{ url_for('zona_inundable_show', name=zona.name) }}"> {{ zona.name }} </a></td>
         <td> {{ zona.color }} </td>
         <td> {% if zona.state %} 
                 Publicado

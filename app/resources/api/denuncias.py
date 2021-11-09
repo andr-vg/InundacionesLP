@@ -14,10 +14,16 @@ denuncia_api = Blueprint("denuncias",__name__,url_prefix="/denuncias")
 
 @denuncia_api.get("/")
 def index():
+    denuncias_iter= Denuncia.get_all()
+    denuncias = [DenunciaSchema.dump(denuncia) for denuncia in denuncias_iter]
+    return jsonify(denuncias)
+
+
+@denuncia_api.get("/<int:page>")
+def paginated(page):
     config = Configuration.get_configuration()
-    page = int(request.args.get("page",1))
     per_page = int(request.args.get("per_page",config.elements_per_page))
-    denuncias_page = Denuncia.get_denuncias_paginated(page,per_page)
+    denuncias_page = Denuncia.get_denuncias_paginated(int(page),per_page)
     denuncias = DenunciaSchema.dump(denuncias_page,many=True)
     return jsonify(denuncias)
 

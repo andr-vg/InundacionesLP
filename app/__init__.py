@@ -97,6 +97,8 @@ def create_app(environment="development"):
 
     app.add_url_rule("/denuncias", "denuncia_index", denuncias.index,defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/denuncias/<int:page>", "denuncia_index", denuncias.index, methods=['GET'])
+    app.add_url_rule("/denuncias/search/", "denuncia_search", denuncias.search,defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/denuncias/search/<int:page>", "denuncia_search", denuncias.search, methods=['GET'])
     app.add_url_rule("/denuncias/seguimiento", "denuncia_tracking", denuncias.index_assigned,defaults={'page': 1},
      methods=['GET'])
     app.add_url_rule("/denuncias/seguimiento/<int:page>", "denuncia_tracking", denuncias.index_assigned, methods=['GET'])
@@ -107,7 +109,7 @@ def create_app(environment="development"):
     app.add_url_rule("/denuncias", "denuncia_create", denuncias.create, methods=["POST"])
     app.add_url_rule("/denuncias/detalle/<int:id>", "denuncia_show", denuncias.show,defaults={'page': 1}, methods=["GET"])
     app.add_url_rule("/denuncias/detalle/<int:id>/<int:page>", "denuncia_show", denuncias.show, methods=["GET"])
-
+    
 
     # Rutas de Seguimientos
    

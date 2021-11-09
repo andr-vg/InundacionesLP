@@ -92,7 +92,7 @@
 
             {% if page_num %}
 
-                {%if puntos_encuentropage != page_num %}
+                {%if puntos_encuentro.page != page_num %}
                     {% if filter ==1 %}
                         <li class="page-item" >
                             <a class="page-link" href="{{ url_for('punto_encuentro_search', page=page_num, name=name, active=active ) }}">{{page_num}}</a>

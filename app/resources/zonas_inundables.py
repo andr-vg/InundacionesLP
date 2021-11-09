@@ -112,4 +112,4 @@ def show(name):
     if not check_permission("user_show", session):
         abort(401)    
     zona = ZonaInundable.get_zona_by_name(name)
-    return render_template("zonas_inundables/show.html", zona = zona)
+    return render_template("zonas_inundables/show.html", zona = zona, coords = zona.get_coords_as_list())

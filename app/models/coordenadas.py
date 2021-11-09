@@ -50,5 +50,6 @@ class Coordenadas(db.Model):
         self.zonasInundables.append(zona)
         Coordenadas.update_coords()
 
+
     
 

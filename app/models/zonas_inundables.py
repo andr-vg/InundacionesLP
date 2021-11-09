@@ -85,3 +85,9 @@ class ZonaInundable(db.Model):
 
     def get_zonas_paginated(page, elements_per_page):
         return ZonaInundable.query.paginate(page, per_page=elements_per_page)
+
+    def get_coords_as_list(self):
+        lista = []
+        for c in self.coords:
+            lista.append([c.lat, c.long])
+        return lista

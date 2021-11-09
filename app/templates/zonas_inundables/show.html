@@ -2,14 +2,29 @@
 {% block title %}Zonas Inundables{% endblock %}
 {% block head %}
   {{ super() }}
-{% endblock %}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+ <script type="module" src="{{ url_for('static', filename='js/zonas_inundables/zoneMap.js')}}"></script>
+ <script type="text/javascript">
+  var coords = {{ coords | tojson }};
+  var color = '{{zona.color}}'
+</script>
+ {% endblock %}
 {% block content %}
   <h1>Detalle</h1>
       <div>
         <p>nombre: {{ zona.name }}</p>
         <p>codigo: {{ zona.color }}</p>
-        <p>Publicado: {{ "si" if zona.color else "No" }}</p>
-        <div class="container" id="map"></div>
+        <p>Publicado: {{ "si" if zona.state else "No" }}</p>
+        <p>coordenadas: {{ zona.get_coords_as_list() }}</p>
+        <div class="container" >
+          <div id="mapid"></div>
+        </div>
 
   <a href="{{ url_for('zonas_inundables_index') }}" class="link">Volver</a>
 {% endblock %}

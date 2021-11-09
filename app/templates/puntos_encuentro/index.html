@@ -18,36 +18,7 @@
     </p>
   </form>
 
-<!-- previous page -->
-  {% if puntos_encuentro.has_prev %}
-    {% if filter == 1 %}
-    <li>
-      <a href="{{ url_for('punto_encuentro_search', page=puntos_encuentro.prev_num, name=parameters['name'], active =parameters['active'] ) }}">Previous_Busqueda</a>
-    </li>
-    {% else %}
-    <li>
-      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.prev_num) }}">Anterior</a>
-    </li>
-    {% endif%}
-
-  {% endif %}
-
-
-<!-- next page -->
-{% if puntos_encuentro.has_next %}
-    {% if filter == 1 %}
-    <li>
-      <a href="{{ url_for('punto_encuentro_search', page=puntos_encuentro.next_num, name=parameters['name'], active =parameters['active']) }}">Next_Busqueda</a>
-    </li>
-    {% else %}
-    <li>
-      <a href="{{ url_for('punto_encuentro_index', page=puntos_encuentro.next_num) }}">Siguiente</a>
-    </li>
-    {% endif%}
-
-  {% endif %}
-
-
+{% if puntos_encuentro.items %}
   <table class="table table-sm">
     <thead>
       <tr>
@@ -107,6 +78,42 @@
       </tr>
     </tbody>
   </table>
-  
+  {% else %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <h1> No se encontraron Resultados</h1>
+    </div>
+  </div>
+  {% endif %}
+  <div class="container">
+    <nav aria-label="pagination_table">
+    <ul class="pagination">
+        {% for page_num in puntos_encuentro.iter_pages() %}
+
+            {% if page_num %}
+
+                {%if puntos_encuentropage != page_num %}
+                    {% if filter ==1 %}
+                        <li class="page-item" >
+                            <a class="page-link" href="{{ url_for('punto_encuentro_search', page=page_num, name=name, active=active ) }}">{{page_num}}</a>
+                          </li>
+                    {% else %}
+                    <li class="page-item" >
+                        <a class="page-link" href="{{url_for('punto_encuentro_index', page=page_num)}}">{{page_num}}</a>
+                    </li>
+                    {% endif %}
+                {% else %}
+                <li class="page-item disabled" >
+                <a class="page-link" href="#">{{page_num}}</a>
+                </li>
+                {%endif%}
+
+            {% else %}
+            {%endif%}
+
+        {% endfor%}
+    </ul>
+    </nav>
+</div>     
   
   {% endblock %}

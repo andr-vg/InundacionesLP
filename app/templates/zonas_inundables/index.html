@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block title %}Zonas Inundables{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %} 
+
+<div class="container">
+    <h1>
+        Subir Archivo
+    </h1>
+    <form action="{{ url_for('zonas_inundables_upload') }}"enctype=multipart/form-data method="post">
+        <div class="form-group">
+            <label for="inputFile">Subir Archivo</label>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="file" name="inputFile">
+        </div>
+        <button type="submit" class="btn btn-secondary">
+            Submit
+        </button>
+    </form>
+</div>
+
+<table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Color</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for zona in zonas.items %}
+      <tr>
+        <td> {{ zona.name }} </a></td>
+        <td> {{ zona.color }} </td>
+        <td> {% if zona.state %} 
+                Publicado
+             {% else %}
+                Despublicado
+             {% endif %}
+        </td>
+        
+        <td> {% if has_permission('zonas_inundables_destroy') %}
+            <a href="{{url_for('zona_inundable_delete', id=zona.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta zona?');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+          {% endif%}
+          {% if has_permission('zonas_inundables_update') %}
+              <form action="{{ url_for(('zona_inundable_update')) }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input name="id"  type="hidden" value="{{ zona.id }}"> 
+                {% if zona.state %}
+                  <div class="column mx-1">
+                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar esta zona inundable?');"> Despublicar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button> 
+                  </div>
+                  {% else %}
+                    <div class="column mx-1">
+                      <button class="btn btn-sm btn-success" type="submit" onclick="return confirm('Está seguro que desea publicar esta zona inundable?');"> Publicar <i class="glyphicon glyphicon-list-alt" display="table-cell"></i></button>               
+                    </div>
+                  {% endif %}
+              </form>
+            {% endif %}
+        </td>
+    </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+<!-- previous page -->
+{% if zonas.has_prev %}
+<li>
+  <a href="{{ url_for('zonas_inundables_index', page=zonas.prev_num) }}">Anterior</a>
+</li>
+{% endif %}
+
+
+<!-- next page -->
+{% if zonas.has_next %}
+<li>
+  <a href="{{ url_for('zonas_inundables_index', page=zonas.next_num) }}">Siguiente</a>
+</li>
+{% endif %}
+{% endblock %}

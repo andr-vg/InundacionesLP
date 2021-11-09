@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block title %}Recorridos de evacuación{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+ <script type="module" src="{{ url_for('static', filename='js/recorridos_evacuacion/new/index.js')}}"></script>
+{% endblock %}
+{% block content %}
+  <h1>Crear un recorrido de evacuación</h1>
+  
+  <form action="{{ url_for('recorridos_create') }}" method="POST" id="create-form">
+    <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <p>
+      <p>
+        {{form.name.label}}
+        {{ form.name }}
+      </p>
+      <p>
+        {{form.description.label}}
+        {{ form.description(cols="35", rows="10") }}
+      </p>
+      {{ form.coordinates }}
+      <input type="hidden" name="lat" id="lat">
+      <input type="hidden" name="lng" id="lng">
+      <div class="map-container">
+      <div id="mapid"></div>
+      </div>
+      <input type="submit" value="Crear">
+      <button type="reset">Limpiar</button>
+      <a href="{{ url_for('recorridos_index') }}" class="link">Volver</a>
+    </p>
+  </form>
+{% endblock %}

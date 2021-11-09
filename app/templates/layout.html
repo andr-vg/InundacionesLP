@@ -55,9 +55,19 @@
           {% if has_permission('punto_encuentro_index') %}
             <li><a href="{{ url_for('punto_encuentro_index') }}" class="link">Puntos de encuentro</a></li>
           {% endif %}
+          {% if has_permission('denuncias_index') %}
+            <li><a href="{{ url_for('denuncia_index') }}" class="link">Denuncias</a></li>
+          {% endif %}
+          {% if has_permission('zonas_inundables_index') %}
+            <li><a href="{{ url_for('zonas_inundables_index') }}" class="link">Zonas inundables</a></li>
+          {% endif %}
+          {% if has_permission('recorridos_index') %}
+            <li><a href="{{ url_for('recorridos_index') }}" class="link">Recorridos de evacuación</a></li>
+          {% endif %}
           {% if has_permission('user_edit_profile') %}
             <li><a href="{{ url_for('user_edit_profile') }}" class="link">Mi perfil</a></li>
           {% endif %}
+
           
             <li><a href="{{ url_for('auth_logout') }}" class="link">Cerrar sesión</a></li>
         {% endif %}          

@@ -1,24 +1,29 @@
 from os import path, environ
-from flask import Flask, render_template, g, Blueprint, redirect, url_for
+from flask import Flask, render_template, g, Blueprint, redirect, url_for,request
 from flask_session import Session
 from config import config
 from app import db
 from flask_bcrypt import Bcrypt
-from app.resources import configuration, puntos_encuentro, user, auth, rol,denuncias
+from app.resources import configuration, puntos_encuentro, seguimiento, user, auth, rol,denuncias, zonas_inundables, recorridos_evacuacion
+from app.resources.api.denuncias import denuncia_api
+from app.resources.api.zonas_inundables import zonas_inundables_api
 from app.helpers import handler
 #from app.helpers import auth as helper_auth
 #from app.helpers import permission as helper_permission
 from flask_wtf.csrf import CSRFProtect
 import logging
 
-
+csrf = CSRFProtect()
 
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
 
     # CSRF Setup
-    csrf = CSRFProtect(app)
+   # csrf = CSRFProtect(app)
+    csrf.init_app(app)
+    app.config["WTF_CSRF_CHECK_DEFAULT"] = False
+    app.config["WTF_CSRF_ENABLED"] = False
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
@@ -76,7 +81,8 @@ def create_app(environment="development"):
     # Rutas de Puntos de encuentro
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_index", puntos_encuentro.index, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/puntos_encuentro/<int:page>", "punto_encuentro_index", puntos_encuentro.index, methods=['GET'])
-    app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search)
+    app.add_url_rule("/puntos_encuentro/search/", "punto_encuentro_search", puntos_encuentro.search, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/puntos_encuentro/search/<int:page>", "punto_encuentro_search", puntos_encuentro.search, methods=['GET'])
     app.add_url_rule("/puntos_encuentro", "punto_encuentro_create", puntos_encuentro.create, methods=["POST"])
     app.add_url_rule("/puntos_encuentro/nuevo", "punto_encuentro_new", puntos_encuentro.new)
     app.add_url_rule("/puntos_encuentro/editar", "punto_encuentro_edit", puntos_encuentro.edit, methods=["POST"])
@@ -91,14 +97,49 @@ def create_app(environment="development"):
 
     app.add_url_rule("/denuncias", "denuncia_index", denuncias.index,defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/denuncias/<int:page>", "denuncia_index", denuncias.index, methods=['GET'])
+    app.add_url_rule("/denuncias/seguimiento", "denuncia_tracking", denuncias.index_assigned,defaults={'page': 1},
+     methods=['GET'])
+    app.add_url_rule("/denuncias/seguimiento/<int:page>", "denuncia_tracking", denuncias.index_assigned, methods=['GET'])
     app.add_url_rule("/denuncias/nuevo", "denuncia_new", denuncias.new)
+    app.add_url_rule("/denuncias/baja/<int:id>", "denuncia_delete", denuncias.delete, methods=['GET'])
+    app.add_url_rule("/denuncias/actualizar/<int:id>", "denuncia_edit", denuncias.edit, methods=['GET'])
+    app.add_url_rule("/denuncias/editar/<int:id>", "denuncia_update", denuncias.update, methods=['POST'])
     app.add_url_rule("/denuncias", "denuncia_create", denuncias.create, methods=["POST"])
+
+
+    # Rutas de Seguimientos
+    app.add_url_rule("/seguimiento/<int:id>", "seguimiento_index", seguimiento.index,defaults={'page': 1},
+     methods=['GET'])
+    app.add_url_rule("/seguimiento/<int:id>/<int:page>", "seguimiento_index", seguimiento.index, methods=['GET'])
+    app.add_url_rule("/seguimiento/nuevo/<int:id>", "seguimiento_new", seguimiento.new)
+    app.add_url_rule("/seguimiento/<int:id>", "seguimiento_create", seguimiento.create,methods=["POST"])
+
 
     # Rutas de Configuracion
     app.add_url_rule("/configuracion", "configuration_update", configuration.update)
     app.add_url_rule("/config", "configuration_confirm_update", configuration.confirm_update, methods=["POST"])
     
 
+    #Rutas para Zonas_inundables
+    app.add_url_rule("/zonas_inundables", "zonas_inundables_index", zonas_inundables.index, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/<int:page>", "zonas_inundables_index", zonas_inundables.index, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/subir", "zonas_inundables_upload", zonas_inundables.upload, methods=["POST"])
+    app.add_url_rule("/zonas_inundables/baja/<int:id>", "zona_inundable_delete", zonas_inundables.delete, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/actualizar/", "zona_inundable_update", zonas_inundables.edit, methods=['POST'])
+
+    # Rutas para recorridos de evacuacion
+    app.add_url_rule("/recorridos_evacuacion", "recorridos_index", recorridos_evacuacion.index, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/recorridos_evacuacion/<int:page>", "recorridos_index", recorridos_evacuacion.index, methods=['GET'])
+    app.add_url_rule("/recorridos_evacuacion", "recorridos_create", recorridos_evacuacion.create, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/nuevo", "recorridos_new", recorridos_evacuacion.new)
+    app.add_url_rule("/recorridos_evacuacion/editar", "recorridos_edit", recorridos_evacuacion.edit,methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/actualizar", "recorridos_update", recorridos_evacuacion.update, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/eliminar", "recorridos_delete", recorridos_evacuacion.delete, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/estado/<int:id>", "recorridos_publicate", recorridos_evacuacion.change_state)
+    app.add_url_rule("/recorridos_evacuacion/search/", "recorridos_search", recorridos_evacuacion.search, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/recorridos_evacuacion/search/<int:page>", "recorridos_search", recorridos_evacuacion.search, methods=['GET'])
+    app.add_url_rule("/recorridos_evacuacion/<name>", "recorridos_show", recorridos_evacuacion.show, methods=['GET'])
+    
     # Ruta para el Home (usando decorator)
     @app.route("/")
     def home():
@@ -106,10 +147,11 @@ def create_app(environment="development"):
 
     
     # Rutas de API-REST (usando Blueprints)
-    #api = Blueprint("api", __name__, url_prefix="/api")
-    #api.register_blueprint(issue_api)
-
-    #app.register_blueprint(api)
+    api = Blueprint("api", __name__, url_prefix="/api")
+    api.register_blueprint(zonas_inundables_api)
+    api.register_blueprint(denuncia_api)
+    app.register_blueprint(api)
+    app.before_request(disable_csrf)
 
     # Handlers
     app.register_error_handler(404, handler.not_found_error)
@@ -118,3 +160,7 @@ def create_app(environment="development"):
 
     # Retornar la instancia de app configurada
     return app
+
+def disable_csrf():
+    if request.blueprint != None and  not "api." in request.blueprint:
+        csrf.protect()

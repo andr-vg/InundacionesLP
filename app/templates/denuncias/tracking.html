@@ -4,12 +4,11 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-<h1>Denuncias</h1>
+<h1>Denuncias asignadas a {{get_username()}}</h1>
 <a href="{{ url_for('home') }}" class="link">Volver</a>
 {% if has_permission('denuncias_new') %}
 <a href="{{ url_for('denuncia_new') }}" class="link">Crear denuncia</a>
 {% endif %}
-<a href="{{ url_for('denuncia_tracking') }}" class="link">Seguimientos</a>
 <table class="table table-sm">
     <thead>
       <tr>
@@ -18,7 +17,6 @@
         <th>Fecha de creacion</th>
         <th>Estado</th>
         <th>Email</th>
-        <th>Usuario Asignado</th>
       </tr>
     </thead>
     <tbody>
@@ -30,14 +28,15 @@
         <td> {{ denuncia.created_at.strftime('%d-%m-%Y') }} </td>
         <td> {{ denuncia.state.value }}</td>
         <td> {{ denuncia.email }} </td>
-        <td> {% if denuncia.assigned_to!=None %}{{ denuncia.assigned_to }}
-          {% else %}  Sin asignar {% endif %}</td>
         <td> {% if has_permission('denuncias_destroy') %}
             <a href="{{url_for('denuncia_delete', id=denuncia.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta denuncia');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
           {% endif%}
           {% if has_permission('denuncias_update') %}
             <a href="{{url_for('denuncia_edit', id=denuncia.id) }}"><button class="btn btn-sm btn-info"> Editar <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
           {% endif%}
+          {% if has_permission('denuncias_update') %}
+          <a href="{{url_for('seguimiento_new', id=denuncia.id) }}"><button class="btn btn-sm btn-info"> Realizar seguimiento <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
+        {% endif%}
         </td>
     </tr>
       {% endfor %}
@@ -46,7 +45,7 @@
 <!-- previous page -->
 {% if denuncias.has_prev %}
 <li>
-  <a href="{{ url_for('denuncia_index', page=denuncias.prev_num) }}">Anterior</a>
+  <a href="{{ url_for('denuncia_tracking', page=denuncias.prev_num) }}">Anterior</a>
 </li>
 {% endif %}
 
@@ -54,7 +53,7 @@
 <!-- next page -->
 {% if denuncias.has_next %}
 <li>
-  <a href="{{ url_for('denuncia_index', page=denuncias.next_num) }}">Siguiente</a>
+  <a href="{{ url_for('denuncia_tracking', page=denuncias.next_num) }}">Siguiente</a>
 </li>
 {% endif %}
 {% endblock %}

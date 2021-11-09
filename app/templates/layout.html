@@ -61,6 +61,9 @@
           {% if has_permission('zonas_inundables_index') %}
             <li><a href="{{ url_for('zonas_inundables_index') }}" class="link">Zonas inundables</a></li>
           {% endif %}
+          {% if has_permission('recorridos_index') %}
+            <li><a href="{{ url_for('recorridos_index') }}" class="link">Recorridos de evacuación</a></li>
+          {% endif %}
           {% if has_permission('user_edit_profile') %}
             <li><a href="{{ url_for('user_edit_profile') }}" class="link">Mi perfil</a></li>
           {% endif %}

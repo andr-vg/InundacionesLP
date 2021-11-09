@@ -75,10 +75,11 @@ def create():
         denuncia = Denuncia(title=form.title.data,description=form.description.data,
         lat=form.lat.data,long=form.long.data,firstname=form.firstname.data,lastname=form.lastname.data,
         tel=form.tel.data,email=form.email.data)
-        if form.user.data!="None":
+        if form.user.data!=0:
+            print(form.user.data)
             user = User.get_user_by_id(form.user.data)
             user.assign_complaints(denuncia)
-        if form.category.data!="None":
+        if form.category.data!=0:
             category = Categoria.get_category_by_id(form.category.data)
             category.assign_complaints(denuncia)
         denuncia.add_denuncia()

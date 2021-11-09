@@ -13,10 +13,8 @@
   {% endfor %}
   {% endfor %}
   <form action="{{ url_for('user_create') }}" method="POST">
-    {{ form.csrf_token }}
-    {% if form.csrf_token.errors %}
-        <div class="warning">Token CSRF invalido</div>
-    {% endif %}
+    <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
+
       <div>
       <p>Email {{ form.email }}</p>
       <p>Nombre de usuario {{ form.username }}</p>

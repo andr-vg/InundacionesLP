@@ -2,7 +2,7 @@ import datetime,enum
 from sqlalchemy.orm import relationship
 from app.db import db
 from app.models.coordenadas import Coordenadas
-from sqlalchemy import Enum, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_, Float,Date,cast
+from sqlalchemy import Enum, ForeignKey, Column, Integer, String, DateTime, Float,func
 
 class State(enum.Enum):
     sin_confirmar = "Sin confirmar"
@@ -73,9 +73,8 @@ class Denuncia(db.Model):
         
         Returns: retorna un listado de denuncias que coinciden, caso contrario None
         """
-        date_create = datetime.datetime.strptime(date, '%Y-%m-%d').date()
-        return query.filter(Denuncia.created_at>=date_create)
-
+        date_create = datetime.datetime.strptime(date,'%Y-%m-%d')
+        return query.filter(func.DATE(Denuncia.created_at)>=date_create)
 
     @classmethod
     def search_later_date(cls,query,date):
@@ -83,18 +82,19 @@ class Denuncia(db.Model):
         Busca una denuncia cuya fecha de creacion sea anterior a la fecha pasada por parametro
 
         Args:
-            date(date): fecha a comparar con la denuncia
+            date(string): fecha a comparar con la denuncia
         
         Returns: retorna un listado de denuncias que coinciden, caso contrario None
         """
-        return query.filter(Denuncia.created_at<date)
+        date_create = datetime.datetime.strptime(date,'%Y-%m-%d')+datetime.timedelta(hours=23,minutes=59)
+        return query.filter(Denuncia.created_at<=date_create)
 
 
     @classmethod
     def get_denuncias_paginated(cls,query,page,config):
         if config.ordered_by == "Ascendente":
-            return query.order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page)
-        return query.order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page)
+            return query.order_by(Denuncia.created_at.asc()).order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.order_by(Denuncia.created_at.desc()).order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page)
 
     
 

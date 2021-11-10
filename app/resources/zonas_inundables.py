@@ -113,3 +113,28 @@ def show(name):
         abort(401)    
     zona = ZonaInundable.get_zona_by_name(name)
     return render_template("zonas_inundables/show.html", zona = zona, coords = zona.get_coords_as_list())
+
+def search(page):
+    """
+    Lógica a realizar al momento de renderizar
+    un listado de búsqueda de zonas_inundables paginado.
+
+    Args:
+        page(int): número de página
+    """
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("zonas_inundables_index",session):
+        abort(401)
+    config = get_configuration(session)
+    zonas = ZonaInundable.search_by_name(request.args["name"])
+    name = request.args["name"]
+    active = ""
+    if "state" in request.args.keys() and request.args["state"]!="":
+        active = request.args["state"]
+        if request.args["state"]=="activo":
+            zonas = ZonaInundable.get_with_state(zonas, True)
+    zonas = ZonaInundable.search_paginate(zonas, page, config)
+
+    return render_template("zonas_inundables/index.html", zonas=zonas, filter=1, name=name, active=active)

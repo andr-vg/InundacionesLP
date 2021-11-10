@@ -31,6 +31,47 @@ class ZonaInundable(db.Model):
         zona_inundable = ZonaInundable.query.filter(ZonaInundable.name == name).first()
         return zona_inundable
 
+    @classmethod
+    def search_by_name(cls, name):
+        """
+        Busca una zona inundable con nombre similar al parametro
+
+        Args: 
+            name(string): nombre de la zona inundable
+
+        Returns: primer resultado encontrado en la tabla caso contrario None
+        """
+        return ZonaInundable.query.filter(ZonaInundable.name.like('%'+name+'%'))
+
+    @classmethod
+    def get_with_state(cls, query, state):
+        """
+        Retorna los zonas que poseen estado activo o inactivo
+
+        Args: 
+            query(Query): zona a filtrar
+            state(bool): estado 
+        """
+        return query.filter(ZonaInundable.state==state)
+
+    @classmethod
+
+    def search_paginate(cls, query, page, config):
+        """
+        Busca usuarios respetando la configuracion y los retorna paginadamente
+
+        Args:
+            query(Query): usuarios a filtrar
+            id(int): id del usuario en la sesión actual
+            page(int): número de página 
+            config(dict): diccionario con los datos de configuracion a respetar
+
+        """
+        if config.ordered_by == "Ascendente":
+            return query.order_by(ZonaInundable.name.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.order_by(ZonaInundable.name.desc()).paginate(page, per_page=config.elements_per_page)
+
+
     __tablename__ = 'zonasInundables'
     id = Column(Integer, primary_key=True)
     code = Column(String(255), unique=True)

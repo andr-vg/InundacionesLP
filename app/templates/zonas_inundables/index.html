@@ -21,6 +21,27 @@
     </form>
 </div>
 
+<form action="{{ url_for('zonas_inundables_search', name=name, active=active) }}" method="GET"> 
+  <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-auto">
+          <input type="text" name="name">
+        </div>
+        <div class="col-sm-auto">  
+          <p>
+            <input type="submit" value="Buscar">
+          </p>
+        </div>
+        <div class="col-sm-auto">
+          <p>Filtrar por</p>
+        </div>
+        <div class="col-sm-auto">       
+          <input type="radio" name="state" value="activo"> <label> Publicado</label>
+        </div>
+      </div>
+  </div>
+</form>
+
 <table class="table table-sm">
     <thead>
       <tr>
@@ -33,7 +54,7 @@
     <tbody>
       {% for zona in zonas.items %}
       <tr>
-        <td> <a href="{{ url_for('zona_inundable_show', name=zona.name) }}"> {{ zona.name }} </a></td>
+        <td> <a href="{{ url_for('zonas_inundables_show', name=zona.name) }}"> {{ zona.name }} </a></td>
         <td> {{ zona.color }} </td>
         <td> {% if zona.state %} 
                 Publicado
@@ -43,17 +64,17 @@
         </td>
         
         <td> {% if has_permission('zonas_inundables_destroy') %}
-            <a href="{{url_for('zona_inundable_delete', id=zona.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta zona?');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+            <a href="{{url_for('zonas_inundables_delete', id=zona.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta zona?');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
           {% endif%}
           {% if has_permission('zonas_inundables_update') %}
-          <form action="{{url_for('zona_inundable_edit')}}" method="POST">
+          <form action="{{url_for('zonas_inundables_edit')}}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <input name="id"  type="hidden" value="{{ zona.id }}">
             <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
           </form>
           {% endif %}
           {% if has_permission('zonas_inundables_update') %}
-              <form action="{{ url_for(('zona_inundable_update')) }}" method="POST">
+              <form action="{{ url_for(('zonas_inundables_update')) }}" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name="id"  type="hidden" value="{{ zona.id }}"> 
                 {% if zona.state %}
@@ -79,7 +100,9 @@
 </li>
 {% endif %}
 
+{% from "paginate_macro.html" import show_paginate_table%}
 
+{{ show_paginate_table("zonas_inundables",zonas, filter, name,active) }}
 <!-- next page -->
 {% if zonas.has_next %}
 <li>

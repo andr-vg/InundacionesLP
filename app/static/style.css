@@ -86,3 +86,7 @@ h4 {
   content:" *";
   color: red;
 }
+
+#coords{
+  display: none;
+}

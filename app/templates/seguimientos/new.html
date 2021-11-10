@@ -7,7 +7,12 @@
 <h1>Crear seguimiento </h1>
 <a href="{{ url_for('home') }}" class="link">Volver</a>
   <form action="{{ url_for('seguimiento_create', id=denuncia.id) }}" method="POST" id="create_seguimiento">
+<<<<<<< HEAD
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+=======
+    <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
+
+>>>>>>> 0853e61f787f5219f795d8958af22c0b3d176489
     <p>
       <p>
         {{form.description.label}}*

@@ -96,6 +96,9 @@ class Recorridos(db.Model):
         self.description = description
         
 
+    def add_coordinate(self, new_coords):
+        self.coords.append(new_coords)
+
     def add_recorrido(self):
         """ 
         Agrega el recorrido de evacuación, los cambios no se verán reflejados en la BD hasta 

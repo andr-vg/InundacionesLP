@@ -116,6 +116,6 @@
 
   {% from "paginate_macro.html" import show_paginate_table%}
 
-  {{ show_paginate_table(users, filter, name,active) }}
+  {{ show_paginate_table("user",users, filter, name,active) }}
 
 {% endblock %}

@@ -13,7 +13,12 @@
   {% endfor %}
   {% endfor %}
   <form action="{{ url_for('user_update') }}" method="POST">
+<<<<<<< HEAD
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+=======
+    <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
+
+>>>>>>> 0853e61f787f5219f795d8958af22c0b3d176489
       <div>
         {{form.id}}
       <p>Email {{ form.email }}</p>

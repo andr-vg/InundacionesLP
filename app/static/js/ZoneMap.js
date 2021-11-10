@@ -53,11 +53,13 @@ export class ZoneMap {
     }
 
     hasValidZone() {
-        return this.drawnLayers.length == 1;
+        return this.drawnLayers.length >= 3;
     }
 
     get drawnLayers() {
-        return Object.values(this.#drawnItems._layers);
+        const results = Object.values(this.#drawnItems._layers);
+        //return Object.values(this.#drawnItems._layers);
+        return results[0]._latlngs;
     }
 
     get editControls() {
@@ -77,6 +79,7 @@ export class ZoneMap {
                 polyline: true,
                 polygon: false,
                 rectangle: false,
+                circlemarker: false,
             }
         });
     }

@@ -46,7 +46,7 @@
       {% for recorrido in recorridos.items %}
       <tr> <!-- ver de poner id o email como id del tr de cada user-->
         <td> <a href="{{ url_for('recorridos_show', name=recorrido.name) }}"> {{ recorrido.name }} </a> </td>
-        <td> {% if user.state %}
+        <td> {% if recorrido.state %}
                Publicado 
              {% else %}
                Despublicado 
@@ -57,7 +57,7 @@
           <div class="row">
             {% if has_permission('recorridos_publicate') %}
             <div class="column mx-1"></div>
-              {% if recorrios.state %}
+              {% if recorrido.state %}
               <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea despublicar este recorrido?');"> <button class="btn btn-sm btn-secondary"> despublicar </button> </a>
               {% else %}
                 <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea publicar este recorrido?');"> <button class="btn btn-sm btn-secondary"> publicar </button> </a>

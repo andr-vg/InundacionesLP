@@ -200,7 +200,6 @@ def search(page):
         denuncias = Denuncia.search_previous_date(denuncias,request.args["previous"])
         previous = request.args["previous"]
     later = ""
-    print(denuncias)
     if "later" in request.args.keys() and request.args["later"]!="":
         denuncias = Denuncia.search_later_date(denuncias,request.args["later"])
         later = request.args["later"]

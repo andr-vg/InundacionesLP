@@ -16,28 +16,10 @@
   <h1>Crear un punto de encuentro</h1>
   <form action="{{ url_for('punto_encuentro_create') }}" method="POST" id="create-punto-encuentro">
     <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
-    <p>
-      <p>
-        {{form.name.label}}
-        {{ form.name }}
-      </p>
-      <p>
-        {{form.address.label}}
-        {{ form.address }}
-      </p>
-      <p>
-        {{form.tel.label}}
-        {{ form.tel }}
-      </p>
-      <p>
-        {{form.email.label}}
-        {{ form.email }}
-      </p>
-        {{form.lat}}
-        {{form.long}}
+    {% include "puntos_encuentro/form.html" %}
+    <p>* Campo requerido</p>  
       <div class="map-container">
       <div id="mapid"></div>
-      </div>
       <input type="submit" value="Crear">
       <button type="reset">Limpiar</button>
       <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>

@@ -16,28 +16,16 @@
   <h1>Editar punto de encuentro</h1>
   <form action="{{ url_for('punto_encuentro_update') }}" method="POST" id="edit-punto-encuentro">
     <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
-
     {{ form.id }}
-    
-      <div>
-        {% for field in form if field.widget.input_type != 'hidden' %}
-        {% for error in field.errors%}
-        <p>{{error}}</p>
-        {% endfor %}
-        {% if field.id!="lat" and field.id!="long" %}
-        <p>{{field.label}} {{field}}</p>
-        {% endif %}
-        {% endfor %}
-        {{ form.lat }}
-        {{ form.long }}
-        <div class="map-container">
-          <div id="mapid"></div>
-          </div>
-      </div>
-      <input type="submit" value="Editar">
-      <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
+    {% include "puntos_encuentro/form.html" %}
+    <p>* Campo requerido</p>      
+    <div class="map-container">
+      <div id="mapid"></div>
+    </div>
 
-    </p>
+    <input type="submit" value="Editar">
+    <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
+
 
   </form>
 {% endblock %}

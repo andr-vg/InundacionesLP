@@ -10,7 +10,8 @@
   <h1>Detalle de la denuncia</h1>
       <div>
         <p>Título: {{ denuncia.title }} </p>
-        <p>Categoría: {{ categoria.name }}</p>
+        <p>Categoría: {% if denuncia.category!=None %}{{ denuncia.category.name }}
+          {% else %}  Sin asignar {% endif %}</p>
         <p>Descripción: {{ denuncia.description }}</p>
         <p>Estado: {{ denuncia.state.value }}</p>
         <p>Asignada al usuario: {{ usuario.email }}</p>
@@ -25,9 +26,9 @@
       </div>
     </p>
 </div>
-    <div class="col" >
+  <div class="col" >
     {% include "seguimientos/index.html" %}
-    </div>
+  </div>
 </div>
   <a href="{{ url_for('user_index') }}" class="link">Volver</a>
 {% endblock %}

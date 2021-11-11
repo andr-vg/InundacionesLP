@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 <h1>Denuncias asignadas a {{get_username()}}</h1>
-<a href="{{ url_for('home') }}" class="link">Volver</a>
+<a href="{{ url_for('home') }}" class="link">Home</a>
 {% if has_permission('denuncias_new') %}
 <a href="{{ url_for('denuncia_new') }}" class="link">Crear denuncia</a>
 {% endif %}
@@ -35,7 +35,7 @@
           {% if has_permission('denuncias_update') %}
             <a href="{{url_for('denuncia_edit', id=denuncia.id) }}"><button class="btn btn-sm btn-info"> Editar <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
           {% endif%}
-          {% if has_permission('denuncias_update') %}
+          {% if has_permission('denuncias_update') and denuncia.state.value != "Cerrada" %}
           <a href="{{url_for('seguimiento_new', id=denuncia.id) }}"><button class="btn btn-sm btn-info"> Realizar seguimiento <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
           {% endif%}
           {% if has_permission('denuncias_destroy') %}

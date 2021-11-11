@@ -1,5 +1,6 @@
 {% block content %}
 <h1>Seguimientos</h1>
+{% if denuncia.tracking %}
 <table class="table table-sm">
     <thead>
       <tr>
@@ -13,7 +14,7 @@
   <tr>
     <td> {{ seguimiento.description }} </a></td>
     <td> {{ seguimiento.created_at.strftime('%d-%m-%Y') }} </td>
-    <td> {{ seguimiento.assigned_to}} </td>
+    <td> {{ seguimiento.user_assign.email}} </td>
 </td>
 </tr>
   {% endfor %}
@@ -43,7 +44,8 @@
   </ul>
   </nav>
 </div>        
-
-  
+{% else %}
+<p>Todavía no se realizaron seguimientos en la denuncia</p>
+{% endif %}
 
 {% endblock %}

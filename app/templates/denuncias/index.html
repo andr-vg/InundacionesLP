@@ -9,7 +9,7 @@
 {% if has_permission('denuncias_new') %}
 <a href="{{ url_for('denuncia_new') }}" class="link">Crear denuncia</a>
 {% endif %}
-<a href="{{ url_for('denuncia_tracking') }}" class="link">Seguimientos</a>
+<a href="{{ url_for('denuncia_tracking') }}" class="link">Mis Seguimientos</a>
 
 <form action="{{ url_for('denuncia_search',title=title,state=state,previous=previous,later=later ) }}" method="GET"> 
   <input type="text" name="title">
@@ -51,7 +51,7 @@
         <td> {{ denuncia.created_at.strftime('%d-%m-%Y') }} </td>
         <td> {{ denuncia.state.value }}</td>
         <td> {{ denuncia.email }} </td>
-        <td> {% if denuncia.assigned_to!=None %}{{ denuncia.assigned_to }}
+        <td> {% if denuncia.assigned_to!=None %}{{ denuncia.user_assign.email }}
           {% else %}  Sin asignar {% endif %}</td>
           
         <td> 

@@ -7,33 +7,29 @@
 <h1>Crear seguimiento </h1>
 <a href="{{ url_for('home') }}" class="link">Volver</a>
   <form action="{{ url_for('seguimiento_create', id=denuncia.id) }}" method="POST" id="create_seguimiento">
-<<<<<<< HEAD
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-=======
     <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
-
->>>>>>> 0853e61f787f5219f795d8958af22c0b3d176489
-    <p>
-      <p>
-        {{form.description.label}}*
-        {{ form.description }}
-      </p>
-      {% for error in form.description.errors%}
-      <p>{{error}}</p>
-    {% endfor %}</p>
-      <p>
-        <p>
-          {{form.state.label}}*
-          {{ form.state }}
-        </p>
-        {% for error in form.state.errors%}
-        <p>{{error}}</p>
-       {% endfor %}</p>
-        <p>* Campo requerido</p>
-        <input type="submit" value="Crear">
-        <button type="reset">Limpiar</button>
-        <a href="{{ url_for('denuncia_tracking', id=denuncia.id) }}" class="link">Volver</a>
-      </p>
+    <div class="container">
+    <div class="row-1">
+      <div class="col-4">
+        {{ form.description.label }}*
+        {{ form.description(class="form-control") }}
+        {% for error in form.description.errors %}
+        <p class="alert alert-danger">{{error}}</p>
+        {% endfor %}
+      </div>
+      <div class="row-1">
+        <div class="col-4">
+          {{ form.state.label }}*
+          {{ form.state(class="form-control") }}
+          {% for error in form.description.errors %}
+          <p class="alert alert-danger">{{error}}</p>
+          {% endfor %}
+        </div>
+      </div>
+      <p>* Campo requerido</p>
+      <button type="submit" class="btn btn-primary">Crear</button>
+      <button type="reset" class="btn btn-primary" >Limpiar</button>
+      <a href="{{ url_for('denuncia_tracking', id=denuncia.id) }}" class="btn btn-primary">Volver</a>
     </form>
 {% endblock %}
   

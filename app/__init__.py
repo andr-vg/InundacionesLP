@@ -126,7 +126,7 @@ def create_app(environment="development"):
     app.add_url_rule("/zonas_inundables", "zonas_inundables_index", zonas_inundables.index, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/zonas_inundables/<int:page>", "zonas_inundables_index", zonas_inundables.index, methods=['GET'])
     app.add_url_rule("/zonas_inundables/subir", "zonas_inundables_upload", zonas_inundables.upload, methods=["POST"])
-    app.add_url_rule("/zonas_inundables/baja/<int:id>", "zonas_inundables_delete", zonas_inundables.delete, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/eliminar", "zonas_inundables_delete", zonas_inundables.delete, methods=['POST'])
     app.add_url_rule("/zonas_inundables/actualizar", "zonas_inundables_update", zonas_inundables.update, methods=['POST'])
     app.add_url_rule("/zonas_inundables/editar/", "zonas_inundables_edit", zonas_inundables.edit, methods=['POST'])
     app.add_url_rule("/zonas_inundables/<name>", "zonas_inundables_show", zonas_inundables.show, methods=['GET'])

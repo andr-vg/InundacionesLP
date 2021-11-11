@@ -5,33 +5,10 @@
 {% endblock %}
 {% block content %}
   <h1>Editar usuario</h1>
-  {% for field in form.errors %}
-  {% for error in form.errors[field] %}
-      <div class="alert alert-error">
-          <strong>Error! {{field}} {{error}} </strong> 
-      </div>
-  {% endfor %}
-  {% endfor %}
   <form action="{{ url_for('user_update') }}" method="POST">
-<<<<<<< HEAD
-      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-=======
     <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
-
->>>>>>> 0853e61f787f5219f795d8958af22c0b3d176489
-      <div>
-        {{form.id}}
-      <p>Email {{ form.email }}</p>
-      <p>Nombre de usuario {{ form.username }}</p>
-      <p>Contraseña {{ form.password }}</p>
-      <p>Confirmacion {{ form.confirm }}</p>
-      <p>Nombre {{ form.firstname }}</p>
-      <p>Apellido {{ form.lastname }}</p>
-      <p>Roles: {% for rol in form.rol %}
-        {{rol}}{{rol.label}}
-        {% endfor %}
-      </p>
-      </div>
+    {{ form.id }}
+    {% include "user/form.html" %}
       <input type="submit" value="Editar">
       <a href="{{ url_for('user_index') }}" class="link">Volver</a>
     </p>

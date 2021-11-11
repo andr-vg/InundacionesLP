@@ -3,6 +3,8 @@ from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, Float
 from sqlalchemy.orm import relationship
 
+import app.models.coordenadas as c
+
 
 class Recorridos(db.Model):
     """
@@ -94,6 +96,10 @@ class Recorridos(db.Model):
     def edit(self, name, description):
         self.name = name
         self.description = description
+        for elem in self.coords:
+            coordinate = c.Coordenadas.get_by_id(elem.id)
+            coordinate.delete()
+        
         
 
     def add_coordinate(self, new_coords):
@@ -113,6 +119,9 @@ class Recorridos(db.Model):
         db.session.commit()
 
     def delete(self):
+        for elem in self.coords:
+            coordinate = c.Coordenadas.get_by_id(elem.id)
+            coordinate.delete()
         db.session.delete(self)
 
     def change_state(self):

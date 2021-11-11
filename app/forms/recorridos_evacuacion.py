@@ -31,5 +31,5 @@ class EditRecorrido(CreateRecorrido):
         Valida que el input id recibido sea un numero mayor o igual a 1 
         """
         
-        if not field.data.isdigit() or int(field.data) < 1:
+        if int(field.data) < 1:
             form.id.errors = (validators.ValidationError("Formulario invalido"),)

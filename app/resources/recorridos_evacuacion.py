@@ -62,8 +62,10 @@ def create():
     if form.validate():
         recorrido = Recorridos.unique_field(form.name.data)
         if recorrido:
+            print(request.url)
             flash("Ya existe un recorrido con ese nombre. Ingrese uno nuevo.")
             return render_template("recorridos_evacuacion/new.html", form=form)
+            ##return render_template(request.url, form=form)
         elif len(coordinates) < 3:
             flash("Debe seleccionar al menos 3 puntos.")
             return render_template("recorridos_evacuacion/new.html", form=form)
@@ -82,8 +84,8 @@ def create():
             new_recorrido.add_recorrido()
             # hago el commit a la tabla
             new_recorrido.update()
-            flash("El recorrido ha sido creado correctamente.")
-            return redirect(url_for("recorridos_index"))
+            flash('El recorrido ha sido creado correctamente.')
+            return redirect(url_for('recorridos_index'))
     return render_template("recorridos_evacuacion/new.html", form=form)
 
 
@@ -97,7 +99,9 @@ def edit():
     if not check_permission("recorridos_edit", session):
         abort(401)
     recorrido = Recorridos.get_recorrido_by_id(request.form['id'])
-    form = EditRecorrido(id=recorrido.id)
+    coords = [[float(elem.lat), float(elem.long)] for elem in recorrido.coords]
+    print(coords)
+    form = EditRecorrido(id=recorrido.id,name=recorrido.name,description=recorrido.description,coordinates=coords)
     return render_template("recorridos_evacuacion/edit.html", form=form)
 
 
@@ -111,14 +115,30 @@ def update():
         abort(401)
     if not check_permission("recorridos_update", session):
         abort(401)
-    form = EditRecorrido(request.form)
+    form = EditRecorrido(id=request.form['id'], name=request.form['name'], description=request.form['description'],
+        coordinates=request.form['coordinates'])
+    coordinates = json.loads(form.coordinates.data)
     if form.validate():
         recorrido = Recorridos.get_recorrido_by_id(form.id.data)
         query = Recorridos.get_recorrido_by_name(form.name.data)
+        print(type(recorrido.id))
+        print(type(query.id))
         if query and query.id!=recorrido.id:
             flash("Ya existe un recorrido con ese nombre")
             return render_template("recorridos_evacuacion/edit.html", form=form)
-        recorrido.edit(name=form.name.data, description=form.description.data, lat=form.lat.data, long=form.long.data)
+        recorrido.edit(name=form.name.data, description=form.description.data)
+        recorrido.update()
+        for coords in coordinates:
+            # creo las coordenadas
+            new_coords = Coordenadas(coords[0], coords[1])
+            # se las agrego al recorrido
+            recorrido.add_coordinate(new_coords)
+            # agrego las coordenadas creadas a la tabla
+            Coordenadas.add_coords(new_coords)
+            # hago el commit en la tabla
+            Coordenadas.update_coords()
+            # hago el commit a la tabla
+            recorrido.update()
         recorrido.update()
         return redirect(url_for("recorridos_index"))
     return render_template("recorridos_evacuacion/edit.html", form=form)

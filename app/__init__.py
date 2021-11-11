@@ -136,10 +136,10 @@ def create_app(environment="development"):
     # Rutas para recorridos de evacuacion
     app.add_url_rule("/recorridos_evacuacion", "recorridos_index", recorridos_evacuacion.index, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/recorridos_evacuacion/<int:page>", "recorridos_index", recorridos_evacuacion.index, methods=['GET'])
-    app.add_url_rule("/recorridos_evacuacion", "recorridos_create", recorridos_evacuacion.create, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion", "recorridos_create", recorridos_evacuacion.create, methods=['POST'])
     app.add_url_rule("/recorridos_evacuacion/nuevo", "recorridos_new", recorridos_evacuacion.new)
-    app.add_url_rule("/recorridos_evacuacion/editar", "recorridos_edit", recorridos_evacuacion.edit,methods=["POST"])
-    app.add_url_rule("/recorridos_evacuacion/actualizar", "recorridos_update", recorridos_evacuacion.update, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/editar", "recorridos_edit", recorridos_evacuacion.edit,methods=['POST'])
+    app.add_url_rule("/recorridos_evacuacion/actualizar", "recorridos_update", recorridos_evacuacion.update, methods=['POST'])
     app.add_url_rule("/recorridos_evacuacion/eliminar", "recorridos_delete", recorridos_evacuacion.delete, methods=["POST"])
     app.add_url_rule("/recorridos_evacuacion/estado/<int:id>", "recorridos_publicate", recorridos_evacuacion.change_state)
     app.add_url_rule("/recorridos_evacuacion/search/", "recorridos_search", recorridos_evacuacion.search, defaults={'page': 1}, methods=['GET'])

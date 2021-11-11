@@ -4,7 +4,7 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-  <h1>Usuarios</h1>
+  <h1>Recorridos de evacuación</h1>
   <a href="{{ url_for('home') }}" class="link">Volver</a>
   {% if has_permission('recorridos_new') %}
     <a href="{{ url_for('recorridos_new') }}" class="link">Nuevo recorrido</a>

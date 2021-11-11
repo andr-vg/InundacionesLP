@@ -7,7 +7,16 @@ from sqlalchemy import ForeignKey, Column, Integer, String, DateTime
 
 class Seguimiento(db.Model):
     """
-    
+    Modelo que representa el seguimiento de una denuncia
+
+    Args:
+    id (int): Id del seguimiento
+    description(string): descripcion del seguimiento
+    created_at (date): fecha de creacion del seguimiento
+    complaint_id (int): id de la denuncia a la cual pertenece el seguimiento
+    complaints (denuncia): denuncia a la cual pertenece el seguimiento
+    assigned_to (int): id del usuario autor del seguimiento
+    user_assign (user): usuario autor del seguimiento
     """
     __tablename__ = 'seguimientos'
     id = Column(Integer,primary_key=True)

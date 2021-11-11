@@ -6,7 +6,12 @@ from sqlalchemy import Enum, ForeignKey, Column, Integer, String, DateTime, Bool
 
 class Categoria(db.Model):
     """
-    
+    Modelo que representa la categoria de una denuncia
+     
+    Args:
+    id (int): Id de la categoria
+    name (string): Nobmre de la categoria
+    complaints (list): lista de denuncias asignadas a dicha categoria
     """
 
 

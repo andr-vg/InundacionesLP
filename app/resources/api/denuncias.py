@@ -23,7 +23,7 @@ def index():
 def paginated(page):
     config = Configuration.get_configuration()
     per_page = int(request.args.get("per_page",config.elements_per_page))
-    denuncias_page = Denuncia.get_denuncias_paginated(int(page),per_page)
+    denuncias_page = Denuncia.get_paginated(page=int(page),config=config,elements_per_page=per_page)
     denuncias = DenunciaSchema.dump(denuncias_page,many=True)
     return jsonify(denuncias)
 

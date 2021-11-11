@@ -91,3 +91,8 @@ border-color: var(--primary);
   color: var(--primary);
   border: 1px solid var(--primary);
 }
+.btn-primary{
+  background-color:var(--danger) !important;
+  color:black;
+  border-color:var(--danger) !important;
+}

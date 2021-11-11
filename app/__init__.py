@@ -97,6 +97,8 @@ def create_app(environment="development"):
 
     app.add_url_rule("/denuncias", "denuncia_index", denuncias.index,defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/denuncias/<int:page>", "denuncia_index", denuncias.index, methods=['GET'])
+    app.add_url_rule("/denuncias/search/", "denuncia_search", denuncias.search,defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/denuncias/search/<int:page>", "denuncia_search", denuncias.search, methods=['GET'])
     app.add_url_rule("/denuncias/seguimiento", "denuncia_tracking", denuncias.index_assigned,defaults={'page': 1},
      methods=['GET'])
     app.add_url_rule("/denuncias/seguimiento/<int:page>", "denuncia_tracking", denuncias.index_assigned, methods=['GET'])
@@ -105,12 +107,12 @@ def create_app(environment="development"):
     app.add_url_rule("/denuncias/actualizar/<int:id>", "denuncia_edit", denuncias.edit, methods=['GET'])
     app.add_url_rule("/denuncias/editar/<int:id>", "denuncia_update", denuncias.update, methods=['POST'])
     app.add_url_rule("/denuncias", "denuncia_create", denuncias.create, methods=["POST"])
-
+    app.add_url_rule("/denuncias/detalle/<int:id>", "denuncia_show", denuncias.show,defaults={'page': 1}, methods=["GET"])
+    app.add_url_rule("/denuncias/detalle/<int:id>/<int:page>", "denuncia_show", denuncias.show, methods=["GET"])
+    
 
     # Rutas de Seguimientos
-    app.add_url_rule("/seguimiento/<int:id>", "seguimiento_index", seguimiento.index,defaults={'page': 1},
-     methods=['GET'])
-    app.add_url_rule("/seguimiento/<int:id>/<int:page>", "seguimiento_index", seguimiento.index, methods=['GET'])
+   
     app.add_url_rule("/seguimiento/nuevo/<int:id>", "seguimiento_new", seguimiento.new)
     app.add_url_rule("/seguimiento/<int:id>", "seguimiento_create", seguimiento.create,methods=["POST"])
 
@@ -124,8 +126,12 @@ def create_app(environment="development"):
     app.add_url_rule("/zonas_inundables", "zonas_inundables_index", zonas_inundables.index, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/zonas_inundables/<int:page>", "zonas_inundables_index", zonas_inundables.index, methods=['GET'])
     app.add_url_rule("/zonas_inundables/subir", "zonas_inundables_upload", zonas_inundables.upload, methods=["POST"])
-    app.add_url_rule("/zonas_inundables/baja/<int:id>", "zona_inundable_delete", zonas_inundables.delete, methods=['GET'])
-    app.add_url_rule("/zonas_inundables/actualizar/", "zona_inundable_update", zonas_inundables.edit, methods=['POST'])
+    app.add_url_rule("/zonas_inundables/eliminar", "zonas_inundables_delete", zonas_inundables.delete, methods=['POST'])
+    app.add_url_rule("/zonas_inundables/actualizar", "zonas_inundables_update", zonas_inundables.update, methods=['POST'])
+    app.add_url_rule("/zonas_inundables/editar/", "zonas_inundables_edit", zonas_inundables.edit, methods=['POST'])
+    app.add_url_rule("/zonas_inundables/<name>", "zonas_inundables_show", zonas_inundables.show, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/search/", "zonas_inundables_search", zonas_inundables.search, defaults={'page': 1}, methods=['GET'])
+    app.add_url_rule("/zonas_inundables/search/<int:page>", "zonas_inundables_search", zonas_inundables.search, methods=['GET'])    
 
     # Rutas para recorridos de evacuacion
     app.add_url_rule("/recorridos_evacuacion", "recorridos_index", recorridos_evacuacion.index, defaults={'page': 1}, methods=['GET'])

@@ -7,6 +7,7 @@ from app.helpers.auth import authenticated
 from sqlalchemy.exc import OperationalError
 from app.models.categories import Categoria
 from app.models.denuncias import Denuncia
+from app.models.seguimiento import Seguimiento
 from app.forms.denuncias import CreateDenunciaForm
 from app.models.user import User
 
@@ -157,3 +158,50 @@ def update(id):
         flash("La denuncia ha sido editado correctamente.")
         return redirect(url_for("denuncia_index"))
     return render_template("denuncias/edit.html", denuncia=denuncia, form=form)
+
+
+
+def show(id,page):
+    """
+        Renderiza el detalle con los datos de una denuncia dada
+
+    Args:
+        id: Int que representa el id de la denuncia
+    """
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("denuncias_show", session):
+        abort(401)
+    config = get_configuration(session) 
+    seguimientos = Seguimiento.get_tracking(page, config,id)
+    denuncia = Denuncia.get_by_id(id)
+    usuario = User.get_user_by_id(denuncia.assigned_to)
+    categoria = Categoria.get_category_by_id(denuncia.category_id)
+    return render_template("denuncias/show.html", denuncia=denuncia,usuario=usuario,categoria=categoria,seguimientos=seguimientos)
+
+
+def search(page):
+    """Retorna el listado de denuncias filtrados con las opciones de búsqueda."""
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("denuncia_index", session):
+        abort(401)
+    config = get_configuration(session)
+    denuncias = Denuncia.search_by_title(request.args["title"])
+    title = request.args["title"]
+    state = ""
+    if request.args["state"]!="":
+        denuncias = Denuncia.search_by_state(denuncias,request.args["state"])
+        state = request.args["state"]
+    previous = ""
+    if "previous" in request.args.keys() and request.args["previous"]!="":
+        denuncias = Denuncia.search_previous_date(denuncias,request.args["previous"])
+        previous = request.args["previous"]
+    later = ""
+    if "later" in request.args.keys() and request.args["later"]!="":
+        denuncias = Denuncia.search_later_date(denuncias,request.args["later"])
+        later = request.args["later"]
+    denuncias = Denuncia.get_denuncias_paginated(denuncias,page,config)
+    return render_template("denuncias/index.html", denuncias=denuncias, filter=1, title=title,state=state,previous=previous,later=later)

@@ -12,7 +12,8 @@ class CreateDenunciaForm(FlaskForm):
     """
     title = StringField("Titulo",[validators.DataRequired(message="Debe ingresar un titulo")])
     category = SelectField("Categoria",coerce=int)
-    description = StringField("Descripcion", [validators.DataRequired()],widget=widgets.TextArea())
+    description = StringField("Descripcion", [validators.DataRequired("Debe ingresar una descripcion"),
+    validators.Length(min=1,max=255,message="No puede superar los 255 caracteres")],widget=widgets.TextArea())
     lat = StringField("Latitud")
     long = StringField("Longitud")
     firstname = StringField("Nombre",[validators.DataRequired(message="Debe ingresar su nombre"),

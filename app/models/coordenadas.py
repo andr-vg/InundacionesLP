@@ -55,6 +55,8 @@ class Coordenadas(db.Model):
         Coordenadas.add_coords(coords)
         self.recorridosEvacuacion.append(recorrido)
         Coordenadas.update_coords()
-
+        
+    def delete(self):
+        db.session.delete(self)
     
 

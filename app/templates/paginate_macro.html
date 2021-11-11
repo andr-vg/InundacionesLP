@@ -1,20 +1,28 @@
-{% macro show_paginate_table(users, filter, name,active) %}
-    {#Filter indica que es una busqueda, parameters son los parametros de la busqueda#}
+{% macro show_paginate_table(module_name, items, filter, name,active) %}
+    {#
+        module_name: Nombre del modulo,para el que sea desea paginar (usuarios, puntos de encuentro, etc...)
+        items: Tiene los objetos que se desean iterar
+        filter: Indica que se va a realizar una busqueda en vez, de un index.
+        active: Valor que proviene de la busqueda si el item esta activo.
+    #}
+
     <div class="container">
         <nav aria-label="pagination_table">
         <ul class="pagination">
-            {% for page_num in users.iter_pages() %}
+            {% for page_num in items.iter_pages() %}
 
                 {% if page_num %}
 
-                    {%if users.page != page_num %}
+                    {%if items.page != page_num %}
                         {% if filter ==1 %}
+
                             <li class="page-item" >
-                                <a class="page-link" href="{{ url_for('user_search', page=page_num, name=name, active=active ) }}">{{page_num}}</a>
+                                <a class="page-link" href="{{ url_for(module_name +'_search', page=page_num, name=name, active=active ) }}">{{page_num}}</a>
                             </li>
                         {% else %}
+
                         <li class="page-item" >
-                            <a class="page-link" href="{{url_for('user_index', page=page_num)}}">{{page_num}}</a>
+                            <a class="page-link" href="{{url_for(module_name +'_index', page=page_num)}}">{{page_num}}</a>
                         </li>
                         {% endif %}
                     {% else %}

@@ -2,7 +2,7 @@ import datetime,enum
 from sqlalchemy.orm import relationship
 from app.db import db
 from app.models.coordenadas import Coordenadas
-from sqlalchemy import Enum, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_, Float
+from sqlalchemy import Enum, ForeignKey, Column, Integer, String, DateTime, Float,func
 
 class State(enum.Enum):
     sin_confirmar = "Sin confirmar"
@@ -10,10 +10,13 @@ class State(enum.Enum):
     resuelta = "Resuelta"
     cerrada = "Cerrada"
 
+    
+    def equals(self,string):
+        return self.value==string
+
     @classmethod
     def choices(cls):
         return [(choice.name, choice.value) for choice in cls]
-
 
         
 class Denuncia(db.Model):
@@ -33,6 +36,67 @@ class Denuncia(db.Model):
         denuncia = Denuncia.query.filter(Denuncia.title == title).first()
         return denuncia
 
+
+    @classmethod
+    def search_by_title(cls,title):
+        """
+        Busca una denuncia con titulo que contenga el parametro recibido
+
+        Args: 
+            title(string): titulo de la denuncia
+
+        Returns: retorna un listado de denuncias que coinciden, caso contrario None
+        """ 
+        return Denuncia.query.filter(Denuncia.title.like('%'+title+'%'))
+
+
+    @classmethod
+    def search_by_state(cls,query,state):
+        """
+        Busca una denuncia con el estado recibido por parametro
+
+        Args: 
+            state(string): estado de la denuncia
+
+        Returns: retorna un listado de denuncias que coinciden, caso contrario None
+        """ 
+        return query.filter(Denuncia.state.ilike(state))
+    
+
+    @classmethod
+    def search_previous_date(cls,query,date):
+        """
+        Busca una denuncia cuya fecha de creacion sea posterior a la fecha pasada por parametro
+
+        Args:
+            date(string): fecha a comparar con la denuncia
+        
+        Returns: retorna un listado de denuncias que coinciden, caso contrario None
+        """
+        date_create = datetime.datetime.strptime(date,'%Y-%m-%d')
+        return query.filter(func.DATE(Denuncia.created_at)>=date_create)
+
+    @classmethod
+    def search_later_date(cls,query,date):
+        """
+        Busca una denuncia cuya fecha de creacion sea anterior a la fecha pasada por parametro
+
+        Args:
+            date(string): fecha a comparar con la denuncia
+        
+        Returns: retorna un listado de denuncias que coinciden, caso contrario None
+        """
+        date_create = datetime.datetime.strptime(date,'%Y-%m-%d')+datetime.timedelta(hours=23,minutes=59)
+        return query.filter(Denuncia.created_at<=date_create)
+
+
+    @classmethod
+    def get_denuncias_paginated(cls,query,page,config):
+        if config.ordered_by == "Ascendente":
+            return query.order_by(Denuncia.created_at.asc()).order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.order_by(Denuncia.created_at.desc()).order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page)
+
+    
 
 
 
@@ -111,13 +175,14 @@ class Denuncia(db.Model):
         return Denuncia.query.order_by(Denuncia.created_at.desc()).paginate(page, per_page=config.elements_per_page)
 
 
-    def get_denuncias_paginated(page,elements_per_page):
-        return Denuncia.query.paginate(page, per_page=elements_per_page)
-
-
     def get_by_id(id):
         """ Retorna la denuncia con el id recibido por parametro """
         return Denuncia.query.filter(Denuncia.id==id).first()
+
+
+    def get_all():
+        """" Retorna todas las denuncias"""
+        return Denuncia.query.all()
 
     
     def get_by_title(title):

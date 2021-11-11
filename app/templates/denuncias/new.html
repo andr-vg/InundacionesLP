@@ -16,73 +16,14 @@
   <h1>Crear Denuncia</h1>
   <form action="{{ url_for('denuncia_create') }}" method="POST" id="create-denuncia">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <p>
-      <p>
-        {{form.title.label}}*
-        {{ form.title }}
-      </p>
-      {% for error in form.title.errors%}
-      <p>{{error}}</p>
-      {% endfor %}
-      <p>
-        {{form.category.label}}
-        {{ form.category }}
-      </p>
-      {% for error in form.category.errors%}
-      <p>{{error}}</p>
-      {% endfor %}
-      <p>
-        {{form.description.label}}*
-        {{ form.description }}
-      </p>
-      {% for error in form.description.errors%}
-      <p>{{error}}</p>
-      {% endfor %}
-      <p>
-        {{form.firstname.label}}*
-        {{ form.firstname }}
-      </p>
-      {% for error in form.firstname.errors%}
-      <p>{{error}}</p>
-      {% endfor %}
-      <p>
-        {{form.lastname.label}}*
-        {{ form.lastname }}
-      </p>
-      {% for error in form.lastname.errors%}
-      <p>{{error}}</p>
-      {% endfor %}
-      <p>
-        {{form.tel.label}}*
-        {{ form.tel }}
-      </p>
-      {% for error in form.tel.errors%}
-      <p>{{error}}</p>
-      {% endfor %}
-      <p>
-        {{form.email.label}}*
-        {{ form.email }}
-      </p>
-      {% for error in form.email.errors%}
-      <p>{{error}}</p>
-      {% endfor %}
-      <p>
-        {{form.user.label}}
-        {{ form.user }}
-      </p>
-      {% for error in form.user.errors%}
-      <p>{{error}}</p>
-      {% endfor %}
-        {{form.lat}}
-        {{form.long}}
-
+    {% include "denuncias/form.html" %}
       <p>* Campo requerido</p>
       <div class="map-container">
-      <div id="mapid"></div>
+        <div id="mapid" class="float-end"></div>
       </div>
-      <input type="submit" value="Crear">
-      <button type="reset">Limpiar</button>
-      <a href="{{ url_for('denuncia_index') }}" class="link">Volver</a>
-    </p>
+    </div>
+      <button type="submit" class="btn btn-primary">Crear</button>
+      <button type="reset" class="btn btn-primary" >Limpiar</button>
+      <a href="{{ url_for('denuncia_index') }}" class="btn btn-primary">Volver</a>
   </form>
 {% endblock %}

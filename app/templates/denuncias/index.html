@@ -9,7 +9,28 @@
 {% if has_permission('denuncias_new') %}
 <a href="{{ url_for('denuncia_new') }}" class="link">Crear denuncia</a>
 {% endif %}
-<a href="{{ url_for('denuncia_tracking') }}" class="link">Seguimientos</a>
+<a href="{{ url_for('denuncia_tracking') }}" class="link">Mis Seguimientos</a>
+
+<form action="{{ url_for('denuncia_search',title=title,state=state,previous=previous,later=later ) }}" method="GET"> 
+  <input type="text" name="title">
+  <select name="state">
+    <option value="" selected></option>
+    <option value="sin_confirmar">Sin confirmar</option>
+    <option value="en_curso">En curso</option>
+    <option value="resuelta">Resuelta</option>
+    <option value="cerrada">Cerrada</option>
+  </select>
+  <label for="previous">Fecha de comienzo</label>
+  <input type="date" name="previous" id="previous">
+  <label for="later">Fecha de fin</label>
+  <input type="date" name="later" id="later">
+  <p>
+    <input type="submit" value="Buscar">
+  </p>
+</form>
+
+
+{% if denuncias.items %}
 <table class="table table-sm">
     <thead>
       <tr>
@@ -30,31 +51,59 @@
         <td> {{ denuncia.created_at.strftime('%d-%m-%Y') }} </td>
         <td> {{ denuncia.state.value }}</td>
         <td> {{ denuncia.email }} </td>
-        <td> {% if denuncia.assigned_to!=None %}{{ denuncia.assigned_to }}
+        <td> {% if denuncia.assigned_to!=None %}{{ denuncia.user_assign.email }}
           {% else %}  Sin asignar {% endif %}</td>
-        <td> {% if has_permission('denuncias_destroy') %}
-            <a href="{{url_for('denuncia_delete', id=denuncia.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta denuncia');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+          
+        <td> 
+          {% if has_permission('denuncias_show') %}
+            <a href="{{url_for('denuncia_show', id=denuncia.id) }}"><button class="btn btn-sm btn-success"> Ver detalle <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
           {% endif%}
           {% if has_permission('denuncias_update') %}
             <a href="{{url_for('denuncia_edit', id=denuncia.id) }}"><button class="btn btn-sm btn-info"> Editar <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
+          {% endif%}
+          {% if has_permission('denuncias_destroy') %}
+            <a href="{{url_for('denuncia_delete', id=denuncia.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta denuncia');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
           {% endif%}
         </td>
     </tr>
       {% endfor %}
     </tbody>
     </table>
-<!-- previous page -->
-{% if denuncias.has_prev %}
-<li>
-  <a href="{{ url_for('denuncia_index', page=denuncias.prev_num) }}">Anterior</a>
-</li>
-{% endif %}
-
-
-<!-- next page -->
-{% if denuncias.has_next %}
-<li>
-  <a href="{{ url_for('denuncia_index', page=denuncias.next_num) }}">Siguiente</a>
-</li>
-{% endif %}
+    {% else %}
+    <div class="container">
+      <div class="row justify-content-center">
+        <h1> No se encontraron Resultados</h1>
+      </div>
+    </div>
+    {% endif %}
+    <div class="container">
+      <nav aria-label="pagination_table">
+      <ul class="pagination">
+          {% for page_num in denuncias.iter_pages() %}
+  
+              {% if page_num %}
+  
+                  {%if denuncias.page != page_num %}
+                      {% if filter == 1 %}
+                          <li class="page-item" >
+                              <a class="page-link" href="{{ url_for('denuncia_search', page=page_num, title=title,state=state,previous=previous,later=later ) }}">{{page_num}}</a>
+                            </li>
+                      {% else %}
+                      <li class="page-item" >
+                          <a class="page-link" href="{{url_for('denuncia_index', page=page_num)}}">{{page_num}}</a>
+                      </li>
+                      {% endif %}
+                  {% else %}
+                  <li class="page-item disabled" >
+                  <a class="page-link" href="#">{{page_num}}</a>
+                  </li>
+                  {%endif%}
+  
+              {% else %}
+              {%endif%}
+  
+          {% endfor%}
+      </ul>
+      </nav>
+  </div>  
 {% endblock %}

@@ -81,8 +81,21 @@ def edit():
     state = "Publicado" if zona.state else "Despublicado", color = zona.color)
     return(render_template('zonas_inundables/edit.html',form=form))
 
-def delete(id):
-    pass
+def delete():
+    """
+    Lógica a realizar al momento de eliminar
+    de manera fisica una zona
+    """
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission('zonas_inundables_destroy', session):
+        abort(401)
+    zona = ZonaInundable.get_zona_by_id(request.form["id"])
+    zona.delete()
+    zona.update_zona_inundable()
+    flash("Recorrido eliminado correctamente.")
+    return redirect(url_for("zonas_inundables_index"))
 
 def update():
     user_email = authenticated(session)

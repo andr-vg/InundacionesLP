@@ -139,3 +139,6 @@ class ZonaInundable(db.Model):
 
     def get_color(self):
         return get_translated_color(self.color)
+
+    def delete(self):
+        db.session.delete(self)

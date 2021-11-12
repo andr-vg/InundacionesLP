@@ -4,16 +4,11 @@ const mapLayerUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
 
 export function Map(selector){
-    let marker;
     let map;
-
+    let marker;
 
 
     initializedMap(selector);
-
-
-
-    map.addEventListener('click',(e) => { addMarker(e.latlng)});
 
 
     function initializedMap(selector){
@@ -22,19 +17,14 @@ export function Map(selector){
     };
 
 
-    function addMarker({lat,lng}){
-        if(marker){
-            marker.remove();
-        };
-        marker = L.marker([lat,lng]).addTo(map);
-    };
-    
-
+    function addListMarker(list){
+        for(let i=0;i<list.length;i++){
+            marker = new L.marker([list[i]["lat"],list[i]["long"]]).bindPopup(list[i]["name"]).addTo(map);
+        }
+    }
 
     return {
-        get marker() { return marker },
-        addMarker: addMarker,
-        addListMarkers: addListMarkers
+        addListMarker:addListMarker,
     };
 
 

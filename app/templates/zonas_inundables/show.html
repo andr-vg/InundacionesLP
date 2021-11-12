@@ -21,6 +21,7 @@
           <p>nombre: {{ zona.name }}</p>
           <p>codigo: {{ zona.color }}</p>
           <p>Publicado: {{ "si" if zona.state else "No" }}</p>
+          <p>Puntos: {{ zona.get_coords_lenght() }}</p>
           <p>coordenadas: {{ zona.get_coords_as_list() }} </p>
           <div class="container" >
             <div id="mapid"></div>

@@ -9,16 +9,24 @@
     <h1>
         Subir Archivo
     </h1>
-    <form action="{{ url_for('zonas_inundables_upload') }}"enctype=multipart/form-data method="post">
-        <div class="form-group">
-            <label for="inputFile">Subir Archivo</label>
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <input type="file" name="inputFile">
+
+      <form action="{{ url_for('zonas_inundables_upload') }}"enctype=multipart/form-data method="post">
+        <div class="row">
+          <div class="col-sm-auto">
+            <div class="form-group">
+                <label for="inputFile">Subir Archivo</label>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="file" name="inputFile">
+            </div>
+          </div>
+            <div class="col-sm-auto">
+              <button type="submit" class="btn btn-success">
+                  Subir
+              </button>
+            </div>
         </div>
-        <button type="submit" class="btn btn-secondary">
-            Submit
-        </button>
-    </form>
+      </form>
+
 </div>
 
 <form action="{{ url_for('zonas_inundables_search', name=name, active=active) }}" method="GET"> 

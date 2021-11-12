@@ -137,11 +137,14 @@ class ZonaInundable(db.Model):
             lista.append([c.lat, c.long])
         return lista
 
+    def get_coords_lenght(self):
+        return len(self.coords)
+
     def get_color(self):
         return get_translated_color(self.color)
 
     def delete(self):
         db.session.delete(self)
-        
+
     def change_state(self):
         self.state=not self.state

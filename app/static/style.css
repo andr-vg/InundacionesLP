@@ -92,6 +92,6 @@ h4 {
   color: red;
 }
 
-#coords{
-  display: none;
+#coords-button{
+  margin-bottom: 10px;
 }

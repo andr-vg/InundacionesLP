@@ -6,13 +6,24 @@ from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boo
 from app.helpers.colors import get_translated_color
 
 class ZonaInundable(db.Model):
+    """
+    Modelo que define las zonas inundables.
+
+    Args:
+        name (string): nombre de la zona inundable
+        code (string): Codigo unico de la zona
+        state (boolean): estado (0 despublicado, 1 publicado) 
+        color(string): Color con el que se representara la zona en el mapa
+        coords(Coordenadas): Coordenadas asociadas a la zona inundable 
+    """
     @classmethod
     def get_all(cls):
+        """
+        Devuelve todas las zonas inundables de la BD
+        """
         return ZonaInundable.query.all()
 
-    """
-    
-    """
+
     zona_tiene_coords = Table('zona_tiene_coords', db.Model.metadata,
     Column('zonasInundables_id', ForeignKey('zonasInundables.id'), primary_key=True),
     Column('coordenadas_id', ForeignKey('coordenadas.id'), primary_key=True)
@@ -58,11 +69,10 @@ class ZonaInundable(db.Model):
 
     def search_paginate(cls, query, page, config):
         """
-        Busca usuarios respetando la configuracion y los retorna paginadamente
+        Busca zonas indundables respetando la configuracion y los retorna paginadamente
 
         Args:
-            query(Query): usuarios a filtrar
-            id(int): id del usuario en la sesión actual
+            query(Query): zonas a filtrar
             page(int): número de página 
             config(dict): diccionario con los datos de configuracion a respetar
 
@@ -93,14 +103,24 @@ class ZonaInundable(db.Model):
 
 
     def add_zona_inundable(self):
+        """ 
+        Agrega una zona, los cambios no se verán reflejados en la BD hasta 
+        no hacer un commit
+        """
         db.session.add(self)
 
 
     def update_zona_inundable(self):
+        """
+        Actualiza el modelo en la BD 
+        """
         db.session.commit()
 
 
     def generate_code(self):
+        """
+        Genera un codigo unico, el cual se usara como codigo a la hora de agregar una zona
+        """
         return uuid.uuid4()
 
     def get_zona_by_id(id):
@@ -129,16 +149,45 @@ class ZonaInundable(db.Model):
 
 
     def get_zonas_paginated(page, elements_per_page):
+        """
+        Devuelve todas las zonas paginadas, se utilizara en la api
+        Args:
+            page(int): Numero entero que representa la pagina
+            elements_per_page(int): Cantidad de elementos que se mostraran por pagina
+        """
         return ZonaInundable.query.paginate(page, per_page=elements_per_page)
 
     def get_coords_as_list(self):
+        """
+        Devuelve las coordenadas asociadas a la zona, en forma de lista
+        """
         lista = []
         for c in self.coords:
             lista.append([c.lat, c.long])
         return lista
 
+    def get_coords_lenght(self):
+        """
+        Devuelve la cantidad de coordenadas asociadas a la zona
+        """
+        return len(self.coords)
+
     def get_color(self):
+        """
+        Devuelve el nombre del color, traducido al ingles, para poder usarlo  a la hora
+        de marcar los puntos dela zona en el mapa.
+        """
         return get_translated_color(self.color)
 
     def delete(self):
+        """ 
+        Elimina una zona inundable, los cambios no se produciran en la BD hasta que
+        se haga un update
+        """
         db.session.delete(self)
+
+    def change_state(self):
+        """
+        Cambia el estado de la zona inundable
+        """
+        self.state=not self.state

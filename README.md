@@ -23,9 +23,13 @@ Además las denuncias pueden estar asociadas a un usuario del sistema, por lo ta
 
 ### API 
 
-/api/denuncias Retorna el listado de todas las denuncias del sistema sin paginar.
-/api/denuncias/nro_pagina Retorna la página en particular con la cantidad configurada en el sistema.
-/api/denuncias/nro_pagina/nro_pagina?per_page=nro_elementos Retorna la página en particular con la cantidad de elementos pasada por la url.
+- `/api/denuncias`: Retorna el listado de todas las denuncias del sistema sin paginar.
+- `/api/denuncias/nro_pagina`: Retorna la página en particular con la cantidad configurada en el sistema.
+- `/api/denuncias/nro_pagina/nro_pagina?per_page=nro_elementos`: Retorna la página en particular con la cantidad de elementos pasada por la url.
+- `/api/zonas_inundables`: Retorna el listado de todas las zonas inundables del sistema sin paginar.
+- `/api/zonas_inundables/nro_zona`: Retorna los datos de la zona con ese `nro_zona` como id, caso contrario `Error 404 Not Found`.
+- `/api/zonas_inundables/?page=nro_page`: Retorna las zonas inundables que posee ese número de página, caso contrario `Error 404 Not Found`.
+- `/api/zonas_inundables/?page=nro_page&per_page=nro_per_page`: Retorna las zonas inundables con ese numero de página y ese total por página, caso contrario `Error 404 Not Found`.
 
 
 ### Dependencias

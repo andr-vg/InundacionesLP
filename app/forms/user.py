@@ -25,7 +25,7 @@ class RegistrationUserForm(FlaskForm):
     password = PasswordField('Contraseña', [validators.DataRequired(message="*"),
         validators.EqualTo('confirm',message="Las contraseñas no coinciden")])
     confirm = PasswordField('Confirmar contraseña')
-    rol = SelectMultipleField("Seleccionar rol",
+    rol = SelectMultipleField('Seleccionar rol',
         [validators.DataRequired(message="*")], coerce=int,
         option_widget = widgets.CheckboxInput())
     firstname = StringField('Nombre', [validators.regexp("^[a-zA-Z]+$")])

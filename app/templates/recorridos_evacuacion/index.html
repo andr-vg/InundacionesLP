@@ -53,14 +53,14 @@
              {% endif %}
         </td>   
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
-        <td id="actions">
+        <td>
           <div class="row">
             {% if has_permission('recorridos_publicate') %}
             <div class="column mx-1">
               {% if recorrido.state %}
-              <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea despublicar este recorrido?');"> <button class="btn btn-sm btn-secondary"> despublicar </button> </a>
+              <a class="btn btn-sm btn-secondary" href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea despublicar este recorrido?');"> despublicar </a> 
               {% else %}
-                <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea publicar este recorrido?');"> <button class="btn btn-sm btn-success"> publicar </button> </a>
+              <a class="btn btn-sm btn-success" href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea publicar este recorrido?');"> publicar </a> 
               {% endif %}
             </div>
             {% endif %}
@@ -69,7 +69,7 @@
             <form action="{{ url_for('recorridos_edit') }}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input name="id" type="hidden" value="{{ recorrido.id }}">
-              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24"></span> </button> 
             
             </form>
             {% endif %}
@@ -79,7 +79,7 @@
               <form action="{{ url_for('recorridos_delete') }}" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name="id" type="hidden" value="{{ recorrido.id }}">
-                <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este recorrido?')"> Borrar <span class="material-icons">&#xE150;</span> </button> 
+                <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este recorrido?')"> Borrar <span class="material-icons"></span> </button> 
               </form>
             </div>
             {% endif %}

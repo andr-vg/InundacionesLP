@@ -48,6 +48,11 @@ a:hover {
   color: #92a4ad;
 }
 
+button a {
+  color: #dee6eb !important;
+
+}
+
 a.link {
   text-transform: uppercase;
   font-size: 14px;

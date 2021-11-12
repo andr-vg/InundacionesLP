@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Usuarios{% endblock %}
+{% block title %}Denuncias{% endblock %}
 {% block head %}
   {{ super() }}
 {% endblock %}
@@ -24,11 +24,11 @@
             <iframe id="mapid" src="https://maps.google.com/maps?q={{ denuncia.lat }},{{ denuncia.long }}&hl=es&z=14&amp;output=embed"></iframe>
         </div>
       </div>
-    </p>
 </div>
   <div class="col" >
     {% include "seguimientos/index.html" %}
   </div>
 </div>
-  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+</div>
+  <a href="{{ url_for('home') }}" class="link">Volver</a>
 {% endblock %}

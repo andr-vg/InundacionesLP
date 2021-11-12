@@ -2,6 +2,15 @@
 {% block title %}Puntos de encuentro{% endblock %}
 {% block head %}
   {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+
+ <script type="module" src="{{ url_for('static', filename='js/puntos_encuentro/new/list.js')}}"></script>
 {% endblock %}
 {% block content %}
   <h1>Puntos de encuentro</h1>
@@ -115,5 +124,9 @@
     </ul>
     </nav>
 </div>     
+<input type="hidden" id="puntos_encuentro_list" value="{{ tojson(puntos_encuentro.items) }}">
+<div class="map-container">
+  <div id="mapid"></div>
+  </div>
   
   {% endblock %}

@@ -198,18 +198,17 @@ def search(page):
         abort(401)
     config = get_configuration(session) 
     recorridos = Recorridos.search_by_name(name=request.args["name"])
-    parameters = {
-        "name": request.args["name"],
-        "state": "",
-    }
-    if "state" in request.args.keys():
-        parameters["state"] == request.args["state"]
-        if request.args["state"]=="publicado":
+    
+    name = request.args["name"]
+    state = ""
+    if "state" in request.args.keys() and request.args["state"] != "":
+        state == request.args["state"]
+        if request.args["state"] == "publicado":
             recorridos = Recorridos.get_with_state(recorridos, True)
-        else:
+        elif request.args["state"] == "despublicado":
             recorridos = Recorridos.get_with_state(recorridos, False)
-    recorridos =  Recorridos.search_paginate(recorridos, page=page, config=config)
-    return render_template("recorridos_evacuacion/index.html", recorridos=recorridos, filter=1, parameters=parameters)
+    recorridos = Recorridos.search_paginate(recorridos, page=page, config=config)
+    return render_template("recorridos_evacuacion/index.html", recorridos=recorridos, filter=1, name=name, state=state)
 
 def show(name):
     """

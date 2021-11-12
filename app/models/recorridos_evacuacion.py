@@ -58,7 +58,7 @@ class Recorridos(db.Model):
             query(Query): recorridos a filtrar
             state(bool): estado 
         """
-        return query.filter(Recorridos.active==state)
+        return query.filter(Recorridos.state==state)
 
     @classmethod
     def search_paginate(cls, query, page, config):
@@ -94,6 +94,11 @@ class Recorridos(db.Model):
         self.description = description
         
     def edit(self, name, description):
+        """
+        Edita los campos de un recorrido, borra las coordenadas
+        actuales para luego asignar las nuevas en caso de 
+        haber cambios 
+        """
         self.name = name
         self.description = description
         for elem in self.coords:
@@ -103,6 +108,9 @@ class Recorridos(db.Model):
         
 
     def add_coordinate(self, new_coords):
+        """
+        Se le agrega una nueva coordenada al recorrido
+        """
         self.coords.append(new_coords)
 
     def add_recorrido(self):
@@ -119,6 +127,10 @@ class Recorridos(db.Model):
         db.session.commit()
 
     def delete(self):
+        """
+        Implementacion del borrado físico.
+        Se borrarrán las coordenadas asociadas y el recorrido
+        """
         for elem in self.coords:
             coordinate = c.Coordenadas.get_by_id(elem.id)
             coordinate.delete()

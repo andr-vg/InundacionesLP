@@ -27,7 +27,7 @@
         <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
           {{ form.id }}
         <div class="form-group">
-          <p>{{form.name.label}} {{ form.name(class="form-control") }}</p>
+          <p>{{form.name.label}}* {{ form.name(class="form-control") }}</p>
         </div>
         <div class="form-group">
           <p>{{form.description.label}} {{ form.description(class="form-control", cols="35", rows="10") }}</p>
@@ -39,6 +39,9 @@
           <div class="map-container">
             <div id="mapid"></div>
           </div>
+        </div>
+        <div class="form-group">
+          <p>* Campo requerido</p> 
         </div>
         <div class="form-group">
           <div class="container">

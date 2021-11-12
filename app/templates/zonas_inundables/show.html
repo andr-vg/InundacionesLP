@@ -23,7 +23,10 @@
           <p>Color: {{ zona.color }}</p>
           <p>Publicado: {{ "si" if zona.state else "No" }}</p>
           <p>Puntos: {{ zona.get_coords_lenght() }}</p>
-          <p>Coordenadas: {{ zona.get_coords_as_list() }} </p>
+          <button id="coords-button" class="btn btn-secondary" data-toggle="collapse" data-target="#coords">Ver Coordenadas</button>
+          <div class="collapse" id="coords">
+            <p >Coordenadas: {{ zona.get_coords_as_list() }} </p>
+          </div>
           <div class="container" >
             <div id="mapid"></div>
           </div>

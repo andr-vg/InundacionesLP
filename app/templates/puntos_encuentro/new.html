@@ -15,15 +15,9 @@
 {% block content %}
   <h1>Crear un punto de encuentro</h1>
   <form action="{{ url_for('punto_encuentro_create') }}" method="POST" id="create-punto-encuentro">
+    <div class="container">
     <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
     {% include "puntos_encuentro/form.html" %}
-    <p>* Campo requerido</p>  
-      <div class="map-container">
-      <div id="mapid"></div>
       </div>
-      <input type="submit" value="Crear">
-      <button type="reset">Limpiar</button>
-      <a href="{{ url_for('punto_encuentro_index') }}" class="link">Volver</a>
-    </p>
   </form>
 {% endblock %}

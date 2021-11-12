@@ -6,11 +6,10 @@
 {% block content %}
   <h1>Editar usuario</h1>
   <form action="{{ url_for('user_update') }}" method="POST">
+    <div class="container">
     <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
     {{ form.id }}
     {% include "user/form.html" %}
-      <input type="submit" value="Editar">
-      <a href="{{ url_for('user_index') }}" class="link">Volver</a>
-    </p>
+    </div>
   </form>
 {% endblock %}

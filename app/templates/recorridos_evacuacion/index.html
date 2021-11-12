@@ -56,14 +56,24 @@
         <td id="actions">
           <div class="row">
             {% if has_permission('recorridos_publicate') %}
-            <div class="column mx-1"></div>
+            <div class="column mx-1">
               {% if recorrido.state %}
               <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea despublicar este recorrido?');"> <button class="btn btn-sm btn-secondary"> despublicar </button> </a>
               {% else %}
-                <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea publicar este recorrido?');"> <button class="btn btn-sm btn-secondary"> publicar </button> </a>
+                <a href="{{ url_for('recorridos_publicate', id=recorrido.id) }}" onclick="return confirm('Está seguro que desea publicar este recorrido?');"> <button class="btn btn-sm btn-success"> publicar </button> </a>
               {% endif %}
             </div>
             {% endif %}
+            <div class="column mx-1">
+            {% if has_permission('recorridos_edit') %}
+            <form action="{{ url_for('recorridos_edit') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <input name="id" type="hidden" value="{{ recorrido.id }}">
+              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
+            
+            </form>
+            {% endif %}
+            </div>
             {% if has_permission('recorridos_destroy') %}
             <div class="column mx-1">
               <form action="{{ url_for('recorridos_delete') }}" method="POST">
@@ -72,14 +82,6 @@
                 <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este recorrido?')"> Borrar <span class="material-icons">&#xE150;</span> </button> 
               </form>
             </div>
-            {% endif %}
-            {% if has_permission('recorridos_edit') %}
-            <form action="{{ url_for('recorridos_edit') }}" method="POST">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              <input name="id" type="hidden" value="{{ recorrido.id }}">
-              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
-            
-            </form>
             {% endif %}
           </div>
         </td>       

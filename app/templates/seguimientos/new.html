@@ -5,8 +5,8 @@
 {% endblock %}
 {% block content %}
 <h1>Crear seguimiento </h1>
-<a href="{{ url_for('home') }}" class="link">Volver</a>
   <form action="{{ url_for('seguimiento_create', id=denuncia.id) }}" method="POST" id="create_seguimiento">
+    <div class="container">
     <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
     <div class="container">
     <div class="row-1">
@@ -27,9 +27,19 @@
         </div>
       </div>
       <p>* Campo requerido</p>
-      <button type="submit" class="btn btn-primary">Crear</button>
-      <button type="reset" class="btn btn-primary" >Limpiar</button>
-      <a href="{{ url_for('denuncia_tracking', id=denuncia.id) }}" class="btn btn-primary">Volver</a>
+      <div class="form-group">
+        <div class="container">
+          <div class="row">
+            <div class="col-1">
+              <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
+            </div>
+            <div class="col-1">
+              <a href="{{ url_for('home') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     </form>
 {% endblock %}
   

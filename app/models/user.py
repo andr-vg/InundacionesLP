@@ -218,6 +218,13 @@ class User(db.Model):
         """
         self.password_hash = generate_password_hash(password)
 
+    def edit_profile(self, form):
+        """ Edita el perfil del usuario actual """
+        if form.password.data:
+            self.password=form.password.data
+        self.firstname = form.firstname.data
+        self.lastname = form.lastname.data
+
     def change_state(self):
         """
         Invierte el estado de un usuario
@@ -228,6 +235,21 @@ class User(db.Model):
         """ Agrega el usuario, los cambios no se verán reflejados en la BD hasta 
         no hacer un commit """
         db.session.add(self)
+
+    def edit_user(self, form, roles_deleted):
+        """ Editar a un usuario y sus roles """
+        self.username = form.username.data
+        self.email = form.email.data
+        if form.password.data:
+            self.password=form.password.data
+        self.firstname = form.firstname.data
+        self.lastname = form.lastname.data
+        for rol in roles_deleted:
+            rol_deleted = Rol.get_rol_by_id(rol)
+            self.roles.remove(rol_deleted)
+        for rol in form.rol.data:
+            rol_new = Rol.get_rol_by_id(rol)
+            self.roles.append(rol_new)
 
     def add_rol(self, rol):
         self.roles.append(rol)

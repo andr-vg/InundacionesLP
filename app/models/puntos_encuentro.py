@@ -15,6 +15,13 @@ class PuntosDeEncuentro(db.Model):
         """" Retorna la consulta de todos los puntos de encuentro en la base de datos """
         return PuntosDeEncuentro.query.all()
 
+
+    @classmethod
+    def get_all_publish(cls):
+        """ Retorna la consulta de todos los puntos de encuentro publicados"""
+        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.state==False)
+
+
     @classmethod
     def search_by_name(cls, name):
         """" Retorna la consulta de los puntos de encuentro que contienen el nombre recibido por parametro
@@ -95,7 +102,7 @@ class PuntosDeEncuentro(db.Model):
 
 
     def delete(self):
-        self.delete = True
+        db.session.delete(self)
 
 
     def change_state(self):

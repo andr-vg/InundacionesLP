@@ -10,7 +10,6 @@ zonas_inundables_api = Blueprint("zonas_inundables", __name__, url_prefix="/zona
 def index():
     config = Configuration.get_configuration()
     if not request.args:
-        print("no hay params")
         zonas_page = ZonaInundable.get_all()
         zonas = ZonasInundablesSchema.dump(zonas_page, all=True)
         return jsonify(zonas)

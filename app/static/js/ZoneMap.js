@@ -28,15 +28,10 @@ export class ZoneMap {
         
         const coords = document.querySelector('#coordinates').value; 
         if (coords == ""){
-            console.log("YES");
             this.map.addControl(this.createControls);
         }else{
             const coordinates = JSON.parse(coords);
-            console.log("COORDENADAS PREVIAS:");
-            console.log(coordinates);
-            for (let coords of coordinates) {
-                console.log(coords);                 
-            } 
+            
             var polyline = L.polyline(coordinates).addTo(this.map);  
             this.#drawnItems.addLayer(polyline);
             this.map.fitBounds(this.#drawnItems.getBounds());

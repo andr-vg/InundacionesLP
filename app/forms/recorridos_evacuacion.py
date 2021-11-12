@@ -13,8 +13,11 @@ class CreateRecorrido(FlaskForm):
         description(string): descripcion del recorrido
         coordenadas(string): coordenadas del lugar
     """
-    name = StringField('Nombre',[validators.DataRequired(message="Campo requerido")])
-    description = StringField('Descripcion', widget=TextArea())
+    name = StringField('Nombre',[validators.DataRequired(message="Campo requerido"), 
+        validators.length(min=4,message="Debe tener al menos 4 caracteres"),
+        validators.length(max=250,message="No puede excederse de 250 caracteres"),
+        validators.regexp("^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*$",message="Nombre ingresado inválido")])
+    description = StringField('Descripcion', [validators.length(max=250,message="No puede excederse de 250 caracteres")], widget=TextArea())
     coordinates = HiddenField('Coordinates')
 
 class EditRecorrido(CreateRecorrido):

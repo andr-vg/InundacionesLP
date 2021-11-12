@@ -124,21 +124,11 @@ def update():
         if query and query.id!=user.id:
             flash("Ya existe un usuario con dicho nombre de usuario")
             return render_template("user/edit.html", form=form)
-        user.username = form.username.data
-        user.email = form.email.data
-        if form.password.data:
-            user.password=form.password.data
-        user.firstname = form.firstname.data
-        user.lastname = form.lastname.data
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles)-set(form.rol.data)
-        for rol in roles_deleted:
-            rol_deleted = Rol.get_rol_by_id(rol)
-            user.roles.remove(rol_deleted)
-        for rol in form.rol.data:
-            rol_new = Rol.get_rol_by_id(rol)
-            user.roles.append(rol_new)
+        user.edit_user(form, roles_deleted)
         user.update()
+        flash("El usuario ha sido editado correctamente.")
         return redirect(url_for("user_index"))
     return render_template("user/edit.html", form=form)
 
@@ -238,11 +228,8 @@ def update_profile():
     form = EditProfileForm(request.form)
     if form.validate():
         user = User.get_user_by_id(form.id.data)
-        if form.password.data:
-            user.password=form.password.data
-        user.firstname = form.firstname.data
-        user.lastname = form.lastname.data
-        db.session.commit()
+        user.edit_profile(form)
+        user.update()
         flash("Su perfil ha sido actualizado.")
         return redirect(url_for("home"))       
     return render_template("user/profile.html", form=form)

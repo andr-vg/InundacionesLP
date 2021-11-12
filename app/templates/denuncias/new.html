@@ -15,15 +15,9 @@
 {% block content %}
   <h1>Crear Denuncia</h1>
   <form action="{{ url_for('denuncia_create') }}" method="POST" id="create-denuncia">
+    <div class="container">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
     {% include "denuncias/form.html" %}
-      <p>* Campo requerido</p>
-      <div class="map-container">
-        <div id="mapid" class="float-end"></div>
-      </div>
-    </div>
-      <button type="submit" class="btn btn-primary">Crear</button>
-      <button type="reset" class="btn btn-primary" >Limpiar</button>
-      <a href="{{ url_for('denuncia_index') }}" class="btn btn-primary">Volver</a>
+  </div>
   </form>
 {% endblock %}

@@ -62,7 +62,6 @@ def create():
     if form.validate():
         recorrido = Recorridos.unique_field(form.name.data)
         if recorrido:
-            print(request.url)
             flash("Ya existe un recorrido con ese nombre. Ingrese uno nuevo.")
             return render_template("recorridos_evacuacion/new.html", form=form)
             ##return render_template(request.url, form=form)
@@ -100,7 +99,6 @@ def edit():
         abort(401)
     recorrido = Recorridos.get_recorrido_by_id(request.form['id'])
     coords = [[float(elem.lat), float(elem.long)] for elem in recorrido.coords]
-    print(coords)
     form = EditRecorrido(id=recorrido.id,name=recorrido.name,description=recorrido.description,coordinates=coords)
     return render_template("recorridos_evacuacion/edit.html", form=form)
 
@@ -121,8 +119,6 @@ def update():
     if form.validate():
         recorrido = Recorridos.get_recorrido_by_id(form.id.data)
         query = Recorridos.get_recorrido_by_name(form.name.data)
-        print(type(recorrido.id))
-        print(type(query.id))
         if query and query.id!=recorrido.id:
             flash("Ya existe un recorrido con ese nombre")
             return render_template("recorridos_evacuacion/edit.html", form=form)

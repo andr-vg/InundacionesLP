@@ -86,7 +86,10 @@
               <div class="column mx-1">
                 <a href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea desbloquear a este usuario?');"> <button class="btn btn-sm btn-secondary"> desbloquear</button> </a>
               </div>
-
+              {% else %}
+              <div class="column mx-1">
+                <button class="btn btn-sm btn-secondary" style="visibility: hidden;"> bloquear </button>
+              </div>
               {% endif %}
             {% endif %}
             {% if has_permission('user_destroy') %}

@@ -35,10 +35,8 @@ const submitHandler = (event, map) => {
             body: formData
         })
         .then((response)=>{         
-            console.log(response);
             if(response.redirected){
                 var msj = document.querySelector("flashes");
-                console.log(msj);
                 window.location.href = response.url;
                 
                 alert("El recorrido ha sido editado con éxito.");
@@ -46,7 +44,6 @@ const submitHandler = (event, map) => {
             }
             else{
                 var msj = document.querySelector("flashes");
-                console.log(msj);
                 alert("El nombre ya existe, ingrese otro.");
             }
             

@@ -142,3 +142,6 @@ class ZonaInundable(db.Model):
 
     def delete(self):
         db.session.delete(self)
+        
+    def change_state(self):
+        self.state=not self.state

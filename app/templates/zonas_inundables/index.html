@@ -66,35 +66,44 @@
              {% endif %}
         </td>
         
-        <td> {% if has_permission('zonas_inundables_destroy') %}
-          <form action="{{ url_for('zonas_inundables_delete') }}" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <input name="id" type="hidden" value="{{ zona.id }}">
-            <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este recorrido?')"> Borrar <span class="material-icons">&#xE150;</span> </button> 
-          </form>
-          {% endif%}
-          {% if has_permission('zonas_inundables_update') %}
-          <form action="{{url_for('zonas_inundables_edit')}}" method="POST">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            <input name="id"  type="hidden" value="{{ zona.id }}">
-            <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
-          </form>
-          {% endif %}
-          {% if has_permission('zonas_inundables_update') %}
-              <form action="{{ url_for(('zonas_inundables_update')) }}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <input name="id"  type="hidden" value="{{ zona.id }}"> 
-                {% if zona.state %}
-                  <div class="column mx-1">
-                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar esta zona inundable?');"> Despublicar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button> 
-                  </div>
-                  {% else %}
-                    <div class="column mx-1">
-                      <button class="btn btn-sm btn-success" type="submit" onclick="return confirm('Está seguro que desea publicar esta zona inundable?');"> Publicar <i class="glyphicon glyphicon-list-alt" display="table-cell"></i></button>               
-                    </div>
-                  {% endif %}
-              </form>
+        <td id="actions">
+          <div class="row">
+            {% if has_permission('zonas_inundables_destroy') %}
+              <div class="column mx-1">
+                <form action="{{ url_for('zonas_inundables_delete') }}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <input name="id" type="hidden" value="{{ zona.id }}">
+                  <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este recorrido?')"> Borrar <span class="material-icons">&#xE150;</span> </button> 
+                </form>
+              </div>
+            {% endif%}
+
+            {% if has_permission('zonas_inundables_update') %}
+              <div class="column mx-1">
+                <form action="{{url_for('zonas_inundables_edit')}}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <input name="id"  type="hidden" value="{{ zona.id }}">
+                  <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
+                </form>
+              </div>
             {% endif %}
+
+            {% if has_permission('zonas_inundables_update') %}
+                <form action="{{ url_for(('zonas_inundables_soft_delete')) }}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <input name="id"  type="hidden" value="{{ zona.id }}"> 
+                  {% if zona.state %}
+                    <div class="column mx-1">
+                      <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar esta zona inundable?');"> Despublicar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button> 
+                    </div>
+                    {% else %}
+                      <div class="column mx-1">
+                        <button class="btn btn-sm btn-success" type="submit" onclick="return confirm('Está seguro que desea publicar esta zona inundable?');"> Publicar <i class="glyphicon glyphicon-list-alt" display="table-cell"></i></button>               
+                      </div>
+                    {% endif %}
+                </form>
+              {% endif %}
+          </div>
         </td>
     </tr>
       {% endfor %}

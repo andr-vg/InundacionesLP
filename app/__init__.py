@@ -134,6 +134,7 @@ def create_app(environment="development"):
     app.add_url_rule("/zonas_inundables/<name>", "zonas_inundables_show", zonas_inundables.show, methods=['GET'])
     app.add_url_rule("/zonas_inundables/search/", "zonas_inundables_search", zonas_inundables.search, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/zonas_inundables/search/<int:page>", "zonas_inundables_search", zonas_inundables.search, methods=['GET'])    
+    app.add_url_rule("/zonas_inundables/publicar", "zonas_inundables_soft_delete", zonas_inundables.soft_delete,methods=["POST"])
 
     # Rutas para recorridos de evacuacion
     app.add_url_rule("/recorridos_evacuacion", "recorridos_index", recorridos_evacuacion.index, defaults={'page': 1}, methods=['GET'])

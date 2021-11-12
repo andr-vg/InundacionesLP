@@ -224,4 +224,5 @@ def show(name):
         abort(401)
     
     recorrido = Recorridos.get_recorrido_by_name(name=name)
-    return render_template("recorridos_evacuacion/show.html", recorrido=recorrido)
+    coords = [[float(elem.lat), float(elem.long)] for elem in recorrido.coords]
+    return render_template("recorridos_evacuacion/show.html", recorrido=recorrido, coords=coords)

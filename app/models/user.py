@@ -218,6 +218,29 @@ class User(db.Model):
         """
         self.password_hash = generate_password_hash(password)
 
+    def change_state(self):
+        """
+        Invierte el estado de un usuario
+        """
+        self.active = not self.active
+
+    def add_user(self):
+        """ Agrega el usuario, los cambios no se verán reflejados en la BD hasta 
+        no hacer un commit """
+        db.session.add(self)
+
+    def add_rol(self, rol):
+        self.roles.append(rol)
+
+    def update(self):
+        """ Actualiza el modelo en la BD """
+        db.session.commit()
+
+    def activate(self):
+        self.deleted = False
+
+    def delete(self):
+        self.deleted = True
 
     def assign_complaints(self,complaint):
         """ Asigna la denuncia a la relacion """

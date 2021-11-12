@@ -71,14 +71,16 @@ def create():
             flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
             return render_template("user/new.html", form=form)
         elif user and user.deleted:
-            user.deleted = False
+            user.activate()
+            user.update()
         else:
             new_user = User(email=form.email.data,password=form.password.data,username=form.username.data,firstname=form.firstname.data,lastname=form.lastname.data)
-            db.session.add(new_user)
+            new_user.add_user()
+            new_user.update()
         for roles in form.rol.data:
-                rol = Rol.get_rol_by_id(roles)
-                new_user.roles.append(rol)
-        db.session.commit()
+            rol = Rol.get_rol_by_id(roles)
+            new_user.add_rol(rol)
+            new_user.update()
         flash("El usuario ha sido creado correctamente.")
         return redirect(url_for("user_index"))
     return render_template("user/new.html", form=form)
@@ -136,7 +138,7 @@ def update():
         for rol in form.rol.data:
             rol_new = Rol.get_rol_by_id(rol)
             user.roles.append(rol_new)
-        db.session.commit()
+        user.update()
         return redirect(url_for("user_index"))
     return render_template("user/edit.html", form=form)
 
@@ -155,8 +157,8 @@ def soft_delete():
     if not check_permission('user_destroy', session):
         abort(401)
     user = User.get_user_by_id(request.form["id"])
-    user.deleted = True
-    db.session.commit()
+    user.delete()
+    user.update()
     flash("Usuario eliminado correctamente.")
     return redirect(url_for("user_index"))
 
@@ -174,9 +176,9 @@ def change_state(id):
     if not check_permission('user_active', session):
         abort(401)
     user = User.get_user_by_id(id)
-    user.active = not user.active
+    user.change_state()
     state = "reactivado" if user.active else "bloqueado"
-    db.session.commit()
+    user.update()
     flash("El usuario ha sido {} correctamente".format(state))
     return redirect(url_for("user_index"))
 

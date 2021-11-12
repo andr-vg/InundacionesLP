@@ -95,7 +95,7 @@ class PuntosDeEncuentro(db.Model):
 
 
     def delete(self):
-        db.session.delete(self)
+        self.delete = True
 
 
     def change_state(self):

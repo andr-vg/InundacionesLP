@@ -36,7 +36,10 @@
           <p>Filtrar por</p>
         </div>
         <div class="col-sm-auto">       
-          <input type="radio" name="state" value="activo"> <label> Publicado</label>
+          <input type="radio" name="active" value="activo"> <label> Publicado</label>
+        </div>
+        <div class="col-sm-auto">  
+          <input type="radio" name="active" value="inactivo"> <label> Despublicado</label>
         </div>
       </div>
   </div>
@@ -97,20 +100,9 @@
       {% endfor %}
     </tbody>
     </table>
-<!-- previous page -->
-{% if zonas.has_prev %}
-<li>
-  <a href="{{ url_for('zonas_inundables_index', page=zonas.prev_num) }}">Anterior</a>
-</li>
-{% endif %}
 
 {% from "paginate_macro.html" import show_paginate_table%}
 
 {{ show_paginate_table("zonas_inundables",zonas, filter, name,active) }}
-<!-- next page -->
-{% if zonas.has_next %}
-<li>
-  <a href="{{ url_for('zonas_inundables_index', page=zonas.next_num) }}">Siguiente</a>
-</li>
-{% endif %}
+
 {% endblock %}

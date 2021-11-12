@@ -144,10 +144,12 @@ def search(page):
     zonas = ZonaInundable.search_by_name(request.args["name"])
     name = request.args["name"]
     active = ""
-    if "state" in request.args.keys() and request.args["state"]!="":
-        active = request.args["state"]
-        if request.args["state"]=="activo":
+    if "active" in request.args.keys() and request.args["active"]!="":
+        active = request.args["active"]
+        if request.args["active"]=="activo":
             zonas = ZonaInundable.get_with_state(zonas, True)
+        elif request.args["active"]=="inactivo":
+            zonas = ZonaInundable.get_with_state(zonas, False)
     zonas = ZonaInundable.search_paginate(zonas, page, config)
 
     return render_template("zonas_inundables/index.html", zonas=zonas, filter=1, name=name, active=active)

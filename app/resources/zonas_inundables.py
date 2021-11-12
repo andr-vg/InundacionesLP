@@ -48,7 +48,9 @@ def upload():
     file_content = io.TextIOWrapper(file.stream._file, "UTF8", newline=None)
     if check(file.filename):
         __process_csv(file_content)
-    return render_template("zonas_inundables/new.html",file_name = file.filename)
+        return render_template("zonas_inundables/new.html",file_name = file.filename)
+    else:
+        abort(400)
 
 def __process_csv(file):
     """
@@ -96,7 +98,7 @@ def delete():
     zona = ZonaInundable.get_zona_by_id(request.form["id"])
     zona.delete()
     zona.update_zona_inundable()
-    flash("Recorrido eliminado correctamente.")
+    flash("Zona eliminada correctamente.")
     return redirect(url_for("zonas_inundables_index"))
 
 def update():

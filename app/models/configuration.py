@@ -22,3 +22,14 @@ class Configuration(db.Model):
         self.ordered_by = ordered_by
         self.css_private = css_private
         self.css_public = css_public
+
+    def edit(self,elements_per_page,ordered_by,css_private,css_public):
+        """ Asigna los parametros recibidos a la configuracion """
+        self.elements_per_page = elements_per_page
+        self.ordered_by = ordered_by
+        self.css_private = css_private
+        self.css_public = css_public
+
+    
+    def update(self):
+        db.session.commit()

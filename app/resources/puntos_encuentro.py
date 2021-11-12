@@ -27,11 +27,12 @@ def index(page):
         abort(401)
     config = get_configuration(session) 
     try:
-        puntos_encuentro=PuntosDeEncuentro.get_index_puntos_encuentro(page, config)
+        puntos_encuentro = PuntosDeEncuentro.get_index_puntos_encuentro(page, config)
+        puntos_mapa = PuntosDeEncuentro.get_all_publish()
     except OperationalError:
         flash("No hay puntos de encuentro aún.")
         puntos_encuentro = None
-    return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro)
+    return render_template("puntos_encuentro/index.html", puntos_encuentro=puntos_encuentro,puntos_mapa=puntos_mapa)
 
 
 def new():

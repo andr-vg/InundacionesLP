@@ -5,6 +5,7 @@ from app.models.coordenadas import Coordenadas
 from sqlalchemy import Enum, ForeignKey, Column, Integer, String, DateTime, Float,func
 
 class State(enum.Enum):
+    """ Modelo que representa el estado de la denuncia """
     sin_confirmar = "Sin confirmar"
     en_curso = "En curso"
     resuelta = "Resuelta"
@@ -21,7 +22,26 @@ class State(enum.Enum):
         
 class Denuncia(db.Model):
     """
+    Modelo que representa las denuncias
     
+    Args:
+    id (int): Id de la denuncia
+    title (String): titulo de la denuncia
+    category_id (int): Id de la categoria asignada
+    category (categoria): Categoria asignada
+    created_at (date): Fecha de creacion de la denuncia
+    closed_at (date): Fecha de cierre de la denuncia
+    description (string) : Descripcion de la denuncia
+    state (enum): Estado de la denuncia
+    lat (float): Latitud de la denuncia
+    long (float): Longitud de la denuncia
+    firstname (string): Nombre del denunciante
+    lastname (String): apellido del denunciante
+    tel (string): telefono del denunciante
+    email (string): email del denunciante
+    assigned_to (int): Id del usuario asignado a la denuncia
+    user_assign (user): Usuario asignado a la denuncia
+    tracking (list): Lista de seguimientos
     """
     @classmethod
     def unique_field(cls, title):
@@ -92,11 +112,28 @@ class Denuncia(db.Model):
 
     @classmethod
     def get_denuncias_paginated(cls,query,page,config):
+        """ Retorna la query recibida por parametro paginada con la configuracion del sistema
+        
+        Args:
+            query: Query a paginar
+            page: numero de pagina
+            config: configuracion del sistema"""
         if config.ordered_by == "Ascendente":
             return query.order_by(Denuncia.created_at.asc()).order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page)
         return query.order_by(Denuncia.created_at.desc()).order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page)
 
     
+    @classmethod
+    def get_paginated(cls,page,config,elements_per_page):
+        """ Retorna todos las denuncias paginadas
+        
+        Args:
+            page: numero de pagina
+            config: configuracion del sistema
+            elements_per_page(integer): Numero de elementos por pagina"""
+        if config.ordered_by == "Ascendente":
+            return Denuncia.query.filter().order_by(Denuncia.created_at.asc()).order_by(Denuncia.title.asc()).paginate(page, per_page=elements_per_page)
+        return Denuncia.query.filter().order_by(Denuncia.created_at.desc()).order_by(Denuncia.title.desc()).paginate(page, per_page=elements_per_page)
 
 
 
@@ -157,8 +194,12 @@ class Denuncia(db.Model):
         self.category_id=None
      
     def change_state(self,state):
+        """" Cambia el estado de una denuncia al estado recibido por parametro, si el estado es cerrada además 
+        se asigna la fecha de cierre.
+        Args: 
+        state: Estado a asignar a la denuncia"""
         self.state = state
-        if state == State.cerrada:
+        if self.is_closed():
             self.closed_at = datetime.datetime.utcnow()
     
     

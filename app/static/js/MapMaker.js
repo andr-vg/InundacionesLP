@@ -28,13 +28,11 @@ export function Map(selector){
         };
         marker = L.marker([lat,lng]).addTo(map);
     };
-    
 
 
     return {
         get marker() { return marker },
-        addMarker: addMarker,
-        addListMarkers: addListMarkers
+        addMarker: addMarker
     };
 
 

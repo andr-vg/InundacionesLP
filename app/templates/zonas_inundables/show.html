@@ -18,11 +18,12 @@
 {% block content %}
   <div class="container">
     <h1>Detalle</h1>
-          <p>nombre: {{ zona.name }}</p>
-          <p>codigo: {{ zona.color }}</p>
+          <p>Nombre: {{ zona.name }}</p>
+          <p>Codigo: {{ zona.code }}</p>
+          <p>Color: {{ zona.color }}</p>
           <p>Publicado: {{ "si" if zona.state else "No" }}</p>
           <p>Puntos: {{ zona.get_coords_lenght() }}</p>
-          <p>coordenadas: {{ zona.get_coords_as_list() }} </p>
+          <p>Coordenadas: {{ zona.get_coords_as_list() }} </p>
           <div class="container" >
             <div id="mapid"></div>
           </div>

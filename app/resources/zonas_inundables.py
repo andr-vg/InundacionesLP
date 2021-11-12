@@ -18,9 +18,10 @@ from app.models.zonas_inundables import ZonaInundable
 
 def index(page):
     """Retorna y renderiza el listado de zonas
-    :param page:Numero de pagina para el paginado del listado
-    :type page: int
-    :raises: OperationalError
+    Args:
+        page(int):Numero de pagina para el paginado del listado de zonas
+    raises:
+        OperationalError
     """
     user_email = authenticated(session)
     if not user_email:
@@ -74,13 +75,15 @@ def __process_csv(file):
             abort(400)
 
 def edit():
+    """
+    Renderizado de la pagina de ediciones de Zonas inundables
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
     if not check_permission("punto_encuentro_update", session):
         abort(401)
-    zona = ZonaInundable.get_zona_by_id(request.form['id'])
-    
+    zona = ZonaInundable.get_zona_by_id(request.form['id'])   
     form = EditZonaInundableForm(id=zona.id, name= zona.name,
     state = "Publicado" if zona.state else "Despublicado", color = zona.color)
     return(render_template('zonas_inundables/edit.html',form=form))
@@ -102,6 +105,10 @@ def delete():
     return redirect(url_for("zonas_inundables_index"))
 
 def update():
+    """
+    Lógica a realizar al momento de confirmar
+    la edición de la zona inundable actual.
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
@@ -123,6 +130,12 @@ def update():
     return render_template("zona_inundable/edit.html", form=form)
 
 def show(name):
+    """
+    Renderiza el detalle con los datos de una zona inundable
+
+    Args:
+        name(string): nombre de la zona inundable    
+    """
     user_email = authenticated(session)
     if not user_email:
         abort(401)

@@ -23,7 +23,6 @@ class Coordenadas(db.Model):
     @classmethod
     def get_or_create(cls,lat,long):
         coords = Coordenadas.query.filter((Coordenadas.lat==lat[:8])&(Coordenadas.long==long[:8])).first()
-        print(coords)
         if not coords:
             coords = Coordenadas(lat=lat,long=long)
             Coordenadas.add_coords(coords=coords)

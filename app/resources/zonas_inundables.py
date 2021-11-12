@@ -61,7 +61,6 @@ def __process_csv(file):
     d_reader = csv.DictReader(file)
     for row in (d_reader):
         zona = ZonaInundable.exists_zona_inundable(row['name'])
-        print(zona)
         if not zona:
             zones_list = json.loads(row['area'])
             zona_inundable = ZonaInundable(row['name'])

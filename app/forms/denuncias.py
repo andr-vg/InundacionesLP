@@ -29,8 +29,8 @@ class CreateDenunciaForm(FlaskForm):
 
     def __init__(self,*args,**kwargs):
         super().__init__(*args)
-        self.category.choices = [(0,"")]+[(category.id,category.name) for category in Categoria.get_all()]
-        self.user.choices = [(0,"")]+[(user.id,user.email) for user in User.get_with_state(User.get_all(),True)]
+        self.category.choices = [(0,"Sin asignar")]+[(category.id,category.name) for category in Categoria.get_all()]
+        self.user.choices = [(0,"Sin asignar")]+[(user.id,user.email) for user in User.get_with_state(User.get_all(),True)]
         if kwargs:
             self.title.data = kwargs["title"]
             self.description.data = kwargs["description"]

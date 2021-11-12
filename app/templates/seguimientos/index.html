@@ -12,10 +12,9 @@
 <tbody>
   {% for seguimiento in seguimientos.items %}
   <tr>
-    <td> {{ seguimiento.description }} </a></td>
+    <td> {{ seguimiento.description }} </td>
     <td> {{ seguimiento.created_at.strftime('%d-%m-%Y') }} </td>
     <td> {{ seguimiento.user_assign.email}} </td>
-</td>
 </tr>
   {% endfor %}
 </tbody>

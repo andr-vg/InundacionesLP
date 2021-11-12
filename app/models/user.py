@@ -2,10 +2,14 @@ import re
 import bcrypt
 from flask_bcrypt import generate_password_hash,check_password_hash
 import datetime
+
+from sqlalchemy.sql.expression import false
 from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, text, select, and_,or_
 from sqlalchemy.orm import relationship
 from app.models.rol import Rol
+from app.models.denuncias import Denuncia
+from app.models.seguimiento import Seguimiento
 
 
 user_roles = Table('usuario_tiene_rol',db.Model.metadata,
@@ -173,8 +177,8 @@ class User(db.Model):
 
         """
         if config.ordered_by == "Ascendente":
-            return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
-        return query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.desc()).paginate(page, per_page=config.elements_per_page)
+            return query.filter(User.deleted == False).filter(User.id != id).order_by(User.username.asc()).paginate(page, per_page=config.elements_per_page)
+        return query.filter(User.deleted == False).filter(User.id != id).order_by(User.username.desc()).paginate(page, per_page=config.elements_per_page)
 
     __tablename__ = 'usuarios'
     id = Column(Integer, primary_key=True)
@@ -188,7 +192,8 @@ class User(db.Model):
     deleted = Column(Boolean, default=False)
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow,default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
-
+    complaints = relationship("Denuncia", back_populates="user_assign")
+    tracking = relationship("Seguimiento",back_populates="user_assign")
 
     def __init__(self, email, password, username ,roles=None, firstname=None, lastname=None):
         self.email = email
@@ -212,6 +217,61 @@ class User(db.Model):
             password(string): contraseña ingresada
         """
         self.password_hash = generate_password_hash(password)
+
+    def edit_profile(self, form):
+        """ Edita el perfil del usuario actual """
+        if form.password.data:
+            self.password=form.password.data
+        self.firstname = form.firstname.data
+        self.lastname = form.lastname.data
+
+    def change_state(self):
+        """
+        Invierte el estado de un usuario
+        """
+        self.active = not self.active
+
+    def add_user(self):
+        """ Agrega el usuario, los cambios no se verán reflejados en la BD hasta 
+        no hacer un commit """
+        db.session.add(self)
+
+    def edit_user(self, form, roles_deleted):
+        """ Editar a un usuario y sus roles """
+        self.username = form.username.data
+        self.email = form.email.data
+        if form.password.data:
+            self.password=form.password.data
+        self.firstname = form.firstname.data
+        self.lastname = form.lastname.data
+        for rol in roles_deleted:
+            rol_deleted = Rol.get_rol_by_id(rol)
+            self.roles.remove(rol_deleted)
+        for rol in form.rol.data:
+            rol_new = Rol.get_rol_by_id(rol)
+            self.roles.append(rol_new)
+
+    def add_rol(self, rol):
+        self.roles.append(rol)
+
+    def update(self):
+        """ Actualiza el modelo en la BD """
+        db.session.commit()
+
+    def activate(self):
+        self.deleted = False
+
+    def delete(self):
+        self.deleted = True
+
+    def assign_complaints(self,complaint):
+        """ Asigna la denuncia a la relacion """
+        self.complaints.append(complaint)
+
+
+    def assign_tracking(self,tracking):
+        """ Asigna el seguimiento a la relacion """
+        self.tracking.append(tracking)
 
     def verify_password(self, password):
         """
@@ -252,7 +312,12 @@ class User(db.Model):
         """
         return User.query.filter(User.username==username).first()
 
-        
+
+    def get_all():
+        """Retorna el listado de todos los usuarios no eliminados"""
+        return User.query.filter(User.deleted==False)
+
+
     def get_index_users(id, page, config):
         """
         Retorna los usuarios de manera paginada según la configuracion dada
@@ -263,8 +328,8 @@ class User(db.Model):
             config(dict): diccionario con los datos de configuracion establecidos
         """
         if config.ordered_by == "Ascendente":
-            return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.asc()).paginate(page, per_page=config.elements_per_page)
-        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.id.desc()).paginate(page, per_page=config.elements_per_page)
+            return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.asc()).paginate(page, per_page=config.elements_per_page)
+        return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.desc()).paginate(page, per_page=config.elements_per_page)
 
 
     

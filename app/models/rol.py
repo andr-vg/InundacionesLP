@@ -48,3 +48,11 @@ class Rol(db.Model):
                 WHERE r.id = :rol_id")
         permissions = [elem[0] for elem in db.session.execute(sql, {"rol_id": rol_id})]
         return permissions
+
+    def add_rol(self):
+        """ Agrega el rol, los cambios no se verán reflejados en la BD hasta 
+        no hacer un commit """
+        db.session.add(self)
+
+    def update(self):
+        db.session.commit()

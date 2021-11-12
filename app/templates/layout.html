@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    {% block head %}
+  
+    
+    <head>
+      {% block head %}
     <!--Importe de iconos -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- botones de editar, borrar -->
@@ -17,13 +19,14 @@
     <script src="https://kit.fontawesome.com/e53bae01c6.js" crossorigin="anonymous"></script>
     <!-- estilos de la pagina -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    {% if is_authenticated(session) %}
-      {% set css_private = session["config"]["css_private"] %} 
+    {% if is_authenticated() %}
+      {% set css_private = get_configuration().css_private %} 
       <link rel="stylesheet" href="{{ url_for('static', filename=css_private) }}">   
     {% endif %}
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
   </head>
+    
   <body>
     <header>
       <div class="navcolor navbar navbar-dark bg-dark">
@@ -35,49 +38,41 @@
           </figure>
           </a>
         </div>
-        {% if is_authenticated(session) %}
+        {% if is_authenticated() %}
           <h4>
-            <span class="material-icons md-36">&#xe853;</span>
-            Bienvenido de nuevo <strong>{{ session["username"] }}</strong>
+            <span class="material-icons md-14"><i class="fas fa-user"></i></span>
+            Bienvenido de nuevo <strong>{{ get_username() }}</strong>
           </h4>
-          {% if session["roles"].keys()|length > 1 %}
-            <form action="{{ url_for('user_change_rol') }}" method="POST">
-              <select name="rol" value=" {{ session['rol_actual'][0] }} " >
-                {% for key, value in session['roles'].items() %}
-                  {% if key == session["rol_actual"][0] %}
-                    <option value="{{ key }}" selected>{{ value }}</option>
-                  {% else %}
-                    <option value="{{ key }}">{{ value }}</option>
-                  {% endif %}
-                {% endfor %}
-              </select>
-              <button class="btn btn-sm btn-info" type="submit">Cambiar rol</button>
-            </form> 
-    
-          {% else %}    
-            {{ session["rol_actual"][1] }}          
-          {% endif %}
+          
         {% endif %}
       </div>
       <nav class="navcolor navbar-dark bg-dark">
         <ul>
-        {% if is_authenticated(session) %}
-          {% if has_permission('configuration_update', session) %}
+        {% if is_authenticated() %}
+          {% if has_permission('configuration_update') %}
             <li><a href="{{ url_for('configuration_update') }}" class="link">Configuracion del sistema</a></li>
           {% endif %}
-          {% if has_permission('user_index', session) %}
+          {% if has_permission('user_index') %}
             <li><a href="{{ url_for('user_index') }}" class="link">Usuarios</a></li>
           {% endif %}
-          {% if has_permission('punto_encuentro_index', session) %}
+          {% if has_permission('punto_encuentro_index') %}
             <li><a href="{{ url_for('punto_encuentro_index') }}" class="link">Puntos de encuentro</a></li>
           {% endif %}
-          {% if has_permission('user_edit_profile', session) %}
+          {% if has_permission('denuncias_index') %}
+            <li><a href="{{ url_for('denuncia_index') }}" class="link">Denuncias</a></li>
+          {% endif %}
+          {% if has_permission('zonas_inundables_index') %}
+            <li><a href="{{ url_for('zonas_inundables_index') }}" class="link">Zonas inundables</a></li>
+          {% endif %}
+          {% if has_permission('recorridos_index') %}
+            <li><a href="{{ url_for('recorridos_index') }}" class="link">Recorridos de evacuación</a></li>
+          {% endif %}
+          {% if has_permission('user_edit_profile') %}
             <li><a href="{{ url_for('user_edit_profile') }}" class="link">Mi perfil</a></li>
           {% endif %}
+
           
             <li><a href="{{ url_for('auth_logout') }}" class="link">Cerrar sesión</a></li>
-        {% else %}
-          <li><a href="{{ url_for('auth_login') }}" class="link">Iniciar sesión</a></li>
         {% endif %}          
         </ul>
       </nav>
@@ -102,9 +97,9 @@
 
     <footer>
       <div class="links">
-        <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="https://www.instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+        <a href="https://www.facebook.com/InundacionesLP" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/InundacionesLP" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.twitter.com/InundacionesLP" target="_blank"><i class="fab fa-twitter"></i></a>
     </div>
     <p> Copyright 2021 © Todos los derechos reservados.</p>
     </footer>

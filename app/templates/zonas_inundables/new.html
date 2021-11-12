@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Subida de Zonas Inundables{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %} 
+<div class="container">
+    <h3>La zonas contenidas en el archivo {{file_name}} se subieron correctamente </h3>
+    <a href="{{ url_for('zonas_inundables_index') }}" class="link">Volver</a>
+</div>
+{% endblock %}

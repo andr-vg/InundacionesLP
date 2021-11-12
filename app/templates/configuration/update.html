@@ -4,51 +4,42 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-<h1>Configuracion del sistema</h1>
-<form action="{{ url_for('configuration_confirm_update') }}" method="POST">
-Cantidad de elementos por página:  
-<input name="elements_per_page" type="number" max="30" min="1" value="{{config.elements_per_page}}">
-<br>
-Ordenamiento:
-{% set order = ["Ascendente", "Descendente"] %}
-<select name="ordered_by" value="{{config.ordered_by}}">
-    {% for elem in order %}
-      {% if elem == config.ordered_by %}
-        <option value="{{ elem }}" selected>{{ elem }}</option>
-      {% else %}
-        <option value="{{ elem }}">{{ elem }}</option>
-      {% endif %}
-    {% endfor %}
-</select>
-<br>
-Paleta de colores app privada: 
-{% set css_private = {"Tema Principal":"private1.css", "Tema Oscuro": "private2.css", "Tema Claro": "private3.css"} %}
-<select name="css_private" value="{{config.css_private}}">
-  {% for key, value in css_private.items() %}
-    {% if value == config.css_private %}
-      <option value="{{ value }}" selected>{{ key }}</option>
-    {% else %}
-      <option value="{{ value }}">{{ key }}</option>
-    {% endif %}
-  {% endfor %}  
-</select>
-<br>
-Paleta de colores app pública
-{% set css_public = {"Tema Principal":"private1.css", "Tema Oscuro":"private2.css", "Tema Claro":"private3.css"} %}
-<select name="css_public" value="{{config.css_public}}">
-  {% for key, value in css_public.items() %}
-    {% if value == config.css_public %}
-      <option value="{{ value }}" selected>{{ key }}</option>
-    {% else %}
-      <option value="{{ value }}">{{ key }}</option>
-    {% endif %}
-  {% endfor %}  
-</select>
-<p>
-  <input type="submit" value="Guardar">
-</p>
-</form>
-<a href="{{ url_for('home') }}" class="link">Volver</a>
-</form>
 
+<div class="row justify-content-center align-items-center">
+  <h1>Configuracion del sistema</h1>
+</div>
+<br>
+
+<div class="row justify-content-center align-items-center"> 
+  <div class="row justify-content-center align-items-center h-100">
+    
+      <form action="{{ url_for('configuration_confirm_update') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="col align-items-center" >
+          {% for field in form if field.widget.input_type != 'hidden' %}
+            {% for error in field.errors%}
+              <p class="col align-items-center">{{error}}</p>
+            {% endfor %}
+        <div class="form-group">
+          <p>{{field.label}} {{field(class="form-control")}} </p>
+        </div>
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
+              </div>
+              <div class="col">
+                <a href="{{ url_for('home') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+  
+  </div>
+</div>
+<br>
 {% endblock %}

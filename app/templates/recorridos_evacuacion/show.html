@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block title %}Recorridos de evacuación{% endblock %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+ <script type="module" src="{{ url_for('static', filename='js/recorridos_evacuacion/new/show.js')}}"></script>
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center align-items-center">
+
+  <h1>Detalle</h1>
+</div>
+<div class="row justify-content-center align-items-center"> 
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col align-items-center" >
+        <p>Nombre: {{ recorrido.name }}</p>
+        <p>Descripción: {{ recorrido.description }}</p>
+        {% if recorrido.state %}
+            <p>Estado: publicado</p>
+        {% else %}
+            <p>Estado: despublicado</p>
+        {% endif %}
+        <input id='coordinates' value="{{ coords }}" hidden>
+        <div class="map-container">
+            <div id="mapid"></div>
+        </div>
+        <br>
+        <div class="form-group">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <a href="{{ url_for('recorridos_index') }}" class="col-6 btn btn-primary btn-sm float-left">Volver</a>
+    
+              </div>
+              <div class="col">
+
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<br>
+{% endblock %}

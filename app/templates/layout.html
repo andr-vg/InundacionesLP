@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   
-    {% block head %}
+    
     <head>
+      {% block head %}
     <!--Importe de iconos -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- botones de editar, borrar -->
@@ -23,8 +24,9 @@
       <link rel="stylesheet" href="{{ url_for('static', filename=css_private) }}">   
     {% endif %}
     <title>{% block title %}{% endblock %}</title>
-  </head>
     {% endblock %}
+  </head>
+    
   <body>
     <header>
       <div class="navcolor navbar navbar-dark bg-dark">

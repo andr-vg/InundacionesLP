@@ -7,6 +7,7 @@ from app.models.denuncias import State
 
 class CreateSeguimientoForm(FlaskForm):
     """ 
+    Formulario del seguimiento
     """
     description = StringField("Descripcion", [validators.DataRequired()],widget=widgets.TextArea())
     state = SelectField("Estado",choices=State.choices())

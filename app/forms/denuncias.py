@@ -8,7 +8,19 @@ from app.models.user import User
 
 class CreateDenunciaForm(FlaskForm):
     """"
-    
+    Formulario para las denuncias
+
+    Args:
+        title(string): título de la denuncia
+        category(int): categoria de la misma
+        description(string): descripción de la misma
+        lat(string): coordenada latitud
+        long(string): coordenada longitud
+        firstname(string): nombre del denunciante
+        lastname(string): apellido del denunciante
+        tel(string): telefono del denunciante
+        email(string): mail del denunciante
+        user(Usuario): usuario asignado a seguir la denuncia 
     """
     title = StringField("Titulo",[validators.DataRequired(message="Debe ingresar un titulo")])
     category = SelectField("Categoria",coerce=int)
@@ -51,15 +63,21 @@ class CreateDenunciaForm(FlaskForm):
     
 
     def validate_user(form,field):
+        """
+        Se valida el usuario elegido para seguir la denuncia
+        """
         choices = dict(form.user.choices).keys()
         if not (field.data in choices):
             form.user.errors = (validators.ValidationError("Usuario invalido, elija un usuario cargado en el sistema"),)
 
     
     def validate_category(form,field):
+        """
+        Se valida la categoría de la denuncia
+        """
         choices = dict(form.category.choices).keys()
         if not (field.data in choices):
-            form.user.errors = (validators.ValidationError("Usuario invalido, elija una categoria valida"),)
+            form.user.errors = (validators.ValidationError("Categoría inválida, elija una categoria valida"),)
 
     
         

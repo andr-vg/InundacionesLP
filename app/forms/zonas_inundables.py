@@ -7,11 +7,11 @@ from flask_wtf import FlaskForm
 class EditZonaInundableForm(FlaskForm):
     """
     Formulario para editar una zona inundable
-    id = Int id de la zona inundable
-    state = Estado de la zona inundable
-    color = Color de la zona inundable en el mapa
-
+    
     Args:
+        id = Int id de la zona inundable
+        state = Estado de la zona inundable
+        color = Color de la zona inundable en el mapa
 
     """
 

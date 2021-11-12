@@ -1,4 +1,8 @@
 class ZonasInundablesSchema(object):
+    """
+    Clase utilizada para la serialización de los objetos
+    del modelo de zonas inundables
+    """
 
     @classmethod
     def dump(cls, obj, many=False, all=False):

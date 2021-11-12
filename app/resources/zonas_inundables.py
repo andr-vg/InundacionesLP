@@ -60,14 +60,16 @@ def __process_csv(file):
     """
     d_reader = csv.DictReader(file)
     for row in (d_reader):
-        zona = ZonaInundable.exists_zona_inundable(row['name'])
-        print(zona)
-        if not zona:
-            zones_list = json.loads(row['area'])
-            zona_inundable = ZonaInundable(row['name'])
-            for lat, long in zones_list:
-                coordenadas = Coordenadas(lat,long)
-                coordenadas.assign_zonas_inundables(zona_inundable,coordenadas)
+        try:
+            zona = ZonaInundable.exists_zona_inundable(row['name'])
+            if not zona:
+                zones_list = json.loads(row['area'])
+                zona_inundable = ZonaInundable(row['name'])
+                for lat, long in zones_list:
+                    coordenadas = Coordenadas(lat,long)
+                    coordenadas.assign_zonas_inundables(zona_inundable,coordenadas)
+        except:
+            abort(400)
 
 def edit():
     user_email = authenticated(session)

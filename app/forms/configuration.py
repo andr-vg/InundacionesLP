@@ -34,8 +34,10 @@ class ConfigurationForm(FlaskForm):
         """ Valida que in input recibido sea un valor entero"""
         try: 
             int(field.data)
+            if int(field.data) <= 0 or int(field.data) > 30:
+                raise Exception
         except:
-            form.elements_per_page.errors = (validators.ValidationError("Debe ingresar un numero entero"),)
+            form.elements_per_page.errors = (validators.ValidationError("Debe ingresar un numero entre 1 y 30"),)
 
     def validate_ordered_by(form,field):
         """" Valida que el input recibido sea un valor dentro de las opciones """

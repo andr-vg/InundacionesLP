@@ -23,6 +23,18 @@ class ZonaInundable(db.Model):
         """
         return ZonaInundable.query.all()
 
+    @classmethod
+    def get_all_publicated(cls, config):
+        """
+        Devuelve todas las zonas inundables de la BD
+
+        Args:
+            config(dict): contiene los datos de configuracion actuales
+        """
+        if config.ordered_by == "ascendente":
+            return ZonaInundable.query.filter(ZonaInundable.state == 1).order_by(ZonaInundable.name.asc())
+        return ZonaInundable.query.filter(ZonaInundable.state == 1).order_by(ZonaInundable.name.desc())
+
 
     zona_tiene_coords = Table('zona_tiene_coords', db.Model.metadata,
     Column('zonasInundables_id', ForeignKey('zonasInundables.id'), primary_key=True),
@@ -148,14 +160,14 @@ class ZonaInundable(db.Model):
         return ZonaInundable.query.order_by(ZonaInundable.name.desc()).paginate(page, per_page=config.elements_per_page)
 
 
-    def get_zonas_paginated(page, elements_per_page):
+    def get_zonas_paginated(page, config):
         """
-        Devuelve todas las zonas paginadas, se utilizara en la api
+        Devuelve todas las zonas publicadas paginadas, se utilizara en la api
         Args:
             page(int): Numero entero que representa la pagina
-            elements_per_page(int): Cantidad de elementos que se mostraran por pagina
-        """
-        return ZonaInundable.query.paginate(page, per_page=elements_per_page)
+            config(dict): configuracion actual del sistema
+        """      
+        return ZonaInundable.get_all_publicated(config).paginate(page, per_page=int(config.elements_per_page))
 
     def get_coords_as_list(self):
         """

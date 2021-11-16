@@ -56,6 +56,9 @@
             {{rol}}{{rol.label}}
         </div>
           {% endfor %}
+          {% for error in form.rol.errors %}
+          <p class="alert alert-danger">{{error}}</p>
+          {% endfor %}
           {% for error in form.confirm.errors %}
           <p class="alert alert-danger">{{error}}</p>
           {% endfor %}

@@ -212,6 +212,8 @@ def edit_profile():
     
     user = User.get_user_by_email(user_email)
     form = EditProfileForm(id=user.id,firstname=user.firstname,lastname=user.lastname)
+    form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
+    form.rol.data = [(rol.id) for rol in user.roles]
     return render_template("user/profile.html", form=form)
 
 
@@ -226,9 +228,12 @@ def update_profile():
     if not check_permission("user_update_profile", session):
         abort(401)
     form = EditProfileForm(request.form)
+    form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
         user = User.get_user_by_id(form.id.data)
-        user.edit_profile(form)
+        user_roles = [(rol.id) for rol in user.roles]
+        roles_deleted = set(user_roles)-set(form.rol.data)
+        user.edit_profile(form, roles_deleted)
         user.update()
         flash("Su perfil ha sido actualizado.")
         return redirect(url_for("home"))       

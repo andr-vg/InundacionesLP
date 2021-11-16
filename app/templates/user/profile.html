@@ -53,6 +53,19 @@
               {% endfor %}
             </div>
         </div>
+        <div class="row">
+          <div class="col-4">
+            {{ form.rol.label }}*
+            {% for rol in form.rol %}
+            <div class="col">
+              {{rol}}{{rol.label}}
+            </div>
+            {% endfor %}
+            {% for error in form.rol.errors %}
+              <p class="alert alert-danger">{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
       </div>
       <div class="form-group">
         <div class="container">

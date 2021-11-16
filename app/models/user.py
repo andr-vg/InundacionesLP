@@ -218,12 +218,19 @@ class User(db.Model):
         """
         self.password_hash = generate_password_hash(password)
 
-    def edit_profile(self, form):
+    def edit_profile(self, form, roles_deleted):
         """ Edita el perfil del usuario actual """
         if form.password.data:
             self.password=form.password.data
         self.firstname = form.firstname.data
         self.lastname = form.lastname.data
+        for rol in roles_deleted:
+            rol_deleted = Rol.get_rol_by_id(rol)
+            self.roles.remove(rol_deleted)
+        
+        for rol in form.rol.data:
+            rol_new = Rol.get_rol_by_id(rol)
+            self.roles.append(rol_new)
 
     def change_state(self):
         """

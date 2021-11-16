@@ -5,13 +5,6 @@
 {% endblock %}
 {% block content %}
   <h1>Editar mi perfil</h1>
-  {% for field in form.errors %}
-  {% for error in form.errors[field] %}
-      <div class="alert alert-error">
-          <strong>Error! {{field}} {{error}} </strong> 
-      </div>
-  {% endfor %}
-  {% endfor %}
   <form action="{{ url_for('user_update_profile') }}" method="POST">
     <div class="container">
     {{form.csrf_token}}

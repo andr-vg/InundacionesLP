@@ -62,6 +62,15 @@
       {% endfor %}
       </div>
     </div>
+    <div class="row">
+      <div class="col-4">
+        {{ form.state.label }}
+        {{ form.state(class="form-control") }}
+        {% for error in form.state.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+    </div>
+    </div>
     {{form.lat}}
     {{form.long}}
     <p>* Campo requerido</p>

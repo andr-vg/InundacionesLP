@@ -4,11 +4,12 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-<h1>Crear seguimiento </h1>
   <form action="{{ url_for('seguimiento_create', id=denuncia.id) }}" method="POST" id="create_seguimiento">
     <div class="container">
     <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
     <div class="container">
+    <h1>Crear seguimiento </h1>
+    <h3> Denuncia asignada a  {{user.username}}</h3>
     <div class="row-1">
       <div class="col-4">
         {{ form.description.label }}*
@@ -16,15 +17,6 @@
         {% for error in form.description.errors %}
         <p class="alert alert-danger">{{error}}</p>
         {% endfor %}
-      </div>
-      <div class="row-1">
-        <div class="col-4">
-          {{ form.state.label }}*
-          {{ form.state(class="form-control") }}
-          {% for error in form.description.errors %}
-          <p class="alert alert-danger">{{error}}</p>
-          {% endfor %}
-        </div>
       </div>
       </div>
       <p>* Campo requerido</p>

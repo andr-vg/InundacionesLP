@@ -17,7 +17,7 @@
   <form action="{{ url_for('denuncia_update', id=denuncia.id) }}" method="POST" id="edit-denuncia">
     <div class="container">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-      {% include 'denuncias/form.html' %}
+      {% include 'denuncias/form_edit.html' %}
     </div>
   </form>
 {% endblock %}

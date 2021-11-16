@@ -31,7 +31,7 @@ def paginated(page):
 @denuncia_api.post("/")
 def create():
     response = {}
-    form = CreateDenunciaForm(**request.get_json(), meta={'csrf': False})
+    form = CreateDenunciaForm(**request.get_json())
     if form.validate_on_submit():
         if Denuncia.unique_field(form.title.data):
             return jsonify(response),400

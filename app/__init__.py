@@ -159,6 +159,7 @@ def create_app(environment="development"):
     api = Blueprint("api", __name__, url_prefix="/api")
     api.register_blueprint(zonas_inundables_api)
     api.register_blueprint(denuncia_api)
+    csrf.exempt(denuncia_api)
     app.register_blueprint(api)
     app.before_request(disable_csrf)
 

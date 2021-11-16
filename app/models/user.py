@@ -102,19 +102,20 @@ class User(db.Model):
         id = list(db.session.execute(sql, {"user_email": user_email})) 
         return id[0][0]
 
+
     @classmethod
-    def exists_user(cls, params):
+    def exists_user(cls, username,email):
         """
         Verifica si ya existe un usuario con un dado email y username
 
         Args:
-            params(dict): diccionario que contiene el email y el username
-                del usuario a consultar
+            username(string): nombre de usuario a comprobar
+            email(String): email a comprobar
 
         Returns:
             El resultado de la consulta con el usuario existente caso contrario None
         """
-        user = User.query.filter((User.email == params["email"]) | (User.username == params["username"])).first()
+        user = User.query.filter((User.email == email) | (User.username == username)).first()
         return user
     
     @classmethod
@@ -224,17 +225,21 @@ class User(db.Model):
             self.password=form.password.data
         self.firstname = form.firstname.data
         self.lastname = form.lastname.data
+        db.session.commit()
 
     def change_state(self):
         """
         Invierte el estado de un usuario
         """
         self.active = not self.active
+        db.session.commit()
 
     def add_user(self):
         """ Agrega el usuario, los cambios no se verán reflejados en la BD hasta 
         no hacer un commit """
         db.session.add(self)
+        db.session.commit()
+
 
     def edit_user(self, form, roles_deleted):
         """ Editar a un usuario y sus roles """
@@ -250,28 +255,39 @@ class User(db.Model):
         for rol in form.rol.data:
             rol_new = Rol.get_rol_by_id(rol)
             self.roles.append(rol_new)
+        db.session.commit()
+
 
     def add_rol(self, rol):
         self.roles.append(rol)
-
-    def update(self):
-        """ Actualiza el modelo en la BD """
         db.session.commit()
+
 
     def activate(self):
         self.deleted = False
+        for complaint in self.complaints:
+            complaint.activate()
+        db.session.commit()
+
 
     def delete(self):
         self.deleted = True
+        for complaint in self.complaints:
+            complaint.soft_delete()
+        db.session.commit()
+
 
     def assign_complaints(self,complaint):
         """ Asigna la denuncia a la relacion """
         self.complaints.append(complaint)
+        db.session.commit()
 
 
     def assign_tracking(self,tracking):
         """ Asigna el seguimiento a la relacion """
         self.tracking.append(tracking)
+        db.session.commit()
+
 
     def verify_password(self, password):
         """

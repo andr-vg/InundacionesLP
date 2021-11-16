@@ -4,6 +4,7 @@ from wtforms.fields.simple import HiddenField
 from flask_wtf import FlaskForm, csrf
 from app.models.categories import Categoria
 from app.models.user import User
+from app.models.denuncias import State
 
 
 class CreateDenunciaForm(FlaskForm):
@@ -23,7 +24,7 @@ class CreateDenunciaForm(FlaskForm):
         user(Usuario): usuario asignado a seguir la denuncia 
     """
     title = StringField("Titulo",[validators.DataRequired(message="Debe ingresar un titulo")])
-    category = SelectField("Categoria",coerce=int)
+    category = SelectField("Categoria",[validators.DataRequired(message="Debe seleccionarse una categoria")],coerce=int)
     description = StringField("Descripcion", [validators.DataRequired("Debe ingresar una descripcion"),
     validators.Length(min=1,max=255,message="No puede superar los 255 caracteres")],widget=widgets.TextArea())
     lat = StringField("Latitud")
@@ -76,9 +77,28 @@ class CreateDenunciaForm(FlaskForm):
         Se valida la categoría de la denuncia
         """
         choices = dict(form.category.choices).keys()
+        if field.data==0:
+            form.category.errors = (validators.ValidationError("Categoría inválida, elija una categoria valida"),)
         if not (field.data in choices):
-            form.user.errors = (validators.ValidationError("Categoría inválida, elija una categoria valida"),)
+            form.category.errors = (validators.ValidationError("Categoría inválida, elija una categoria valida"),)
 
     
         
 
+class EditDenunciaForm(CreateDenunciaForm):
+    """"
+    Formulario para las denuncias
+
+    Args:
+        state(list): título de la denuncia
+    """
+    state = SelectField("Estado",choices=State.choices())
+
+
+    def validate_state(form,field):
+        """ 
+        Se valida el estado de la denuncia
+        """
+        choices = dict(form.state.choices).keys()
+        if not(field.data in choices):
+            form.category.errors = (validators.ValidationError("Estado inválido, elija un estado valida"),)

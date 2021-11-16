@@ -27,7 +27,7 @@ def new(id):
     if denuncia.is_closed():
         abort(400)
     form = CreateSeguimientoForm()
-    return render_template("seguimientos/new.html", denuncia = denuncia,form=form)
+    return render_template("seguimientos/new.html", denuncia = denuncia,user=denuncia.user_assign,form=form)
 
 
 
@@ -45,9 +45,8 @@ def create(id):
     form = CreateSeguimientoForm(request.form)
     if form.validate():
         seguimiento = Seguimiento(description=form.description.data)
+        seguimiento.add()
         denuncia.assign_tracking(seguimiento)
-        denuncia.change_state(form.state.data)
         user.assign_tracking(seguimiento)
-        seguimiento.update_seguimiento()
     return redirect(url_for("denuncia_tracking"))
 

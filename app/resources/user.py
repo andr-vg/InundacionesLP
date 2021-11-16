@@ -65,22 +65,19 @@ def create():
     form = RegistrationUserForm(request.form)
     form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
-        parameters = {"email":form.email, "username": form.username}
-        user = User.exists_user(parameters)
+        user = User.exists_user(form.username.data,form.email.data)
         if user and not user.deleted:
             flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
             return render_template("user/new.html", form=form)
         elif user and user.deleted:
             user.activate()
-            user.update()
         else:
-            new_user = User(email=form.email.data,password=form.password.data,username=form.username.data,firstname=form.firstname.data,lastname=form.lastname.data)
-            new_user.add_user()
-            new_user.update()
+            user = User(email=form.email.data,password=form.password.data,username=form.username.data,firstname=form.firstname.data,lastname=form.lastname.data)
+            user.add_user()
+            user.update()
         for roles in form.rol.data:
             rol = Rol.get_rol_by_id(roles)
-            new_user.add_rol(rol)
-            new_user.update()
+            user.add_rol(rol)
         flash("El usuario ha sido creado correctamente.")
         return redirect(url_for("user_index"))
     return render_template("user/new.html", form=form)
@@ -127,7 +124,6 @@ def update():
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles)-set(form.rol.data)
         user.edit_user(form, roles_deleted)
-        user.update()
         flash("El usuario ha sido editado correctamente.")
         return redirect(url_for("user_index"))
     return render_template("user/edit.html", form=form)
@@ -148,7 +144,6 @@ def soft_delete():
         abort(401)
     user = User.get_user_by_id(request.form["id"])
     user.delete()
-    user.update()
     flash("Usuario eliminado correctamente.")
     return redirect(url_for("user_index"))
 
@@ -168,7 +163,6 @@ def change_state(id):
     user = User.get_user_by_id(id)
     user.change_state()
     state = "reactivado" if user.active else "bloqueado"
-    user.update()
     flash("El usuario ha sido {} correctamente".format(state))
     return redirect(url_for("user_index"))
 
@@ -209,7 +203,6 @@ def edit_profile():
         abort(401)
     if not check_permission("user_edit_profile", session):
         abort(401)
-    
     user = User.get_user_by_email(user_email)
     form = EditProfileForm(id=user.id,firstname=user.firstname,lastname=user.lastname)
     return render_template("user/profile.html", form=form)
@@ -229,7 +222,6 @@ def update_profile():
     if form.validate():
         user = User.get_user_by_id(form.id.data)
         user.edit_profile(form)
-        user.update()
         flash("Su perfil ha sido actualizado.")
         return redirect(url_for("home"))       
     return render_template("user/profile.html", form=form)

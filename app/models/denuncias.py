@@ -2,7 +2,7 @@ import datetime,enum
 from sqlalchemy.orm import relationship
 from app.db import db
 from app.models.coordenadas import Coordenadas
-from sqlalchemy import Enum, ForeignKey, Column, Integer, String, DateTime, Float,func
+from sqlalchemy import Enum,Boolean, ForeignKey, Column, Integer, String, DateTime, Float,func
 
 class State(enum.Enum):
     """ Modelo que representa el estado de la denuncia """
@@ -39,6 +39,7 @@ class Denuncia(db.Model):
     lastname (String): apellido del denunciante
     tel (string): telefono del denunciante
     email (string): email del denunciante
+    deleted(boolean): indica si la denuncia esta borrada logicamente
     assigned_to (int): Id del usuario asignado a la denuncia
     user_assign (user): Usuario asignado a la denuncia
     tracking (list): Lista de seguimientos
@@ -152,6 +153,7 @@ class Denuncia(db.Model):
     lastname = Column(String(255))
     tel = Column(String(255))
     email = Column(String(255))
+    deleted = Column(Boolean, default=False)
     assigned_to = Column(Integer, ForeignKey('usuarios.id'))
     user_assign = relationship("User", back_populates="complaints")
     tracking = relationship("Seguimiento", back_populates="complaints")
@@ -160,7 +162,7 @@ class Denuncia(db.Model):
         return {attr.name: getattr(self,attr.name) for attr in self.__table__.columns}
 
 
-    def edit(self,title,description,lat,long,firstname,lastname,tel,email):
+    def edit(self,title,description,lat,long,firstname,lastname,tel,email,state):
         self.title = title
         self.description = description
         self.lat = lat
@@ -169,29 +171,53 @@ class Denuncia(db.Model):
         self.lastname = lastname
         self.tel = tel
         self.email = email
-
+        self.state = state
+        db.session.commit()
 
 
     def add_denuncia(self):
         db.session.add(self)
-
-
-    def update_denuncia(self):
         db.session.commit()
     
 
     def delete_denuncia(self):
         db.session.delete(self)
+        db.session.commit()
 
     def assign_tracking(self,seguimiento):
         """ Asigna el seguimiento a la relacion """
         self.tracking.append(seguimiento)
+        db.session.commit()
+
+
+    def delete_tracking(self):
+        """Elimina los seguimientos de la denuncia"""
+        for tracking in self.tracking:
+            tracking.delete_tracking()
+        db.session.commit()
     
     def disassign_user(self):
         self.assigned_to=None
+        db.session.commit()
 
     def disassign_category(self):
         self.category_id=None
+        db.session.commit()
+    
+
+    def activate(self):
+        self.deleted = False
+        for tracking in self.tracking:
+            tracking.activate()
+        db.session.commit()
+
+
+    def soft_delete(self):
+        self.deleted = True
+        for tracking in self.tracking:
+            tracking.soft_delete()
+        db.session.commit()
+
      
     def change_state(self,state):
         """" Cambia el estado de una denuncia al estado recibido por parametro, si el estado es cerrada además 
@@ -201,10 +227,12 @@ class Denuncia(db.Model):
         self.state = state
         if self.is_closed():
             self.closed_at = datetime.datetime.utcnow()
-    
+        db.session.commit()
+
     
     def is_closed(self):
         return self.state==State.cerrada
+
 
     def get_index_denuncias(page, config):
         """" Retorna el listado de denuncias ordenado con la configuracion del sistema y paginado con

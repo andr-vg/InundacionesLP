@@ -95,3 +95,15 @@ h4 {
 #coords-button{
   margin-bottom: 10px;
 }
+
+.align-right {
+  text-align: -webkit-right;
+}
+
+.align-right a{
+  font-weight: bold;
+}
+
+.align-center {
+  text-align: center;
+}

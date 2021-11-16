@@ -25,7 +25,7 @@ a:hover {
   color: var(--info);
 }
 
-a.link {
+a.link, .align-right a {
   background-color: var(--danger) !important;
   color: var(--primary) !important;
 }
@@ -83,4 +83,3 @@ border-color: var(--primary);
 .page-link:hover{
   color: var(--secondary);
 }
-

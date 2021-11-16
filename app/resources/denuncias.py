@@ -129,6 +129,8 @@ def update(id):
     denuncia = Denuncia.get_by_id(id)
     if not denuncia:
         abort(400)
+    if denuncia.deleted:
+        abort(400)
     form = EditDenunciaForm(title=request.form["title"],category=request.form["category"],
     description=request.form["description"],lat=request.form["lat"],long=request.form["long"],
     firstname=request.form["firstname"],lastname=request.form["lastname"],
@@ -169,9 +171,11 @@ def show(id,page):
         abort(401)
     if not check_permission("denuncias_show", session):
         abort(401)
+    denuncia = Denuncia.get_by_id(id)
+    if denuncia.deleted:
+        abort(400)
     config = get_configuration(session) 
     seguimientos = Seguimiento.get_tracking(page, config,id)
-    denuncia = Denuncia.get_by_id(id)
     usuario = User.get_user_by_id(denuncia.assigned_to)
     categoria = Categoria.get_category_by_id(denuncia.category_id)
     return render_template("denuncias/show.html", denuncia=denuncia,usuario=usuario,categoria=categoria,seguimientos=seguimientos)

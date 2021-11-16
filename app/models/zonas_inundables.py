@@ -77,7 +77,7 @@ class ZonaInundable(db.Model):
             config(dict): diccionario con los datos de configuracion a respetar
 
         """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return query.order_by(ZonaInundable.name.asc()).paginate(page, per_page=config.elements_per_page)
         return query.order_by(ZonaInundable.name.desc()).paginate(page, per_page=config.elements_per_page)
 
@@ -143,7 +143,7 @@ class ZonaInundable(db.Model):
             page: Numero entero que representa la pagina.
             config: Representa la configuracion del sistema. 
         """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return ZonaInundable.query.order_by(ZonaInundable.name.asc()).paginate(page, per_page=config.elements_per_page)
         return ZonaInundable.query.order_by(ZonaInundable.name.desc()).paginate(page, per_page=config.elements_per_page)
 

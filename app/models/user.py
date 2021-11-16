@@ -274,6 +274,8 @@ class User(db.Model):
         self.deleted = True
         for complaint in self.complaints:
             complaint.soft_delete()
+        for tracking in self.tracking:
+            tracking.soft_delete()
         db.session.commit()
 
 
@@ -331,7 +333,7 @@ class User(db.Model):
 
     def get_all():
         """Retorna el listado de todos los usuarios no eliminados"""
-        return User.query.filter(User.deleted==False)
+        return User.query.filter((User.deleted==False) & (User.active==True)))
 
 
     def get_index_users(id, page, config):
@@ -343,7 +345,7 @@ class User(db.Model):
             page(int): número a paginar
             config(dict): diccionario con los datos de configuracion establecidos
         """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.asc()).paginate(page, per_page=config.elements_per_page)
         return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.desc()).paginate(page, per_page=config.elements_per_page)
 

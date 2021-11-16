@@ -57,7 +57,7 @@ class PuntosDeEncuentro(db.Model):
             config(dict): diccionario con los datos de configuracion a respetar
 
         """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return query.order_by(PuntosDeEncuentro.name.asc()).paginate(page, per_page=config.elements_per_page)
         return query.order_by(PuntosDeEncuentro.name.desc()).paginate(page, per_page=config.elements_per_page)
 
@@ -135,6 +135,6 @@ class PuntosDeEncuentro(db.Model):
         la cantidad de elementos por pagina definidos en la configuracion del sistema.
         :param page:Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema. """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.name.asc()).paginate(page, per_page=config.elements_per_page)
         return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.name.desc()).paginate(page, per_page=config.elements_per_page)

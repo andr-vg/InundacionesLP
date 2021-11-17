@@ -18,6 +18,7 @@ export class ZoneMap {
         this.map.on('draw:deleted', () => {
             this.#deleteHandler(this.map, this.editControls, this.createControls)
         });
+
     }
 
     #initializeMap(selector) {
@@ -65,8 +66,13 @@ export class ZoneMap {
     };
 
     #deleteHandler(map, editControls, createControls) {
+        
         createControls.addTo(map);
         editControls.remove();
+    }
+
+    hasPoints() {
+        return Object.values(this.#drawnItems._layers).length > 0;
     }
 
     hasValidZone() {

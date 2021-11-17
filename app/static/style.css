@@ -107,3 +107,7 @@ h4 {
 .align-center {
   text-align: center;
 }
+
+ul.leaflet-draw-actions.leaflet-draw-actions-bottom li a[title="Save changes"] {
+    display: none;
+}

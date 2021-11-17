@@ -136,6 +136,7 @@ def update():
             # hago el commit a la tabla
             recorrido.update()
         recorrido.update()
+        flash('El recorrido ha sido editado correctamente.')
         return redirect(url_for("recorridos_index"))
     return render_template("recorridos_evacuacion/edit.html", form=form)
 

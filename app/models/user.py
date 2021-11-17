@@ -339,7 +339,7 @@ class User(db.Model):
 
     def get_all():
         """Retorna el listado de todos los usuarios no eliminados"""
-        return User.query.filter((User.deleted==False) & (User.active==True)))
+        return User.query.filter((User.deleted==False) & (User.active==True))
 
 
     def get_index_users(id, page, config):

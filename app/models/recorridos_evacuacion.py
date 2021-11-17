@@ -71,7 +71,7 @@ class Recorridos(db.Model):
             config(dict): diccionario con los datos de configuracion a respetar
 
         """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return query.order_by(Recorridos.name.asc()).paginate(page, per_page=config.elements_per_page)
         return query.order_by(Recorridos.name.desc()).paginate(page, per_page=config.elements_per_page)
 
@@ -161,6 +161,6 @@ class Recorridos(db.Model):
         la cantidad de elementos por pagina definidos en la configuracion del sistema.
         :param page: Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema. """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return Recorridos.query.order_by(Recorridos.name.asc()).paginate(page, per_page=config.elements_per_page)
         return Recorridos.query.order_by(Recorridos.name.desc()).paginate(page, per_page=config.elements_per_page)    

@@ -120,12 +120,14 @@ class Denuncia(db.Model):
             page: numero de pagina
             config: configuracion del sistema"""
         if config.ordered_by == "ascendente":
-            return query.filter(Denuncia.deleted).order_by(Denuncia.created_at.asc()).order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page)
-        return query.filter(Denuncia.deleted).order_by(Denuncia.created_at.desc()).order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page)
+            return (query.filter(Denuncia.deleted).order_by(Denuncia.created_at.asc())
+            .order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page))
+        return (query.filter(Denuncia.deleted).order_by(Denuncia.created_at.desc())
+        .order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page))
 
     
     @classmethod
-    def get_paginated(cls,page,config,elements_per_page):
+    def get_paginated(cls,page,config):
         """ Retorna todos las denuncias paginadas
         
         Args:
@@ -133,8 +135,10 @@ class Denuncia(db.Model):
             config: configuracion del sistema
             elements_per_page(integer): Numero de elementos por pagina"""
         if config.ordered_by == "ascendente":
-            return Denuncia.query.filter(Denuncia.deleted).order_by(Denuncia.created_at.asc()).order_by(Denuncia.title.asc()).paginate(page, per_page=elements_per_page)
-        return Denuncia.query.filter(Denuncia.deleted).order_by(Denuncia.created_at.desc()).order_by(Denuncia.title.desc()).paginate(page, per_page=elements_per_page)
+            return (Denuncia.query.filter(Denuncia.deleted).order_by(Denuncia.created_at.asc())
+            .order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page))
+        return (Denuncia.query.filter(Denuncia.deleted).order_by(Denuncia.created_at.desc())
+        .order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page))
 
 
 

@@ -35,8 +35,8 @@ class PuntosDeEncuentro(db.Model):
         :params: query: Consulta previa en la base de datos.
         :params: state: String que representa el estado del punto de encuentro.  """
         if state=="activo":
-            return query.filter(PuntosDeEncuentro.state==False)
-        return query.filter(PuntosDeEncuentro.state==True)
+            return query.filter(PuntosDeEncuentro.state==True)
+        return query.filter(PuntosDeEncuentro.state==False)
 
     @classmethod
     def unique_fields(cls,name,address):

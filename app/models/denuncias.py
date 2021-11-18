@@ -233,6 +233,9 @@ class Denuncia(db.Model):
     def is_closed(self):
         return self.state==State.cerrada
 
+    def is_resolved(self):
+        return self.state==State.resuelta
+
 
     def get_index_denuncias(page, config):
         """" Retorna el listado de denuncias ordenado con la configuracion del sistema y paginado con

@@ -111,11 +111,14 @@ def edit(id):
     denuncia = Denuncia.get_by_id(id)
     if not denuncia:
         abort(400)
-    else: 
-        form = EditDenunciaForm(title=denuncia.title,category=denuncia.category_id,description=denuncia.description,
-        lat=denuncia.lat,long=denuncia.long,firstname=denuncia.firstname,lastname=denuncia.lastname,
-        tel=denuncia.tel,email=denuncia.email,user=denuncia.assigned_to)
-        form.state.data = denuncia.state
+    if denuncia.is_closed():
+        abort(400)
+    if denuncia.is_resolved():
+        abort(400)
+    form = EditDenunciaForm(title=denuncia.title,category=denuncia.category_id,description=denuncia.description,
+    lat=denuncia.lat,long=denuncia.long,firstname=denuncia.firstname,lastname=denuncia.lastname,
+    tel=denuncia.tel,email=denuncia.email,user=denuncia.assigned_to)
+    form.state.data = denuncia.state
     return render_template("denuncias/edit.html", denuncia=denuncia,form=form)
     
 
@@ -129,7 +132,9 @@ def update(id):
     denuncia = Denuncia.get_by_id(id)
     if not denuncia:
         abort(400)
-    if denuncia.deleted:
+    if denuncia.is_closed():
+        abort(400)
+    if denuncia.is_resolved():
         abort(400)
     form = EditDenunciaForm(title=request.form["title"],category=request.form["category"],
     description=request.form["description"],lat=request.form["lat"],long=request.form["long"],

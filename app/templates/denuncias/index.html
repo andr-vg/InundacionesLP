@@ -57,7 +57,7 @@
           {% if has_permission('denuncias_show') %}
             <a href="{{url_for('denuncia_show', id=denuncia.id) }}" class="btn btn-sm btn-success"> Ver detalle <i class="glyphicon glyphicon-info"></i></a>
           {% endif%}
-          {% if has_permission('denuncias_update') %}
+          {% if has_permission('denuncias_update') and denuncia.state.name!="cerrada" and denuncia.state.name!="resuelta" %}
             <a href="{{url_for('denuncia_edit', id=denuncia.id) }}" class="btn btn-sm btn-info"> Editar <i class="glyphicon glyphicon-info" ></i></a>
           {% endif%}
           {% if has_permission('denuncias_destroy') %}

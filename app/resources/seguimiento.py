@@ -26,6 +26,8 @@ def new(id):
         abort(400)
     if denuncia.is_closed():
         abort(400)
+    if denuncia.is_resolved():
+        abort(400)
     form = CreateSeguimientoForm()
     return render_template("seguimientos/new.html", denuncia = denuncia,user=denuncia.user_assign,form=form)
 
@@ -40,6 +42,10 @@ def create(id):
         abort(401)
     denuncia = Denuncia.get_by_id(id)
     if not denuncia: 
+        abort(400)
+    if denuncia.is_closed():
+        abort(400)
+    if denuncia.is_resolved():
         abort(400)
     user = User.get_user_by_email(authenticated(session))
     form = CreateSeguimientoForm(request.form)

@@ -8,4 +8,5 @@ class CreateSeguimientoForm(FlaskForm):
     """ 
     Formulario del seguimiento
     """
-    description = StringField("Descripcion", [validators.DataRequired()],widget=widgets.TextArea())
+    description = StringField("Descripcion", [validators.DataRequired("Debe ingresar una descripcion"),
+    validators.Length(min=1,max=255,message="No puede superar los 255 caracteres")],widget=widgets.TextArea())

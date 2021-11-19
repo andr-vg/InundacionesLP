@@ -4,8 +4,7 @@
  <ul v-if="puntos && puntos.length">
  <li v-for="(punto, index) in puntos"
 :key="index">
- <strong>{{ location.id }}</strong> - {{
-location.nombre }}
+ {{ punto.name }}
  </li>
  </ul>
  <ul v-if="errors && errors.length">
@@ -18,22 +17,22 @@ location.nombre }}
 <script>
 import axios from 'axios';
 export default {
- data() {
- return {
- puntos: [],
- errors: []
- }
- },
+    data() {
+        return {
+            puntos: [],
+            errors: []
+        }
+    },
  // Fetches posts when the component is created.
  created() {
 
 axios.get('http://127.0.0.1:5000/api/puntos_encuentro/')
  .then(response => {
  // JSON responses are automatically parsed.
- this.puntos = response.data;
+    this.puntos = response.data;
  })
  .catch(e => {
- this.errors.push(e)
+    this.errors.push(e)
  })
  }
 }

@@ -118,7 +118,7 @@ def create_app(environment="development"):
    
     app.add_url_rule("/seguimiento/nuevo/<int:id>", "seguimiento_new", seguimiento.new)
     app.add_url_rule("/seguimiento/<int:id>", "seguimiento_create", seguimiento.create,methods=["POST"])
-
+    app.add_url_rule("/seguimiento/baja/<int:id>/<int:page>","seguimiento_delete", seguimiento.delete,methods=["GET"])
 
     # Rutas de Configuracion
     app.add_url_rule("/configuracion", "configuration_update", configuration.update)

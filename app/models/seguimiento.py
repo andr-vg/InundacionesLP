@@ -30,6 +30,11 @@ class Seguimiento(db.Model):
     user_assign = relationship("User", back_populates="tracking")
 
 
+    def get_by_id(id):
+        """ Retorna el seguimiento con el id recibido por parametro o None en caso que no exista"""
+        return Seguimiento.query.filter(Seguimiento.id==id).first()
+
+
     def get_tracking(page, config,denuncia_id):
         """" Retorna el listado de seguimientos asignados a la denuncia recibida por parametro
         ordenado con la configuracion del sistema y paginado con
@@ -40,6 +45,7 @@ class Seguimiento(db.Model):
         if config.ordered_by == "Ascendente":
             return Seguimiento.query.filter(Seguimiento.complaint_id==denuncia_id).order_by(Seguimiento.created_at.asc()).paginate(page, per_page=config.elements_per_page)
         return Seguimiento.query.filter(Seguimiento.complaint_id==denuncia_id).order_by(Seguimiento.created_at.desc()).paginate(page, per_page=config.elements_per_page)
+
 
 
     def add(self):

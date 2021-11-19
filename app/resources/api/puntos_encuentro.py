@@ -15,7 +15,9 @@ puntos_encuentro_api = Blueprint("puntos",__name__,url_prefix="/puntos_encuentro
 def index():
     puntos_iter= PuntosDeEncuentro.get_all()
     puntos = [PuntoEncuentroSchema.dump(punto) for punto in puntos_iter]
-    return jsonify(puntos)
+    puntos = jsonify(puntos)
+    puntos.headers.add('Access-Control-Allow-Origin', '*')
+    return puntos
 
 
 @puntos_encuentro_api.get("/<int:page>")

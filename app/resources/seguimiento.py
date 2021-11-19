@@ -7,7 +7,7 @@ from app.helpers.email import check as check_email
 from app.helpers.auth import authenticated
 from sqlalchemy.exc import OperationalError
 from app.models.denuncias import Denuncia
-
+from app.models.categories import Categoria
 from app.models.seguimiento import Seguimiento
 from app.models.user import User
 
@@ -54,5 +54,21 @@ def create(id):
         seguimiento.add()
         denuncia.assign_tracking(seguimiento)
         user.assign_tracking(seguimiento)
-    return redirect(url_for("denuncia_tracking"))
+        return redirect(url_for("denuncia_tracking"))
+    return render_template("seguimientos/new.html", denuncia = denuncia,user=denuncia.user_assign,form=form)
+
+
+
+def delete(page,id):
+    """  Eliminacion de un seguimiento"""
+    if not authenticated(session):
+        abort(401)
+    if not check_permission("denuncias_destroy", session):
+        abort(401)
+    seguimiento = Seguimiento.get_by_id(id)
+    if not seguimiento:
+        abort(400)
+    denuncia = seguimiento.complaints
+    seguimiento.delete_tracking()
+    return redirect(url_for("denuncia_show", id=denuncia.id))
 

@@ -48,6 +48,11 @@ a:hover {
   color: #92a4ad;
 }
 
+button a {
+  color: #dee6eb !important;
+
+}
+
 a.link {
   text-transform: uppercase;
   font-size: 14px;
@@ -87,6 +92,22 @@ h4 {
   color: red;
 }
 
-#coords{
-  display: none;
+#coords-button{
+  margin-bottom: 10px;
+}
+
+.align-right {
+  text-align: -webkit-right;
+}
+
+.align-right a{
+  font-weight: bold;
+}
+
+.align-center {
+  text-align: center;
+}
+
+ul.leaflet-draw-actions.leaflet-draw-actions-bottom li a[title="Save changes"] {
+    display: none;
 }

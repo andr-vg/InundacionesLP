@@ -7,7 +7,9 @@ from flask_bcrypt import Bcrypt
 from app.resources import configuration, puntos_encuentro, seguimiento, user, auth, rol,denuncias, zonas_inundables, recorridos_evacuacion
 from app.resources.api.denuncias import denuncia_api
 from app.resources.api.zonas_inundables import zonas_inundables_api
+from app.resources.api.puntos_encuentro import puntos_encuentro_api
 from app.helpers import handler
+from app.helpers import puntos_encuentro as puntos
 #from app.helpers import auth as helper_auth
 #from app.helpers import permission as helper_permission
 from flask_wtf.csrf import CSRFProtect
@@ -45,6 +47,7 @@ def create_app(environment="development"):
     app.jinja_env.globals.update(is_authenticated=auth.authenticated)
     app.jinja_env.globals.update(has_permission=auth.has_permission)
     app.jinja_env.globals.update(get_configuration=configuration.get_session_configuration)
+    app.jinja_env.globals.update(tojson=puntos.tojson)
     #app.jinja_env.globals.update(get_rol_actual=rol.get_session_rol_actual)
     #app.jinja_env.globals.update(get_roles=rol.get_session_roles)
     app.jinja_env.globals.update(get_username=user.get_session_username)
@@ -132,14 +135,15 @@ def create_app(environment="development"):
     app.add_url_rule("/zonas_inundables/<name>", "zonas_inundables_show", zonas_inundables.show, methods=['GET'])
     app.add_url_rule("/zonas_inundables/search/", "zonas_inundables_search", zonas_inundables.search, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/zonas_inundables/search/<int:page>", "zonas_inundables_search", zonas_inundables.search, methods=['GET'])    
+    app.add_url_rule("/zonas_inundables/publicar", "zonas_inundables_soft_delete", zonas_inundables.soft_delete,methods=["POST"])
 
     # Rutas para recorridos de evacuacion
     app.add_url_rule("/recorridos_evacuacion", "recorridos_index", recorridos_evacuacion.index, defaults={'page': 1}, methods=['GET'])
     app.add_url_rule("/recorridos_evacuacion/<int:page>", "recorridos_index", recorridos_evacuacion.index, methods=['GET'])
-    app.add_url_rule("/recorridos_evacuacion", "recorridos_create", recorridos_evacuacion.create, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion", "recorridos_create", recorridos_evacuacion.create, methods=['POST'])
     app.add_url_rule("/recorridos_evacuacion/nuevo", "recorridos_new", recorridos_evacuacion.new)
-    app.add_url_rule("/recorridos_evacuacion/editar", "recorridos_edit", recorridos_evacuacion.edit,methods=["POST"])
-    app.add_url_rule("/recorridos_evacuacion/actualizar", "recorridos_update", recorridos_evacuacion.update, methods=["POST"])
+    app.add_url_rule("/recorridos_evacuacion/editar", "recorridos_edit", recorridos_evacuacion.edit,methods=['POST'])
+    app.add_url_rule("/recorridos_evacuacion/actualizar", "recorridos_update", recorridos_evacuacion.update, methods=['POST'])
     app.add_url_rule("/recorridos_evacuacion/eliminar", "recorridos_delete", recorridos_evacuacion.delete, methods=["POST"])
     app.add_url_rule("/recorridos_evacuacion/estado/<int:id>", "recorridos_publicate", recorridos_evacuacion.change_state)
     app.add_url_rule("/recorridos_evacuacion/search/", "recorridos_search", recorridos_evacuacion.search, defaults={'page': 1}, methods=['GET'])
@@ -156,12 +160,15 @@ def create_app(environment="development"):
     api = Blueprint("api", __name__, url_prefix="/api")
     api.register_blueprint(zonas_inundables_api)
     api.register_blueprint(denuncia_api)
+    api.register_blueprint(puntos_encuentro_api)
+    csrf.exempt(denuncia_api)
     app.register_blueprint(api)
     app.before_request(disable_csrf)
 
     # Handlers
     app.register_error_handler(404, handler.not_found_error)
     app.register_error_handler(401, handler.unauthorized_error)
+    app.register_error_handler(400, handler.bad_request_error)
     # Implementar lo mismo para el error 500
 
     # Retornar la instancia de app configurada

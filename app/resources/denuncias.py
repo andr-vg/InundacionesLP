@@ -8,7 +8,7 @@ from sqlalchemy.exc import OperationalError
 from app.models.categories import Categoria
 from app.models.denuncias import Denuncia
 from app.models.seguimiento import Seguimiento
-from app.forms.denuncias import CreateDenunciaForm
+from app.forms.denuncias import CreateDenunciaForm,EditDenunciaForm
 from app.models.user import User
 
 def index(page):
@@ -77,14 +77,11 @@ def create():
         lat=form.lat.data,long=form.long.data,firstname=form.firstname.data,lastname=form.lastname.data,
         tel=form.tel.data,email=form.email.data)
         if form.user.data!=0:
-            print(form.user.data)
             user = User.get_user_by_id(form.user.data)
             user.assign_complaints(denuncia)
-        if form.category.data!=0:
-            category = Categoria.get_category_by_id(form.category.data)
-            category.assign_complaints(denuncia)
+        category = Categoria.get_category_by_id(form.category.data)
+        category.assign_complaints(denuncia)
         denuncia.add_denuncia()
-        denuncia.update_denuncia()
         flash("La denuncia ha sido creada correctamente.")
         return redirect(url_for("denuncia_index"))
     return render_template("denuncias/new.html",form=form)
@@ -99,8 +96,8 @@ def delete(id):
     denuncia = Denuncia.get_by_id(id)
     if not denuncia:
         abort(400)
+    denuncia.delete_tracking()
     denuncia.delete_denuncia()
-    denuncia.update_denuncia()
     return redirect(url_for("denuncia_index"))
 
 
@@ -114,10 +111,14 @@ def edit(id):
     denuncia = Denuncia.get_by_id(id)
     if not denuncia:
         abort(400)
-    else: 
-        form = CreateDenunciaForm(title=denuncia.title,category=denuncia.category_id,description=denuncia.description,
-        lat=denuncia.lat,long=denuncia.long,firstname=denuncia.firstname,lastname=denuncia.lastname,
-        tel=denuncia.tel,email=denuncia.email,user=denuncia.assigned_to)
+    if denuncia.is_closed():
+        abort(400)
+    if denuncia.is_resolved():
+        abort(400)
+    form = EditDenunciaForm(title=denuncia.title,category=denuncia.category_id,description=denuncia.description,
+    lat=denuncia.lat,long=denuncia.long,firstname=denuncia.firstname,lastname=denuncia.lastname,
+    tel=denuncia.tel,email=denuncia.email,user=denuncia.assigned_to)
+    form.state.data = denuncia.state
     return render_template("denuncias/edit.html", denuncia=denuncia,form=form)
     
 
@@ -131,11 +132,14 @@ def update(id):
     denuncia = Denuncia.get_by_id(id)
     if not denuncia:
         abort(400)
-    print(request.form["category"])
-    form = CreateDenunciaForm(title=request.form["title"],category=request.form["category"],
+    if denuncia.is_closed():
+        abort(400)
+    if denuncia.is_resolved():
+        abort(400)
+    form = EditDenunciaForm(title=request.form["title"],category=request.form["category"],
     description=request.form["description"],lat=request.form["lat"],long=request.form["long"],
     firstname=request.form["firstname"],lastname=request.form["lastname"],
-    tel=request.form["tel"],email=request.form["email"],user=request.form["user"])
+    tel=request.form["tel"],email=request.form["email"],user=request.form["user"],state=request.form["state"])
     if form.validate():
         query = Denuncia.get_by_title(form.title.data)
         if query and denuncia.id!=query.id:
@@ -143,7 +147,7 @@ def update(id):
             return render_template("denuncias/edit.html", denuncia=denuncia, form=form)
         denuncia.edit(title=form.title.data,description=form.description.data,
         lat=form.lat.data,long=form.long.data,firstname=form.firstname.data,lastname=form.lastname.data,
-        tel=form.tel.data,email=form.email.data)
+        tel=form.tel.data,email=form.email.data,state=form.state.data)
         if form.user.data!=0:
             user = User.get_user_by_id(form.user.data)
             user.assign_complaints(denuncia)
@@ -154,7 +158,6 @@ def update(id):
             category.assign_complaints(denuncia)
         else:
             denuncia.disassign_category()
-        denuncia.update_denuncia()
         flash("La denuncia ha sido editado correctamente.")
         return redirect(url_for("denuncia_index"))
     return render_template("denuncias/edit.html", denuncia=denuncia, form=form)
@@ -173,9 +176,11 @@ def show(id,page):
         abort(401)
     if not check_permission("denuncias_show", session):
         abort(401)
+    denuncia = Denuncia.get_by_id(id)
+    if denuncia.deleted:
+        abort(400)
     config = get_configuration(session) 
     seguimientos = Seguimiento.get_tracking(page, config,id)
-    denuncia = Denuncia.get_by_id(id)
     usuario = User.get_user_by_id(denuncia.assigned_to)
     categoria = Categoria.get_category_by_id(denuncia.category_id)
     return render_template("denuncias/show.html", denuncia=denuncia,usuario=usuario,categoria=categoria,seguimientos=seguimientos)

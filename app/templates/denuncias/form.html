@@ -17,8 +17,11 @@
     </div>
     <div class="row">
       <div class="col-4">
-        {{ form.category.label }}
+        {{ form.category.label }}*
         {{ form.category(class="form-control") }}
+        {% for error in form.category.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
       </div>
       <div class="col-4">
         {{ form.lastname.label }}*
@@ -61,5 +64,20 @@
     </div>
     {{form.lat}}
     {{form.long}}
-
+    <p>* Campo requerido</p>
+    <div class="map-container">
+      <div id="mapid" class="float-end"></div>
+    </div>
+  <div class="form-group">
+    <div class="container">
+      <div class="row">
+        <div class="col-1">
+          <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
+        </div>
+        <div class="col-1">
+          <a href="{{ url_for('home') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
+        </div>
+      </div>
+    </div>
+    </div>
 {% endblock %}

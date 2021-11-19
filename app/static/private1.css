@@ -24,7 +24,7 @@ a:hover {
   color: var(--primary);
 }
 
-a.link {
+a.link, .align-right a {
   background-color: var(--danger) !important;
   color: var(--primary) !important;
 }

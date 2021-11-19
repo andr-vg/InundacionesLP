@@ -14,7 +14,7 @@
 <form action="{{ url_for('denuncia_search',title=title,state=state,previous=previous,later=later ) }}" method="GET"> 
   <input type="text" name="title">
   <select name="state">
-    <option value="" selected></option>
+    <option value="" selected>Seleccione una opcion</option>
     <option value="sin_confirmar">Sin confirmar</option>
     <option value="en_curso">En curso</option>
     <option value="resuelta">Resuelta</option>
@@ -40,12 +40,13 @@
         <th>Estado</th>
         <th>Email</th>
         <th>Usuario Asignado</th>
+        <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       {% for denuncia in denuncias.items %}
       <tr>
-        <td> {{ denuncia.title }} </a></td>
+        <td> {{ denuncia.title }} </td>
         <td> {% if denuncia.category!=None %}{{ denuncia.category.name }}
           {% else %}  Sin asignar {% endif %}</td>
         <td> {{ denuncia.created_at.strftime('%d-%m-%Y') }} </td>
@@ -53,16 +54,15 @@
         <td> {{ denuncia.email }} </td>
         <td> {% if denuncia.assigned_to!=None %}{{ denuncia.user_assign.email }}
           {% else %}  Sin asignar {% endif %}</td>
-          
         <td> 
           {% if has_permission('denuncias_show') %}
-            <a href="{{url_for('denuncia_show', id=denuncia.id) }}"><button class="btn btn-sm btn-success"> Ver detalle <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
+            <a href="{{url_for('denuncia_show', id=denuncia.id) }}" class="btn btn-sm btn-success"> Ver detalle <i class="glyphicon glyphicon-info"></i></a>
           {% endif%}
-          {% if has_permission('denuncias_update') %}
-            <a href="{{url_for('denuncia_edit', id=denuncia.id) }}"><button class="btn btn-sm btn-info"> Editar <i class="glyphicon glyphicon-info" display="table-cell"></i></button></a>
+          {% if has_permission('denuncias_update') and denuncia.state.name!="cerrada" and denuncia.state.name!="resuelta" %}
+            <a href="{{url_for('denuncia_edit', id=denuncia.id) }}" class="btn btn-sm btn-info"> Editar <i class="glyphicon glyphicon-info" ></i></a>
           {% endif%}
           {% if has_permission('denuncias_destroy') %}
-            <a href="{{url_for('denuncia_delete', id=denuncia.id) }}"><button class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta denuncia');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button></a>
+            <a href="{{url_for('denuncia_delete', id=denuncia.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar esta denuncia');"> Eliminar <i class="glyphicon glyphicon-trash" ></i></a>
           {% endif%}
         </td>
     </tr>

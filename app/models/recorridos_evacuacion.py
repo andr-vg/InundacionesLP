@@ -3,6 +3,8 @@ from app.db import db
 from sqlalchemy import Table, ForeignKey, Column, Integer, String, DateTime, Boolean, Float
 from sqlalchemy.orm import relationship
 
+import app.models.coordenadas as c
+
 
 class Recorridos(db.Model):
     """
@@ -56,7 +58,7 @@ class Recorridos(db.Model):
             query(Query): recorridos a filtrar
             state(bool): estado 
         """
-        return query.filter(Recorridos.active==state)
+        return query.filter(Recorridos.state==state)
 
     @classmethod
     def search_paginate(cls, query, page, config):
@@ -69,7 +71,7 @@ class Recorridos(db.Model):
             config(dict): diccionario con los datos de configuracion a respetar
 
         """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return query.order_by(Recorridos.name.asc()).paginate(page, per_page=config.elements_per_page)
         return query.order_by(Recorridos.name.desc()).paginate(page, per_page=config.elements_per_page)
 
@@ -92,11 +94,23 @@ class Recorridos(db.Model):
         self.description = description
         
     def edit(self, name, description):
+        """
+        Edita los campos de un recorrido, borra las coordenadas
+        actuales para luego asignar las nuevas en caso de 
+        haber cambios 
+        """
         self.name = name
         self.description = description
+        for elem in self.coords:
+            coordinate = c.Coordenadas.get_by_id(elem.id)
+            coordinate.delete()
+        
         
 
     def add_coordinate(self, new_coords):
+        """
+        Se le agrega una nueva coordenada al recorrido
+        """
         self.coords.append(new_coords)
 
     def add_recorrido(self):
@@ -113,6 +127,13 @@ class Recorridos(db.Model):
         db.session.commit()
 
     def delete(self):
+        """
+        Implementacion del borrado físico.
+        Se borrarrán las coordenadas asociadas y el recorrido
+        """
+        for elem in self.coords:
+            coordinate = c.Coordenadas.get_by_id(elem.id)
+            coordinate.delete()
         db.session.delete(self)
 
     def change_state(self):
@@ -140,6 +161,6 @@ class Recorridos(db.Model):
         la cantidad de elementos por pagina definidos en la configuracion del sistema.
         :param page: Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema. """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return Recorridos.query.order_by(Recorridos.name.asc()).paginate(page, per_page=config.elements_per_page)
         return Recorridos.query.order_by(Recorridos.name.desc()).paginate(page, per_page=config.elements_per_page)    

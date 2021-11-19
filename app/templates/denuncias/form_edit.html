@@ -1,0 +1,92 @@
+{% block form %}
+<div class="row">
+    <div class="col-4">
+      {{ form.title.label }}*
+      {{ form.title(class="form-control") }}
+      {% for error in form.title.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+    </div>
+    <div class="col-4">
+      {{ form.firstname.label }}*
+      {{ form.firstname(class="form-control") }}
+      {% for error in form.firstname.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+    </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        {{ form.category.label }}*
+        {{ form.category(class="form-control") }}
+        {% for error in form.category.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+      </div>
+      <div class="col-4">
+        {{ form.lastname.label }}*
+        {{ form.lastname(class="form-control") }}
+        {% for error in form.lastname.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        {{ form.description.label }}*
+        {{ form.description(class="form-control") }}
+        {% for error in form.description.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+      </div>
+      <div class="col-4">
+        {{ form.tel.label }}*
+        {{ form.tel(class="form-control") }}
+        <small id="telHelp" class="form-text text-muted">Ejemplo: +54 221 4567890</small>
+        {% for error in form.tel.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        {{ form.user.label }}
+        {{ form.user(class="form-control") }}
+      </div>
+      <div class="col-4">
+        {{ form.email.label }}*
+        {{ form.email(class="form-control") }}
+        <small id="emailHelp" class="form-text text-muted">Ejemplo: InundacionesLP@mail.com</small>
+        {% for error in form.email.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        {{ form.state.label }}
+        {{ form.state(class="form-control") }}
+        {% for error in form.state.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+      {% endfor %}
+    </div>
+    </div>
+    {{form.lat}}
+    {{form.long}}
+    <p>* Campo requerido</p>
+    <div class="map-container">
+      <div id="mapid" class="float-end"></div>
+    </div>
+  <div class="form-group">
+    <div class="container">
+      <div class="row">
+        <div class="col-1">
+          <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
+        </div>
+        <div class="col-1">
+          <a href="{{ url_for('home') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
+        </div>
+      </div>
+    </div>
+    </div>
+{% endblock %}

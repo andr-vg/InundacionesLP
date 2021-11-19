@@ -7,7 +7,7 @@
   <h1>Puntos de encuentro</h1>
   <a href="{{ url_for('home') }}" class="link">Volver</a>
   {% if has_permission('punto_encuentro_new') %}
-    <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo punto de encuentro</a>
+    <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo</a>
   {% endif %}
   <form action="{{ url_for('punto_encuentro_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
     <input type="text" name="name">
@@ -49,11 +49,11 @@
                 <input name="id"  type="hidden" value="{{ punto.id }}"> 
                 {% if punto.state %}
                   <div class="column mx-1">
-                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar este punto de encuentro?');"> Despublicar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button> 
+                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar este punto de encuentro?');"> Despublicar <i class="glyphicon glyphicon-trash"></i></button> 
                   </div>
                   {% else %}
                     <div class="column mx-1">
-                      <button class="btn btn-sm btn-success" type="submit" onclick="return confirm('Está seguro que desea publicar este punto de encuentro?');"> Publicar <i class="glyphicon glyphicon-list-alt" display="table-cell"></i></button>               
+                      <button class="btn btn-sm btn-success" type="submit" onclick="return confirm('Está seguro que desea publicar este punto de encuentro?');"> Publicar <i class="glyphicon glyphicon-list-alt"></i></button>               
                     </div>
                   {% endif %}
               </form>
@@ -69,7 +69,7 @@
             <form action="{{ url_for('punto_encuentro_delete') }}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
               <input name="id" type="hidden" value="{{ punto.id }}">
-              <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea eliminar este punto de encuentro?');"> Eliminar <i class="glyphicon glyphicon-trash" display="table-cell"></i></button> 
+              <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea eliminar este punto de encuentro?');"> Eliminar <i class="glyphicon glyphicon-trash"></i></button> 
             </form>
             {% endif %}
           </div>
@@ -115,5 +115,4 @@
     </ul>
     </nav>
 </div>     
-  
-  {% endblock %}
+{% endblock %}

@@ -102,19 +102,20 @@ class User(db.Model):
         id = list(db.session.execute(sql, {"user_email": user_email})) 
         return id[0][0]
 
+
     @classmethod
-    def exists_user(cls, params):
+    def exists_user(cls, username,email):
         """
         Verifica si ya existe un usuario con un dado email y username
 
         Args:
-            params(dict): diccionario que contiene el email y el username
-                del usuario a consultar
+            username(string): nombre de usuario a comprobar
+            email(String): email a comprobar
 
         Returns:
             El resultado de la consulta con el usuario existente caso contrario None
         """
-        user = User.query.filter((User.email == params["email"]) | (User.username == params["username"])).first()
+        user = User.query.filter((User.email == email) | (User.username == username)).first()
         return user
     
     @classmethod
@@ -218,15 +219,83 @@ class User(db.Model):
         """
         self.password_hash = generate_password_hash(password)
 
+    def edit_profile(self, form, roles_deleted):
+        """ Edita el perfil del usuario actual """
+        if form.password.data:
+            self.password=form.password.data
+        self.firstname = form.firstname.data
+        self.lastname = form.lastname.data
+        for rol in roles_deleted:
+            rol_deleted = Rol.get_rol_by_id(rol)
+            self.roles.remove(rol_deleted)
+        for rol in form.rol.data:
+            rol_new = Rol.get_rol_by_id(rol)
+            self.roles.append(rol_new)
+        db.session.commit()
+
+    def change_state(self):
+        """
+        Invierte el estado de un usuario
+        """
+        self.active = not self.active
+        db.session.commit()
+
+    def add_user(self):
+        """ Agrega el usuario, los cambios no se verán reflejados en la BD hasta 
+        no hacer un commit """
+        db.session.add(self)
+        db.session.commit()
+
+
+    def edit_user(self, form, roles_deleted):
+        """ Editar a un usuario y sus roles """
+        self.username = form.username.data
+        self.email = form.email.data
+        if form.password.data:
+            self.password=form.password.data
+        self.firstname = form.firstname.data
+        self.lastname = form.lastname.data
+        for rol in roles_deleted:
+            rol_deleted = Rol.get_rol_by_id(rol)
+            self.roles.remove(rol_deleted)
+        for rol in form.rol.data:
+            rol_new = Rol.get_rol_by_id(rol)
+            self.roles.append(rol_new)
+        db.session.commit()
+
+
+    def add_rol(self, rol):
+        self.roles.append(rol)
+        db.session.commit()
+
+
+    def activate(self):
+        self.deleted = False
+        for complaint in self.complaints:
+            complaint.activate()
+        db.session.commit()
+
+
+    def delete(self):
+        self.deleted = True
+        for complaint in self.complaints:
+            complaint.soft_delete()
+        for tracking in self.tracking:
+            tracking.soft_delete()
+        db.session.commit()
+
 
     def assign_complaints(self,complaint):
         """ Asigna la denuncia a la relacion """
         self.complaints.append(complaint)
+        db.session.commit()
 
 
     def assign_tracking(self,tracking):
         """ Asigna el seguimiento a la relacion """
         self.tracking.append(tracking)
+        db.session.commit()
+
 
     def verify_password(self, password):
         """
@@ -270,7 +339,7 @@ class User(db.Model):
 
     def get_all():
         """Retorna el listado de todos los usuarios no eliminados"""
-        return User.query.filter(User.deleted==False)
+        return User.query.filter((User.deleted==False) & (User.active==True))
 
 
     def get_index_users(id, page, config):
@@ -282,7 +351,7 @@ class User(db.Model):
             page(int): número a paginar
             config(dict): diccionario con los datos de configuracion establecidos
         """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.asc()).paginate(page, per_page=config.elements_per_page)
         return User.query.filter(User.deleted==False).filter(User.id != id).order_by(User.username.desc()).paginate(page, per_page=config.elements_per_page)
 

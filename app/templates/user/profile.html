@@ -5,25 +5,73 @@
 {% endblock %}
 {% block content %}
   <h1>Editar mi perfil</h1>
-  {% for field in form.errors %}
-  {% for error in form.errors[field] %}
-      <div class="alert alert-error">
-          <strong>Error! {{field}} {{error}} </strong> 
-      </div>
-  {% endfor %}
-  {% endfor %}
   <form action="{{ url_for('user_update_profile') }}" method="POST">
+    <div class="container">
     {{form.csrf_token}}
       <div>
         {{form.id}}
-      <p>Nombre {{ form.firstname }}</p>
-      <p>Apellido {{ form.lastname }}</p>
-      <p>Contraseña {{ form.password }}</p>
-      <p>Confirmacion {{ form.confirm }}</p>
+        <div class="row">
+          <div class="col-4">
+            {{ form.firstname.label }}*
+            {{ form.firstname(class="form-control") }}
+            {% for error in form.firstname.errors %}
+            <p class="alert alert-danger">{{error}}</p>
+            {% endfor %}
+          </div>
+          </div>
+        <div class="row">
+            <div class="col-4">
+              {{ form.lastname.label }}*
+              {{ form.lastname(class="form-control") }}
+              {% for error in form.lastname.errors %}
+              <p class="alert alert-danger">{{error}}</p>
+              {% endfor %}
+            </div>
+        </div>  
+        <div class="row">
+          <div class="col-4">
+            {{ form.password.label }}
+            {{ form.password(class="form-control") }}
+            {% for error in form.password.errors %}
+            <p class="alert alert-danger">{{error}}</p>
+            {% endfor %}
+          </div>
+          </div>
+        <div class="row">
+            <div class="col-4">
+              {{ form.confirm.label }}
+              {{ form.confirm(class="form-control") }}
+              {% for error in form.confirm.errors %}
+              <p class="alert alert-danger">{{error}}</p>
+              {% endfor %}
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            {{ form.rol.label }}*
+            {% for rol in form.rol %}
+            <div class="col">
+              {{rol}}{{rol.label}}
+            </div>
+            {% endfor %}
+            {% for error in form.rol.errors %}
+              <p class="alert alert-danger">{{error}}</p>
+            {% endfor %}
+          </div>
+        </div>
       </div>
-      <input type="submit" value="Guardar">
-      <a href="{{ url_for('home') }}" class="link">Volver</a>
-
-    </p>
+      <div class="form-group">
+        <div class="container">
+          <div class="row">
+            <div class="col-1">
+              <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
+            </div>
+            <div class="col-1">
+              <a href="{{ url_for('home') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
   </form>
 {% endblock %}

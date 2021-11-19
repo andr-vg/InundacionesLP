@@ -25,11 +25,8 @@ def confirm_update():
     config=Configuration.get_configuration()
     form = ConfigurationForm(elements_per_page=request.form["elements_per_page"],ordered_by=request.form["ordered_by"],css_private=request.form["css_private"],css_public=request.form["css_public"])
     if form.validate():
-        config.elements_per_page = request.form["elements_per_page"]
-        config.ordered_by = request.form["ordered_by"]
-        config.css_private = request.form["css_private"]
-        config.css_public = request.form["css_public"]
-        db.session.commit()
+        config.edit(elements_per_page=request.form["elements_per_page"],ordered_by=request.form["ordered_by"],css_private=request.form["css_private"],css_public=request.form["css_public"])
+        config.update()
     # actualizo los params de configuracion en la sesión
         session["config"] = Configuration.get_configuration()
         flash("La configuracion ha sido guardada")

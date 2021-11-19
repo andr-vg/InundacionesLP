@@ -65,20 +65,19 @@ def create():
     form = RegistrationUserForm(request.form)
     form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
-        parameters = {"email":form.email, "username": form.username}
-        user = User.exists_user(parameters)
+        user = User.exists_user(form.username.data,form.email.data)
         if user and not user.deleted:
             flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
             return render_template("user/new.html", form=form)
         elif user and user.deleted:
-            user.deleted = False
+            user.activate()
         else:
-            new_user = User(email=form.email.data,password=form.password.data,username=form.username.data,firstname=form.firstname.data,lastname=form.lastname.data)
-            db.session.add(new_user)
+            user = User(email=form.email.data,password=form.password.data,username=form.username.data,firstname=form.firstname.data,lastname=form.lastname.data)
+            user.add_user()
+            user.update()
         for roles in form.rol.data:
-                rol = Rol.get_rol_by_id(roles)
-                new_user.roles.append(rol)
-        db.session.commit()
+            rol = Rol.get_rol_by_id(roles)
+            user.add_rol(rol)
         flash("El usuario ha sido creado correctamente.")
         return redirect(url_for("user_index"))
     return render_template("user/new.html", form=form)
@@ -122,21 +121,10 @@ def update():
         if query and query.id!=user.id:
             flash("Ya existe un usuario con dicho nombre de usuario")
             return render_template("user/edit.html", form=form)
-        user.username = form.username.data
-        user.email = form.email.data
-        if form.password.data:
-            user.password=form.password.data
-        user.firstname = form.firstname.data
-        user.lastname = form.lastname.data
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles)-set(form.rol.data)
-        for rol in roles_deleted:
-            rol_deleted = Rol.get_rol_by_id(rol)
-            user.roles.remove(rol_deleted)
-        for rol in form.rol.data:
-            rol_new = Rol.get_rol_by_id(rol)
-            user.roles.append(rol_new)
-        db.session.commit()
+        user.edit_user(form, roles_deleted)
+        flash("El usuario ha sido editado correctamente.")
         return redirect(url_for("user_index"))
     return render_template("user/edit.html", form=form)
 
@@ -155,8 +143,7 @@ def soft_delete():
     if not check_permission('user_destroy', session):
         abort(401)
     user = User.get_user_by_id(request.form["id"])
-    user.deleted = True
-    db.session.commit()
+    user.delete()
     flash("Usuario eliminado correctamente.")
     return redirect(url_for("user_index"))
 
@@ -174,9 +161,8 @@ def change_state(id):
     if not check_permission('user_active', session):
         abort(401)
     user = User.get_user_by_id(id)
-    user.active = not user.active
+    user.change_state()
     state = "reactivado" if user.active else "bloqueado"
-    db.session.commit()
     flash("El usuario ha sido {} correctamente".format(state))
     return redirect(url_for("user_index"))
 
@@ -217,9 +203,10 @@ def edit_profile():
         abort(401)
     if not check_permission("user_edit_profile", session):
         abort(401)
-    
     user = User.get_user_by_email(user_email)
     form = EditProfileForm(id=user.id,firstname=user.firstname,lastname=user.lastname)
+    form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
+    form.rol.data = [(rol.id) for rol in user.roles]
     return render_template("user/profile.html", form=form)
 
 
@@ -234,13 +221,12 @@ def update_profile():
     if not check_permission("user_update_profile", session):
         abort(401)
     form = EditProfileForm(request.form)
+    form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
         user = User.get_user_by_id(form.id.data)
-        if form.password.data:
-            user.password=form.password.data
-        user.firstname = form.firstname.data
-        user.lastname = form.lastname.data
-        db.session.commit()
+        user_roles = [(rol.id) for rol in user.roles]
+        roles_deleted = set(user_roles)-set(form.rol.data)
+        user.edit_profile(form, roles_deleted)
         flash("Su perfil ha sido actualizado.")
         return redirect(url_for("home"))       
     return render_template("user/profile.html", form=form)

@@ -22,8 +22,7 @@ def index():
 @denuncia_api.get("/<int:page>")
 def paginated(page):
     config = Configuration.get_configuration()
-    per_page = int(request.args.get("per_page",config.elements_per_page))
-    denuncias_page = Denuncia.get_denuncias_paginated(int(page),per_page)
+    denuncias_page = Denuncia.get_paginated(page=int(page),config=config)
     denuncias = DenunciaSchema.dump(denuncias_page,many=True)
     return jsonify(denuncias)
 
@@ -31,7 +30,7 @@ def paginated(page):
 @denuncia_api.post("/")
 def create():
     response = {}
-    form = CreateDenunciaForm(**request.get_json(), meta={'csrf': False})
+    form = CreateDenunciaForm(**request.get_json())
     if form.validate_on_submit():
         if Denuncia.unique_field(form.title.data):
             return jsonify(response),400
@@ -43,7 +42,6 @@ def create():
             return jsonify(response),400
         category.assign_complaints(response)
         response.add_denuncia()
-        response.update_denuncia()
         response = DenunciaSchema.dump(response)
         return jsonify(response),201
     return jsonify(response),400

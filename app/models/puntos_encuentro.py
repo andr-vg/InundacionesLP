@@ -15,6 +15,13 @@ class PuntosDeEncuentro(db.Model):
         """" Retorna la consulta de todos los puntos de encuentro en la base de datos """
         return PuntosDeEncuentro.query.all()
 
+
+    @classmethod
+    def get_all_publish(cls):
+        """ Retorna la consulta de todos los puntos de encuentro publicados"""
+        return PuntosDeEncuentro.query.filter(PuntosDeEncuentro.state==False)
+
+
     @classmethod
     def search_by_name(cls, name):
         """" Retorna la consulta de los puntos de encuentro que contienen el nombre recibido por parametro
@@ -28,8 +35,8 @@ class PuntosDeEncuentro(db.Model):
         :params: query: Consulta previa en la base de datos.
         :params: state: String que representa el estado del punto de encuentro.  """
         if state=="activo":
-            return query.filter(PuntosDeEncuentro.state==False)
-        return query.filter(PuntosDeEncuentro.state==True)
+            return query.filter(PuntosDeEncuentro.state==True)
+        return query.filter(PuntosDeEncuentro.state==False)
 
     @classmethod
     def unique_fields(cls,name,address):
@@ -50,7 +57,7 @@ class PuntosDeEncuentro(db.Model):
             config(dict): diccionario con los datos de configuracion a respetar
 
         """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return query.order_by(PuntosDeEncuentro.name.asc()).paginate(page, per_page=config.elements_per_page)
         return query.order_by(PuntosDeEncuentro.name.desc()).paginate(page, per_page=config.elements_per_page)
 
@@ -128,6 +135,6 @@ class PuntosDeEncuentro(db.Model):
         la cantidad de elementos por pagina definidos en la configuracion del sistema.
         :param page:Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema. """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.name.asc()).paginate(page, per_page=config.elements_per_page)
         return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.name.desc()).paginate(page, per_page=config.elements_per_page)

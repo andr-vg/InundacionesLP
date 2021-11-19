@@ -4,11 +4,32 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<div class="row justify-content-center align-items-center">
+
   <h1>Iniciar sesión</h1>
-  <form action="{{ url_for('auth_authenticate') }}" method="POST">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    <input name="email" placeholder="Correo" required/>
-    <input type="password" name="password" placeholder="Clave" required/>
-    <input type="submit" value="Iniciar sesión">
-  </form>
+</div>
+<div class="row justify-content-center align-items-center"> 
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col align-items-center" >
+      <form action="{{ url_for('auth_authenticate') }}" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <div class="form-group">
+          <input class="form-control" name="email" placeholder="Correo" required/>
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="password" name="password" placeholder="Clave" required/>
+        </div>
+        <div class="form-group">
+          <div class="container">
+            <div class="row">
+              <div class="col align-center">
+                <input class="col-6 btn btn-light btn-sm float-center" type="submit" value="Iniciar sesión">
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

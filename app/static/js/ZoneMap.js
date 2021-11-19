@@ -11,13 +11,14 @@ export class ZoneMap {
         this.#drawnItems = new L.FeatureGroup();
 
         this.#initializeMap(selector);
-
+        
         this.map.on(L.Draw.Event.CREATED, (e) => {
             this.#eventHandler(e, this.map, this.#drawnItems, this.editControls, this.createControls)
         });
         this.map.on('draw:deleted', () => {
             this.#deleteHandler(this.map, this.editControls, this.createControls)
         });
+
     }
 
     #initializeMap(selector) {
@@ -25,8 +26,25 @@ export class ZoneMap {
         L.tileLayer(mapLayerUrl).addTo(this.map);
 
         this.map.addLayer(this.#drawnItems);
-
-        this.map.addControl(this.createControls);
+        
+        const coords = document.querySelector('#coordinates').value; 
+        if (coords == ""){
+            this.map.addControl(this.createControls);
+        }else{
+            const coordinates = JSON.parse(coords);
+            
+            var polyline = L.polyline(coordinates).addTo(this.map);  
+            this.#drawnItems.addLayer(polyline);
+            this.map.fitBounds(this.#drawnItems.getBounds());
+            this.map.addControl(this.editControls);
+        }
+        
+        //var polyline = L.polyline([[-65.10418, -26.62987],[-35.19738, -16.875], [9.9804, 121.9189]]).addTo(this.map);
+        //this.#drawnItems.addLayer(polyline);
+        //this.map.fitBounds(this.#drawnItems.getBounds());
+        //console.log(this.drawnLayers);
+        //this.map.addControl(this.createControls);
+        //this.map.addControl(this.editControls);
     }
 
     #eventHandler(e, map, drawnItems, editControls, createControls) {
@@ -48,8 +66,13 @@ export class ZoneMap {
     };
 
     #deleteHandler(map, editControls, createControls) {
+        
         createControls.addTo(map);
         editControls.remove();
+    }
+
+    hasPoints() {
+        return Object.values(this.#drawnItems._layers).length > 0;
     }
 
     hasValidZone() {

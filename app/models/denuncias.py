@@ -2,9 +2,10 @@ import datetime,enum
 from sqlalchemy.orm import relationship
 from app.db import db
 from app.models.coordenadas import Coordenadas
-from sqlalchemy import Enum, ForeignKey, Column, Integer, String, DateTime, Float,func
+from sqlalchemy import Enum,Boolean, ForeignKey, Column, Integer, String, DateTime, Float,func
 
 class State(enum.Enum):
+    """ Modelo que representa el estado de la denuncia """
     sin_confirmar = "Sin confirmar"
     en_curso = "En curso"
     resuelta = "Resuelta"
@@ -21,7 +22,27 @@ class State(enum.Enum):
         
 class Denuncia(db.Model):
     """
+    Modelo que representa las denuncias
     
+    Args:
+    id (int): Id de la denuncia
+    title (String): titulo de la denuncia
+    category_id (int): Id de la categoria asignada
+    category (categoria): Categoria asignada
+    created_at (date): Fecha de creacion de la denuncia
+    closed_at (date): Fecha de cierre de la denuncia
+    description (string) : Descripcion de la denuncia
+    state (enum): Estado de la denuncia
+    lat (float): Latitud de la denuncia
+    long (float): Longitud de la denuncia
+    firstname (string): Nombre del denunciante
+    lastname (String): apellido del denunciante
+    tel (string): telefono del denunciante
+    email (string): email del denunciante
+    deleted(boolean): indica si la denuncia esta borrada logicamente
+    assigned_to (int): Id del usuario asignado a la denuncia
+    user_assign (user): Usuario asignado a la denuncia
+    tracking (list): Lista de seguimientos
     """
     @classmethod
     def unique_field(cls, title):
@@ -47,7 +68,7 @@ class Denuncia(db.Model):
 
         Returns: retorna un listado de denuncias que coinciden, caso contrario None
         """ 
-        return Denuncia.query.filter(Denuncia.title.like('%'+title+'%'))
+        return Denuncia.query.filter(Denuncia.deleted==False).filter(Denuncia.title.like('%'+title+'%'))
 
 
     @classmethod
@@ -92,11 +113,32 @@ class Denuncia(db.Model):
 
     @classmethod
     def get_denuncias_paginated(cls,query,page,config):
-        if config.ordered_by == "Ascendente":
-            return query.order_by(Denuncia.created_at.asc()).order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page)
-        return query.order_by(Denuncia.created_at.desc()).order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page)
+        """ Retorna la query recibida por parametro paginada con la configuracion del sistema
+        
+        Args:
+            query: Query a paginar
+            page: numero de pagina
+            config: configuracion del sistema"""
+        if config.ordered_by == "ascendente":
+            return (query.filter(Denuncia.deleted).order_by(Denuncia.created_at.asc())
+            .order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page))
+        return (query.filter(Denuncia.deleted).order_by(Denuncia.created_at.desc())
+        .order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page))
 
     
+    @classmethod
+    def get_paginated(cls,page,config):
+        """ Retorna todos las denuncias paginadas
+        
+        Args:
+            page: numero de pagina
+            config: configuracion del sistema
+            elements_per_page(integer): Numero de elementos por pagina"""
+        if config.ordered_by == "ascendente":
+            return (Denuncia.query.filter(Denuncia.deleted).order_by(Denuncia.created_at.asc())
+            .order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page))
+        return (Denuncia.query.filter(Denuncia.deleted).order_by(Denuncia.created_at.desc())
+        .order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page))
 
 
 
@@ -115,6 +157,7 @@ class Denuncia(db.Model):
     lastname = Column(String(255))
     tel = Column(String(255))
     email = Column(String(255))
+    deleted = Column(Boolean, default=False)
     assigned_to = Column(Integer, ForeignKey('usuarios.id'))
     user_assign = relationship("User", back_populates="complaints")
     tracking = relationship("Seguimiento", back_populates="complaints")
@@ -123,7 +166,7 @@ class Denuncia(db.Model):
         return {attr.name: getattr(self,attr.name) for attr in self.__table__.columns}
 
 
-    def edit(self,title,description,lat,long,firstname,lastname,tel,email):
+    def edit(self,title,description,lat,long,firstname,lastname,tel,email,state):
         self.title = title
         self.description = description
         self.lat = lat
@@ -132,47 +175,82 @@ class Denuncia(db.Model):
         self.lastname = lastname
         self.tel = tel
         self.email = email
-
+        self.state = state
+        db.session.commit()
 
 
     def add_denuncia(self):
         db.session.add(self)
-
-
-    def update_denuncia(self):
         db.session.commit()
     
 
     def delete_denuncia(self):
         db.session.delete(self)
+        db.session.commit()
 
     def assign_tracking(self,seguimiento):
         """ Asigna el seguimiento a la relacion """
         self.tracking.append(seguimiento)
+        db.session.commit()
+
+
+    def delete_tracking(self):
+        """Elimina los seguimientos de la denuncia"""
+        for tracking in self.tracking:
+            tracking.delete_tracking()
+        db.session.commit()
     
     def disassign_user(self):
         self.assigned_to=None
+        db.session.commit()
 
     def disassign_category(self):
         self.category_id=None
+        db.session.commit()
+    
+
+    def activate(self):
+        self.deleted = False
+        for tracking in self.tracking:
+            tracking.activate()
+        db.session.commit()
+
+
+    def soft_delete(self):
+        self.deleted = True
+        for tracking in self.tracking:
+            tracking.soft_delete()
+        db.session.commit()
+
      
     def change_state(self,state):
+        """" Cambia el estado de una denuncia al estado recibido por parametro, si el estado es cerrada además 
+        se asigna la fecha de cierre.
+        Args: 
+        state: Estado a asignar a la denuncia"""
         self.state = state
-        if state == State.cerrada:
+        if self.is_closed():
             self.closed_at = datetime.datetime.utcnow()
-    
+        db.session.commit()
+
     
     def is_closed(self):
         return self.state==State.cerrada
+
+    def is_resolved(self):
+        return self.state==State.resuelta
+
 
     def get_index_denuncias(page, config):
         """" Retorna el listado de denuncias ordenado con la configuracion del sistema y paginado con
         la cantidad de elementos por pagina definidos en la configuracion del sistema.
         :param page:Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema. """
-        if config.ordered_by == "Ascendente":
-            return Denuncia.query.order_by(Denuncia.created_at.asc()).paginate(page, per_page=config.elements_per_page)
-        return Denuncia.query.order_by(Denuncia.created_at.desc()).paginate(page, per_page=config.elements_per_page)
+        if config.ordered_by == "ascendente":
+            return (Denuncia.query.filter(Denuncia.deleted==False).order_by(Denuncia.created_at.asc())
+            .paginate(page, per_page=config.elements_per_page))
+        return (Denuncia.query.filter(Denuncia.deleted==False).order_by(Denuncia.created_at.desc())
+        .paginate(page, per_page=config.elements_per_page))
 
 
     def get_by_id(id):
@@ -182,7 +260,7 @@ class Denuncia(db.Model):
 
     def get_all():
         """" Retorna todas las denuncias"""
-        return Denuncia.query.all()
+        return Denuncia.query.filter(Denuncia.deleted)
 
     
     def get_by_title(title):

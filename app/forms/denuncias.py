@@ -1,15 +1,11 @@
 from sqlalchemy.sql.base import Executable
 from wtforms import (
-    Form,
     StringField,
-    PasswordField,
     validators,
-    SelectMultipleField,
     widgets,
 )
-from wtforms.fields.core import BooleanField, SelectField
-from wtforms.fields.simple import HiddenField
-from flask_wtf import FlaskForm, csrf
+from wtforms.fields.core import SelectField
+from flask_wtf import FlaskForm
 from app.models.categories import Categoria
 from app.models.user import User
 from app.models.denuncias import State

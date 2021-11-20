@@ -109,7 +109,6 @@ def delete():
         abort(401)
     zona = ZonaInundable.get_zona_by_id(request.form["id"])
     zona.delete()
-    zona.update_zona_inundable()
     flash("Zona eliminada correctamente.")
     return redirect(url_for("zonas_inundables_index"))
 
@@ -141,7 +140,6 @@ def update():
             color=form.color.data,
             state=1 if form.state.data == "Publicado" else 0,
         )
-        zona.update_zona_inundable()
         flash("La zona ha sido editada correctamente.")
         return redirect(url_for("zonas_inundables_index"))
     return render_template("zona_inundable/edit.html", form=form)
@@ -204,7 +202,6 @@ def soft_delete():
         abort(401)
     zona = ZonaInundable.get_zona_by_id(request.form["id"])
     zona.change_state()
-    zona.update_zona_inundable()
     state = "Publicado" if zona.state else "Despublicado"
     flash("La zona ha sido {} correctamente".format(state))
     return redirect(url_for("zonas_inundables_index"))

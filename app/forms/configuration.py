@@ -18,9 +18,18 @@ class ConfigurationForm(FlaskForm):
         "Elementos por página",
         [validators.DataRequired(message="Se requiere ingresar un numero de 1 a 20")],
     )
-    ordered_by = SelectField("Ordenado por")
-    css_private = SelectField("CSS Privado")
-    css_public = SelectField("CSS Público")
+    ordered_by = SelectField(
+        "Ordenado por",
+        [validators.DataRequired(message="Debe seleccionar un valor del listado")],
+    )
+    css_private = SelectField(
+        "CSS Privado",
+        [validators.DataRequired(message="Debe seleccionar un valor del listado")],
+    )
+    css_public = SelectField(
+        "CSS Público",
+        [validators.DataRequired(message="Debe seleccionar un valor del listado")],
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args)
@@ -46,7 +55,6 @@ class ConfigurationForm(FlaskForm):
     def validate_elements_per_page(form, field):
         """Valida que in input recibido sea un valor entero"""
         try:
-            int(field.data)
             if int(field.data) <= 0 or int(field.data) > 30:
                 raise Exception
         except:

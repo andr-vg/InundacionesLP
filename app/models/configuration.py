@@ -31,6 +31,4 @@ class Configuration(db.Model):
         self.ordered_by = ordered_by
         self.css_private = css_private
         self.css_public = css_public
-
-    def update(self):
         db.session.commit()

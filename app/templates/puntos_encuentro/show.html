@@ -15,9 +15,9 @@
 {% block content %}
   <h1>Detalle</h1>
       <div>
-        <p>Nombre {{ pto.name }}</p>
-        <p>Dirección {{ pto.address }}</p>
-        <p>Coordenadas</p>
+        <p>Nombre: {{ pto.name }}</p>
+        <p>Dirección: {{ pto.address }}</p>
+        <p>Ubicación en el mapa:</p>
         <hidden id="lat" value="{{pto.lat}}"></hidden>
         <hidden id="long" value="{{pto.long}}"></hidden>
         <div class="map-container">
@@ -28,8 +28,8 @@
         {% else %}
             <p>Estado: despublicado</p>
         {% endif %}
-        <p>Teléfono {{ pto.tel }}</p>
-        <p>Email {{ pto.email }}</p>
+        <p>Teléfono: {{ pto.tel }}</p>
+        <p>Email: {{ pto.email }}</p>
       </div>
     </p>
   </form>

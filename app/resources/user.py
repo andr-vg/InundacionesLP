@@ -83,7 +83,6 @@ def create():
                 lastname=form.lastname.data,
             )
             user.add_user()
-            user.update()
         for roles in form.rol.data:
             rol = Rol.get_rol_by_id(roles)
             user.add_rol(rol)

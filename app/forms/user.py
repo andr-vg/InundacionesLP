@@ -48,6 +48,7 @@ class RegistrationUserForm(FlaskForm):
         [
             validators.DataRequired(message="*"),
             validators.EqualTo("confirm", message="Las contraseñas no coinciden"),
+            validators.length(min=4, message="Debe tener al menos 4 caracteres"),
         ],
     )
     confirm = PasswordField("Confirmar contraseña")
@@ -57,8 +58,12 @@ class RegistrationUserForm(FlaskForm):
         coerce=int,
         option_widget=widgets.CheckboxInput(),
     )
-    firstname = StringField("Nombre", [validators.regexp("^[a-zA-Z]+$")])
-    lastname = StringField("Apellido", [validators.regexp("^[a-zA-Z]+$")])
+    firstname = StringField(
+        "Nombre", [validators.regexp("^[a-zA-Z]+$", message="Nombre inválido")]
+    )
+    lastname = StringField(
+        "Apellido", [validators.regexp("^[a-zA-Z]+$", message="Apellido inválido")]
+    )
 
 
 class EditUserForm(RegistrationUserForm):
@@ -79,7 +84,10 @@ class EditUserForm(RegistrationUserForm):
     id = HiddenField("Id")
     password = PasswordField(
         "Contraseña",
-        [validators.EqualTo("confirm", message="Las contraseñas no coinciden")],
+        [
+            validators.EqualTo("confirm", message="Las contraseñas no coinciden"),
+            validators.length(min=4, message="Debe tener al menos 4 caracteres"),
+        ],
     )
     confirm = PasswordField("Confirmar contraseña")
 
@@ -107,7 +115,10 @@ class EditProfileForm(FlaskForm):
     )
     password = PasswordField(
         "Contraseña",
-        [validators.EqualTo("confirm", message="Las contraseñas no coinciden")],
+        [
+            validators.EqualTo("confirm", message="Las contraseñas no coinciden"),
+            validators.length(min=4, message="Debe tener al menos 4 caracteres"),
+        ],
     )
     confirm = PasswordField("Confirmar contraseña")
     rol = SelectMultipleField(

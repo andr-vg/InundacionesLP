@@ -36,12 +36,6 @@ class Coordenadas(db.Model):
             coords(Coordenadas): coordenadas a agregar
         """
         db.session.add(coords)
-
-    @classmethod
-    def update_coords(cls):
-        """
-        Se actualiza la base de datos con los cambios
-        """
         db.session.commit()
 
     @classmethod
@@ -88,7 +82,7 @@ class Coordenadas(db.Model):
         """
         Coordenadas.add_coords(coords)
         self.zonasInundables.append(zona)
-        Coordenadas.update_coords()
+        db.session.commit()
 
     def assign_recorridos_evacuacion(self, recorrido, coords):
         """
@@ -100,10 +94,11 @@ class Coordenadas(db.Model):
         """
         Coordenadas.add_coords(coords)
         self.recorridosEvacuacion.append(recorrido)
-        Coordenadas.update_coords()
+        db.session.commit()
 
     def delete(self):
         """
         Se elimina la coordenada de la base de datos
         """
         db.session.delete(self)
+        db.session.commit()

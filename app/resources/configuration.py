@@ -42,7 +42,6 @@ def confirm_update():
             css_private=request.form["css_private"],
             css_public=request.form["css_public"],
         )
-        config.update()
         # actualizo los params de configuracion en la sesión
         session["config"] = Configuration.get_configuration()
         flash("La configuracion ha sido guardada")

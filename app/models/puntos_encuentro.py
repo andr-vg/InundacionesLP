@@ -93,21 +93,21 @@ class PuntosDeEncuentro(db.Model):
         self.tel = tel
         self.lat = lat
         self.long = long
+        db.session.commit()
 
     def add_punto_encuentro(self):
         """Agrega el punto de encuentro, los cambios no se verán reflejados en la BD hasta
         no hacer un commit"""
         db.session.add(self)
-
-    def update(self):
-        """Actualiza el modelo en la BD"""
         db.session.commit()
 
     def delete(self):
         db.session.delete(self)
+        db.session.commit()
 
     def change_state(self):
         self.state = not self.state
+        db.session.commit()
 
     def get_punto_by_id(id):
         """ " Retorna el punto de encuentro con el id ingresado por parametro o None si no

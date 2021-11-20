@@ -138,6 +138,7 @@ class ZonaInundable(db.Model):
         self.name = name
         self.state = state
         self.color = color
+        db.session.commit()
 
     def add_zona_inundable(self):
         """
@@ -145,11 +146,6 @@ class ZonaInundable(db.Model):
         no hacer un commit
         """
         db.session.add(self)
-
-    def update_zona_inundable(self):
-        """
-        Actualiza el modelo en la BD
-        """
         db.session.commit()
 
     def generate_code(self):
@@ -221,13 +217,14 @@ class ZonaInundable(db.Model):
 
     def delete(self):
         """
-        Elimina una zona inundable, los cambios no se produciran en la BD hasta que
-        se haga un update
+        Elimina una zona inundable
         """
         db.session.delete(self)
+        db.session.commit()
 
     def change_state(self):
         """
         Cambia el estado de la zona inundable
         """
         self.state = not self.state
+        db.session.commit()

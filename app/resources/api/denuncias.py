@@ -30,9 +30,22 @@ def paginated(page):
 @denuncia_api.post("/")
 def create():
     response = {}
+    fields = ["title","category","description","lat","long","firstname","lastname","tel","email"]
+    if not all(field in fields for field in request.get_json().keys()):
+        response = {
+            "error_name": "400 Bad Request",
+            "error_description": "Error en los nombres de los campos",
+            "fields":   ["title", "category","description","lat","long","firstname","lastname","tel","email"
+            ]
+        }
+        return jsonify(response),400
     form = CreateDenunciaForm(**request.get_json())
     if form.validate_on_submit():
         if Denuncia.unique_field(form.title.data):
+            response = {
+                "error_name": "400 Bad Request",
+                "error_description": "El titulo ya se encuentra cargado en el sistema",
+            }
             return jsonify(response),400
         response = Denuncia(title=form.title.data,description=form.description.data,
         lat=form.lat.data,long=form.long.data,firstname=form.firstname.data,lastname=form.lastname.data,
@@ -44,4 +57,6 @@ def create():
         response.add_denuncia()
         response = DenunciaSchema.dump(response)
         return jsonify(response),201
+    response = {"error_name": "400 Bad Request",
+            "error_description":form.errors,}
     return jsonify(response),400

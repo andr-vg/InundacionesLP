@@ -70,7 +70,7 @@ class CreateDenunciaForm(FlaskForm):
         """
         choices = dict(form.user.choices).keys()
         if not (field.data in choices):
-            form.user.errors = (validators.ValidationError("Usuario invalido, elija un usuario cargado en el sistema"),)
+            raise validators.ValidationError("Usuario invalido, elija un usuario cargado en el sistema")
 
     
     def validate_category(form,field):
@@ -79,28 +79,21 @@ class CreateDenunciaForm(FlaskForm):
         """
         choices = dict(form.category.choices).keys()
         if field.data==0:
-            form.category.errors = (validators.ValidationError("Categoría inválida, elija una categoria valida"),)
+            raise validators.ValidationError("Categoría inválida, elija una categoria valida")
         if not (field.data in choices):
-            form.category.errors = (validators.ValidationError("Categoría inválida, elija una categoria valida"),)
+            raise validators.ValidationError("Categoría inválida, elija una categoria valida")
 
     
     def validate_lat(form,field):
         """ Se valida la latitud de la denuncia"""
-        try:
-            if float(field.data)<-90 or float(field.data)>90:
-                raise Exception
-        except:
-            form.lat.errors = (validators.ValidationError("Se debe ingresar una latitud en un rango -90 a 90"),)
+        if float(field.data)<-90 or float(field.data)>90:
+            raise validators.ValidationError("Se debe ingresar una latitud en un rango -90 a 90")
 
 
     def validate_long(form,field):
         """ Se valida la latitud de la denuncia"""
-        try:
-            if float(field.data)<-180 or float(field.data)>180:
-                raise Exception
-        except:
-            form.long.errors = (validators.ValidationError("Se debe ingresar una longitud en un rango -180 a 180"),)
-
+        if float(field.data)<-180 or float(field.data)>180:
+            raise validators.ValidationError("Se debe ingresar una longitud en un rango -180 a 180")
 
 
 class EditDenunciaForm(CreateDenunciaForm):

@@ -1,5 +1,6 @@
 import datetime,enum
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.elements import False_
 from app.db import db
 from app.models.coordenadas import Coordenadas
 from sqlalchemy import Enum,Boolean, ForeignKey, Column, Integer, String, DateTime, Float,func
@@ -95,7 +96,7 @@ class Denuncia(db.Model):
         Returns: retorna un listado de denuncias que coinciden, caso contrario None
         """
         date_create = datetime.datetime.strptime(date,'%Y-%m-%d')
-        return query.filter(func.DATE(Denuncia.created_at)>=date_create)
+        return query.filter(Denuncia.created_at>=date_create)
 
     @classmethod
     def search_later_date(cls,query,date):
@@ -120,9 +121,9 @@ class Denuncia(db.Model):
             page: numero de pagina
             config: configuracion del sistema"""
         if config.ordered_by == "ascendente":
-            return (query.filter(Denuncia.deleted).order_by(Denuncia.created_at.asc())
+            return (query.filter(Denuncia.deleted==False).order_by(Denuncia.created_at.asc())
             .order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page))
-        return (query.filter(Denuncia.deleted).order_by(Denuncia.created_at.desc())
+        return (query.filter(Denuncia.deleted==False).order_by(Denuncia.created_at.desc())
         .order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page))
 
     
@@ -135,9 +136,9 @@ class Denuncia(db.Model):
             config: configuracion del sistema
             elements_per_page(integer): Numero de elementos por pagina"""
         if config.ordered_by == "ascendente":
-            return (Denuncia.query.filter(Denuncia.deleted).order_by(Denuncia.created_at.asc())
+            return (Denuncia.query.filter(Denuncia.deleted==False).order_by(Denuncia.created_at.asc())
             .order_by(Denuncia.title.asc()).paginate(page, per_page=config.elements_per_page))
-        return (Denuncia.query.filter(Denuncia.deleted).order_by(Denuncia.created_at.desc())
+        return (Denuncia.query.filter(Denuncia.deleted==False).order_by(Denuncia.created_at.desc())
         .order_by(Denuncia.title.desc()).paginate(page, per_page=config.elements_per_page))
 
 
@@ -258,10 +259,11 @@ class Denuncia(db.Model):
         return Denuncia.query.filter(Denuncia.id==id).first()
 
 
-    def get_all():
+    def get_all(config):
         """" Retorna todas las denuncias"""
-        return Denuncia.query.filter(Denuncia.deleted)
-
+        if config.ordered_by == "ascendente":
+            return Denuncia.query.filter(Denuncia.deleted==False).order_by(Denuncia.created_at.asc())
+        return Denuncia.query.filter(Denuncia.deleted==False).order_by(Denuncia.created_at.desc())
     
     def get_by_title(title):
         """ Retorna la denuncia con el titulo recibido por parametro """
@@ -273,6 +275,6 @@ class Denuncia(db.Model):
         la cantidad de elementos por pagina definidos en la configuracion del sistema.
         :param page:Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema. """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return Denuncia.query.filter(Denuncia.assigned_to==id).order_by(Denuncia.created_at.asc()).paginate(page, per_page=config.elements_per_page)
         return Denuncia.query.filter(Denuncia.assigned_to==id).order_by(Denuncia.created_at.desc()).paginate(page, per_page=config.elements_per_page)

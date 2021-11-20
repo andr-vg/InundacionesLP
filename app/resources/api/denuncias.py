@@ -14,17 +14,34 @@ denuncia_api = Blueprint("denuncias",__name__,url_prefix="/denuncias")
 
 @denuncia_api.get("/")
 def index():
-    denuncias_iter= Denuncia.get_all()
-    denuncias = [DenunciaSchema.dump(denuncia) for denuncia in denuncias_iter]
-    return jsonify(denuncias)
-
-
-@denuncia_api.get("/<int:page>")
-def paginated(page):
     config = Configuration.get_configuration()
-    denuncias_page = Denuncia.get_paginated(page=int(page),config=config)
-    denuncias = DenunciaSchema.dump(denuncias_page,many=True)
-    return jsonify(denuncias)
+    if not request.args:
+        denuncias_iter = Denuncia.get_all(config)
+        response = [DenunciaSchema.dump(denuncia) for denuncia in denuncias_iter]
+    else:
+        try:
+            page = request.args.get("page")
+            denuncias_iter = Denuncia.get_paginated(int(page),config)
+            response = DenunciaSchema.dump(denuncias_iter,many=True)
+        except:
+            response = {
+                "error_name": "400 Bad Request",
+                "error_description": "Numero de pagina invalido",
+            }
+    return jsonify(response)
+
+
+@denuncia_api.get("/<int:id>")
+def paginated(id):
+    response = Denuncia.get_by_id(id)
+    if not response:
+        response = { 
+            "error_name": "400 Bad Request",
+            "error_description": "No existe una denuncia con dicho id",
+        }
+        return jsonify(response)
+    response = DenunciaSchema.dump(response)
+    return jsonify(response)
 
 
 @denuncia_api.post("/")

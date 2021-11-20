@@ -42,7 +42,7 @@ class Seguimiento(db.Model):
         :param page:Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema.
         :param denuncia_id: Numero entero que representa la denuncia """
-        if config.ordered_by == "Ascendente":
+        if config.ordered_by == "ascendente":
             return Seguimiento.query.filter(Seguimiento.complaint_id==denuncia_id).order_by(Seguimiento.created_at.asc()).paginate(page, per_page=config.elements_per_page)
         return Seguimiento.query.filter(Seguimiento.complaint_id==denuncia_id).order_by(Seguimiento.created_at.desc()).paginate(page, per_page=config.elements_per_page)
 

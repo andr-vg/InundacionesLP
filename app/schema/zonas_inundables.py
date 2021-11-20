@@ -17,7 +17,7 @@ class ZonasInundablesSchema(object):
     def _serialize_collection_all(cls, zones):
         return {
             "zonas": [cls._serialize(item) for item in zones],
-            "total": [len(zones)]
+            "total": [len(zones)],
         }
 
     @classmethod
@@ -25,7 +25,7 @@ class ZonasInundablesSchema(object):
         return {
             "zonas": [cls._serialize(item) for item in pagination.items],
             "total": pagination.total,
-            "pagina": pagination.page
+            "pagina": pagination.page,
         }
 
     @classmethod

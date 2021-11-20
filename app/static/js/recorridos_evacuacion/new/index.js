@@ -22,9 +22,6 @@ window.onload = () => {
         addSearch: true,
     });
     const form = document.querySelector('#create-form');
-    //var pointA = new L.LatLng(28.635308, 77.22496);
-    //var pointB = new L.LatLng(28.984461, 77.70641);
-    //var pointList = [pointA, pointB];
 
     form.addEventListener('submit', (event) => submitHandler(event, map));
 }

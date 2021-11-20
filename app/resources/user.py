@@ -2,7 +2,7 @@ import datetime
 import bcrypt
 from flask import redirect, render_template, request, url_for, session, abort, flash
 from sqlalchemy.exc import OperationalError
-from app.forms.user import RegistrationUserForm,EditUserForm,EditProfileForm
+from app.forms.user import RegistrationUserForm, EditUserForm, EditProfileForm
 from app.models.user import User
 from app.models.rol import Rol
 from app.models.configuration import Configuration
@@ -32,13 +32,14 @@ def index(page):
 
     # mostramos listado paginado:
     # row con config actual
-    config = get_configuration(session) 
+    config = get_configuration(session)
     try:
-        users=User.get_index_users(id, page, config)
+        users = User.get_index_users(id, page, config)
     except OperationalError:
         flash("No hay usuarios aún.")
         users = None
     return render_template("user/index.html", users=users)
+
 
 def new():
     """
@@ -50,29 +51,37 @@ def new():
     if not check_permission("user_new", session):
         abort(401)
     form = RegistrationUserForm()
-    form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
+    form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     return render_template("user/new.html", form=form)
 
 
 def create():
     """
     Lógica a realizar al momento de confirmar
-    la creación de un usuario 
+    la creación de un usuario
     """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
     form = RegistrationUserForm(request.form)
-    form.rol.choices =[(rol.id,rol.name) for rol in Rol.get_all_roles()]
+    form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
-        user = User.exists_user(form.username.data,form.email.data)
+        user = User.exists_user(form.username.data, form.email.data)
         if user and not user.deleted:
-            flash("Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo.")
+            flash(
+                "Ya existe un usuario con ese mail o nombre de usuario. Ingrese uno nuevo."
+            )
             return render_template("user/new.html", form=form)
         elif user and user.deleted:
             user.activate()
         else:
-            user = User(email=form.email.data,password=form.password.data,username=form.username.data,firstname=form.firstname.data,lastname=form.lastname.data)
+            user = User(
+                email=form.email.data,
+                password=form.password.data,
+                username=form.username.data,
+                firstname=form.firstname.data,
+                lastname=form.lastname.data,
+            )
             user.add_user()
             user.update()
         for roles in form.rol.data:
@@ -92,9 +101,15 @@ def edit():
         abort(401)
     if not check_permission("user_edit", session):
         abort(401)
-    user = User.get_user_by_id(request.form['id'])
-    form = EditUserForm(id=user.id,email=user.email,username=user.username,firstname=user.firstname,lastname=user.lastname)
-    form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
+    user = User.get_user_by_id(request.form["id"])
+    form = EditUserForm(
+        id=user.id,
+        email=user.email,
+        username=user.username,
+        firstname=user.firstname,
+        lastname=user.lastname,
+    )
+    form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     form.rol.data = [(rol.id) for rol in user.roles]
     return render_template("user/edit.html", form=form)
 
@@ -102,7 +117,7 @@ def edit():
 def update():
     """
     Lógica a realizar al momento de confirmar
-    la edición de un usuario 
+    la edición de un usuario
     """
     user_email = authenticated(session)
     if not user_email:
@@ -110,19 +125,19 @@ def update():
     if not check_permission("user_update", session):
         abort(401)
     form = EditUserForm(request.form)
-    form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
+    form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
         user = User.get_user_by_id(form.id.data)
         query = User.get_user_by_email(form.email.data)
-        if query and query.id!=user.id:
+        if query and query.id != user.id:
             flash("Ya existe un usuario con dicho email")
             return render_template("user/edit.html", form=form)
         query = User.get_user_by_username(form.username.data)
-        if query and query.id!=user.id:
+        if query and query.id != user.id:
             flash("Ya existe un usuario con dicho nombre de usuario")
             return render_template("user/edit.html", form=form)
         user_roles = [(rol.id) for rol in user.roles]
-        roles_deleted = set(user_roles)-set(form.rol.data)
+        roles_deleted = set(user_roles) - set(form.rol.data)
         user.edit_user(form, roles_deleted)
         flash("El usuario ha sido editado correctamente.")
         return redirect(url_for("user_index"))
@@ -140,12 +155,13 @@ def soft_delete():
     user_email = authenticated(session)
     if not user_email:
         abort(401)
-    if not check_permission('user_destroy', session):
+    if not check_permission("user_destroy", session):
         abort(401)
     user = User.get_user_by_id(request.form["id"])
     user.delete()
     flash("Usuario eliminado correctamente.")
     return redirect(url_for("user_index"))
+
 
 def change_state(id):
     """
@@ -153,18 +169,19 @@ def change_state(id):
     estado de un usuario.
 
     Args:
-        id(int): id del usuario 
+        id(int): id del usuario
     """
     user_email = authenticated(session)
     if not user_email:
         abort(401)
-    if not check_permission('user_active', session):
+    if not check_permission("user_active", session):
         abort(401)
     user = User.get_user_by_id(id)
     user.change_state()
     state = "reactivado" if user.active else "bloqueado"
     flash("El usuario ha sido {} correctamente".format(state))
     return redirect(url_for("user_index"))
+
 
 def search(page):
     """
@@ -178,21 +195,24 @@ def search(page):
     id = User.get_id_from_email(user_email)
     if not user_email:
         abort(401)
-    if not check_permission("user_index",session):
+    if not check_permission("user_index", session):
         abort(401)
-    config = get_configuration(session) 
+    config = get_configuration(session)
     users = User.search_by_name(request.args["name"])
     name = request.args["name"]
     active = ""
-    if "active" in request.args.keys() and request.args["active"]!="":
+    if "active" in request.args.keys() and request.args["active"] != "":
         active = request.args["active"]
-        if request.args["active"]=="activo":
+        if request.args["active"] == "activo":
             users = User.get_with_state(users, True)
-        elif request.args["active"]=="bloqueado":
+        elif request.args["active"] == "bloqueado":
             users = User.get_with_state(users, False)
     users = User.search_paginate(users, id, page, config)
 
-    return render_template("user/index.html", users=users, filter=1, name=name, active=active)
+    return render_template(
+        "user/index.html", users=users, filter=1, name=name, active=active
+    )
+
 
 def edit_profile():
     """
@@ -204,8 +224,8 @@ def edit_profile():
     if not check_permission("user_edit_profile", session):
         abort(401)
     user = User.get_user_by_email(user_email)
-    form = EditProfileForm(id=user.id,firstname=user.firstname,lastname=user.lastname)
-    form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
+    form = EditProfileForm(id=user.id, firstname=user.firstname, lastname=user.lastname)
+    form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     form.rol.data = [(rol.id) for rol in user.roles]
     return render_template("user/profile.html", form=form)
 
@@ -221,15 +241,16 @@ def update_profile():
     if not check_permission("user_update_profile", session):
         abort(401)
     form = EditProfileForm(request.form)
-    form.rol.choices = [(rol.id,rol.name) for rol in Rol.get_all_roles()]
+    form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
         user = User.get_user_by_id(form.id.data)
         user_roles = [(rol.id) for rol in user.roles]
-        roles_deleted = set(user_roles)-set(form.rol.data)
+        roles_deleted = set(user_roles) - set(form.rol.data)
         user.edit_profile(form, roles_deleted)
         flash("Su perfil ha sido actualizado.")
-        return redirect(url_for("home"))       
+        return redirect(url_for("home"))
     return render_template("user/profile.html", form=form)
+
 
 def show(username):
     """
@@ -243,9 +264,10 @@ def show(username):
         abort(401)
     if not check_permission("user_show", session):
         abort(401)
-    
+
     user = User.get_user_by_username(username)
     return render_template("user/show.html", user=user)
+
 
 def get_session_username():
     return session["username"]

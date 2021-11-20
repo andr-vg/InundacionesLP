@@ -39,12 +39,6 @@ export class ZoneMap {
             this.map.addControl(this.editControls);
         }
         
-        //var polyline = L.polyline([[-65.10418, -26.62987],[-35.19738, -16.875], [9.9804, 121.9189]]).addTo(this.map);
-        //this.#drawnItems.addLayer(polyline);
-        //this.map.fitBounds(this.#drawnItems.getBounds());
-        //console.log(this.drawnLayers);
-        //this.map.addControl(this.createControls);
-        //this.map.addControl(this.editControls);
     }
 
     #eventHandler(e, map, drawnItems, editControls, createControls) {
@@ -81,7 +75,6 @@ export class ZoneMap {
 
     get drawnLayers() {
         const results = Object.values(this.#drawnItems._layers);
-        //return Object.values(this.#drawnItems._layers);
         return results[0]._latlngs;
     }
 

@@ -20,6 +20,7 @@ def unauthorized_error(e):
         return jsonify(kwargs)
     return render_template("error.html", **kwargs), 401
 
+
 def bad_request_error(e):
     kwargs = {
         "error_name": "400 Bad Request",
@@ -28,4 +29,3 @@ def bad_request_error(e):
     if request.path.startswith("/api"):
         return jsonify(kwargs)
     return render_template("error.html", **kwargs), 400
-

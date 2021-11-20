@@ -2,6 +2,15 @@
 {% block title %}Denuncias{% endblock %}
 {% block head %}
   {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+
+ <script type="module" src="{{ url_for('static', filename='js/show.js')}}"></script>
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -20,8 +29,10 @@
         <p>Apellido del denunciante: {{ denuncia.lastname }}</p>
         <p>Teléfono del denunciante: {{ denuncia.tel }}</p>
         <p>Email del denunciante: {{ denuncia.email }}</p>
+        <hidden id="lat" value="{{denuncia.lat}}"></hidden>
+        <hidden id="long" value="{{denuncia.long}}"></hidden>
         <div class="map-container">
-            <iframe id="mapid" src="https://maps.google.com/maps?q={{ denuncia.lat }},{{ denuncia.long }}&hl=es&z=14&amp;output=embed"></iframe>
+          <div id="mapid" class="float-end"></div>
         </div>
       </div>
 </div>

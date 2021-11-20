@@ -16,8 +16,8 @@ class CreatePuntoEncuentro(FlaskForm):
     """
     name = StringField('Nombre',[validators.DataRequired(message="Campo requerido")])
     address = StringField('Dirección',[validators.DataRequired(message="Campo requerido")])
-    email = StringField('Email',[validators.Email(message="Email invalido")])
-    tel = StringField('Teléfono',[validators.regexp("^(\(?\+[\d]{1,3}\)?)\s?([\d]{1,5})\s?([\d][\s\.-]?){6,7}$",
+    email = StringField('Email',[validators.Optional(),validators.Email(message="Email invalido")])
+    tel = StringField('Teléfono',[validators.Optional(),validators.regexp("^(\(?\+[\d]{1,3}\)?)\s?([\d]{1,5})\s?([\d][\s\.-]?){6,7}$",
     message="Debe ingresar un telefono valido"),])
     lat = StringField('Latitud')
     long = StringField('Longitud')

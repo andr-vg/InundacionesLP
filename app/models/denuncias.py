@@ -218,7 +218,7 @@ class Denuncia(db.Model):
         db.session.commit()
 
     def disassign_user(self):
-        if not self.is_closed() or not self.is_resolved:
+        if not self.is_closed() and not self.is_resolved:
             self.assigned_to = None
             db.session.commit()
 

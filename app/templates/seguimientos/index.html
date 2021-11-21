@@ -1,5 +1,8 @@
 {% block content %}
 <h1>Seguimientos</h1>
+{% if is_authenticated()==denuncia.user_assign.email and has_permission('denuncias_update')  and denuncia.state.name!="cerrada" and denuncia.state.name!="resuelta" %}
+          <a href="{{url_for('seguimiento_new', id=denuncia.id) }}" class="link"> Realizar seguimiento</a>
+{% endif%}
 {% if denuncia.tracking %}
 <table class="table table-sm">
     <thead>

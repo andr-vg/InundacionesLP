@@ -24,7 +24,6 @@ class Seguimiento(db.Model):
     id = Column(Integer, primary_key=True)
     description = Column(String(255))
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
-    deleted = Column(Boolean, default=False)
     complaint_id = Column(Integer, ForeignKey("denuncias.id"))
     complaints = relationship("Denuncia", back_populates="tracking")
     assigned_to = Column(Integer, ForeignKey("usuarios.id"))
@@ -59,12 +58,4 @@ class Seguimiento(db.Model):
 
     def delete_tracking(self):
         db.session.delete(self)
-        db.session.commit()
-
-    def soft_delete(self):
-        self.deleted = True
-        db.session.commit()
-
-    def activate(self):
-        self.deleted = False
         db.session.commit()

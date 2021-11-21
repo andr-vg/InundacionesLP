@@ -80,9 +80,7 @@ class Denuncia(db.Model):
 
         Returns: retorna un listado de denuncias que coinciden, caso contrario None
         """
-        return Denuncia.query.filter(Denuncia.deleted == False).filter(
-            Denuncia.title.like("%" + title + "%")
-        )
+        return Denuncia.query.filter(Denuncia.title.like("%" + title + "%"))
 
     @classmethod
     def search_by_state(cls, query, state):
@@ -134,14 +132,12 @@ class Denuncia(db.Model):
             config: configuracion del sistema"""
         if config.ordered_by == "ascendente":
             return (
-                query.filter(Denuncia.deleted == False)
-                .order_by(Denuncia.created_at.asc())
+                query.order_by(Denuncia.created_at.asc())
                 .order_by(Denuncia.title.asc())
                 .paginate(page, per_page=config.elements_per_page)
             )
         return (
-            query.filter(Denuncia.deleted == False)
-            .order_by(Denuncia.created_at.desc())
+            query.order_by(Denuncia.created_at.desc())
             .order_by(Denuncia.title.desc())
             .paginate(page, per_page=config.elements_per_page)
         )
@@ -156,14 +152,12 @@ class Denuncia(db.Model):
             elements_per_page(integer): Numero de elementos por pagina"""
         if config.ordered_by == "ascendente":
             return (
-                Denuncia.query.filter(Denuncia.deleted == False)
-                .order_by(Denuncia.created_at.asc())
+                Denuncia.query.order_by(Denuncia.created_at.asc())
                 .order_by(Denuncia.title.asc())
                 .paginate(page, per_page=config.elements_per_page)
             )
         return (
-            Denuncia.query.filter(Denuncia.deleted == False)
-            .order_by(Denuncia.created_at.desc())
+            Denuncia.query.order_by(Denuncia.created_at.desc())
             .order_by(Denuncia.title.desc())
             .paginate(page, per_page=config.elements_per_page)
         )
@@ -183,7 +177,6 @@ class Denuncia(db.Model):
     lastname = Column(String(255))
     tel = Column(String(255))
     email = Column(String(255))
-    deleted = Column(Boolean, default=False)
     assigned_to = Column(Integer, ForeignKey("usuarios.id"))
     user_assign = relationship("User", back_populates="complaints")
     tracking = relationship("Seguimiento", back_populates="complaints")
@@ -225,23 +218,12 @@ class Denuncia(db.Model):
         db.session.commit()
 
     def disassign_user(self):
-        self.assigned_to = None
-        db.session.commit()
+        if not self.is_closed() or not self.is_resolved:
+            self.assigned_to = None
+            db.session.commit()
 
     def disassign_category(self):
         self.category_id = None
-        db.session.commit()
-
-    def activate(self):
-        self.deleted = False
-        for tracking in self.tracking:
-            tracking.activate()
-        db.session.commit()
-
-    def soft_delete(self):
-        self.deleted = True
-        for tracking in self.tracking:
-            tracking.soft_delete()
         db.session.commit()
 
     def change_state(self, state):
@@ -266,15 +248,11 @@ class Denuncia(db.Model):
         :param page:Numero entero que representa la pagina.
         :param config: Representa la configuracion del sistema."""
         if config.ordered_by == "ascendente":
-            return (
-                Denuncia.query.filter(Denuncia.deleted == False)
-                .order_by(Denuncia.created_at.asc())
-                .paginate(page, per_page=config.elements_per_page)
+            return Denuncia.query.order_by(Denuncia.created_at.asc()).paginate(
+                page, per_page=config.elements_per_page
             )
-        return (
-            Denuncia.query.filter(Denuncia.deleted == False)
-            .order_by(Denuncia.created_at.desc())
-            .paginate(page, per_page=config.elements_per_page)
+        return Denuncia.query.order_by(Denuncia.created_at.desc()).paginate(
+            page, per_page=config.elements_per_page
         )
 
     def get_by_id(id):
@@ -284,12 +262,8 @@ class Denuncia(db.Model):
     def get_all(config):
         """ " Retorna todas las denuncias"""
         if config.ordered_by == "ascendente":
-            return Denuncia.query.filter(Denuncia.deleted == False).order_by(
-                Denuncia.created_at.asc()
-            )
-        return Denuncia.query.filter(Denuncia.deleted == False).order_by(
-            Denuncia.created_at.desc()
-        )
+            return Denuncia.query.order_by(Denuncia.created_at.asc())
+        return Denuncia.query.order_by(Denuncia.created_at.desc())
 
     def get_by_title(title):
         """Retorna la denuncia con el titulo recibido por parametro"""

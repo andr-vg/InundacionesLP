@@ -128,12 +128,14 @@ class Recorridos(db.Model):
         for elem in self.coords:
             coordinate = c.Coordenadas.get_by_id(elem.id)
             coordinate.delete()
+        db.session.commit()
 
     def add_coordinate(self, new_coords):
         """
         Se le agrega una nueva coordenada al recorrido
         """
         self.coords.append(new_coords)
+        db.session.commit()
 
     def add_recorrido(self):
         """
@@ -141,11 +143,6 @@ class Recorridos(db.Model):
         no hacer un commit
         """
         db.session.add(self)
-
-    def update(self):
-        """
-        Actualiza el modelo en la BD
-        """
         db.session.commit()
 
     def delete(self):
@@ -157,9 +154,11 @@ class Recorridos(db.Model):
             coordinate = c.Coordenadas.get_by_id(elem.id)
             coordinate.delete()
         db.session.delete(self)
+        db.session.commit()
 
     def change_state(self):
         self.state = not self.state
+        db.session.commit()
 
     def get_recorrido_by_id(id):
         """

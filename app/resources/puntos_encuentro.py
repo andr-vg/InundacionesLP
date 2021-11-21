@@ -78,7 +78,6 @@ def create():
             long=form.long.data,
         )
         punto.add_punto_encuentro()
-        punto.update()
         flash("El nuevo punto de encuentro ha sido creado correctamente.")
         return redirect(url_for("punto_encuentro_index"))
     return render_template("puntos_encuentro/new.html", form=form)
@@ -168,7 +167,6 @@ def update():
             lat=form.lat.data,
             long=form.long.data,
         )
-        punto.update()
         flash("El punto de encuentro ha sido editado correctamente.")
         return redirect(url_for("punto_encuentro_index"))
     return render_template("puntos_encuentro/edit.html", form=form)
@@ -183,7 +181,6 @@ def soft_delete():
         abort(401)
     punto_encuentro = PuntosDeEncuentro.get_punto_by_id(request.form["id"])
     punto_encuentro.change_state()
-    punto_encuentro.update()
     state = "Publicado" if punto_encuentro.state else "Despublicado"
     flash("El punto de encuentro ha sido {} correctamente".format(state))
     return redirect(url_for("punto_encuentro_index"))
@@ -209,6 +206,5 @@ def delete():
         abort(401)
     punto_encuentro = PuntosDeEncuentro.get_punto_by_id(request.form["id"])
     punto_encuentro.delete()
-    punto_encuentro.update()
     flash("El punto de encuentro ha sido eliminado correctamente")
     return redirect(url_for("punto_encuentro_index"))

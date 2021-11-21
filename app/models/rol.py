@@ -58,6 +58,4 @@ class Rol(db.Model):
         """Agrega el rol, los cambios no se verán reflejados en la BD hasta
         no hacer un commit"""
         db.session.add(self)
-
-    def update(self):
         db.session.commit()

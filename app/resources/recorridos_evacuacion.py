@@ -80,12 +80,8 @@ def create():
                 new_recorrido.add_coordinate(new_coords)
                 # agrego las coordenadas creadas a la tabla
                 Coordenadas.add_coords(new_coords)
-                # hago el commit en la tabla
-                Coordenadas.update_coords()
             # agrego el recorrido a la tabla
             new_recorrido.add_recorrido()
-            # hago el commit a la tabla
-            new_recorrido.update()
             flash("El recorrido ha sido creado correctamente.")
             return redirect(url_for("recorridos_index"))
     return render_template("recorridos_evacuacion/new.html", form=form)
@@ -135,7 +131,6 @@ def update():
             flash("Ya existe un recorrido con ese nombre")
             return render_template("recorridos_evacuacion/edit.html", form=form)
         recorrido.edit(name=form.name.data, description=form.description.data)
-        recorrido.update()
         for coords in coordinates:
             # creo las coordenadas
             new_coords = Coordenadas(coords[0], coords[1])
@@ -143,11 +138,7 @@ def update():
             recorrido.add_coordinate(new_coords)
             # agrego las coordenadas creadas a la tabla
             Coordenadas.add_coords(new_coords)
-            # hago el commit en la tabla
-            Coordenadas.update_coords()
-            # hago el commit a la tabla
-            recorrido.update()
-        recorrido.update()
+
         flash("El recorrido ha sido editado correctamente.")
         return redirect(url_for("recorridos_index"))
     return render_template("recorridos_evacuacion/edit.html", form=form)
@@ -168,7 +159,6 @@ def delete():
         abort(401)
     recorrido = Recorridos.get_recorrido_by_id(request.form["id"])
     recorrido.delete()
-    recorrido.update()
     flash("Recorrido eliminado correctamente.")
     return redirect(url_for("recorridos_index"))
 
@@ -189,7 +179,6 @@ def change_state(id):
     recorrido = Recorridos.get_recorrido_by_id(id)
     recorrido.change_state()
     state = "publicado" if recorrido.state else "despublicado"
-    recorrido.update()
     flash("El recorrido ha sido {} correctamente".format(state))
     return redirect(url_for("recorridos_index"))
 

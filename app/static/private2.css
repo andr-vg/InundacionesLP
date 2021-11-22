@@ -82,3 +82,14 @@ border-color: var(--primary);
   color: var(--info);
   border: 1px solid var(--info);
 }
+
+/* Media queries */ 
+
+@media screen and
+(max-width: 768px) {
+
+  nav ul {
+    background-color: var(--primary);
+  }
+
+}

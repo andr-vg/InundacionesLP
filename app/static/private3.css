@@ -83,3 +83,14 @@ border-color: var(--primary);
 .page-link:hover{
   color: var(--secondary);
 }
+
+/* Media queries */ 
+
+@media screen and
+(max-width: 768px) {
+
+  nav ul {
+    background-color: var(--primary);
+  }
+
+}

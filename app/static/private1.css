@@ -96,3 +96,14 @@ border-color: var(--primary);
   color:black;
   border-color:var(--danger) !important;
 }
+
+/* Media queries */ 
+
+@media screen and
+(max-width: 768px) {
+
+  nav ul {
+    background-color: var(--primary);
+  }
+
+}

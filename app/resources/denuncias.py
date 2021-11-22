@@ -210,8 +210,6 @@ def show(id, page):
     if not check_permission("denuncias_show", session):
         abort(401)
     denuncia = Denuncia.get_by_id(id)
-    if denuncia.deleted:
-        abort(400)
     config = get_configuration(session)
     seguimientos = Seguimiento.get_tracking(page, config, id)
     usuario = User.get_user_by_id(denuncia.assigned_to)

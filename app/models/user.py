@@ -309,16 +309,12 @@ class User(db.Model):
 
     def activate(self):
         self.deleted = False
-        for complaint in self.complaints:
-            complaint.activate()
         db.session.commit()
 
     def delete(self):
         self.deleted = True
         for complaint in self.complaints:
-            complaint.soft_delete()
-        for tracking in self.tracking:
-            tracking.soft_delete()
+            complaint.disassign_user()
         db.session.commit()
 
     def assign_complaints(self, complaint):

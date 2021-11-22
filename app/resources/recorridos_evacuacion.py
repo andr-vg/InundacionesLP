@@ -202,7 +202,7 @@ def search(page):
     name = request.args["name"]
     active = ""
     if "active" in request.args.keys() and request.args["active"] != "":
-        active == request.args["active"]
+        active = request.args["active"]
         if request.args["active"] == "publicado":
             recorridos = Recorridos.get_with_state(recorridos, True)
         elif request.args["active"] == "despublicado":

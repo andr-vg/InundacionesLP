@@ -4,22 +4,30 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<div class="row justify-content-center align-items-center">
   <h1>Detalle</h1>
-      <div>
-        <p>Email {{ user.email }}</p>
-        <p>Nombre de usuario {{ user.username }}</p>
-        <p>Nombre {{ user.firstname }}</p>
-        <p>Apellido {{ user.lastname }}</p>
+</div>
+<div class="row justify-content-center align-items-center"> 
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col align-items-center" >
+        <p>Email: {{ user.email }}</p>
+        <p>Nombre de usuario: {{ user.username }}</p>
+        <p>Nombre: {{ user.firstname }}</p>
+        <p>Apellido: {{ user.lastname }}</p>
         <p>Roles: {% for rol in user.roles %}
              {{rol.name}}
             {% endfor %}
         </p>
         {% if user.active %}
-            <p>Estado Activo</p>
+            <p>Estado: Activo</p>
         {% else %}
-            <p>Estado Inactivo</p>
+            <p>Estado: Inactivo</p>
         {% endif %}
-      </div>
-    </p>
-  <a href="{{ url_for('user_index') }}" class="link">Volver</a>
+        <br>
+        <div class="form-group">
+          <a href="{{ url_for('user_index') }}" class="btn btn-primary btn-sm float-center">Volver</a>
+        </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

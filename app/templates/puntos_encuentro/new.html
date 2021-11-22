@@ -13,11 +13,17 @@
  <script type="module" src="{{ url_for('static', filename='js/puntos_encuentro/new/new.js')}}"></script>
 {% endblock %}
 {% block content %}
-  <h1>Crear un punto de encuentro</h1>
-  <form action="{{ url_for('punto_encuentro_create') }}" method="POST" id="create-punto-encuentro">
-    <div class="container">
-    <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
-    {% include "puntos_encuentro/form.html" %}
-      </div>
-  </form>
+<div class="row justify-content-center align-items-center">
+  <h1>Crear punto de encuentro</h1>
+</div>
+<div class="row justify-content-center align-items-center"> 
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col align-items-center" >
+      <form action="{{ url_for('punto_encuentro_create') }}" method="POST" id="create-punto-encuentro">
+        <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
+        {% include "puntos_encuentro/form.html" %}
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

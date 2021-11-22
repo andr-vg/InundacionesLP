@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="PuntosYRecorridos">
     <h1>Puntos de encuentro:</h1>
     <ul v-if="puntos && puntos.length">
       <li v-for="(punto, index) in puntos" :key="index">

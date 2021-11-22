@@ -6,6 +6,14 @@ body {
   font-size: 18px;
 }
 
+.title {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+}
+
 .logo {
     max-width: 170px;
 }
@@ -16,6 +24,72 @@ nav ul {
     justify-content: center;
     align-content: center;
     align-items: center;
+}
+
+.navbar {
+  padding: 0.25rem 0.25rem;
+}
+.checkbtn i {
+  visibility: hidden;
+}
+
+#check {
+  display: none;
+}
+
+.checkbtn {
+  cursor: pointer;
+}
+
+/*
+nav, nav ul, nav ul li, nav ul li {
+  background: rgb(192, 206, 223);
+  background-image: linear-gradient(to right, rgba(247, 238, 201, 0.226), rgb(203, 207, 231));
+  color: aliceblue;
+}
+*/
+header nav ul li a {
+  background: transparent;
+}
+
+header nav {
+  /*
+  padding: 1% 1%;
+  */
+  border-bottom: rgb(162, 177, 190) solid 2px;
+  max-height: 70px;
+  
+}
+
+header nav ul {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  column-gap: 3%;
+}
+
+header nav ul li {
+  display: inline-block; 
+  text-align: center;
+  background: transparent;
+}
+
+header {
+  position: sticky;
+  top: 0%;
+  box-shadow: 0px 7px 15px #888888;
+}
+
+div.active {
+  min-width: 170px;
+}
+
+.col-sm-auto, 
+form .col.align-items-center,
+.col.align-items-center {
+  z-index: -1;
 }
 
 .clear {
@@ -110,4 +184,125 @@ h4 {
 
 ul.leaflet-draw-actions.leaflet-draw-actions-bottom li a[title="Save changes"] {
     display: none;
+}
+
+figure {
+  margin: 0%;
+}
+
+/* Media queries */ 
+
+@media screen and
+(max-width: 768px) {
+    /* propiedades comunes en la pagina */
+    
+    /* header */
+
+    .title {
+        height: 10%;
+    }
+
+    /* barra de navegacion oculta */
+
+    nav {
+        padding: 0%;
+        border-bottom: hidden;
+    }
+
+    .checkbtn {
+      padding: 10%;
+    }
+
+    .checkbtn i{
+        visibility: visible;
+    }
+
+    nav ul {
+        align-content: stretch;
+        /*
+        height: 67%;
+        position: fixed;
+        */
+        width: 100%;
+        left: -100%;
+        top: 20%;
+        text-align: center;
+        padding: 0%;
+        transition: all .5s;
+        position: absolute;
+        z-index: 10;
+        
+    }
+
+    nav ul li {
+        width: 100%;
+    }
+
+    
+    nav ul li a {
+        font-size: 2rem;
+    }
+
+    .title {
+        position: sticky;
+        top: 0%;
+    }
+    
+    #check:checked ~ ul{
+        left: 0%;
+        top: 80%;
+        transition: all .5s;
+
+    }
+}
+
+@media screen and (max-width:360px) {
+    
+    /* header */
+    /* barra de navegacion oculta */
+
+    .title .logo {
+        visibility: hidden;
+    }
+
+    /* header */
+
+    .checkbtn {
+        visibility: visible;
+    }
+    
+    nav ul li a {
+        font-size: 1.5rem;
+    }
+    
+    .contenedor .item-img,
+    .contenedor .item-parrafo {
+        width: 100%;
+        max-width: none;
+    }
+
+    .products-index .item,
+    .products .item {
+        width: 100%;
+    }
+
+    .signup {
+        flex-wrap: wrap;
+    }
+
+    .form-signin, .form-signup {
+        width: 95%;
+    }
+
+    .form-signin {
+        border-radius: 0px 0px 10px 10px;
+    }
+
+    .form-signup {
+        border-radius: 10px 10px 0px 0px;
+    }
+
+    .hidden {
+        display: none;
+    }
 }

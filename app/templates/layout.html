@@ -4,6 +4,8 @@
     
     <head>
       {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Importe de iconos -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- botones de editar, borrar -->
@@ -29,8 +31,13 @@
     
   <body>
     <header>
-      <div class="navcolor navbar navbar-dark bg-dark">
+      <div class="title navcolor navbar navbar-dark bg-dark">
         <!-- Navbar content -->
+        <div class="active">    
+          <label for="check" class="checkbtn">
+              <i class="fas fa-bars"></i>
+          </label>
+        </div>
         <div class="logo">
           <a href="{{url_for('home')}}">
           <figure>
@@ -47,8 +54,7 @@
                     <span class="material-icons md-14"><i class="fas fa-user"></i></span>
                       Bienvenido de nuevo <strong>{{ get_username() }}</strong>
                     </h4>
-                      <a href="{{ url_for('auth_logout') }}" class="col-6 btn btn-sm float-center">Cerrar sesión</a>
-                  
+                      <a href="{{ url_for('auth_logout') }}" class="col-6 btn btn-sm float-center">Cerrar sesión</a>                  
                 </div>
               </div>
             </div>
@@ -59,33 +65,35 @@
         {% endif %}
       </div>
       <nav class="navcolor navbar-dark bg-dark">
+        <input type="checkbox" id="check" class="active">
         <ul>
         {% if is_authenticated() %}
           {% if has_permission('configuration_update') %}
-            <li><a href="{{ url_for('configuration_update') }}" class="link">Configuracion del sistema</a></li>
+            <li><a href="{{ url_for('configuration_update') }}">Configuración</a></li>
           {% endif %}
           {% if has_permission('user_index') %}
-            <li><a href="{{ url_for('user_index') }}" class="link">Usuarios</a></li>
+            <li><a href="{{ url_for('user_index') }}">Usuarios</a></li>
           {% endif %}
           {% if has_permission('punto_encuentro_index') %}
-            <li><a href="{{ url_for('punto_encuentro_index') }}" class="link">Puntos de encuentro</a></li>
+            <li><a href="{{ url_for('punto_encuentro_index') }}">Puntos de encuentro</a></li>
           {% endif %}
           {% if has_permission('denuncias_index') %}
-            <li><a href="{{ url_for('denuncia_index') }}" class="link">Denuncias</a></li>
+            <li><a href="{{ url_for('denuncia_index') }}">Denuncias</a></li>
           {% endif %}
           {% if has_permission('zonas_inundables_index') %}
-            <li><a href="{{ url_for('zonas_inundables_index') }}" class="link">Zonas inundables</a></li>
+            <li><a href="{{ url_for('zonas_inundables_index') }}">Zonas inundables</a></li>
           {% endif %}
           {% if has_permission('recorridos_index') %}
-            <li><a href="{{ url_for('recorridos_index') }}" class="link">Recorridos de evacuación</a></li>
+            <li><a href="{{ url_for('recorridos_index') }}">Recorridos</a></li>
           {% endif %}
           {% if has_permission('user_edit_profile') %}
-            <li><a href="{{ url_for('user_edit_profile') }}" class="link">Mi perfil</a></li>
+            <li><a href="{{ url_for('user_edit_profile') }}">Mi perfil</a></li>
           {% endif %}
           
         {% endif %}          
         </ul>
       </nav>
+    
     </header> 
     <main>
 
@@ -109,7 +117,7 @@
 
       {% block content %}
       {% endblock %}
-    </div>
+      <br>
     </main>  
 
     <footer>

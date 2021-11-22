@@ -200,12 +200,12 @@ def search(page):
     recorridos = Recorridos.search_by_name(name=request.args["name"])
 
     name = request.args["name"]
-    state = ""
-    if "state" in request.args.keys() and request.args["state"] != "":
-        state == request.args["state"]
-        if request.args["state"] == "publicado":
+    active = ""
+    if "active" in request.args.keys() and request.args["active"] != "":
+        active == request.args["active"]
+        if request.args["active"] == "publicado":
             recorridos = Recorridos.get_with_state(recorridos, True)
-        elif request.args["state"] == "despublicado":
+        elif request.args["active"] == "despublicado":
             recorridos = Recorridos.get_with_state(recorridos, False)
     recorridos = Recorridos.search_paginate(recorridos, page=page, config=config)
     return render_template(
@@ -213,7 +213,7 @@ def search(page):
         recorridos=recorridos,
         filter=1,
         name=name,
-        state=state,
+        active=active,
     )
 
 

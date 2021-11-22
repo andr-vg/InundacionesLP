@@ -9,7 +9,7 @@
   {% if has_permission('recorridos_new') %}
     <a href="{{ url_for('recorridos_new') }}" class="link">Nuevo recorrido</a>
   {% endif %}
-  <form action="{{ url_for('recorridos_search', name=name, state=state) }}" method="GET"> 
+  <form action="{{ url_for('recorridos_search', name=name, active=active) }}" method="GET"> 
     <div class="container-fluid">
         <div class="row">
           <div class="col-sm-auto">
@@ -24,10 +24,10 @@
             <p>Filtrar por</p>
           </div>
           <div class="col-sm-auto">       
-            <input type="radio" name="state" value="publicado"> <label>Publicado</label>
+            <input type="radio" name="active" value="publicado"> <label>Publicado</label>
           </div>
           <div class="col-sm-auto">  
-            <input type="radio" name="state" value="despublicado"> <label>Despublicado</label>
+            <input type="radio" name="active" value="despublicado"> <label>Despublicado</label>
           </div>
         </div>
     </div>
@@ -99,6 +99,10 @@
   {% endif %}
 
   <!-- tabla de paginación -->
+  {% from "paginate_macro.html" import show_paginate_table%}
+
+  {{ show_paginate_table("recorridos",recorridos, filter, name,active) }}
+  <!--
   <div class="container">
     <nav aria-label="pagination_table">
     <ul class="pagination">
@@ -125,5 +129,5 @@
     </ul>
     </nav>
   </div>  
-
+-->
 {% endblock %}

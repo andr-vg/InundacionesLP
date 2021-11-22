@@ -5,10 +5,19 @@
 {% endblock %}
 {% block content %}
   {% if not is_authenticated() %}
-  <li><a href="{{ url_for('auth_login') }}" class="link">Iniciar sesión</a></li>
+  <div class="row justify-content-center align-items-center">
+    <a href="{{ url_for('auth_login') }}" class="btn btn-light btn-sm float-center">Iniciar sesión</a>
+  </div>
+  {% else %}
+  <div class="row justify-content-center align-items-center">
+    <h1>InundacionesLP</h1>
+  </div>
   {% endif %}
 
-  <h1>Inicio</h1>
-  <p>Página de inicio de la aplicación</p>
+  <br>
+  <br>
+  <br>
+  
+  
 
 {% endblock %}

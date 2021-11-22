@@ -4,74 +4,74 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<div class="row justify-content-center align-items-center">
   <h1>Editar mi perfil</h1>
-  <form action="{{ url_for('user_update_profile') }}" method="POST">
-    <div class="container">
-    {{form.csrf_token}}
-      <div>
+</div>
+<div class="row justify-content-center align-items-center"> 
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col align-items-center" >
+      <form action="{{ url_for('user_update_profile') }}" method="POST">
+        {{form.csrf_token}}
         {{form.id}}
-        <div class="row">
-          <div class="col-4">
-            {{ form.firstname.label }}*
-            {{ form.firstname(class="form-control") }}
-            {% for error in form.firstname.errors %}
+        <div class="form-group">
+          <p>
+            {{ form.firstname.label }}* {{ form.firstname(class="form-control") }}
+          </p>
+          {% for error in form.firstname.errors %}
             <p class="alert alert-danger">{{error}}</p>
-            {% endfor %}
-          </div>
-          </div>
-        <div class="row">
-            <div class="col-4">
-              {{ form.lastname.label }}*
-              {{ form.lastname(class="form-control") }}
-              {% for error in form.lastname.errors %}
-              <p class="alert alert-danger">{{error}}</p>
-              {% endfor %}
-            </div>
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          <p>
+            {{ form.lastname.label }}* {{ form.lastname(class="form-control") }}
+          </p>            
+          {% for error in form.lastname.errors %}
+            <p class="alert alert-danger">{{error}}</p>
+          {% endfor %}
         </div>  
-        <div class="row">
-          <div class="col-4">
-            {{ form.password.label }}
-            {{ form.password(class="form-control") }}
-            {% for error in form.password.errors %}
+        <div class="form-group">
+          <p>
+            {{ form.password.label }} {{ form.password(class="form-control") }}
+          </p>
+          {% for error in form.password.errors %}
             <p class="alert alert-danger">{{error}}</p>
-            {% endfor %}
-          </div>
-          </div>
-        <div class="row">
-            <div class="col-4">
-              {{ form.confirm.label }}
-              {{ form.confirm(class="form-control") }}
-              {% for error in form.confirm.errors %}
-              <p class="alert alert-danger">{{error}}</p>
-              {% endfor %}
-            </div>
+          {% endfor %}
         </div>
-        <div class="row">
-          <div class="col-4">
+        <div class="form-group">
+          <p>
+            {{ form.confirm.label }} {{ form.confirm(class="form-control") }}
+          </p>
+          {% for error in form.confirm.errors %}
+            <p class="alert alert-danger">{{error}}</p>
+          {% endfor %}
+        </div>
+        <div class="form-group">
+          <p>
             {{ form.rol.label }}*
+          </p>  
+          <div class="form-group text-center">
             {% for rol in form.rol %}
-            <div class="col">
               {{rol}}{{rol.label}}
-            </div>
-            {% endfor %}
-            {% for error in form.rol.errors %}
-              <p class="alert alert-danger">{{error}}</p>
             {% endfor %}
           </div>
+          {% for error in form.rol.errors %}
+            <p class="alert alert-danger">{{error}}</p>
+          {% endfor %}
         </div>
-      </div>
-      <div class="form-group">
-        <div class="container">
-          <div class="row">
-            <div class="col-1">
-              <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
-            </div>
-            <div class="col-1">
-              <a href="{{ url_for('home') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
+        <div class="form-group">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
+              </div>
+              <div class="col">
+                <a href="{{ url_for('home') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      </div>
-  </form>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}

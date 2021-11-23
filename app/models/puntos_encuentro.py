@@ -10,9 +10,13 @@ class PuntosDeEncuentro(db.Model):
     """ " Modelo de Puntos de encuentro"""
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls, config):
         """ " Retorna la consulta de todos los puntos de encuentro en la base de datos"""
-        return PuntosDeEncuentro.query.all()
+        if config.ordered_by == "ascendente":
+            return PuntosDeEncuentro.query.filter().order_by(
+                PuntosDeEncuentro.name.asc()
+            )
+        return PuntosDeEncuentro.query.filter().order_by(PuntosDeEncuentro.name.desc())
 
     @classmethod
     def get_all_publish(cls):

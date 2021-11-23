@@ -1,124 +1,130 @@
 {% extends "layout.html" %}
 {% block title %}Usuarios{% endblock %}
 {% block head %}
-  {{ super() }}
+{{ super() }}
 {% endblock %}
 {% block content %}
-  <h1>Usuarios</h1>
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
-  {% if has_permission('user_new') %}
-    <a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
-  {% endif %}
-  <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET"> 
-    <div class="container-fluid">
-        <div class="row">
-          <div class="col-sm-auto">
-            <input type="text" name="name">
-          </div>
-          <div class="col-sm-auto">  
-            <p>
-              <input type="submit" value="Buscar">
-            </p>
-          </div>
-          <div class="col-sm-auto">
-            <p>Filtrar por</p>
-          </div>
-          <div class="col-sm-auto">       
-            <input type="radio" name="active" value="activo"> <label> Activo</label>
-          </div>
-          <div class="col-sm-auto">  
-            <input type="radio" name="active" value="bloqueado"> <label> Bloqueado</label>
-          </div>
-        </div>
-    </div>
-  </form>
-
-  {% if users.items %}
-  <table class="table table-sm">
-    <thead>
-      <tr>
-        <th>Nombre de usuario</th>
-        <th>Nombre</th>
-        <th>Apellido</th>
-        <th>Mail</th>
-        <th>Estado</th>
-        <th>Roles</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in users.items %}
-      <tr> <!-- ver de poner id o email como id del tr de cada user-->
-        <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
-        <td> {{ user.firstname }} </td>
-        <td> {{ user.lastname }} </td>
-        <td> {{ user.email }} </td>
-        <td> {% if user.active == 1 %}
-               Activo 
-             {% else %}
-               Inactivo 
-             {% endif %}
-        </td>
-        {% set roles = [] %}
-        <td> {% for rol in user.roles %}
-               {{ rol.name }}   
-               {{ roles.append(rol.id) or "" }}
-             {% endfor %}
-        </td>    
-        <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
-        <td>
-          <div class="row">
-            {% if has_permission('user_edit') %}
-            <form action="{{ url_for('user_edit') }}" method="POST">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              <input name="id" type="hidden" value="{{ user.id }}">
-              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24"></span> </button> 
-            
-            </form>
-            {% endif %}
-            {% if has_permission('user_active') %}
-              {% if 1 not in roles and user.active == 1 %}
-              <div class="column mx-1">
-                <a class="btn btn-sm btn-secondary" href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea bloquear a este usuario?');"> bloquear </a>
-              </div>
-                
-              {% elif 1 not in roles %}
-              <div class="column mx-1">
-                <a class="btn btn-sm btn-secondary" href="{{ url_for('user_change_state', id=user.id) }}" onclick="return confirm('Está seguro que desea desbloquear a este usuario?');"> desbloquear </a>
-              </div>
-              {% else %}
-              <div class="column mx-1">
-                <button class="btn btn-sm btn-secondary" style="visibility: hidden;"> bloquear </button>
-              </div>
-              {% endif %}
-            {% endif %}
-            {% if has_permission('user_destroy') %}
-            <div class="column mx-1">
-              <form action="{{ url_for('user_soft_delete') }}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <input name="id" type="hidden" value="{{ user.id }}">
-                <button class="btn btn-sm btn-danger remove" type="submit" onclick="return confirm('Está seguro que desea eliminar este usuario?')"> Borrar <span class="material-icons"></span> </button> 
-              </form>
-            </div>
-
-            {% endif %}
-          </div>
-        </td>       
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {#Mensaje En caso de que la busqueda no traiga resultados#}
-  {% else %}
-  <div class="container">
-    <div class="row justify-content-center">
-      <h1> No se encontraron Resultados</h1>
+<h1>Usuarios</h1>
+<a href="{{ url_for('home') }}" class="link">Volver</a>
+{% if has_permission('user_new') %}
+<a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
+{% endif %}
+<form action="{{ url_for('user_search', name=name, active=active) }}" method="GET">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-auto">
+        <input type="text" name="name">
+      </div>
+      <div class="col-sm-auto">
+        <p>
+          <input type="submit" value="Buscar">
+        </p>
+      </div>
+      <div class="col-sm-auto">
+        <p>Filtrar por</p>
+      </div>
+      <div class="col-sm-auto">
+        <input type="radio" name="active" value="activo"> <label> Activo</label>
+      </div>
+      <div class="col-sm-auto">
+        <input type="radio" name="active" value="bloqueado"> <label> Bloqueado</label>
+      </div>
     </div>
   </div>
-  {% endif %}
+</form>
 
-  {% from "paginate_macro.html" import show_paginate_table%}
+{% if users.items %}
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Nombre de usuario</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Mail</th>
+      <th>Estado</th>
+      <th>Roles</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users.items %}
+    <tr>
+      <!-- ver de poner id o email como id del tr de cada user-->
+      <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
+      <td> {{ user.firstname }} </td>
+      <td> {{ user.lastname }} </td>
+      <td> {{ user.email }} </td>
+      <td> {% if user.active == 1 %}
+        Activo
+        {% else %}
+        Inactivo
+        {% endif %}
+      </td>
+      {% set roles = [] %}
+      <td> {% for rol in user.roles %}
+        {{ rol.name }}
+        {{ roles.append(rol.id) or "" }}
+        {% endfor %}
+      </td>
+      <!-- mostrar acciones a realizar segun permisos del usuario actual -->
+      <td>
+        <div class="row">
+          {% if has_permission('user_edit') %}
+          <form action="{{ url_for('user_edit') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input name="id" type="hidden" value="{{ user.id }}">
+            <button class="btn btn-sm btn-info" type="submit"> Editar <span class="material-icons md-24"></span>
+            </button>
 
-  {{ show_paginate_table("user",users, filter, name,active) }}
+          </form>
+          {% endif %}
+          {% if has_permission('user_active') %}
+          {% if 1 not in roles and user.active == 1 %}
+          <div class="column mx-1">
+            <a class="btn btn-sm btn-secondary" href="{{ url_for('user_change_state', id=user.id) }}"
+              onclick="return confirm('Está seguro que desea bloquear a este usuario?');"> bloquear </a>
+          </div>
+
+          {% elif 1 not in roles %}
+          <div class="column mx-1">
+            <a class="btn btn-sm btn-secondary" href="{{ url_for('user_change_state', id=user.id) }}"
+              onclick="return confirm('Está seguro que desea desbloquear a este usuario?');"> desbloquear </a>
+          </div>
+          {% else %}
+          <div class="column mx-1">
+            <button class="btn btn-sm btn-secondary" style="visibility: hidden;"> bloquear </button>
+          </div>
+          {% endif %}
+          {% endif %}
+          {% if has_permission('user_destroy') %}
+          <div class="column mx-1">
+            <form action="{{ url_for('user_soft_delete') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <input name="id" type="hidden" value="{{ user.id }}">
+              <button class="btn btn-sm btn-danger remove" type="submit"
+                onclick="return confirm('Está seguro que desea eliminar este usuario y desasignar todas sus denuncias Sin confirmar y En curso?')">
+                Borrar <span class="material-icons"></span> </button>
+            </form>
+          </div>
+
+          {% endif %}
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{#Mensaje En caso de que la busqueda no traiga resultados#}
+{% else %}
+<div class="container">
+  <div class="row justify-content-center">
+    <h1> No se encontraron Resultados</h1>
+  </div>
+</div>
+{% endif %}
+
+{% from "paginate_macro.html" import show_paginate_table%}
+
+{{ show_paginate_table("user",users, filter, name,active) }}
 
 {% endblock %}

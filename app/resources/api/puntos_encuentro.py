@@ -10,18 +10,35 @@ puntos_encuentro_api = Blueprint("puntos", __name__, url_prefix="/puntos_encuent
 
 @puntos_encuentro_api.get("/")
 def index():
-    puntos_iter = PuntosDeEncuentro.get_all()
-    puntos = [PuntoEncuentroSchema.dump(punto) for punto in puntos_iter]
-    puntos = jsonify(puntos)
-    puntos.headers.add("Access-Control-Allow-Origin", "*")
-    return puntos
-
-
-@puntos_encuentro_api.get("/<int:page>")
-def paginated(page):
     config = Configuration.get_configuration()
-    puntos_page = PuntosDeEncuentro.get_index_puntos_encuentro(
-        page=int(page), config=config
-    )
-    puntos = PuntoEncuentroSchema.dump(puntos_page, many=True)
-    return jsonify(puntos)
+    if not request.args:
+        puntos_iter = PuntosDeEncuentro.get_all(config)
+        response = [PuntoEncuentroSchema.dump(punto) for punto in puntos_iter]
+    else:
+        try:
+            page = request.args.get("page")
+            puntos_iter = PuntosDeEncuentro.get_index_puntos_encuentro(
+                int(page), config
+            )
+            response = PuntoEncuentroSchema.dump(puntos_iter, many=True)
+        except:
+            response = {
+                "error_name": "400 Bad Request",
+                "error_description": "Numero de pagina invalido",
+            }
+    response = jsonify(response)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
+@puntos_encuentro_api.get("/<int:id>")
+def paginated(id):
+    response = PuntosDeEncuentro.get_punto_by_id(id)
+    if not response:
+        response = {
+            "error_name": "400 Bad Request",
+            "error_description": "No existe un punto con dicho id",
+        }
+        return jsonify(response)
+    response = PuntoEncuentroSchema.dump(response)
+    return jsonify(response)

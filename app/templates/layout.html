@@ -21,12 +21,14 @@
     <script src="https://kit.fontawesome.com/e53bae01c6.js" crossorigin="anonymous"></script>
     <!-- estilos de la pagina -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    
     {% if is_authenticated() %}
       {% set css_private = get_configuration().css_private %} 
       <link rel="stylesheet" href="{{ url_for('static', filename=css_private) }}">   
     {% endif %}
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
+    <script type="module" src="{{ url_for('static', filename='js/navbar.js')}}"></script>
   </head>
     
   <body>
@@ -34,7 +36,7 @@
       <div class="title navcolor navbar navbar-dark bg-dark">
         <!-- Navbar content -->
         <div class="active">    
-          <label for="check" class="checkbtn">
+          <label for="check" id="checkbtn" class="checkbtn">
               <i class="fas fa-bars"></i>
           </label>
         </div>

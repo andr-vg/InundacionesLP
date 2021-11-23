@@ -86,12 +86,6 @@ div.active {
   min-width: 170px;
 }
 
-.col-sm-auto, 
-form .col.align-items-center,
-.col.align-items-center {
-  z-index: -1;
-}
-
 .clear {
   clear: both;
   height: 0;
@@ -230,10 +224,9 @@ figure {
         padding: 0%;
         transition: all .5s;
         position: absolute;
-        z-index: 10;
-        
+       
     }
-
+  
     nav ul li {
         width: 100%;
     }
@@ -252,8 +245,8 @@ figure {
         left: 0%;
         top: 80%;
         transition: all .5s;
-
     }
+    
 }
 
 @media screen and (max-width:360px) {

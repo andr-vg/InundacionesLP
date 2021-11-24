@@ -1,9 +1,9 @@
 :root {
-  --primary: #17252A;
-  --secondary: #2B7A78;
-  --success: #3AAFA9;
-  --danger: #DEF2F1;
-  --info: #FEFFFF;
+  --primary: #17252a;
+  --secondary: #2b7a78;
+  --success: #3aafa9;
+  --danger: #def2f1;
+  --info: #feffff;
 }
 
 body {
@@ -11,7 +11,7 @@ body {
   color: var(--info);
 }
 
-.navcolor{
+.navcolor {
   background-color: var(--primary) !important;
 }
 
@@ -24,7 +24,9 @@ a:hover {
   color: var(--primary);
 }
 
-a.link, .align-right a {
+a.link,
+.align-right a,
+.botones {
   background-color: var(--danger) !important;
   color: var(--primary) !important;
 }
@@ -33,77 +35,77 @@ h4 {
   color: aliceblue;
 }
 
-.material-icons { 
+.material-icons {
   font-size: 19px;
   padding: 0%;
 }
-.material-icons.md-18 { 
-  font-size: 18px; 
+.material-icons.md-18 {
+  font-size: 18px;
   vertical-align: bottom;
 }
-.material-icons.md-24 { 
-  font-size: 24px; 
+.material-icons.md-24 {
+  font-size: 24px;
   vertical-align: bottom;
 }
-.material-icons.md-36 { 
-  font-size: 36px; 
+.material-icons.md-36 {
+  font-size: 36px;
   vertical-align: bottom;
 }
-.material-icons.md-48 { 
-  font-size: 48px; 
+.material-icons.md-48 {
+  font-size: 48px;
 }
 
-table.table> tbody > tr> td,
-table{
-color:var(--info);
-font-size: 16px;
-background-color: var(--secondary);
-border-color: var(--danger);
+table.table > tbody > tr > td,
+table {
+  color: var(--info);
+  font-size: 16px;
+  background-color: var(--secondary);
+  border-color: var(--danger);
 }
 
-table.table-sm> thead > tr > th {
-color:var(--danger);
-font-weight: bolder;
-font-size: 16px;
-background-color: var(--primary);
-border-color: var(--primary);
+table.table-sm > thead > tr > th {
+  color: var(--danger);
+  font-weight: bolder;
+  font-size: 16px;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
-#mapid { height: 500px; width: 500px; }
-
-#lat, #long { 
-  display:none;
+#mapid {
+  height: 500px;
+  width: 500px;
 }
 
+#lat,
+#long {
+  display: none;
+}
 
-.page-link{
+.page-link {
   background-color: var(--primary) !important;
-  color:var(--info);
+  color: var(--info);
   border: 1px solid var(--danger);
 }
 
-.page-link:hover{
+.page-link:hover {
   color: var(--secondary);
 }
 
-.page-item.disabled .page-link{
+.page-item.disabled .page-link {
   background-color: var(--info) !important;
   color: var(--primary);
   border: 1px solid var(--primary);
 }
-.btn-primary{
-  background-color:var(--danger) !important;
-  color:black;
-  border-color:var(--danger) !important;
+.btn-primary {
+  background-color: var(--danger) !important;
+  color: black;
+  border-color: var(--danger) !important;
 }
 
-/* Media queries */ 
+/* Media queries */
 
-@media screen and
-(max-width: 768px) {
-
+@media screen and (max-width: 768px) {
   nav ul {
     background-color: var(--primary);
   }
-
 }

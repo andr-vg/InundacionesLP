@@ -21,14 +21,14 @@
     <script src="https://kit.fontawesome.com/e53bae01c6.js" crossorigin="anonymous"></script>
     <!-- estilos de la pagina -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-    
+    <script type="module" src="{{ url_for('static', filename='js/navbar.js')}}"></script>
     {% if is_authenticated() %}
       {% set css_private = get_configuration().css_private %} 
       <link rel="stylesheet" href="{{ url_for('static', filename=css_private) }}">   
     {% endif %}
     <title>{% block title %}{% endblock %}</title>
     {% endblock %}
-    <script type="module" src="{{ url_for('static', filename='js/navbar.js')}}"></script>
+    
   </head>
     
   <body>
@@ -56,7 +56,7 @@
                     <span class="material-icons md-14"><i class="fas fa-user"></i></span>
                       Bienvenido de nuevo <strong>{{ get_username() }}</strong>
                     </h4>
-                      <a href="{{ url_for('auth_logout') }}" class="col-6 btn btn-sm float-center">Cerrar sesión</a>                  
+                      <a href="{{ url_for('auth_logout') }}" class="col-6 btn btn-sm float-center cerrar2">Cerrar sesión</a>                  
                 </div>
               </div>
             </div>
@@ -70,6 +70,12 @@
         <input type="checkbox" id="check" class="active">
         <ul>
         {% if is_authenticated() %}
+            <li class="cerrar3">
+              <span class="material-icons md-14">
+                <i class="fas fa-user"></i>
+              </span>
+              <strong>{{ get_username() }}</strong>
+            </li>
           {% if has_permission('configuration_update') %}
             <li><a href="{{ url_for('configuration_update') }}">Configuración</a></li>
           {% endif %}
@@ -91,7 +97,7 @@
           {% if has_permission('user_edit_profile') %}
             <li><a href="{{ url_for('user_edit_profile') }}">Mi perfil</a></li>
           {% endif %}
-          
+            <li class="cerrar"><a href="{{ url_for('auth_logout') }}">Cerrar sesión</a></li>
         {% endif %}          
         </ul>
       </nav>

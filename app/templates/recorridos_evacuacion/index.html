@@ -5,9 +5,9 @@
 {% endblock %}
 {% block content %}
   <h1>Recorridos de evacuación</h1>
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
+  <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
   {% if has_permission('recorridos_new') %}
-    <a href="{{ url_for('recorridos_new') }}" class="link">Nuevo recorrido</a>
+    <a href="{{ url_for('recorridos_new') }}" class="botones btn btn-sm">Nuevo recorrido</a>
   {% endif %}
   <form action="{{ url_for('recorridos_search', name=name, active=active) }}" method="GET"> 
     <div class="container-fluid">
@@ -17,7 +17,7 @@
           </div>
           <div class="col-sm-auto">  
             <p>
-              <input type="submit" value="Buscar">
+              <input type="submit" class="botones btn btn-sm" value="Buscar">
             </p>
           </div>
           <div class="col-sm-auto">
@@ -102,32 +102,5 @@
   {% from "paginate_macro.html" import show_paginate_table%}
 
   {{ show_paginate_table("recorridos", recorridos, filter, name, active) }}
-  <!--
-  <div class="container">
-    <nav aria-label="pagination_table">
-    <ul class="pagination">
-        {% for page_num in recorridos.iter_pages() %}
-            {% if page_num %}
-                {% if recorridos.page != page_num %}
-                    {% if filter == 1 %}
-                        <li class="page-item" >
-                            <a class="page-link" href="{{ url_for('recorridos_search', page=page_num, name=name, state=state ) }}">{{page_num}}</a>
-                        </li>
-                    {% else %}
-                    <li class="page-item" >
-                        <a class="page-link" href="{{url_for('recorridos_index', page=page_num)}}">{{page_num}}</a>
-                    </li>
-                    {% endif %}
-                {% else %}
-                    <li class="page-item disabled" >
-                    <a class="page-link" href="#">{{page_num}}</a>
-                    </li>
-                {% endif %}
-            {% endif %}
-
-        {% endfor %}
-    </ul>
-    </nav>
-  </div>  
--->
+  
 {% endblock %}

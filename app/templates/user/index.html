@@ -5,9 +5,9 @@
 {% endblock %}
 {% block content %}
 <h1>Usuarios</h1>
-<a href="{{ url_for('home') }}" class="link">Volver</a>
+<a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
 {% if has_permission('user_new') %}
-<a href="{{ url_for('user_new') }}" class="link">Nuevo</a>
+<a href="{{ url_for('user_new') }}" class="botones btn btn-sm">Nuevo</a>
 {% endif %}
 <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET">
   <div class="container-fluid">
@@ -17,7 +17,7 @@
       </div>
       <div class="col-sm-auto">
         <p>
-          <input type="submit" value="Buscar">
+          <input type="submit" class="botones btn btn-sm" value="Buscar">
         </p>
       </div>
       <div class="col-sm-auto">

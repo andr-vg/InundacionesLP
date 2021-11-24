@@ -5,18 +5,19 @@
 {% endblock %}
 {% block content %} 
 
+<h1>
+  Zonas inundables
+</h1>
 <div class="container">
-    <h1>
-        Subir Archivo
-    </h1>
+    
 
       <form action="{{ url_for('zonas_inundables_upload') }}"enctype=multipart/form-data method="post">
         <div class="row">
           <div class="col-sm-auto">
             <div class="form-group">
-                <label for="inputFile">Subir Archivo</label>
+                <label for="inputFile" >Subir Archivo</label>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <input type="file" name="inputFile">
+                <input type="file" class="botones btn btn-sm" name="inputFile">
             </div>
           </div>
             <div class="col-sm-auto">
@@ -37,7 +38,7 @@
         </div>
         <div class="col-sm-auto">  
           <p>
-            <input type="submit" value="Buscar">
+            <input type="submit" class="botones btn btn-sm" value="Buscar">
           </p>
         </div>
         <div class="col-sm-auto">

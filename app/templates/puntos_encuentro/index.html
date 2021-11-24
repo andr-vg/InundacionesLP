@@ -5,16 +5,16 @@
 {% endblock %}
 {% block content %}
   <h1>Puntos de encuentro</h1>
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
+  <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
   {% if has_permission('punto_encuentro_new') %}
-    <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo</a>
+    <a href="{{ url_for('punto_encuentro_new') }}" class="botones btn btn-sm">Nuevo</a>
   {% endif %}
   <form action="{{ url_for('punto_encuentro_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
     <input type="text" name="name">
     <input type="radio" name="active" value="activo"> <label> Activo</label>
     <input type="radio" name="active" value="inactivo"> <label> Inactivo</label>
     <p>
-      <input type="submit" value="Buscar">
+      <input type="submit" class="botones btn btn-sm" value="Buscar">
     </p>
   </form>
 

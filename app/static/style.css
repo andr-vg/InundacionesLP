@@ -202,6 +202,23 @@ figure {
   margin: 0%;
 }
 
+td div.row {
+  justify-content: space-around;
+}
+
+.table {
+  width: 99%;
+  margin: auto;
+}
+
+td.actions {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 /* Media queries */
 
 @media screen and (max-width: 768px) {
@@ -373,7 +390,8 @@ figure {
     border-radius: 10px 10px 0px 0px;
   }
 
-  .hidden {
+  .hidden,
+  .hidde {
     display: none;
   }
 

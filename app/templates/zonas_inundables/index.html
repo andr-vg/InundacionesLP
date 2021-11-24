@@ -5,33 +5,32 @@
 {% endblock %}
 {% block content %} 
 
-<h1>
-  Zonas inundables
-</h1>
-<div class="container">
-    
+<div class="row justify-content-center align-items-center">
+  <h1>Zonas inundables</h1>
+</div>
+<br>
 
+<div class="row justify-content-center align-items-center" style="column-gap: 3px;">
+  <div class="form-group">
       <form action="{{ url_for('zonas_inundables_upload') }}"enctype=multipart/form-data method="post">
         <div class="row">
           <div class="col-sm-auto">
             <div class="form-group">
-                <label for="inputFile" >Subir Archivo</label>
+                <label for="inputFile" >Subir</label>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="file" class="botones btn btn-sm" name="inputFile">
-            </div>
-          </div>
-            <div class="col-sm-auto">
-              <button type="submit" class="btn btn-success">
-                  Subir
+                <button type="submit" class="botones btn btn-sm">
+                  Subir 
               </button>
             </div>
+          </div>
+            
         </div>
       </form>
+  </div>
+  <div class="form-group">
 
-</div>
-
-<form action="{{ url_for('zonas_inundables_search', name=name, active=active) }}" method="GET"> 
-  <div class="container-fluid">
+  <form action="{{ url_for('zonas_inundables_search', name=name, active=active) }}" method="GET"> 
       <div class="row">
         <div class="col-sm-auto">
           <input type="text" name="name">
@@ -51,8 +50,10 @@
           <input type="radio" name="active" value="inactivo"> <label> Despublicado</label>
         </div>
       </div>
-  </div>
-</form>
+  </form>
+</div>
+
+</div>
 
 <table class="table table-sm">
     <thead>
@@ -78,6 +79,15 @@
         <td id="actions">
           <div class="row">
             {% if has_permission('zonas_inundables_update') %}
+              <div class="column mx-1">
+                <form action="{{url_for('zonas_inundables_edit')}}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <input name="id"  type="hidden" value="{{ zona.id }}">
+                  <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24"></span> </button> 
+                </form>
+              </div>
+            {% endif %}
+            {% if has_permission('zonas_inundables_update') %}
                 <form action="{{ url_for(('zonas_inundables_soft_delete')) }}" method="POST">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                   <input name="id"  type="hidden" value="{{ zona.id }}"> 
@@ -92,15 +102,7 @@
                     {% endif %}
                 </form>
             {% endif %}
-            {% if has_permission('zonas_inundables_update') %}
-              <div class="column mx-1">
-                <form action="{{url_for('zonas_inundables_edit')}}" method="POST">
-                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                  <input name="id"  type="hidden" value="{{ zona.id }}">
-                  <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24"></span> </button> 
-                </form>
-              </div>
-            {% endif %}
+            
             {% if has_permission('zonas_inundables_destroy') %}
               <div class="column mx-1">
                 <form action="{{ url_for('zonas_inundables_delete') }}" method="POST">

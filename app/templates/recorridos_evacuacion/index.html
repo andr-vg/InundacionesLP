@@ -4,11 +4,18 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<div class="row justify-content-center align-items-center">
   <h1>Recorridos de evacuación</h1>
-  <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
-  {% if has_permission('recorridos_new') %}
+</div>
+<br>
+<div class="row justify-content-center align-items-center">
+  <div class="form-group">
+    <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
+    {% if has_permission('recorridos_new') %}
     <a href="{{ url_for('recorridos_new') }}" class="botones btn btn-sm">Nuevo recorrido</a>
-  {% endif %}
+    {% endif %}
+  </div>
+  
   <form action="{{ url_for('recorridos_search', name=name, active=active) }}" method="GET"> 
     <div class="container-fluid">
         <div class="row">
@@ -32,6 +39,7 @@
         </div>
     </div>
   </form>
+</div>
 
   {% if recorridos.items %}
   <table class="table table-sm">
@@ -55,6 +63,16 @@
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
         <td>
           <div class="row">
+            <div class="column mx-1">
+              {% if has_permission('recorridos_edit') %}
+              <form action="{{ url_for('recorridos_edit') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input name="id" type="hidden" value="{{ recorrido.id }}">
+                <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24"></span> </button> 
+              
+              </form>
+              {% endif %}
+            </div>
             {% if has_permission('recorridos_publicate') %}
             <div class="column mx-1">
               {% if recorrido.state %}
@@ -64,16 +82,7 @@
               {% endif %}
             </div>
             {% endif %}
-            <div class="column mx-1">
-            {% if has_permission('recorridos_edit') %}
-            <form action="{{ url_for('recorridos_edit') }}" method="POST">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-              <input name="id" type="hidden" value="{{ recorrido.id }}">
-              <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24"></span> </button> 
             
-            </form>
-            {% endif %}
-            </div>
             {% if has_permission('recorridos_destroy') %}
             <div class="column mx-1">
               <form action="{{ url_for('recorridos_delete') }}" method="POST">

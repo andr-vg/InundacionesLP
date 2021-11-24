@@ -4,12 +4,18 @@
 {{ super() }}
 {% endblock %}
 {% block content %}
-<h1>Usuarios</h1>
-<a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
-{% if has_permission('user_new') %}
-<a href="{{ url_for('user_new') }}" class="botones btn btn-sm">Nuevo</a>
-{% endif %}
-<form action="{{ url_for('user_search', name=name, active=active) }}" method="GET">
+<div class="row justify-content-center align-items-center">
+  <h1>Usuarios</h1>
+</div>
+<br>
+<div class="row justify-content-center align-items-center">
+  <div class="form-group">
+    <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
+    {% if has_permission('user_new') %}
+    <a href="{{ url_for('user_new') }}" class="botones btn btn-sm">Nuevo</a>
+    {% endif %}
+  </div>
+  <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET">
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-auto">
@@ -31,18 +37,19 @@
       </div>
     </div>
   </div>
-</form>
+  </form>
+</div>
 
 {% if users.items %}
 <table class="table table-sm">
   <thead>
     <tr>
       <th>Nombre de usuario</th>
-      <th>Nombre</th>
-      <th>Apellido</th>
-      <th>Mail</th>
-      <th>Estado</th>
-      <th>Roles</th>
+      <th class="hidde">Nombre</th>
+      <th class="hidde">Apellido</th>
+      <th class="hidde">Mail</th>
+      <th class="hidde">Estado</th>
+      <th class="hidde">Roles</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -51,23 +58,23 @@
     <tr>
       <!-- ver de poner id o email como id del tr de cada user-->
       <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
-      <td> {{ user.firstname }} </td>
-      <td> {{ user.lastname }} </td>
-      <td> {{ user.email }} </td>
-      <td> {% if user.active == 1 %}
+      <td class="hidde"> {{ user.firstname }} </td>
+      <td class="hidde"> {{ user.lastname }} </td>
+      <td class="hidde"> {{ user.email }} </td>
+      <td class="hidde"> {% if user.active == 1 %}
         Activo
         {% else %}
         Inactivo
         {% endif %}
       </td>
       {% set roles = [] %}
-      <td> {% for rol in user.roles %}
+      <td class="hidde"> {% for rol in user.roles %}
         {{ rol.name }}
         {{ roles.append(rol.id) or "" }}
         {% endfor %}
       </td>
       <!-- mostrar acciones a realizar segun permisos del usuario actual -->
-      <td>
+      <td class="actions">
         <div class="row">
           {% if has_permission('user_edit') %}
           <form action="{{ url_for('user_edit') }}" method="POST">

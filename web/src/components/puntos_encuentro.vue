@@ -1,6 +1,11 @@
 <template>
   <div>
-    <l-map style="height: 450px" :zoom="zoom" :center="center">
+    <l-map
+      style="height: 450px"
+      :zoom="zoom"
+      :center="center"
+      @update:center="get_puntos"
+    >
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <div v-for="(punto, index) in puntos" :key="index">
         <l-marker :lat-lng="punto.coords.split(',')"></l-marker>
@@ -41,40 +46,40 @@ export default {
       errors: [],
     };
   },
+  methods: {
+    success_geolocation(position) {
+      this.centerUpdated([position.coords.latitude, position.coords.longitude]);
+    },
+    async get_geolocation() {
+      navigator.geolocation.getCurrentPosition(this.success_geolocation);
+    },
+    centerUpdated(center) {
+      this.center = center;
+    },
+    async get_puntos() {
+      return axios
+        .get("http://127.0.0.1:5000/api/puntos_encuentro/cercanos", {
+          params: {
+            lat: this.center[0],
+            lon: this.center[1],
+          },
+        })
+        .then((response) => {
+          // JSON responses are automatically parsed.
+          this.puntos = response.data;
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+  },
   // Fetches posts when the component is created.
   created() {
-    let self = this;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        self.center = [position.coords.latitude, position.coords.longitude];
-      });
-    } else {
-      self.center = [-34.9187, -57.956];
-    }
+    this.get_geolocation();
+    this.get_puntos();
   },
-  beforeUpdate() {
-    let self = this;
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        self.center = [position.coords.latitude, position.coords.longitude];
-      });
-    } else {
-      self.center = [-34.9187, -57.956];
-    }
-    axios
-      .get("http://127.0.0.1:5000/api/puntos_encuentro/cercanos", {
-        params: {
-          lat: this.center[0],
-          lon: this.center[1],
-        },
-      })
-      .then((response) => {
-        // JSON responses are automatically parsed.
-        this.puntos = response.data;
-      })
-      .catch((e) => {
-        this.errors.push(e);
-      });
+  updated() {
+    this.get_geolocation();
   },
 };
 </script>

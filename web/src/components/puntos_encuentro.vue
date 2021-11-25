@@ -1,4 +1,12 @@
 <template>
+  <div>
+    <l-map style="height: 450px" :zoom="zoom" :center="center">
+      <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+      <div v-for="(punto, index) in puntos" :key="index">
+        <l-marker :lat-lng="punto.coords.split(',')"></l-marker>
+      </div>
+    </l-map>
+  </div>
   <div class="PuntosYRecorridos">
     <h1>Puntos de encuentro:</h1>
     <ul v-if="puntos && puntos.length">
@@ -15,9 +23,20 @@
 </template>
 <script>
 import axios from "axios";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 export default {
+  components: {
+    LMap,
+    LTileLayer,
+    LMarker,
+  },
   data() {
     return {
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      attribution:
+        '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      zoom: 15,
+      center: [-34.9187, -57.956],
       puntos: [],
       errors: [],
     };

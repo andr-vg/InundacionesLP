@@ -48,6 +48,27 @@ class Recorridos(db.Model):
         return Recorridos.query.all()
 
     @classmethod
+    def get_all_publicated(cls, config):
+        """
+        Retorna la consulta de todos los recorridos de evacuacion
+        en la base de datos publicados
+
+        Args:
+            config(dict): contiene los datos de configuracion actuales
+        """
+        if config.ordered_by == "ascendente":
+            return (
+                Recorridos.query.filter(Recorridos.state == 1)
+                .order_by(Recorridos.name.asc())
+                .all()
+            )
+        return (
+            Recorridos.query.filter(Recorridos.state == 1)
+            .order_by(Recorridos.name.desc())
+            .all()
+        )
+
+    @classmethod
     def search_by_name(cls, name):
         """
         Busca un recorrido con un nombre similar al pasado por parametro
@@ -188,4 +209,23 @@ class Recorridos(db.Model):
             )
         return Recorridos.query.order_by(Recorridos.name.desc()).paginate(
             page, per_page=config.elements_per_page
+        )
+
+    def get_recorridos_paginated(page, config):
+        """
+        Devuelve todos los recorridos publicados paginados, se utilizara en la api
+        Args:
+            page(int): Numero entero que representa la pagina
+            config(dict): configuracion actual del sistema
+        """
+        if config.ordered_by == "ascendente":
+            return (
+                Recorridos.query.filter(Recorridos.state == 1)
+                .order_by(Recorridos.name.asc())
+                .paginate(page, per_page=int(config.elements_per_page))
+            )
+        return (
+            Recorridos.query.filter(Recorridos.state == 1)
+            .order_by(Recorridos.name.desc())
+            .paginate(page, per_page=int(config.elements_per_page))
         )

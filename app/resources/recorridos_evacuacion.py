@@ -70,9 +70,9 @@ def create():
             flash("Debe seleccionar al menos 3 puntos.")
             return render_template("recorridos_evacuacion/new.html", form=form)
         else:
-            new_recorrido = Recorridos(
-                name=form.name.data, description=form.description.data
-            )
+            print("AAAAAA", len(form.description.data))
+            desc = "" if len(form.description.data) == 0 else form.description.data
+            new_recorrido = Recorridos(name=form.name.data, description=desc)
             for coords in coordinates:
                 # creo las coordenadas
                 new_coords = Coordenadas(coords[0], coords[1])

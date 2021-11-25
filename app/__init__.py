@@ -18,6 +18,7 @@ from app.resources import (
 from app.resources.api.denuncias import denuncia_api
 from app.resources.api.zonas_inundables import zonas_inundables_api
 from app.resources.api.puntos_encuentro import puntos_encuentro_api
+from app.resources.api.recorridos_evacuacion import recorridos_evacuacion_api
 from app.helpers import handler
 from app.helpers import puntos_encuentro as puntos
 
@@ -416,6 +417,7 @@ def create_app(environment="development"):
     api.register_blueprint(zonas_inundables_api)
     api.register_blueprint(denuncia_api)
     api.register_blueprint(puntos_encuentro_api)
+    api.register_blueprint(recorridos_evacuacion_api)
     csrf.exempt(denuncia_api)
     app.register_blueprint(api)
     app.before_request(disable_csrf)

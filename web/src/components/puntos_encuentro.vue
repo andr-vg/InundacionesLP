@@ -43,8 +43,31 @@ export default {
   },
   // Fetches posts when the component is created.
   created() {
+    let self = this;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        self.center = [position.coords.latitude, position.coords.longitude];
+      });
+    } else {
+      self.center = [-34.9187, -57.956];
+    }
+  },
+  beforeUpdate() {
+    let self = this;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        self.center = [position.coords.latitude, position.coords.longitude];
+      });
+    } else {
+      self.center = [-34.9187, -57.956];
+    }
     axios
-      .get("http://127.0.0.1:5000/api/puntos_encuentro/")
+      .get("http://127.0.0.1:5000/api/puntos_encuentro/cercanos", {
+        params: {
+          lat: this.center[0],
+          lon: this.center[1],
+        },
+      })
       .then((response) => {
         // JSON responses are automatically parsed.
         this.puntos = response.data;

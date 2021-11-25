@@ -46,11 +46,15 @@ class ZonaInundable(db.Model):
             config(dict): contiene los datos de configuracion actuales
         """
         if config.ordered_by == "ascendente":
-            return ZonaInundable.query.filter(ZonaInundable.state == 1).order_by(
-                ZonaInundable.name.asc()
+            return (
+                ZonaInundable.query.filter(ZonaInundable.state == 1)
+                .order_by(ZonaInundable.name.asc())
+                .all()
             )
-        return ZonaInundable.query.filter(ZonaInundable.state == 1).order_by(
-            ZonaInundable.name.desc()
+        return (
+            ZonaInundable.query.filter(ZonaInundable.state == 1)
+            .order_by(ZonaInundable.name.desc())
+            .all()
         )
 
     zona_tiene_coords = Table(
@@ -189,8 +193,16 @@ class ZonaInundable(db.Model):
             page(int): Numero entero que representa la pagina
             config(dict): configuracion actual del sistema
         """
-        return ZonaInundable.get_all_publicated(config).paginate(
-            page, per_page=int(config.elements_per_page)
+        if config.ordered_by == "ascendente":
+            return (
+                ZonaInundable.query.filter(ZonaInundable.state == 1)
+                .order_by(ZonaInundable.name.asc())
+                .paginate(page, per_page=int(config.elements_per_page))
+            )
+        return (
+            ZonaInundable.query.filter(ZonaInundable.state == 1)
+            .order_by(ZonaInundable.name.desc())
+            .paginate(page, per_page=int(config.elements_per_page))
         )
 
     def get_coords_as_list(self):

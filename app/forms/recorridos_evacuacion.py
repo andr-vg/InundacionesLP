@@ -20,12 +20,18 @@ class CreateRecorrido(FlaskForm):
             validators.DataRequired(message="Campo requerido"),
             validators.length(min=4, message="Debe tener al menos 4 caracteres"),
             validators.length(max=250, message="No puede excederse de 250 caracteres"),
-            validators.regexp("^[a-zA-Z\s]*$", message="Nombre ingresado inválido"),
+            validators.regexp(
+                "^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 _]*$",
+                message="Nombre ingresado inválido",
+            ),
         ],
     )
     description = StringField(
         "Descripcion",
-        [validators.length(max=250, message="No puede excederse de 250 caracteres")],
+        [
+            validators.DataRequired(message="Campo requerido"),
+            validators.length(max=250, message="No puede excederse de 250 caracteres"),
+        ],
         widget=TextArea(),
     )
     coordinates = HiddenField("Coordinates")

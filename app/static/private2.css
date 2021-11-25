@@ -71,11 +71,6 @@ table.table-sm > thead > tr > th {
   border-color: var(--primary);
 }
 
-#mapid {
-  height: 500px;
-  width: 500px;
-}
-
 #lat,
 #long {
   display: none;

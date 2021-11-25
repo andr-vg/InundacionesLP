@@ -31,6 +31,33 @@ def index():
     return response
 
 
+@puntos_encuentro_api.get("/cercanos")
+def nearest():
+    config = Configuration.get_configuration()
+    if request.args:
+        puntos_iter = PuntosDeEncuentro.get_all(config)
+        try:
+            lat = float(request.args.get("lat"))
+            lon = float(request.args.get("lon"))
+            nearest_points = sorted(
+                puntos_iter, key=lambda point: point.haversine(lat, lon)
+            )[:5]
+            response = [PuntoEncuentroSchema.dump(punto) for punto in nearest_points]
+        except:
+            response = {
+                "error_name": "400 Bad Request",
+                "error_description": "Parametros invalidos",
+            }
+    else:
+        response = {
+            "error_name": "400 Bad Request",
+            "error_description": "Requiere los parametros lat y lon",
+        }
+    response = jsonify(response)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
 @puntos_encuentro_api.get("/<int:id>")
 def paginated(id):
     response = PuntosDeEncuentro.get_punto_by_id(id)

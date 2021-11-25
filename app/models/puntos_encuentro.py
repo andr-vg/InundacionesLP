@@ -1,4 +1,4 @@
-import datetime
+import datetime, math
 
 
 from app.db import db
@@ -147,3 +147,18 @@ class PuntosDeEncuentro(db.Model):
         return PuntosDeEncuentro.query.order_by(PuntosDeEncuentro.name.desc()).paginate(
             page, per_page=config.elements_per_page
         )
+
+    def haversine(self, lat, lon):
+        """Devuelve la distancia con otro punto de encuentro
+        :param lat(float):Numero real que representa la latitud
+        :param lon(float):Numero real que representa la longitud"""
+
+        rad = math.pi / 180
+        dlat = lat - self.lat
+        dlon = lon - self.long
+        R = 6372.795477598
+        a = (math.sin(rad * dlat / 2)) ** 2 + math.cos(rad * self.lat) * math.cos(
+            rad * lat
+        ) * (math.sin(rad * dlon / 2)) ** 2
+        distancia = 2 * R * math.asin(math.sqrt(a))
+        return distancia

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from './components/HelloWorld.vue'
-import PuntosYRecorridos from './components/Puntos_encuentro.vue'
+import PuntosYRecorridos from './components/PuntosYRecorridos.vue'
 
 const routes = [
     {

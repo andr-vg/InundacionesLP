@@ -70,8 +70,8 @@ def create():
             flash("Uno o mas campos ya se encuentra cargado en el sistema")
             return render_template("puntos_encuentro/new.html", form=form)
         punto = PuntosDeEncuentro(
-            name=form.name.data.upper(),
-            address=form.address.data.upper(),
+            name=form.name.data,
+            address=form.address.data,
             tel=form.tel.data,
             email=form.email.data,
             lat=form.lat.data,

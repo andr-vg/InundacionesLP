@@ -31,6 +31,35 @@ def index():
             return make_response(jsonify("Error 404 Not Found"), 404)
 
 
+@recorridos_evacuacion_api.get("/cercanos")
+def nearest():
+    config = Configuration.get_configuration()
+    if request.args:
+        recorridos_iter = Recorridos.get_all_publicated(config)
+        try:
+            lat = float(request.args.get("lat"))
+            lon = float(request.args.get("lon"))
+            nearest_points = sorted(
+                recorridos_iter, key=lambda recorrido: recorrido.haversine(lat, lon)
+            )[:5]
+            response = [
+                RecorridosSchema.dump(recorrido) for recorrido in nearest_points
+            ]
+        except:
+            response = {
+                "error_name": "400 Bad Request",
+                "error_description": "Parametros invalidos",
+            }
+    else:
+        response = {
+            "error_name": "400 Bad Request",
+            "error_description": "Requiere los parametros lat y lon",
+        }
+    response = jsonify(response)
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
+
+
 @recorridos_evacuacion_api.get("/<id>")
 def get(id):
     response = Recorridos.get_recorrido_by_id(id)

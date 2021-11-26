@@ -34,7 +34,7 @@ class RecorridosSchema(object):
             "id": obj.id,
             "nombre": obj.name,
             "coordenadas": [
-                {"lat": coord.lat, "long": coord.long} for coord in obj.coords
+                {"lat": coord.lat, "lng": coord.long} for coord in obj.coords
             ],
             "descripcion": obj.description,
         }

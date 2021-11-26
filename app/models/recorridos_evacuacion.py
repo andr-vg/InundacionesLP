@@ -1,4 +1,5 @@
-import datetime
+import datetime, math
+
 from app.db import db
 from sqlalchemy import (
     Table,
@@ -229,3 +230,14 @@ class Recorridos(db.Model):
             .order_by(Recorridos.name.desc())
             .paginate(page, per_page=int(config.elements_per_page))
         )
+
+    def haversine(self, lat, lon):
+        """Devuelve la distancia minima al punto pasado por parametro
+        :param lat(float):Numero real que representa la latitud
+        :param lon(float):Numero real que representa la longitud"""
+        min = 1_000_000
+        for each in self.coords:
+            distancia = each.haversine(lat, lon)
+            if distancia < min:
+                min = distancia
+        return min

@@ -1,3 +1,5 @@
+import math
+
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import null
 from app.db import db
@@ -102,3 +104,18 @@ class Coordenadas(db.Model):
         """
         db.session.delete(self)
         db.session.commit()
+
+    def haversine(self, lat, lon):
+        """Devuelve la distancia con otro punto
+        :param lat(float):Numero real que representa la latitud
+        :param lon(float):Numero real que representa la longitud"""
+
+        rad = math.pi / 180
+        dlat = lat - float(self.lat)
+        dlon = lon - float(self.long)
+        R = 6372.795477598
+        a = (math.sin(rad * dlat / 2)) ** 2 + math.cos(
+            rad * float(self.lat)
+        ) * math.cos(rad * lat) * (math.sin(rad * dlon / 2)) ** 2
+        distancia = 2 * R * math.asin(math.sqrt(a))
+        return distancia

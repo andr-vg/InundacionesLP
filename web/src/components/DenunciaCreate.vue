@@ -23,7 +23,6 @@
     <label for="">Apellido</label>
     <input placeholder="Apellido" v-model="lastname">
     <button @click="save">Guardar</button>
-    <p>{{ markerLatLng }}</p>
   </div>
 </template>
 <script>

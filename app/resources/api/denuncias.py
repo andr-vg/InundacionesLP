@@ -1,10 +1,10 @@
 from flask import jsonify, Blueprint, request, session
-from werkzeug.wrappers import response
 from app.models.categories import Categoria
 from app.models.configuration import Configuration
 from app.models.denuncias import Denuncia
 from app.schema.denuncias import DenunciaSchema
 from app.forms.denuncias import CreateDenunciaForm
+from flask_cors import CORS
 
 
 denuncia_api = Blueprint("denuncias", __name__, url_prefix="/denuncias")

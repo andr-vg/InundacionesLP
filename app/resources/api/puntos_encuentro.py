@@ -26,9 +26,7 @@ def index():
                 "error_name": "400 Bad Request",
                 "error_description": "Numero de pagina invalido",
             }
-    response = jsonify(response)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return jsonify(response)
 
 
 @puntos_encuentro_api.get("/cercanos")
@@ -53,9 +51,7 @@ def nearest():
             "error_name": "400 Bad Request",
             "error_description": "Requiere los parametros lat y lon",
         }
-    response = jsonify(response)
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
+    return jsonify(response)
 
 
 @puntos_encuentro_api.get("/<int:id>")

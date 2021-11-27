@@ -1,9 +1,11 @@
 from os import path, environ
 from flask import Flask, render_template, g, Blueprint, redirect, url_for, request
 from flask_session import Session
+from app import resources
 from config import config
 from app import db
 from flask_bcrypt import Bcrypt
+from flask_cors import CORS
 from app.resources import (
     configuration,
     puntos_encuentro,
@@ -18,6 +20,7 @@ from app.resources import (
 from app.resources.api.denuncias import denuncia_api
 from app.resources.api.zonas_inundables import zonas_inundables_api
 from app.resources.api.puntos_encuentro import puntos_encuentro_api
+from app.resources.api.categorias import categoria_api
 from app.resources.api.recorridos_evacuacion import recorridos_evacuacion_api
 from app.helpers import handler
 from app.helpers import puntos_encuentro as puntos
@@ -33,6 +36,7 @@ csrf = CSRFProtect()
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
+    CORS(app)
 
     # CSRF Setup
     # csrf = CSRFProtect(app)
@@ -418,6 +422,7 @@ def create_app(environment="development"):
     api.register_blueprint(denuncia_api)
     api.register_blueprint(puntos_encuentro_api)
     api.register_blueprint(recorridos_evacuacion_api)
+    api.register_blueprint(categoria_api)
     csrf.exempt(denuncia_api)
     app.register_blueprint(api)
     app.before_request(disable_csrf)

@@ -8,7 +8,9 @@
     >
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <div v-for="(punto, index) in puntos" :key="index">
-        <l-marker :lat-lng="punto.coords.split(',')"></l-marker>
+        <l-marker :lat-lng="punto.coords.split(',')">
+          <l-popup>{{ punto.name }}</l-popup>
+        </l-marker>
       </div>
       <div v-for="(recorrido, index) in recorridos" :key="index">
         <l-polyline
@@ -16,7 +18,9 @@
           :color="color"
           :weight="2"
           @update:center="get_recorridos"
-        ></l-polyline>
+        >
+          <l-popup> {{ recorrido.nombre }}</l-popup>
+        </l-polyline>
       </div>
     </l-map>
   </div>
@@ -25,7 +29,7 @@
       <h2>Puntos de encuentro:</h2>
       <ul v-if="puntos && puntos.length">
         <li v-for="(punto, index) in puntos" :key="index">
-          <detalle :punto="punto"></detalle>
+          <detallePunto :punto="punto"></detallePunto>
         </li>
       </ul>
       <ul v-if="errors && errors.length">
@@ -38,7 +42,7 @@
       <h2>Recorridos de evacuación</h2>
       <ul v-if="puntos && puntos.length">
         <li v-for="(recorrido, index) in recorridos" :key="index">
-          {{ recorrido.nombre }}
+          <detalleRecorrido :recorrido="recorrido"></detalleRecorrido>
         </li>
       </ul>
       <ul v-if="errors && errors.length">
@@ -51,15 +55,24 @@
 </template>
 <script>
 import axios from "axios";
-import { LMap, LTileLayer, LMarker, LPolyline } from "@vue-leaflet/vue-leaflet";
-import detalle from "./PuntoShow.vue";
+import {
+  LMap,
+  LTileLayer,
+  LMarker,
+  LPolyline,
+  LPopup,
+} from "@vue-leaflet/vue-leaflet";
+import detallePunto from "./PuntoShow.vue";
+import detalleRecorrido from "./RecorridoShow.vue";
 export default {
   components: {
     LMap,
     LTileLayer,
+    LPopup,
     LMarker,
     LPolyline,
-    detalle,
+    detallePunto,
+    detalleRecorrido,
   },
   data() {
     return {

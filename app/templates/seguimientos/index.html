@@ -1,5 +1,8 @@
 {% block content %}
 <h1>Seguimientos</h1>
+{% if is_authenticated()==denuncia.user_assign.email and has_permission('denuncias_update')  and denuncia.state.name!="cerrada" and denuncia.state.name!="resuelta" %}
+          <a href="{{url_for('seguimiento_new', id=denuncia.id) }}" class="link"> Realizar seguimiento</a>
+{% endif%}
 {% if denuncia.tracking %}
 <table class="table table-sm">
     <thead>
@@ -7,6 +10,7 @@
         <th>Descripcion</th>
         <th>Fecha de creacion</th>
         <th>Autor</th>
+        <th>Acciones</th>
     </tr>
 </thead>
 <tbody>
@@ -15,6 +19,9 @@
     <td> {{ seguimiento.description }} </td>
     <td> {{ seguimiento.created_at.strftime('%d-%m-%Y') }} </td>
     <td> {{ seguimiento.user_assign.email}} </td>
+    <td>{% if has_permission('denuncias_destroy') %}
+      <a href="{{url_for('seguimiento_delete', id=seguimiento.id,page=seguimientos.page) }}" class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar este seguimiento');"> Eliminar <i class="glyphicon glyphicon-trash" ></i></a>
+    {% endif%}</td>
 </tr>
   {% endfor %}
 </tbody>

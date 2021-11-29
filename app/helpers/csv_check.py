@@ -4,5 +4,4 @@ def check(filename):
     Args:
         filename: Nombre del archivo a verificar
     """
-    return '.' in filename and \
-    filename.rsplit('.', 1)[1].lower() == "csv"
+    return "." in filename and filename.rsplit(".", 1)[1].lower() == "csv"

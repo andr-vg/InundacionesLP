@@ -3,7 +3,9 @@ from app.models.configuration import Configuration
 from app.models.zonas_inundables import ZonaInundable
 from app.schema.zonas_inundables import ZonasInundablesSchema
 
-zonas_inundables_api = Blueprint("zonas_inundables", __name__, url_prefix="/zonas_inundables")
+zonas_inundables_api = Blueprint(
+    "zonas_inundables", __name__, url_prefix="/zonas_inundables"
+)
 
 
 @zonas_inundables_api.get("/")
@@ -23,6 +25,7 @@ def index():
             return jsonify(zonas)
         except:
             return make_response(jsonify("Error 404 Not Found"), 404)
+
 
 @zonas_inundables_api.get("/<id>")
 def get(id):

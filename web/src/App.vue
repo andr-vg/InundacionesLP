@@ -1,19 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
-  <div id="app"><puntos_encuentro/></div>
+  <div id="app">
+    <div id="nav">
+      <router-link to="/home">Home</router-link>
+      <router-link to="/zonas_inundables">Zonas inundables</router-link>
+      <router-link to="/puntos_y_recorridos">Puntos y recorridos </router-link>
+      <router-link to="/denuncia">Denuncias</router-link>
+    </div>
+  </div>
+  <router-view />
 </template>
-
-<script>
-import puntos_encuentro from './components/puntos_encuentro.vue'
-
-export default {
-  name: 'App',
-  components: {
-    puntos_encuentro
-  }
-}
-</script>
 
 <style>
 #app {

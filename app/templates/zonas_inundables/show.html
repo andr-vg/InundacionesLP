@@ -16,20 +16,41 @@
 </script>
  {% endblock %}
 {% block content %}
-  <div class="container">
-    <h1>Detalle</h1>
+<div class="row justify-content-center align-items-center">
+  <h1>Detalle</h1>
+</div>
+<div class="row justify-content-center align-items-center"> 
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col align-items-center" >
           <p>Nombre: {{ zona.name }}</p>
           <p>Codigo: {{ zona.code }}</p>
           <p>Color: {{ zona.color }}</p>
           <p>Publicado: {{ "si" if zona.state else "No" }}</p>
           <p>Puntos: {{ zona.get_coords_lenght() }}</p>
-          <button id="coords-button" class="btn btn-secondary" data-toggle="collapse" data-target="#coords">Ver Coordenadas</button>
-          <div class="collapse" id="coords">
-            <p >Coordenadas: {{ zona.get_coords_as_list() }} </p>
+          <div class="form-group">
+            <button id="coords-button" class="btn btn-secondary" data-toggle="collapse" data-target="#coords">Ver Coordenadas</button>
+            <div class="collapse" id="coords">
+              <p>Coordenadas: {{ zona.get_coords_as_list() }} </p>
+            </div>
           </div>
           <div class="container" >
             <div id="mapid"></div>
           </div>
-    <a href="{{ url_for('zonas_inundables_index') }}" class="link">Volver</a>
+          <br>
+          <div class="form-group">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <a href="{{ url_for('zonas_inundables_index') }}" class="col-6 btn btn-primary btn-sm float-left">Volver</a>
+      
+                </div>
+                <div class="col">
+  
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
   </div>
+</div>
 {% endblock %}

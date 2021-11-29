@@ -1,10 +1,24 @@
+import math
 
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import null
 from app.db import db
-from sqlalchemy import cast, Column, Integer, String, DateTime, Boolean, text, select, and_,or_, Float
+from sqlalchemy import (
+    cast,
+    Column,
+    Integer,
+    String,
+    DateTime,
+    Boolean,
+    text,
+    select,
+    and_,
+    or_,
+    Float,
+)
 from app.models.zonas_inundables import ZonaInundable
 from app.models.recorridos_evacuacion import Recorridos
+
 
 class Coordenadas(db.Model):
     """
@@ -14,8 +28,9 @@ class Coordenadas(db.Model):
         lat(string): coordenada latitud
         long(string): coordenada longitud
     """
+
     @classmethod
-    def add_coords(cls,coords):
+    def add_coords(cls, coords):
         """
         Se agregan las coordenadas al sistema, debe hacerse un update luego
 
@@ -23,40 +38,33 @@ class Coordenadas(db.Model):
             coords(Coordenadas): coordenadas a agregar
         """
         db.session.add(coords)
-
-
-    @classmethod
-    def update_coords(cls):
-        """
-        Se actualiza la base de datos con los cambios
-        """
         db.session.commit()
 
-    
     @classmethod
-    def get_or_create(cls,lat,long):
+    def get_or_create(cls, lat, long):
         """
         Creacion y retorno de las coordenadas pasadas por parámetro
 
         Args:
             lat, long (string): coordenadas
         """
-        coords = Coordenadas.query.filter((Coordenadas.lat==lat[:8])&(Coordenadas.long==long[:8])).first()
+        coords = Coordenadas.query.filter(
+            (Coordenadas.lat == lat[:8]) & (Coordenadas.long == long[:8])
+        ).first()
         if not coords:
-            coords = Coordenadas(lat=lat,long=long)
+            coords = Coordenadas(lat=lat, long=long)
             Coordenadas.add_coords(coords=coords)
         return coords
 
-    __tablename__ = 'coordenadas'
+    __tablename__ = "coordenadas"
     id = Column(Integer, primary_key=True)
     lat = Column(String(255))
     long = Column(String(255))
 
-    def __init__(self,lat,long):
-        self.lat = round(lat,8)
-        self.long = round(long,8)
+    def __init__(self, lat, long):
+        self.lat = round(lat, 8)
+        self.long = round(long, 8)
 
-    
     def get_by_id(id):
         """
         Retorna la coordenada con el id pasado por parámetro
@@ -64,9 +72,9 @@ class Coordenadas(db.Model):
         Args:
             id(int): id a buscar
         """
-        return Coordenadas.query.filter(Coordenadas.id==id).first()
+        return Coordenadas.query.filter(Coordenadas.id == id).first()
 
-    def assign_zonas_inundables(self,zona,coords):
+    def assign_zonas_inundables(self, zona, coords):
         """
         Se asignan las coordenadas de la zona
 
@@ -76,7 +84,7 @@ class Coordenadas(db.Model):
         """
         Coordenadas.add_coords(coords)
         self.zonasInundables.append(zona)
-        Coordenadas.update_coords()
+        db.session.commit()
 
     def assign_recorridos_evacuacion(self, recorrido, coords):
         """
@@ -88,12 +96,26 @@ class Coordenadas(db.Model):
         """
         Coordenadas.add_coords(coords)
         self.recorridosEvacuacion.append(recorrido)
-        Coordenadas.update_coords()
-        
+        db.session.commit()
+
     def delete(self):
         """
         Se elimina la coordenada de la base de datos
         """
         db.session.delete(self)
-    
+        db.session.commit()
 
+    def haversine(self, lat, lon):
+        """Devuelve la distancia con otro punto
+        :param lat(float):Numero real que representa la latitud
+        :param lon(float):Numero real que representa la longitud"""
+
+        rad = math.pi / 180
+        dlat = lat - float(self.lat)
+        dlon = lon - float(self.long)
+        R = 6372.795477598
+        a = (math.sin(rad * dlat / 2)) ** 2 + math.cos(
+            rad * float(self.lat)
+        ) * math.cos(rad * lat) * (math.sin(rad * dlon / 2)) ** 2
+        distancia = 2 * R * math.asin(math.sqrt(a))
+        return distancia

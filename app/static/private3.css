@@ -1,9 +1,9 @@
 :root {
-  --primary: #77A6F7;
-  --secondary: #FFFFFF;
+  --primary: #77a6f7;
+  --secondary: #ffffff;
   --success: #47547b;
-  --danger: #D3E2FC;
-  --info: #0B0C10;
+  --danger: #d3e2fc;
+  --info: #0b0c10;
 }
 
 body {
@@ -11,10 +11,9 @@ body {
   color: var(--success);
 }
 
-.navcolor{
+.navcolor {
   background-color: var(--primary) !important;
 }
-
 
 a {
   color: var(--success);
@@ -25,7 +24,9 @@ a:hover {
   color: var(--info);
 }
 
-a.link, .align-right a {
+a.link,
+.align-right a,
+.botones {
   background-color: var(--danger) !important;
   color: var(--primary) !important;
 }
@@ -34,52 +35,61 @@ h4 {
   color: var(--secondary);
 }
 
-.material-icons { 
+.material-icons {
   font-size: 19px;
   padding: 0%;
 }
-.material-icons.md-18 { 
+.material-icons.md-18 {
   font-size: 18px;
   vertical-align: bottom;
- }
-.material-icons.md-24 { 
+}
+.material-icons.md-24 {
   font-size: 24px;
   vertical-align: bottom;
- }
-.material-icons.md-36 { 
+}
+.material-icons.md-36 {
   font-size: 36px;
   vertical-align: bottom;
- }
-.material-icons.md-48 { font-size: 48px; }
-
-table.table> tbody > tr> td,
-table{
-color:var(--info);
-font-size: 16px;
-background-color: var(--danger);
-border-color: var(--danger);
+}
+.material-icons.md-48 {
+  font-size: 48px;
 }
 
-table.table-sm> thead > tr > th {
-color:var(--secondary);
-font-weight: bolder;
-font-size: 16px;
-background-color: var(--primary);
-border-color: var(--primary);
+table.table > tbody > tr > td,
+table {
+  color: var(--info);
+  font-size: 16px;
+  background-color: var(--danger);
+  border-color: var(--danger);
 }
 
-#mapid { height: 500px; width: 500px; }
-
-#lat, #long { 
-  display:none;
+table.table-sm > thead > tr > th {
+  color: var(--secondary);
+  font-weight: bolder;
+  font-size: 16px;
+  background-color: var(--primary);
+  border-color: var(--primary);
 }
 
-.page-link{
+#lat,
+#long {
+  display: none;
+}
+
+.page-link {
   background-color: var(--primary) !important;
-  color:var(--info);
+  color: var(--info);
   border: 1px solid var(--danger);
 }
 
-.page-link:hover{
+.page-link:hover {
   color: var(--secondary);
+}
+
+/* Media queries */
+
+@media screen and (max-width: 768px) {
+  nav ul {
+    background-color: var(--primary);
+  }
 }

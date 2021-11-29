@@ -4,11 +4,17 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<div class="row justify-content-center align-items-center">
   <h1>Crear un usuario</h1>
-  <form action="{{ url_for('user_create') }}" method="POST">
-    <div class="container">
-    <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>
-    {% include "user/form.html" %}
+</div>
+<div class="row justify-content-center align-items-center"> 
+  <div class="row justify-content-center align-items-center h-100">
+    <div class="col align-items-center" >
+      <form action="{{ url_for('user_create') }}" method="POST">
+        <input type="hidden" id='csrf_token' name="csrf_token" value="{{ csrf_token() }}"/>          
+        {% include "user/form.html" %}
+      </form>
     </div>
-  </form>
+  </div>
+</div>
 {% endblock %}

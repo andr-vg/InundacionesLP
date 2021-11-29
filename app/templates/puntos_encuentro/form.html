@@ -1,58 +1,59 @@
 {% block form %}
-<div class="row">
-    <div class="col-4">
-      {{ form.name.label }}*
-      {{ form.name(class="form-control") }}
-      {% for error in form.name.errors %}
-      <p class="alert alert-danger">{{error}}</p>
-      {% endfor %}
-    </div>
+<div class="form-group">
+  <p>
+    {{ form.name.label }}*
+    {{ form.name(class="form-control") }}
+  </p>
+  {% for error in form.name.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
 </div>
-<div class="row">
-    <div class="col-4">
+<div class="form-group">
+  <p>
       {{ form.address.label }}*
       {{ form.address(class="form-control") }}
-      {% for error in form.address.errors %}
-      <p class="alert alert-danger">{{error}}</p>
-      {% endfor %}
-    </div>
-    </div>
+  </p>
+  {% for error in form.address.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
+</div>
+<div class="form-group">
+  <p>
+    {{ form.tel.label }} {{ form.tel(class="form-control") }}
+    <small id="telHelp" class="form-text text-muted">Ejemplo: +54 221 4567890</small>
+  </p>
+  {% for error in form.tel.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
+</div>
+<div class="form-group">
+  <p>
+    {{ form.email.label }}
+    {{ form.email(class="form-control") }}
+    <small id="emailHelp" class="form-text text-muted">Ejemplo: InundacionesLP@mail.com</small>
+  </p>
+  {% for error in form.email.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+    {% endfor %}
+</div>
+{{form.lat}}
+{{form.long}}
+<p>* Campo requerido</p>   
+<div class="form-group">  
+  <div class="map-container">
+    <div id="mapid"></div>
+  </div>
+</div> 
+<div class="form-group">
+  <div class="container">
     <div class="row">
-      <div class="col-4">
-        {{ form.tel.label }}*
-        {{ form.tel(class="form-control") }}
-        <small id="telHelp" class="form-text text-muted">Ejemplo: +54 221 4567890</small>
-        {% for error in form.tel.errors %}
-      <p class="alert alert-danger">{{error}}</p>
-      {% endfor %}
+      <div class="col">
+        <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
+      </div>
+      <div class="col">
+        <a href="{{ url_for('punto_encuentro_index') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
       </div>
     </div>
-    <div class="row">
-      <div class="col-4">
-        {{ form.email.label }}*
-        {{ form.email(class="form-control") }}
-        <small id="emailHelp" class="form-text text-muted">Ejemplo: InundacionesLP@mail.com</small>
-        {% for error in form.email.errors %}
-      <p class="alert alert-danger">{{error}}</p>
-      {% endfor %}
-      </div>
-    </div>
-    {{form.lat}}
-    {{form.long}}
-    <p>* Campo requerido</p>      
-    <div class="map-container">
-      <div id="mapid"></div>
-    </div>
-    <div class="form-group">
-      <div class="container">
-        <div class="row">
-          <div class="col-1">
-            <input class="btn btn-primary btn-sm float-left" type="submit" value="Guardar">
-          </div>
-          <div class="col-1">
-            <a href="{{ url_for('punto_encuentro_index') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
+</div>
 {% endblock %}

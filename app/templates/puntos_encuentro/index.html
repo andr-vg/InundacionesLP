@@ -4,20 +4,39 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
+<div class="row justify-content-center align-items-center">
   <h1>Puntos de encuentro</h1>
-  <a href="{{ url_for('home') }}" class="link">Volver</a>
+</div>
+<br>
+<div class="row justify-content-center align-items-center">
+  <div class="form-group">
+  <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
   {% if has_permission('punto_encuentro_new') %}
-    <a href="{{ url_for('punto_encuentro_new') }}" class="link">Nuevo</a>
+    <a href="{{ url_for('punto_encuentro_new') }}" class="botones btn btn-sm">Nuevo</a>
   {% endif %}
+  </div>
   <form action="{{ url_for('punto_encuentro_search', name=name, active=active, inactive=inactive) }}" method="GET"> 
-    <input type="text" name="name">
-    <input type="radio" name="active" value="activo"> <label> Activo</label>
-    <input type="radio" name="active" value="inactivo"> <label> Inactivo</label>
-    <p>
-      <input type="submit" value="Buscar">
-    </p>
+    <div class="container-fluid">
+    <div class="row">
+    <div class="col-sm-auto"> 
+      <input type="text" name="name">
+    </div>
+    <div class="col-sm-auto"> 
+      <p>
+        <input type="submit" class="botones btn btn-sm" value="Buscar">
+      </p>
+    </div>
+    <div class="col-sm-auto"> 
+      <input type="radio" name="active" value="activo"> <label> Activo</label>
+    </div>
+    <div class="col-sm-auto"> 
+      <input type="radio" name="active" value="inactivo"> <label> Inactivo</label>
+    </div>
+    
+    </div>
+    </div>
   </form>
-
+</div>
 {% if puntos_encuentro.items %}
   <table class="table table-sm">
     <thead>
@@ -44,12 +63,19 @@
         <td>
           <div class="row">
             {% if has_permission('punto_encuentro_update') %}
+              <form action="{{ url_for('punto_encuentro_edit') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input name="id" type="hidden" value="{{ punto.id }}">
+                <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24"></span> </button> 
+              </form>
+            {% endif %}
+            {% if has_permission('punto_encuentro_update') %}
               <form action="{{ url_for(('punto_encuentro_soft_delete')) }}" method="POST">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <input name="id"  type="hidden" value="{{ punto.id }}"> 
                 {% if punto.state %}
                   <div class="column mx-1">
-                    <button class="btn btn-sm btn-danger" type="submit" onclick="return confirm('Está seguro que desea despublicar este punto de encuentro?');"> Despublicar <i class="glyphicon glyphicon-trash"></i></button> 
+                    <button class="btn btn-sm btn-secondary" type="submit" onclick="return confirm('Está seguro que desea despublicar este punto de encuentro?');"> Despublicar <i class="glyphicon glyphicon-trash"></i></button> 
                   </div>
                   {% else %}
                     <div class="column mx-1">
@@ -58,13 +84,7 @@
                   {% endif %}
               </form>
             {% endif %}
-            {% if has_permission('punto_encuentro_update') %}
-              <form action="{{ url_for('punto_encuentro_edit') }}" method="POST">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                <input name="id" type="hidden" value="{{ punto.id }}">
-                <button class="btn btn-sm btn-info" type="submit" > Editar <span class="material-icons md-24">&#xE150;</span> </button> 
-              </form>
-            {% endif %}
+            
             {% if has_permission('punto_encuentro_destroy') %}
             <form action="{{ url_for('punto_encuentro_delete') }}" method="POST">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

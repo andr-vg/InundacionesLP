@@ -1,21 +1,100 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,600,700');
-@import url('https://fonts.googleapis.com/css?family=Catamaran:400,800');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,700");
+@import url("https://fonts.googleapis.com/css?family=Catamaran:400,800");
 body {
   background-color: #d4e0ec !important;
-  font-family: 'Montserrat', Helvetica, sans-serif;
+  font-family: "Montserrat", Helvetica, sans-serif;
   font-size: 18px;
+  width: inherit;
+}
+
+header {
+  z-index: 30;
+}
+
+.title {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
 }
 
 .logo {
-    max-width: 170px;
+  max-width: 120px;
 }
 
 nav ul {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.navbar {
+  padding: 0.25rem 0.25rem;
+}
+.checkbtn i,
+li.cerrar {
+  visibility: hidden;
+}
+
+.cerrar3 {
+  visibility: hidden;
+  display: none;
+}
+
+#check {
+  display: none;
+}
+
+.checkbtn {
+  cursor: pointer;
+}
+
+/*
+nav, nav ul, nav ul li, nav ul li {
+  background: rgb(192, 206, 223);
+  background-image: linear-gradient(to right, rgba(247, 238, 201, 0.226), rgb(203, 207, 231));
+  color: aliceblue;
+}
+*/
+header nav ul li a {
+  background: transparent;
+}
+
+header nav {
+  /*
+  padding: 1% 1%;
+  */
+  border-bottom: rgb(162, 177, 190) solid 2px;
+  max-height: 70px;
+}
+
+header nav ul {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  column-gap: 3%;
+  font-size: initial;
+}
+
+header nav ul li {
+  display: inline-block;
+  text-align: center;
+  background: transparent;
+}
+
+header {
+  position: sticky;
+  top: 0%;
+  box-shadow: 0px 7px 15px #888888;
+}
+
+div.active {
+  min-width: 170px;
 }
 
 .clear {
@@ -33,7 +112,7 @@ footer {
 #container {
   width: 75%;
   margin: 0 auto;
-  background-color: #FFF;
+  background-color: #fff;
   padding: 20px 40px;
   border: solid 1px black;
   margin-top: 20px;
@@ -50,7 +129,6 @@ a:hover {
 
 button a {
   color: #dee6eb !important;
-
 }
 
 a.link {
@@ -69,8 +147,9 @@ a.link {
   letter-spacing: 1px;
 }
 
-ul, li {
-    list-style-type: none;
+ul,
+li {
+  list-style-type: none;
 }
 
 h4 {
@@ -78,21 +157,29 @@ h4 {
   color: aliceblue;
 }
 
-.material-icons { 
+.material-icons {
   font-size: 19px;
   padding: 0%;
 }
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
+.material-icons.md-18 {
+  font-size: 18px;
+}
+.material-icons.md-24 {
+  font-size: 24px;
+}
+.material-icons.md-36 {
+  font-size: 36px;
+}
+.material-icons.md-48 {
+  font-size: 48px;
+}
 
 .required:after {
-  content:" *";
+  content: " *";
   color: red;
 }
 
-#coords-button{
+#coords-button {
   margin-bottom: 10px;
 }
 
@@ -100,7 +187,7 @@ h4 {
   text-align: -webkit-right;
 }
 
-.align-right a{
+.align-right a {
   font-weight: bold;
 }
 
@@ -109,5 +196,230 @@ h4 {
 }
 
 ul.leaflet-draw-actions.leaflet-draw-actions-bottom li a[title="Save changes"] {
+  display: none;
+}
+
+figure {
+  margin: 0%;
+}
+
+td div.row {
+  justify-content: space-around;
+}
+
+.table {
+  width: 99%;
+  margin: auto;
+}
+
+td.actions {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+#mapid {
+  height: 500px;
+  width: 500px;
+}
+
+/* Media queries */
+
+@media screen and (max-width: 768px) {
+  /* propiedades comunes en la pagina */
+  header .title .form-group {
+    margin-bottom: inherit;
+  }
+
+  li.cerrar {
+    visibility: visible;
+  }
+  a.cerrar2,
+  .logo {
+    visibility: hidden;
     display: none;
+  }
+
+  header .title {
+    max-height: 170px;
+  }
+
+  header nav ul {
+    top: 90px;
+    flex-flow: row wrap;
+  }
+
+  #check:checked ~ ul {
+    top: 173px;
+  }
+
+  * {
+    font-size: 1rem;
+  }
+
+  nav ul li a,
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  div.active {
+    min-width: auto;
+  }
+
+  div.active label {
+    margin-bottom: inherit;
+  }
+
+  h4 {
+    margin-bottom: 0.09rem;
+  }
+
+  img {
+    width: 100%;
+    margin: 0%;
+  }
+
+  figure,
+  img,
+  .form-group .container .row .col.align-right,
+  div.active {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    align-self: stretch;
+  }
+  /* barra de navegacion oculta */
+
+  nav {
+    padding: 0%;
+    border-bottom: hidden;
+  }
+
+  .checkbtn {
+    padding: 10%;
+  }
+
+  .checkbtn i {
+    visibility: visible;
+  }
+
+  nav ul {
+    align-content: stretch;
+    /*
+        height: 67%;
+        position: fixed;
+        */
+    width: 100%;
+    left: -100%;
+    top: 20%;
+    text-align: center;
+    padding: 0%;
+    transition: all 0.5s;
+    position: absolute;
+  }
+
+  nav ul li {
+    width: 100%;
+  }
+
+  .title {
+    position: sticky;
+    top: 0%;
+  }
+
+  #check:checked ~ ul {
+    left: 0%;
+    top: 36px;
+    transition: all 0.5s;
+  }
+
+  #mapid {
+    width: auto;
+    height: 300px;
+    
+  }
+}
+
+@media screen and (max-width: 360px) {
+  /* header */
+  /* barra de navegacion oculta */
+
+  .title .logo,
+  .title .form-group {
+    visibility: hidden;
+  }
+
+  /* header */
+
+  .checkbtn {
+    visibility: visible;
+  }
+
+  .cerrar3 {
+    visibility: visible;
+    display: block;
+  }
+
+  * {
+    font-size: 0.85rem;
+  }
+
+  nav ul li a,
+  h1 {
+    font-size: 1rem;
+  }
+
+  .contenedor .item-img,
+  .contenedor .item-parrafo {
+    width: 100%;
+    margin: 0%;
+    max-width: none;
+  }
+
+  .products-index .item,
+  .products .item {
+    width: 100%;
+  }
+
+  .signup {
+    flex-wrap: wrap;
+  }
+
+  .form-signin,
+  .form-signup {
+    width: 95%;
+  }
+
+  .form-signin {
+    border-radius: 0px 0px 10px 10px;
+  }
+
+  .form-signup {
+    border-radius: 10px 10px 0px 0px;
+  }
+
+  .hidden,
+  .hidde {
+    display: none;
+  }
+
+  header .title {
+    /*
+    height: 10%;
+    position: fixed;
+    */
+    max-height: 30px;
+  }
+
+  header nav ul {
+    top: 90px;
+  }
+
+  #check:checked ~ ul {
+    top: 32px;
+  }
 }

@@ -1,13 +1,86 @@
 {% block form %}
-<div class="row">
-    <div class="col-4">
+<div class="form-group">
+  <p>
+    {{form.email.label}}* {{ form.email(class="form-control") }}
+    <small id="emailHelp" class="form-text text-muted">Ejemplo: InundacionesLP@mail.com</small>
+  </p>
+    {% for error in form.email.errors %}
+      <p class="alert alert-danger">{{error}}</p>
+    {% endfor %}
+</div>
+<div class="form-group">
+  <p>
+    {{ form.username.label }}* {{ form.username(class="form-control") }}
+  </p>
+  {% for error in form.username.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
+</div>
+<div class="form-group">
+  <p>
+    {{ form.firstname.label }}* {{ form.firstname(class="form-control") }}
+  </p>
+  {% for error in form.firstname.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
+</div>
+<div class="form-group">
+  <p>
+    {{ form.lastname.label }}* {{ form.lastname(class="form-control") }}
+  </p>
+  {% for error in form.lastname.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
+</div>
+<div class="form-group">
+  <p>
+    {{ form.password.label }}* {{ form.password(class="form-control") }}
+  </p>
+  {% for error in form.password.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
+</div>
+<div class="form-group">
+  <p>
+    {{ form.confirm.label }}* {{ form.confirm(class="form-control") }}
+  </p>
+  {% for error in form.confirm.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
+</div>
+<div class="form-group">
+  <p>
+    {{ form.rol.label }}*
+  </p>
+  <div class="form-group text-center">
+    {% for rol in form.rol %}
+      {{rol}}{{rol.label}}
+    {% endfor %}
+  </div>   
+  {% for error in form.rol.errors %}
+    <p class="alert alert-danger">{{error}}</p>
+  {% endfor %}
+</div>
+<p>* Campo requerido</p>
+<div class="form-group">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <input class="btn btn-primary btn-sm float-left" type="submit" value="Crear">
+      </div>
+      <div class="col">
+        <a href="{{ url_for('user_index') }}" class="btn btn-secondary btn-sm float-right">Volver</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
       {{ form.email.label }}*
       {{ form.email(class="form-control") }}
       <small id="emailHelp" class="form-text text-muted">Ejemplo: InundacionesLP@mail.com</small>
       {% for error in form.email.errors %}
     <p class="alert alert-danger">{{error}}</p>
     {% endfor %}
-    </div>
     <div class="col-4">
         {{ form.username.label }}*
         {{ form.username(class="form-control") }}
@@ -77,4 +150,5 @@
             </div>
           </div>
         </div>
+      -->
 {% endblock %}

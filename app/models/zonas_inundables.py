@@ -132,13 +132,13 @@ class ZonaInundable(db.Model):
         "Coordenadas", secondary="zona_tiene_coords", backref="zonasInundables"
     )
 
-    def __init__(self, name, state=True, color="rojo"):
+    def __init__(self, name, state=True, color="red"):
         self.code = self.generate_code()
         self.name = name
         self.state = state
         self.color = color
 
-    def edit(self, name, state=True, color="rojo"):
+    def edit(self, name, state=True, color="red"):
         self.name = name
         self.state = state
         self.color = color

@@ -13,8 +13,6 @@ def index():
     config = Configuration.get_configuration()
     if not request.args:
         recorridos_page = Recorridos.get_all_publicated(config)
-        print("RESULTADO", recorridos_page)
-        print("AAAA")
         recorridos = RecorridosSchema.dump(recorridos_page, all_=True)
         return jsonify(recorridos)
     else:

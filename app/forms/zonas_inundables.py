@@ -28,9 +28,9 @@ class EditZonaInundableForm(FlaskForm):
     color = SelectField(
         "Color",
         choices=[
-            ("rojo", "Rojo"),
-            ("azul", "Azul"),
-            ("verde", "Verde"),
-            ("amarillo", "Amarillo"),
+            ("red", "Rojo"),
+            ("blue", "Azul"),
+            ("green", "Verde"),
+            ("yellow", "Amarillo"),
         ],
     )

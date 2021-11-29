@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from './components/HelloWorld.vue'
 import PuntosYRecorridos from './components/PuntosYRecorridos.vue'
 import Denuncias from './components/DenunciaCreate.vue'
+import ZonasInundables from './components/ZonasInundables.vue'
 
 const routes = [
     {
@@ -18,6 +19,11 @@ const routes = [
         path: '/denuncia',
         name: 'denuncia',
         component: Denuncias
+    },
+    {
+        path: '/zonas_inundables',
+        name: 'zonas_inundables',
+        component: ZonasInundables
     },
 
 ]

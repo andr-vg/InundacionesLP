@@ -9,7 +9,10 @@
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <div v-for="(punto, index) in puntos" :key="index">
         <l-marker :lat-lng="punto.coords.split(',')">
-          <l-popup>{{ punto.name }}</l-popup>
+          <l-popup
+            >Nombre: {{ punto.name }} Correo: {{ punto.email }} Teléfono:
+            {{ punto.tel }}
+          </l-popup>
         </l-marker>
       </div>
       <div v-for="(recorrido, index) in recorridos" :key="index">
@@ -19,7 +22,7 @@
           :weight="2"
           @update:center="get_recorridos"
         >
-          <l-popup> {{ recorrido.nombre }}</l-popup>
+          <l-popup>Nombre: {{ recorrido.nombre }}</l-popup>
         </l-polyline>
       </div>
     </l-map>

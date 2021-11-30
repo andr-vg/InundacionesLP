@@ -1,4 +1,5 @@
 <template>
+  <link rel="stylesheet" type="text/css" :href="customerStyle" />
   <div id="app">
     <div id="nav">
       <router-link to="/home">Home</router-link>
@@ -9,7 +10,34 @@
   </div>
   <router-view />
 </template>
-
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      config: "",
+    };
+  },
+  methods: {
+    async get_configuration() {
+      return axios
+        .get("http://localhost:5000/api/configuracion")
+        .then((response) => {
+          this.config = response.data.css_public;
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+  },
+  computed: {
+    customerStyle() {
+      this.get_configuration();
+      return `web/src/assets/${this.config}`;
+    },
+  },
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

@@ -1,4 +1,4 @@
-from os import path, environ
+from os import path, environ, urandom
 from flask import Flask, render_template, g, Blueprint, redirect, url_for, request
 from flask_session import Session
 from app import resources
@@ -32,6 +32,19 @@ import logging
 
 csrf = CSRFProtect()
 
+from oauthlib.oauth2 import WebApplicationClient
+from flask_login import (LoginManager,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+    )
+# Configuration
+GOOGLE_CLIENT_ID = environ.get("GOOGLE_CLIENT_ID", None)
+GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET", None)
+GOOGLE_DISCOVERY_URL = (
+    "https://accounts.google.com/.well-known/openid-configuration"
+)
 
 def create_app(environment="development"):
     # Configuración inicial de la app
@@ -43,6 +56,15 @@ def create_app(environment="development"):
     csrf.init_app(app)
     app.config["WTF_CSRF_CHECK_DEFAULT"] = False
     app.config["WTF_CSRF_ENABLED"] = False
+    
+    app.secret_key = environ.get("SECRET_KEY") or urandom(24)
+    
+    # OAuth 2 client setup
+    client = WebApplicationClient(GOOGLE_CLIENT_ID)
+    
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
@@ -410,6 +432,22 @@ def create_app(environment="development"):
         recorridos_evacuacion.show,
         methods=["GET"],
     )
+
+##  Autenticacion Google
+    app.add_url_rule(
+        "/google_autenticacion",
+        "google_authenticate",
+        auth.google_login,
+        methods=["POST"]
+    ) 
+
+    app.add_url_rule(
+        "/login/callback",
+        "auth_callback",
+        auth.callback,
+        methods=["GET"]
+    ) 
+
 
     # Ruta para el Home (usando decorator)
     @app.route("/")

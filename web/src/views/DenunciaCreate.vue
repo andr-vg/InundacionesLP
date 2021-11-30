@@ -6,6 +6,7 @@
     </l-map>
   </div>
   <div>
+    <li v-if="success">{{ success }}</li>
     <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
     <label for="">Título</label>
     <input placeholder="Título" v-model="title" />
@@ -63,6 +64,7 @@ export default {
       firstname: "",
       lastname: "",
       errors: [],
+      success: "",
     };
   },
   methods: {
@@ -81,8 +83,16 @@ export default {
             tel: this.tel,
             email: this.email,
           })
-          .catch(function (error) {
-            console.log(error);
+          .then((response) => {
+            console.log(response.status);
+            if (response.status == 201) {
+              this.success = "Denuncia cargada exitosamente";
+            }
+          })
+          .catch((error) => {
+            if (error.response) {
+              this.errors.push(error.response.data.error_description);
+            }
           });
       }
     },
@@ -118,6 +128,7 @@ export default {
     },
     checkForm() {
       this.errors = [];
+      this.success = "";
       if (!(this.category in this.categories)) {
         this.errors.push("Seleccione una categoria valida");
       }

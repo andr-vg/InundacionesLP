@@ -104,12 +104,15 @@ export default {
     },
     get_puntos() {
       return axios
-        .get("http://127.0.0.1:5000/api/puntos_encuentro/cercanos", {
-          params: {
-            lat: this.center[0],
-            lon: this.center[1],
-          },
-        })
+        .get(
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/puntos_encuentro/cercanos",
+          {
+            params: {
+              lat: this.center[0],
+              lon: this.center[1],
+            },
+          }
+        )
         .then((response) => {
           // JSON responses are automatically parsed.
           this.puntos = response.data;
@@ -121,12 +124,15 @@ export default {
 
     get_recorridos() {
       return axios
-        .get("http://127.0.0.1:5000/api/recorridos_evacuacion/cercanos", {
-          params: {
-            lat: this.center[0],
-            lon: this.center[1],
-          },
-        })
+        .get(
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/recorridos_evacuacion/cercanos",
+          {
+            params: {
+              lat: this.center[0],
+              lon: this.center[1],
+            },
+          }
+        )
         .then((response) => {
           // JSON responses are automatically parsed.
           this.recorridos = response.data;

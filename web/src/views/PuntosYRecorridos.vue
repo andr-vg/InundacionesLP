@@ -27,9 +27,9 @@
       </div>
     </l-map>
   </div>
-  <div class="PuntosYRecorridos">
-    <div class="container">
-      <h2>Puntos de encuentro:</h2>
+  <div class="container">
+    <div class="container-left">
+      <h2>Puntos de encuentro</h2>
       <ul v-if="puntos && puntos.length">
         <li v-for="(punto, index) in puntos" :key="index">
           <detallePunto :punto="punto"></detallePunto>
@@ -41,7 +41,7 @@
         </li>
       </ul>
     </div>
-    <div class="container">
+    <div class="container-right">
       <h2>Recorridos de evacuación</h2>
       <ul v-if="puntos && puntos.length">
         <li v-for="(recorrido, index) in recorridos" :key="index">

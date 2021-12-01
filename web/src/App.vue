@@ -33,7 +33,7 @@ export default {
   computed: {
     customerStyle() {
       this.get_configuration();
-      return `web/src/assets/${this.config}`;
+      return `${this.config}`;
     },
   },
 };

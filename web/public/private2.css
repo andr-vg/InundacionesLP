@@ -30,7 +30,9 @@ a.link,
   background-color: var(--danger) !important;
   color: var(--primary) !important;
 }
-
+p {
+  font-weight: bolder;
+}
 h4 {
   color: aliceblue;
 }
@@ -54,7 +56,25 @@ h4 {
 .material-icons.md-48 {
   font-size: 48px;
 }
-
+.box {
+  margin: 0 0 25px;
+  overflow: hidden;
+  padding: 20px;
+  background-color: var(--primary);
+  border: 1px solid var(--secondary);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.container {
+  width: 700px;
+  margin: auto;
+}
+.container-left {
+  float: left;
+}
+.container-right {
+  float: right;
+}
 table.table > tbody > tr > td,
 table {
   color: var(--info);

@@ -72,17 +72,20 @@ export default {
       this.checkForm();
       if (this.errors.length == 0) {
         axios
-          .post("http://127.0.0.1:5000/api/denuncias/", {
-            title: this.title,
-            category: this.category,
-            description: this.description,
-            lat: this.markerLatLng.lat,
-            long: this.markerLatLng.lng,
-            firstname: this.firstname,
-            lastname: this.lastname,
-            tel: this.tel,
-            email: this.email,
-          })
+          .post(
+            "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/denuncias/",
+            {
+              title: this.title,
+              category: this.category,
+              description: this.description,
+              lat: this.markerLatLng.lat,
+              long: this.markerLatLng.lng,
+              firstname: this.firstname,
+              lastname: this.lastname,
+              tel: this.tel,
+              email: this.email,
+            }
+          )
           .then((response) => {
             console.log(response.status);
             if (response.status == 201) {

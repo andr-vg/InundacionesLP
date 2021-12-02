@@ -91,6 +91,7 @@ def create_app(environment="development"):
     # app.jinja_env.globals.update(get_rol_actual=rol.get_session_rol_actual)
     # app.jinja_env.globals.update(get_roles=rol.get_session_roles)
     app.jinja_env.globals.update(get_username=user.get_session_username)
+    app.jinja_env.globals.update(is_pending=auth.is_pending)
 
     # Autenticación
     app.add_url_rule("/iniciar_sesion", "auth_login", auth.login)

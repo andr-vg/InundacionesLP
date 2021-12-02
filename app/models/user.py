@@ -229,19 +229,23 @@ class User(db.Model):
     roles = relationship("Rol", secondary="usuario_tiene_rol", back_populates="users")
     active = Column(Boolean, default=True)
     deleted = Column(Boolean, default=False)
+    pending = Column(Boolean, default=False)
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow, default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     complaints = relationship("Denuncia", back_populates="user_assign")
     tracking = relationship("Seguimiento", back_populates="user_assign")
 
     def __init__(
-        self, email, password, username, roles=None, firstname=None, lastname=None
+        self, email, username, password=None, roles=None, firstname=None, lastname=None
+        , pending=False
     ):
         self.email = email
-        self.password_hash = generate_password_hash(password).decode("utf-8")
+        if password:
+            self.password_hash = generate_password_hash(password).decode("utf-8")
         self.username = username
         self.firstname = firstname
         self.lastname = lastname
+        self.pending = pending
 
     @property
     def password(self):

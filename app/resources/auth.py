@@ -3,6 +3,7 @@ from app.models.user import User, Rol
 from app.models.configuration import Configuration
 from sqlalchemy import and_
 from app.helpers.auth import authenticated as auth
+from app.helpers.auth import get_pending_state as pend
 from app.helpers.permission import has_permission as perm
 from app.resources import rol
 from oauthlib.oauth2 import WebApplicationClient
@@ -72,7 +73,7 @@ def callback():
     # Create a user in your db with the information provided
     # by Google
     user = User(
-        username=users_name, email=users_email,password=1234
+        username=users_name, email=users_email, pending=True
     )
 
     # Doesn't exist? Add it to the database.
@@ -82,8 +83,13 @@ def callback():
 
     # Begin user session by logging the user in
     # login_user(user)
-
+    #authenticate()
     # Send user back to homepage
+    session["user"] = users_email
+    session["username"] = users_name
+    session["config"] = Configuration.get_configuration()
+    session["permissions"] = User.get_permissions(user_id=user.id)
+    session["pending"] = user.pending
     return redirect(url_for("home"))    
 
 def authenticate():
@@ -96,10 +102,13 @@ def authenticate():
     session["username"] = user.username
     session["config"] = Configuration.get_configuration()
     session["permissions"] = User.get_permissions(user_id=user.id)
+    session["pending"] = user.pending
     flash("La sesión se inició correctamente.")
 
     return render_template("home.html")
 
+def is_pending():
+    return pend(session)
 
 def authenticated():
     return auth(session)

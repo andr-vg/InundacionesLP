@@ -10,35 +10,8 @@
 <br>
 <div class="row justify-content-center align-items-center">
   <div class="form-group">
-    <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
-    {% if has_permission('user_new') %}
-    <a href="{{ url_for('user_new') }}" class="botones btn btn-sm">Nuevo</a>
-    {% endif %}
-    <a href="{{ url_for('user_show_pendientes') }}" class="botones btn btn-sm">Pendientes</a>
+    <a href="{{ url_for('user_index') }}" class="botones btn btn-sm">Volver</a>
   </div>
-  <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-auto">
-        <input type="text" name="name">
-      </div>
-      <div class="col-sm-auto">
-        <p>
-          <input type="submit" class="botones btn btn-sm" value="Buscar">
-        </p>
-      </div>
-      <div class="col-sm-auto">
-        <p>Filtrar por</p>
-      </div>
-      <div class="col-sm-auto">
-        <input type="radio" name="active" value="activo"> <label> Activo</label>
-      </div>
-      <div class="col-sm-auto">
-        <input type="radio" name="active" value="bloqueado"> <label> Bloqueado</label>
-      </div>
-    </div>
-  </div>
-  </form>
 </div>
 
 {% if users.items %}
@@ -46,11 +19,8 @@
   <thead>
     <tr>
       <th>Nombre de usuario</th>
-      <th class="hidde">Nombre</th>
-      <th class="hidde">Apellido</th>
       <th class="hidde">Mail</th>
       <th class="hidde">Estado</th>
-      <th class="hidde">Roles</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -59,20 +29,12 @@
     <tr>
       <!-- ver de poner id o email como id del tr de cada user-->
       <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
-      <td class="hidde"> {{ user.firstname }} </td>
-      <td class="hidde"> {{ user.lastname }} </td>
       <td class="hidde"> {{ user.email }} </td>
       <td class="hidde"> {% if user.active == 1 %}
         Activo
         {% else %}
         Inactivo
         {% endif %}
-      </td>
-      {% set roles = [] %}
-      <td class="hidde"> {% for rol in user.roles %}
-        {{ rol.name }}
-        {{ roles.append(rol.id) or "" }}
-        {% endfor %}
       </td>
       <!-- mostrar acciones a realizar segun permisos del usuario actual -->
       <td class="actions">
@@ -83,7 +45,6 @@
             <input name="id" type="hidden" value="{{ user.id }}">
             <button class="btn btn-sm btn-info" type="submit"> Editar <span class="material-icons md-24"></span>
             </button>
-
           </form>
           {% endif %}
           {% if has_permission('user_active') %}
@@ -103,18 +64,6 @@
             <button class="btn btn-sm btn-secondary" style="visibility: hidden;"> bloquear </button>
           </div>
           {% endif %}
-          {% endif %}
-          {% if has_permission('user_destroy') %}
-          <div class="column mx-1">
-            <form action="{{ url_for('user_soft_delete') }}" method="POST">
-              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-              <input name="id" type="hidden" value="{{ user.id }}">
-              <button class="btn btn-sm btn-danger remove" type="submit"
-                onclick="return confirm('Está seguro que desea eliminar este usuario y desasignar todas sus denuncias Sin confirmar y En curso?')">
-                Borrar <span class="material-icons"></span> </button>
-            </form>
-          </div>
-
           {% endif %}
         </div>
       </td>

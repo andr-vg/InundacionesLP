@@ -270,3 +270,13 @@ def show(username):
 
 def get_session_username():
     return session["username"]
+
+def show_pendientes(page):
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_show", session):
+        abort(401)
+    config = get_configuration(session)
+    users = User.get_pending_users(page,config)
+    return render_template("user/pending.html", users=users)

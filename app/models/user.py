@@ -394,3 +394,26 @@ class User(db.Model):
             .order_by(User.username.desc())
             .paginate(page, per_page=config.elements_per_page)
         )
+
+    def get_pending_users(page, config):
+        """
+        Retorna los usuarios de manera paginada según la configuracion dada
+
+        Args:
+            id(int): id del usuario activo en la sesión
+            page(int): número a paginar
+            config(dict): diccionario con los datos de configuracion establecidos
+        """
+        if config.ordered_by == "ascendente":
+            return (
+                User.query.filter(User.deleted == False)
+                .filter(User.pending == True)
+                .order_by(User.username.asc())
+                .paginate(page, per_page=config.elements_per_page)
+            )
+        return (
+            User.query.filter(User.deleted == False)
+            .filter(User.pending == True)
+            .order_by(User.username.desc())
+            .paginate(page, per_page=config.elements_per_page)
+        )

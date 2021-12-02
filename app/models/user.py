@@ -209,12 +209,14 @@ class User(db.Model):
             return (
                 query.filter(User.deleted == False)
                 .filter(User.id != id)
+                .filter(User.pending == False)
                 .order_by(User.username.asc())
                 .paginate(page, per_page=config.elements_per_page)
             )
         return (
             query.filter(User.deleted == False)
             .filter(User.id != id)
+            .filter(User.pending == False)
             .order_by(User.username.desc())
             .paginate(page, per_page=config.elements_per_page)
         )
@@ -385,12 +387,14 @@ class User(db.Model):
             return (
                 User.query.filter(User.deleted == False)
                 .filter(User.id != id)
+                .filter(User.pending == False)
                 .order_by(User.username.asc())
                 .paginate(page, per_page=config.elements_per_page)
             )
         return (
             User.query.filter(User.deleted == False)
             .filter(User.id != id)
+            .filter(User.pending == False)
             .order_by(User.username.desc())
             .paginate(page, per_page=config.elements_per_page)
         )

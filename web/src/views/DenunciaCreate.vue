@@ -5,36 +5,56 @@
       <l-marker :lat-lng="markerLatLng"></l-marker>
     </l-map>
   </div>
-  <div>
-    <li v-if="success">{{ success }}</li>
-    <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-    <label for="">Título</label>
-    <input placeholder="Título" v-model="title" />
-    <select v-model="category">
-      <option disabled value="">Seleccione una categoria</option>
-      <option
-        v-for="(categoria, index) in categories"
-        :key="index"
-        v-bind:value="categoria.id"
-      >
-        {{ categoria.name }}
-      </option>
-    </select>
-    <label for="">Descripcion</label>
-    <textarea
-      row="3"
-      placeholder="Descripción"
-      v-model="description"
-    ></textarea>
-    <label for="">Teléfono</label>
-    <input placeholder="Teléfono" v-model="tel" />
-    <label for="">Email</label>
-    <input placeholder="Email" v-model="email" />
-    <label for="">Nombre</label>
-    <input placeholder="Nombre" v-model="firstname" />
-    <label for="">Apellido</label>
-    <input placeholder="Apellido" v-model="lastname" />
-    <button @click="save">Guardar</button>
+  <h3>Carga tu denuncia</h3>
+  <li class="success" v-if="success">{{ success }}</li>
+  <li class="errors" v-for="(error, index) in errors" :key="index">
+    {{ error }}
+  </li>
+  <div class="grid-container">
+    <div class="grid-item">
+      <label for="">Título</label>
+      <input placeholder="Título" v-model="title" />
+    </div>
+    <div class="grid-item">
+      <label for="">Categoría</label>
+      <select v-model="category">
+        <option disabled value="">Seleccione una categoria</option>
+        <option
+          v-for="(categoria, index) in categories"
+          :key="index"
+          v-bind:value="categoria.id"
+        >
+          {{ categoria.name }}
+        </option>
+      </select>
+    </div>
+    <div class="grid-item">
+      <label for="">Descripcion</label>
+      <textarea
+        row="3"
+        placeholder="Descripción"
+        v-model="description"
+      ></textarea>
+    </div>
+    <div class="grid-item">
+      <label for="">Teléfono</label>
+      <input placeholder="Teléfono" v-model="tel" />
+      <small id="telHelp">Ejemplo: +54 221 4567890</small>
+    </div>
+    <div class="grid-item">
+      <label for="">Email</label>
+      <input placeholder="Email" v-model="email" />
+      <small id="emailHelp">Ejemplo: InundacionesLP@mail.com</small>
+    </div>
+    <div class="grid-item">
+      <label for="">Nombre</label>
+      <input placeholder="Nombre" v-model="firstname" />
+    </div>
+    <div class="grid-item">
+      <label for="">Apellido</label>
+      <input placeholder="Apellido" v-model="lastname" />
+      <button @click="save">Guardar</button>
+    </div>
   </div>
 </template>
 <script>

@@ -4,6 +4,7 @@
   --success: #1a1a1d;
   --danger: #c5c6c7;
   --info: #66fcf1;
+  --normal: white;
 }
 
 body {
@@ -16,7 +17,7 @@ body {
 }
 
 a {
-  color: var(--danger);
+  color: var(--normal);
   font-weight: bolder;
 }
 

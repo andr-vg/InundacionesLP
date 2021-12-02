@@ -21,7 +21,9 @@ export default {
   methods: {
     async get_configuration() {
       return axios
-        .get("http://localhost:5000/api/configuracion")
+        .get(
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/configuracion"
+        )
         .then((response) => {
           this.config = response.data.css_public;
         })

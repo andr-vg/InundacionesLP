@@ -40,17 +40,13 @@ from flask_login import (LoginManager,
     login_user,
     logout_user,
     )
-# Configuration
-GOOGLE_CLIENT_ID = environ.get("GOOGLE_CLIENT_ID", None)
-GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET", None)
-GOOGLE_DISCOVERY_URL = (
-    "https://accounts.google.com/.well-known/openid-configuration"
-)
+
 
 def create_app(environment="development"):
     # Configuración inicial de la app
     app = Flask(__name__)
     CORS(app)
+
 
     # CSRF Setup
     # csrf = CSRFProtect(app)
@@ -58,18 +54,22 @@ def create_app(environment="development"):
     app.config["WTF_CSRF_CHECK_DEFAULT"] = False
     app.config["WTF_CSRF_ENABLED"] = False
     
-    app.secret_key = environ.get("SECRET_KEY") or urandom(24)
-    
+    app.secret_key = environ.get("SECRET_KEY") or urandom(24)    
+
+    # Carga de la configuración
+    env = environ.get("FLASK_ENV", environment)
+    app.config.from_object(config[env])
+
+    # Configuration para Oauth2
+    GOOGLE_CLIENT_ID = app.config['GOOGLE_CLIENT_ID']
+    GOOGLE_CLIENT_SECRET = app.config['GOOGLE_CLIENT_SECRET']
+    GOOGLE_DISCOVERY_URL = app.config['GOOGLE_DISCOVERY_URL']
+
     # OAuth 2 client setup
     client = WebApplicationClient(GOOGLE_CLIENT_ID)
     
     login_manager = LoginManager()
     login_manager.init_app(app)
-    
-
-    # Carga de la configuración
-    env = environ.get("FLASK_ENV", environment)
-    app.config.from_object(config[env])
 
     # Server Side session
     app.config["SESSION_TYPE"] = "filesystem"
@@ -445,13 +445,22 @@ def create_app(environment="development"):
         "/google_autenticacion",
         "google_authenticate",
         auth.google_login,
-        methods=["POST"]
+        defaults={
+            "google_client_id": GOOGLE_CLIENT_ID,
+            "google_discovery_url": GOOGLE_DISCOVERY_URL
+        },
+        methods=["POST"],
     ) 
 
     app.add_url_rule(
         "/login/callback",
         "auth_callback",
         auth.callback,
+            defaults={
+                "google_client_id": GOOGLE_CLIENT_ID,
+                "google_client_secret": GOOGLE_CLIENT_SECRET,
+                "google_discovery_url": GOOGLE_DISCOVERY_URL
+            },
         methods=["GET"]
     ) 
 

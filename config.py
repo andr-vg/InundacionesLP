@@ -29,9 +29,12 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = ( 
         f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:3306/{DB_NAME}"
         )
-    GOOGLE_CLIENT_SECRET=environ.get("GOOGLE_CLIENT_SECRET", "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")
-    GOOGLE_CLIENT_ID=environ.get("GOOGLE_CLIENT_ID","669109819480-aamb7pivof5mctujifb8ut9p39r7j0t8.apps.googleusercontent.com")
-
+    GOOGLE_CLIENT_SECRET = "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"
+    GOOGLE_CLIENT_ID = "669109819480-aamb7pivof5mctujifb8ut9p39r7j0t8.apps.googleusercontent.com"
+    GOOGLE_DISCOVERY_URL = (
+        "https://accounts.google.com/.well-known/openid-configuration"
+    )
+    
 class DevelopmentConfig(Config):
     """Development configuration."""
 
@@ -43,7 +46,11 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = ( 
         f"mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}:3306/{DB_NAME}"
         )
-
+    GOOGLE_CLIENT_SECRET = "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"
+    GOOGLE_CLIENT_ID = "669109819480-aamb7pivof5mctujifb8ut9p39r7j0t8.apps.googleusercontent.com"
+    GOOGLE_DISCOVERY_URL = (
+        "https://accounts.google.com/.well-known/openid-configuration"
+    )
 
 class TestingConfig(Config):
     """Testing configuration."""

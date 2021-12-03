@@ -22,12 +22,13 @@ const routes = [
         component: Denuncias
     },
     {
-        path: '/zonas_inundables',
+        path: '/zonas_inundables/:page',
         name: 'zonas_inundables',
-        component: ZonasInundables
+        component: ZonasInundables,
+        
     },
     {
-        path: '/zonas_inundables/:id',
+        path: '/zona_inundable/:id',
         name: 'zona_inundable',
         component: ZonaInundableShow
     },

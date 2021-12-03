@@ -22,6 +22,7 @@
         <h2>Información</h2>
         <div>Zona: {{ zone.nombre }}</div>
         <div>Color: {{ zone.color }}</div>
+        <div>Código: {{ zone.codigo }}</div>
       </div>
   </div>
 </template>
@@ -60,7 +61,7 @@ export default {
     try {
         // y en caso de exito jsonificamos la respuesta de la api
         */
-        fetch("http://127.0.0.1:5000/api/zonas_inundables/"+this.$route.params.id)
+        fetch("https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/"+this.$route.params.id)
             .then((response) => {
                 return response.json();
             })

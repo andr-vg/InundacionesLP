@@ -52,16 +52,11 @@ export default {
   // consultamos a la api ni bien se crea la componente
   methods: {
       async forceRenderer(){
-          //window.location.reload();
           this.center = [parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)];
       }
   },
   created() {
-      /*
-    try {
-        // y en caso de exito jsonificamos la respuesta de la api
-        */
-        fetch("https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/"+this.$route.params.id)
+        fetch("https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/"+document.location.pathname.split('/').at(-1))
             .then((response) => {
                 return response.json();
             })
@@ -72,45 +67,7 @@ export default {
                 console.log(e);
             })
             
-            /*
-        this.zone = json.atributos;
-        //console.log(this.center);
-        //this.center = [this.zone.coordenadas[1].lat, this.zone.coordenadas[1].long];
-        this.center = [parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)];
-        //this.zoom = 11;
-        //console.log(this.center);
-        //console.log(this.center);
-        //this.$forceUpdate();
-        //this.LMap.setView(this.center, 11.5);
-        this.forceRenderer();
-        this.LMap.invalidateSize();
-
-
-        //document.getElementsByClassName('leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom')[0].click();
-        
-        //this.flyTo([43.372000,-80.987697], 13);
-        
-    } catch(e) {
-        console.log(e);
-    }
-    
-  },
-  
-  
-  methods: {
-      forceRenderer() {
-          //window.location.reload();
-          this.center = [parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)];
-          //document.getElementById('map').click();
-          //
-          //return this.center;
-          //console.log("aaaaa", this.center);
-          //this.LMap.setView(this.center);
-          
-          
-    } 
-  }
-  */
+            
   }
 }
 </script>

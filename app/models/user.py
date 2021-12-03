@@ -421,3 +421,14 @@ class User(db.Model):
             .order_by(User.username.desc())
             .paginate(page, per_page=config.elements_per_page)
         )
+
+    def accept_pending_user(self, form, roles_deleted):
+        """Edita el perfil del usuario actual"""
+        self.pending = not form.pending.data
+        for rol in roles_deleted:
+            rol_deleted = Rol.get_rol_by_id(rol)
+            self.roles.remove(rol_deleted)
+        for rol in form.rol.data:
+            rol_new = Rol.get_rol_by_id(rol)
+            self.roles.append(rol_new)
+        db.session.commit()

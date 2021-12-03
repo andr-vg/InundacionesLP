@@ -2,7 +2,7 @@ import datetime
 import bcrypt
 from flask import redirect, render_template, request, url_for, session, abort, flash
 from sqlalchemy.exc import OperationalError
-from app.forms.user import RegistrationUserForm, EditUserForm, EditProfileForm
+from app.forms.user import RegistrationUserForm, EditUserForm, EditProfileForm, AcceptPendingForm
 from app.models.user import User
 from app.models.rol import Rol
 from app.models.configuration import Configuration
@@ -280,3 +280,38 @@ def show_pendientes(page):
     config = get_configuration(session)
     users = User.get_pending_users(page,config)
     return render_template("user/pending.html", users=users)
+
+def accept_pendientes():
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_edit_profile", session):
+        abort(401)
+    user = User.get_user_by_id(request.form["id"])
+    form = AcceptPendingForm(
+        id=user.id,
+        pending= not user.pending,
+    )
+    form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
+    return render_template("user/pending_accept.html", form=form)
+
+def update_pendientes():
+    """
+    Lógica a realizar al momento de confirmar
+    la edición del perfil del usuario actual.
+    """
+    user_email = authenticated(session)
+    if not user_email:
+        abort(401)
+    if not check_permission("user_update_profile", session):
+        abort(401)
+    form = AcceptPendingForm(request.form)
+    form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
+    if form.validate():
+        user = User.get_user_by_id(form.id.data)
+        user_roles = [(rol.id) for rol in user.roles]
+        roles_deleted = set(user_roles) - set(form.rol.data)
+        user.accept_pending_user(form,roles_deleted)
+        flash(f"El usuario {user.username} ha sido aceptado")
+        return redirect(url_for("home"))
+    return render_template("user/pending_accept.html", form=form)

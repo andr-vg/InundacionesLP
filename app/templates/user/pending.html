@@ -40,30 +40,12 @@
       <td class="actions">
         <div class="row">
           {% if has_permission('user_edit') %}
-          <form action="{{ url_for('user_edit') }}" method="POST">
+          <form action="{{ url_for('user_accept_pendientes') }}" method="POST">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
             <input name="id" type="hidden" value="{{ user.id }}">
-            <button class="btn btn-sm btn-info" type="submit"> Editar <span class="material-icons md-24"></span>
+            <button class="btn btn-sm btn-success" type="submit"> Aceptar <span class="material-icons md-24"></span>
             </button>
           </form>
-          {% endif %}
-          {% if has_permission('user_active') %}
-          {% if 1 not in roles and user.active == 1 %}
-          <div class="column mx-1">
-            <a class="btn btn-sm btn-secondary" href="{{ url_for('user_change_state', id=user.id) }}"
-              onclick="return confirm('Está seguro que desea bloquear a este usuario?');"> bloquear </a>
-          </div>
-
-          {% elif 1 not in roles %}
-          <div class="column mx-1">
-            <a class="btn btn-sm btn-secondary" href="{{ url_for('user_change_state', id=user.id) }}"
-              onclick="return confirm('Está seguro que desea desbloquear a este usuario?');"> desbloquear </a>
-          </div>
-          {% else %}
-          <div class="column mx-1">
-            <button class="btn btn-sm btn-secondary" style="visibility: hidden;"> bloquear </button>
-          </div>
-          {% endif %}
           {% endif %}
         </div>
       </td>

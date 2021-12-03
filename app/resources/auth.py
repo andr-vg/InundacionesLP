@@ -80,13 +80,14 @@ def callback():
     print (userinfo_response.json())
     if not User.get_user_by_email(users_email):
         user.add_user()
-
+    else:
+        user = User.get_user_by_email(users_email)
     # Begin user session by logging the user in
     # login_user(user)
     #authenticate()
     # Send user back to homepage
-    session["user"] = users_email
-    session["username"] = users_name
+    session["user"] = user.email
+    session["username"] = user.username
     session["config"] = Configuration.get_configuration()
     session["permissions"] = User.get_permissions(user_id=user.id)
     session["pending"] = user.pending

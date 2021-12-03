@@ -80,7 +80,7 @@ export default {
     get_zonas() {
       return axios
         .get(
-          "http://localhost:5000/api/zonas_inundables/?page="+this.$route.params.page,
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/?page="+this.$route.params.page,
         )
         .then((response) => {
           // JSON responses are automatically parsed.

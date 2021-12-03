@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block title %}Usuarios{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<div class="row justify-content-center align-items-center">
+  <h1>Usuarios</h1>
+</div>
+<br>
+<div class="row justify-content-center align-items-center">
+  <div class="form-group">
+    <a href="{{ url_for('user_index') }}" class="botones btn btn-sm">Volver</a>
+  </div>
+</div>
+
+{% if users.items %}
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Nombre de usuario</th>
+      <th class="hidde">Mail</th>
+      <th class="hidde">Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users.items %}
+    <tr>
+      <!-- ver de poner id o email como id del tr de cada user-->
+      <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
+      <td class="hidde"> {{ user.email }} </td>
+      <td class="hidde"> {% if user.active == 1 %}
+        Activo
+        {% else %}
+        Inactivo
+        {% endif %}
+      </td>
+      <!-- mostrar acciones a realizar segun permisos del usuario actual -->
+      <td class="actions">
+        <div class="row">
+          {% if has_permission('user_edit') %}
+          <form action="{{ url_for('user_accept_pendientes') }}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+            <input name="id" type="hidden" value="{{ user.id }}">
+            <button class="btn btn-sm btn-success" type="submit"> Aceptar <span class="material-icons md-24"></span>
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{#Mensaje En caso de que la busqueda no traiga resultados#}
+{% else %}
+<div class="container">
+  <div class="row justify-content-center">
+    <h1> No se encontraron Resultados</h1>
+  </div>
+</div>
+{% endif %}
+
+{% from "paginate_macro.html" import show_paginate_table%}
+
+{{ show_paginate_table("user",users, filter, name,active) }}
+
+{% endblock %}

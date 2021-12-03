@@ -12,6 +12,11 @@
   <div class="row justify-content-center align-items-center">
     <h1>InundacionesLP</h1>
   </div>
+    {% if (is_pending()) %}
+      <div class="row justify-content-center align-items-center">
+        <h1> Debe esperar a que un Administrador lo valide en el sistema</h1>
+      </div>
+    {% endif %}  
   {% endif %}
 
   <br>

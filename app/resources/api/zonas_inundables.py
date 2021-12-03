@@ -21,7 +21,7 @@ def index():
             per_page = int(config.elements_per_page)
             # al traer paginado tengo que traer solo los que esten publicados
             zonas_page = ZonaInundable.get_zonas_paginated(page, config)
-            zonas = ZonasInundablesSchema.dump(zonas_page, many=True)
+            zonas = ZonasInundablesSchema.dump(zonas_page, per_page=per_page, many=True)
             return jsonify(zonas)
         except:
             return make_response(jsonify("Error 404 Not Found"), 404)

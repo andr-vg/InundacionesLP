@@ -22,6 +22,7 @@
         <h2>Información</h2>
         <div>Zona: {{ zone.nombre }}</div>
         <div>Color: {{ zone.color }}</div>
+        <div>Código: {{ zone.codigo }}</div>
       </div>
   </div>
 </template>

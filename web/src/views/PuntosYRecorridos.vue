@@ -102,7 +102,7 @@ export default {
     centerUpdated(center) {
       this.center = center;
     },
-    get_puntos() {
+    async get_puntos() {
       return axios
         .get(
           "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/puntos_encuentro/cercanos",

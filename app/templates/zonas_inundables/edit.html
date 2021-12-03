@@ -2,6 +2,18 @@
 {% block title %}Subida de Zonas Inundables{% endblock %}
 {% block head %}
   {{ super() }}
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+  crossorigin=""/>
+  <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+ <script type="module" src="{{ url_for('static', filename='js/zonas_inundables/zoneMap.js')}}"></script>
+ <script type="text/javascript">
+  var coords = {{ coords | tojson }};
+  var color = '{{zona.get_color()}}'
+</script>
 {% endblock %}
 {% block content %} 
 <div class="row justify-content-center align-items-center">
@@ -10,6 +22,7 @@
 <div class="row justify-content-center align-items-center"> 
   <div class="row justify-content-center align-items-center h-100">
     <div class="col align-items-center" >
+      <h5>Codigo: {{zona.code}}</h5>
       <form action="{{ url_for('zonas_inundables_update') }}" method="POST" id="edit-zona-inundable">
         {{ form.id }}
         <div class="col align-items-center" >
@@ -35,5 +48,8 @@
           </div>
         </div>
       </form>
+      <div class="row justify-content-center align-items-center">
+        <div id="mapid"></div>
+      </div>
 </div>
 {% endblock %}

@@ -15,7 +15,7 @@ from sqlalchemy import (
     and_,
     or_,
 )
-from app.helpers.colors import get_translated_color
+from app.helpers.colors import get_spanish_translated_color, get_translated_color
 
 
 class ZonaInundable(db.Model):
@@ -226,6 +226,13 @@ class ZonaInundable(db.Model):
         de marcar los puntos dela zona en el mapa.
         """
         return get_translated_color(self.color)
+
+    def get_color_español(self):
+        """
+        Devuelve el nombre del color, traducido al ingles, para poder usarlo  a la hora
+        de marcar los puntos dela zona en el mapa.
+        """
+        return get_spanish_translated_color(self.color)
 
     def delete(self):
         """

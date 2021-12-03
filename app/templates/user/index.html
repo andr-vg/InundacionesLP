@@ -14,6 +14,7 @@
     {% if has_permission('user_new') %}
     <a href="{{ url_for('user_new') }}" class="botones btn btn-sm">Nuevo</a>
     {% endif %}
+    <a href="{{ url_for('user_show_pendientes') }}" class="botones btn btn-sm">Pendientes</a>
   </div>
   <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET">
   <div class="container-fluid">

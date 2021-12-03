@@ -1,0 +1,122 @@
+:root {
+  --primary: #1f2833;
+  --secondary: #0b0c10;
+  --success: #1a1a1d;
+  --danger: #c5c6c7;
+  --info: #66fcf1;
+  --normal: aliceblue;
+}
+
+body {
+  background-color: var(--success) !important;
+  color: var(--info);
+}
+
+.navcolor {
+  background-color: var(--primary) !important;
+}
+
+a {
+  margin: 10px;
+  color: var(--normal);
+  text-decoration: none;
+  font-weight: bolder;
+}
+
+a:hover {
+  color: var(--info);
+}
+
+a.link,
+.align-right a,
+.botones {
+  background-color: var(--danger) !important;
+  color: var(--primary) !important;
+}
+p {
+  font-weight: bolder;
+}
+h4 {
+  color: var(--normal);
+}
+label {
+  color: var(--normal);
+}
+
+.material-icons {
+  font-size: 19px;
+  padding: 0%;
+}
+.material-icons.md-18 {
+  font-size: 18px;
+  vertical-align: bottom;
+}
+.material-icons.md-24 {
+  font-size: 24px;
+  vertical-align: bottom;
+}
+.material-icons.md-36 {
+  font-size: 36px;
+  vertical-align: bottom;
+}
+.material-icons.md-48 {
+  font-size: 48px;
+}
+.box {
+  width: 250px;
+  margin: 0 0 25px;
+  overflow: hidden;
+  padding: 20px;
+  background-color: var(--primary);
+  border: 1px solid var(--secondary);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.container {
+  width: 700px;
+  margin: auto;
+}
+.container-left {
+  float: left;
+}
+.container-right {
+  float: right;
+}
+table.table > tbody > tr > td,
+table {
+  color: var(--info);
+  font-size: 16px;
+  background-color: var(--secondary);
+  border-color: var(--danger);
+}
+
+table.table-sm > thead > tr > th {
+  color: var(--danger);
+  font-weight: bolder;
+  font-size: 16px;
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+#lat,
+#long {
+  display: none;
+}
+.page-link {
+  background-color: var(--primary) !important;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.page-link:hover {
+  color: var(--info);
+  border: 1px solid var(--info);
+}
+
+/* Media queries */
+
+@media screen and (max-width: 768px) {
+  nav ul {
+    background-color: var(--primary);
+  }
+}

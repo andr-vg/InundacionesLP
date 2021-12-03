@@ -7,7 +7,7 @@
   
 	<menu_bar>
 		<line_menu>
-      <menu><router-link to="/home">Homes</router-link></menu>
+      <menu><router-link to="/home">Home</router-link></menu>
 			<menu><router-link :to="{name:'zonas_inundables', params: {page: 1}}">Zonas inundables</router-link></menu>
 			<menu><router-link to="/puntos_y_recorridos">Puntos y recorridos </router-link></menu>
 			<menu><router-link :to="{ name: 'denuncia', params: { page: 1 } }">Denuncias</router-link></menu>

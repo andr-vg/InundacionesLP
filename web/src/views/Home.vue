@@ -1,4 +1,5 @@
 <template>
+
 <head_text > 
    <h1>Quienes somos? </h1>
         
@@ -11,8 +12,14 @@
 	<br>
 	<line_cards>
 		<card_box>
-			<card><h3>Puntos de encuentro y recorridos de evacuación</h3></card>
-      <card><h3>Zonas inundables</h3></card>
+			<card><h3>Puntos de encuentro y recorridos de evacuación</h3>
+       <img class="imagen_tarjeta" src="../assets/punto_recorrido.png" alt="mapa_punto_recorrido">
+       <p>Puntos de encuentro en caso de inundaciones y rutas para llegar a estos</p>
+      </card>
+      <card><h3>Zonas inundables</h3>
+      <img class="imagen_tarjeta2" src="../assets/zona.png" alt="mapa_punto_recorrido">
+      <p> Informate sobre las zonas que estan en riesgo de inundacion </p>
+      </card>
       <card><h3>Realizar denuncias</h3></card>
 		</card_box>
 	</line_cards>

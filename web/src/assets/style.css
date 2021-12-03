@@ -22,7 +22,18 @@ header {
 .logo {
   max-width: 120px;
 }
-
+.imagen_tarjeta{
+  max-width: 90%;
+  height: auto;
+  padding: 5px;
+  
+}
+.imagen_tarjeta2{
+  max-width: 65%;
+  height: auto;
+  padding: 5px;
+  
+}
 nav {
   display: flex;
   flex-flow: row wrap;

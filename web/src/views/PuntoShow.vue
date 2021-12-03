@@ -1,14 +1,14 @@
 <template>
-  <div @click="changeShow">
+  <div>
     <div v-if="show" class="box">
-      <p>{{ punto.name }}</p>
       <p>Descripción: {{ punto.description }}</p>
       <p>Dirección: {{ punto.address }}</p>
       <p>Teléfono: {{ punto.tel }}</p>
       <p>Email: {{ punto.email }}</p>
+      <p @click="changeShow">Mostrar menos</p>
     </div>
-    <div v-else>
-      <p>{{ punto.name }}</p>
+    <div v-else @click="changeShow">
+      <span>Mostrar mas</span>
     </div>
   </div>
 </template>

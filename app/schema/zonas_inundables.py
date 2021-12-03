@@ -5,11 +5,11 @@ class ZonasInundablesSchema(object):
     """
 
     @classmethod
-    def dump(cls, obj, many=False, all=False):
+    def dump(cls, obj, per_page=False, many=False, all=False):
         if all:
             return cls._serialize_collection_all(obj)
-        elif many:
-            return cls._serialize_collection(obj)
+        elif many and per_page:
+            return cls._serialize_collection(obj, per_page)
         else:
             return {"atributos": cls._serialize(obj)}
 
@@ -21,11 +21,12 @@ class ZonasInundablesSchema(object):
         }
 
     @classmethod
-    def _serialize_collection(cls, pagination):
+    def _serialize_collection(cls, pagination, per_page):
         return {
             "zonas": [cls._serialize(item) for item in pagination.items],
             "total": pagination.total,
             "pagina": pagination.page,
+            "por_pagina": per_page,
         }
 
     @classmethod
@@ -37,4 +38,5 @@ class ZonasInundablesSchema(object):
                 {"lat": coord.lat, "long": coord.long} for coord in obj.coords
             ],
             "color": obj.color,
+            "codigo": obj.code,
         }

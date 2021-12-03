@@ -24,13 +24,27 @@
           </li>
         </ul>
       </div>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li v-if="previousPage != null" class="page-item"><a class="page-link" v-bind:href="previousPage">Anterior</a></li>
+          <li v-for="(pagina, index) in total" :key="index" class="page-item" v-bind:class="isActive(pagina)"><a class="page-link" v-bind:href="pagina">{{ pagina }}</a></li>
+          <li v-if="nextPage != null" class="page-item"><a class="page-link" v-bind:href="nextPage">Siguiente</a></li>
+        </ul>
+
+      </nav>     
     </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
   </div>
+
 </template>
 
 <script>
+import axios from "axios";
+
 import { LMap, LTileLayer, LPolygon, LPopup } from "@vue-leaflet/vue-leaflet";
 import detalleZone from "./ZonaDetalle.vue";
+
 
 export default {
   components: {
@@ -38,34 +52,66 @@ export default {
     LTileLayer,
     LPolygon,
     LPopup,
-    detalleZone,
+    detalleZone,   
   },
   data() {
     return {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      center: [-34.90397977693234, -57.947371498538885],
-      zoom: 11.5,
+      center: [-34.898575851767255, -57.95788336826374],
+      zoom: 11,
       zones: [],
       showZone: false,
+      actualPage: document.location.pathname.split('/').at(-1),
+      previousPage: null,
+      nextPage: null,
+      total: 1,
+      baseUrl: window.location.href,
     };
+  },
+  methods : {
+    get_zonas() {
+      return axios
+        .get(
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/?page="+document.location.pathname.split('/').at(-1),
+        )
+        .then((response) => {
+          // JSON responses are automatically parsed.
+          this.zones = response.data.zonas;
+          const totalRows = response.data.total;
+          const per_page = response.data.por_pagina;
+          const resto = totalRows % per_page;
+          this.total = parseInt(totalRows / per_page);
+          if (resto != 0) {
+            this.total = parseInt(this.total) + 1;
+          }
+          if (this.actualPage > 1) {
+            this.previousPage = parseInt(this.actualPage) - 1;
+          }
+          if (this.actualPage < this.total) {
+            this.nextPage = parseInt(this.actualPage) + 1;
+          }
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
+    },
+    isActive(nroPagina) {
+      if (nroPagina == this.actualPage) {
+        return 'active';
+      } else {
+        return '';
+      }
+    },
+    
   },
   // consultamos a la api ni bien se crea la componente
   created() {
-    // y en caso de exito jsonificamos la respuesta de la api
-    fetch("http://localhost:5000/api/zonas_inundables")
-      .then((response) => {
-        console.log(response);
-        return response.json();
-      })
-      .then((json) => {
-        console.log(json);
-        this.zones = json.zonas;
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    this.get_zonas();
   },
+ 
+ 
 };
 </script>
+

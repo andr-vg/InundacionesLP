@@ -1,11 +1,12 @@
 <template>
-  <div @click="changeShow">
+  <div>
     <div v-if="show" class="box">
       <p>{{ recorrido.nombre }}</p>
       <p>Descripcion:{{ recorrido.descripcion }}</p>
+      <p @click="changeShow">Mostrar menos</p>
     </div>
-    <div v-else>
-      <p>{{ recorrido.nombre }}</p>
+    <div v-else @click="changeShow">
+      <span>Mostrar mas</span>
     </div>
   </div>
 </template>

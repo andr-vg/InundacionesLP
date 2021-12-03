@@ -126,7 +126,7 @@ class Recorridos(db.Model):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(255), unique=True)
-    description = Column(String(255), unique=True)
+    description = Column(String(255))
     state = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     coords = relationship(

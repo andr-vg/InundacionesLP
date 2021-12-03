@@ -1,13 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from './components/HelloWorld.vue'
+import Home from './views/Home.vue'
 import PuntosYRecorridos from './views/PuntosYRecorridos.vue'
-import Denuncias from './views/DenunciaCreate.vue'
+import Denuncias from './views/Denuncias.vue'
+import DenunciaCreate from './views/DenunciaCreate.vue'
 import ZonasInundables from './views/ZonasInundables.vue'
 import ZonaInundableShow from './views/ZonaShow.vue'
 
 const routes = [
     {
         path: '/',
+        name: 'index',
+        component: Home
+    },
+    {
+        path: '/home',
         name: 'home',
         component: Home
     },
@@ -17,17 +23,23 @@ const routes = [
         component: PuntosYRecorridos
     },
     {
-        path: '/denuncia',
+        path: '/denuncia/:page',
         name: 'denuncia',
         component: Denuncias
     },
     {
-        path: '/zonas_inundables',
-        name: 'zonas_inundables',
-        component: ZonasInundables
+        path: '/denuncia/nueva',
+        name: 'denunciacrear',
+        component: DenunciaCreate
     },
     {
-        path: '/zonas_inundables/:id',
+        path: '/zonas_inundables/:page',
+        name: 'zonas_inundables',
+        component: ZonasInundables,
+        
+    },
+    {
+        path: '/zona_inundable/:id',
         name: 'zona_inundable',
         component: ZonaInundableShow
     },

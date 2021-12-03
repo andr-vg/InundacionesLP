@@ -14,12 +14,15 @@ denuncia_api = Blueprint("denuncias", __name__, url_prefix="/denuncias")
 def index():
     config = Configuration.get_configuration()
     if not request.args:
-        denuncias_iter = Denuncia.get_all(config)
+        denuncias_iter = Denuncia.get_by_state("en_curso")
         response = [DenunciaSchema.dump(denuncia) for denuncia in denuncias_iter]
     else:
         try:
             page = request.args.get("page")
-            denuncias_iter = Denuncia.get_paginated(int(page), config)
+            denuncias = Denuncia.get_by_state("en_curso")
+            denuncias_iter = Denuncia.get_denuncias_paginated(
+                denuncias, int(page), config
+            )
             response = DenunciaSchema.dump(denuncias_iter, many=True)
         except:
             response = {
@@ -30,7 +33,7 @@ def index():
 
 
 @denuncia_api.get("/<int:id>")
-def paginated(id):
+def by_id(id):
     response = Denuncia.get_by_id(id)
     if not response:
         response = {

@@ -1,12 +1,15 @@
 <template>
-
   <link rel="stylesheet" type="text/css" :href="customerStyle" />
   <div id="app">
     <div class="nav" id="nav">
       <router-link to="/home">Home</router-link>
-      <router-link :to="{name:'zonas_inundables', params: {page: 1}}">Zonas inundables</router-link>
+      <router-link :to="{ name: 'zonas_inundables', params: { page: 1 } }"
+        >Zonas inundables</router-link
+      >
       <router-link to="/puntos_y_recorridos">Puntos y recorridos </router-link>
-      <router-link to="/denuncia">Denuncias</router-link>
+      <router-link :to="{ name: 'denuncia', params: { page: 1 } }"
+        >Denuncias</router-link
+      >
     </div>
   </div>
   <router-view />

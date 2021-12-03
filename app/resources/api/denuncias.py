@@ -15,12 +15,14 @@ def index():
     config = Configuration.get_configuration()
     if not request.args:
         denuncias_iter = Denuncia.get_by_state("en_curso")
-        print(denuncias_iter)
         response = [DenunciaSchema.dump(denuncia) for denuncia in denuncias_iter]
     else:
         try:
             page = request.args.get("page")
-            denuncias_iter = Denuncia.get_paginated(int(page), config)
+            denuncias = Denuncia.get_by_state("en_curso")
+            denuncias_iter = Denuncia.get_denuncias_paginated(
+                denuncias, int(page), config
+            )
             response = DenunciaSchema.dump(denuncias_iter, many=True)
         except:
             response = {

@@ -1,6 +1,4 @@
 <template>
-<!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
--->
   <div>
     <h1>Zonas inundables</h1>
     <div>
@@ -35,8 +33,9 @@
 
       </nav>     
     </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
   </div>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 </template>
 
@@ -60,27 +59,22 @@ export default {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      center: [-34.90397977693234, -57.947371498538885],
-      zoom: 11.5,
+      center: [-34.898575851767255, -57.95788336826374],
+      zoom: 11,
       zones: [],
       showZone: false,
-      actualPage: this.$route.params.page,
+      actualPage: document.location.pathname.split('/').at(-1),
       previousPage: null,
       nextPage: null,
       total: 1,
       baseUrl: window.location.href,
     };
   },
-  /*
-  mounted() {
-    this.actualPage = 1;
-  },
-  */
   methods : {
     get_zonas() {
       return axios
         .get(
-          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/?page="+this.$route.params.page,
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/?page="+document.location.pathname.split('/').at(-1),
         )
         .then((response) => {
           // JSON responses are automatically parsed.
@@ -110,30 +104,14 @@ export default {
         return '';
       }
     },
-    /*
-    getActualPage(){
-      if (!this.$route.params.page){
-        console.log("entre aca");
-        return 1;
-      } else {
-        return this.$route.params.page;
-      }
-    }
-    */
+    
   },
   // consultamos a la api ni bien se crea la componente
   created() {
     this.get_zonas();
   },
-  /*
-  updated() {
-    //this.setTotalPages();
-    //console.log(this.total);
-    //this.actualPage = this.actualPage + 1;
-    //this.get_zonas();
-  }
-  */
+ 
+ 
 };
-
 </script>
 

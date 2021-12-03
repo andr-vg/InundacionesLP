@@ -2,7 +2,7 @@
   <div>
       <h1>Detalle</h1>
       <div>
-          <l-map id="map" style="height: 450px" :zoom="zoom" :center="center" @update:center="forceRenderer">
+          <l-map id="map" style="height: 450px" :zoom="zoom" :center="[parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)]" @update:center="forceRenderer">
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
           <div>
           <l-polygon
@@ -49,10 +49,11 @@ export default {
       zone: [],
     };
   },
+  
   // consultamos a la api ni bien se crea la componente
   methods: {
-      async forceRenderer(){
-          this.center = [parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)];
+      forceRenderer(){
+        this.center = Object.values([parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)]);
       }
   },
   created() {
@@ -62,13 +63,14 @@ export default {
             })
             .then((json) => { 
                 this.zone = json.atributos; 
-                this.center = this.forceRenderer();
+                this.forceRenderer();
             }).catch((e) => {
                 console.log(e);
             })
             
             
-  }
+  },
+  
 }
 </script>
 

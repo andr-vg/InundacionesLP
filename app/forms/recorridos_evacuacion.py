@@ -29,7 +29,7 @@ class CreateRecorrido(FlaskForm):
     description = StringField(
         "Descripcion",
         [
-            validators.DataRequired(message="Campo requerido"),
+            # validators.DataRequired(message="Campo requerido"),
             validators.length(max=250, message="No puede excederse de 250 caracteres"),
         ],
         widget=TextArea(),

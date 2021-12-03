@@ -59,8 +59,8 @@ export default {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      center: [-34.90397977693234, -57.947371498538885],
-      zoom: 11.5,
+      center: [-34.898575851767255, -57.95788336826374],
+      zoom: 11,
       zones: [],
       showZone: false,
       actualPage: document.location.pathname.split('/').at(-1),

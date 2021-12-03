@@ -95,6 +95,18 @@ class Denuncia(db.Model):
         return query.filter(Denuncia.state.ilike(state))
 
     @classmethod
+    def get_by_state(cls, state):
+        """
+        Busca una denuncia con el estado recibido por parametro
+
+        Args:
+            state(string): estado de la denuncia
+
+        Returns: retorna un listado de denuncias que coinciden, caso contrario None
+        """
+        return Denuncia.query.filter(Denuncia.state.ilike(state))
+
+    @classmethod
     def search_previous_date(cls, query, date):
         """
         Busca una denuncia cuya fecha de creacion sea posterior a la fecha pasada por parametro

@@ -14,7 +14,8 @@ denuncia_api = Blueprint("denuncias", __name__, url_prefix="/denuncias")
 def index():
     config = Configuration.get_configuration()
     if not request.args:
-        denuncias_iter = Denuncia.get_all(config)
+        denuncias_iter = Denuncia.get_by_state("en_curso")
+        print(denuncias_iter)
         response = [DenunciaSchema.dump(denuncia) for denuncia in denuncias_iter]
     else:
         try:
@@ -30,7 +31,7 @@ def index():
 
 
 @denuncia_api.get("/<int:id>")
-def paginated(id):
+def by_id(id):
     response = Denuncia.get_by_id(id)
     if not response:
         response = {

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from './components/HelloWorld.vue'
+import Home from './views/Home.vue'
 import PuntosYRecorridos from './views/PuntosYRecorridos.vue'
 import Denuncias from './views/DenunciaCreate.vue'
 import ZonasInundables from './views/ZonasInundables.vue'

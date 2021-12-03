@@ -32,6 +32,7 @@
       <h2>Puntos de encuentro</h2>
       <ul v-if="puntos && puntos.length">
         <li v-for="(punto, index) in puntos" :key="index">
+          <span>{{ punto.name }}</span>
           <detallePunto :punto="punto"></detallePunto>
         </li>
       </ul>
@@ -45,6 +46,7 @@
       <h2>Recorridos de evacuación</h2>
       <ul v-if="puntos && puntos.length">
         <li v-for="(recorrido, index) in recorridos" :key="index">
+          <span>{{ recorrido.nombre }}</span>
           <detalleRecorrido :recorrido="recorrido"></detalleRecorrido>
         </li>
       </ul>

@@ -9,6 +9,11 @@ import ZonaInundableShow from './views/ZonaShow.vue'
 const routes = [
     {
         path: '/',
+        name: 'index',
+        component: Home
+    },
+    {
+        path: '/home',
         name: 'home',
         component: Home
     },

@@ -34,6 +34,7 @@ class ProductionConfig(Config):
     GOOGLE_DISCOVERY_URL = (
         "https://accounts.google.com/.well-known/openid-configuration"
     )
+    REDIRECT_URI="https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/login/callback"
     
 class DevelopmentConfig(Config):
     """Development configuration."""
@@ -51,6 +52,7 @@ class DevelopmentConfig(Config):
     GOOGLE_DISCOVERY_URL = (
         "https://accounts.google.com/.well-known/openid-configuration"
     )
+    REDIRECT_URI="https://127.0.0.1:5000/login/callback"
 
 class TestingConfig(Config):
     """Testing configuration."""

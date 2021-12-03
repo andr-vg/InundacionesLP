@@ -9,7 +9,10 @@
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <div v-for="(punto, index) in puntos" :key="index">
         <l-marker :lat-lng="punto.coords.split(',')">
-          <l-popup>{{ punto.name }}</l-popup>
+          <l-popup
+            >Nombre: {{ punto.name }} Correo: {{ punto.email }} Teléfono:
+            {{ punto.tel }}
+          </l-popup>
         </l-marker>
       </div>
       <div v-for="(recorrido, index) in recorridos" :key="index">
@@ -19,14 +22,14 @@
           :weight="2"
           @update:center="get_recorridos"
         >
-          <l-popup> {{ recorrido.nombre }}</l-popup>
+          <l-popup>Nombre: {{ recorrido.nombre }}</l-popup>
         </l-polyline>
       </div>
     </l-map>
   </div>
-  <div class="PuntosYRecorridos">
-    <div class="container">
-      <h2>Puntos de encuentro:</h2>
+  <div class="container">
+    <div class="container-left">
+      <h2>Puntos de encuentro</h2>
       <ul v-if="puntos && puntos.length">
         <li v-for="(punto, index) in puntos" :key="index">
           <detallePunto :punto="punto"></detallePunto>
@@ -38,7 +41,7 @@
         </li>
       </ul>
     </div>
-    <div class="container">
+    <div class="container-right">
       <h2>Recorridos de evacuación</h2>
       <ul v-if="puntos && puntos.length">
         <li v-for="(recorrido, index) in recorridos" :key="index">
@@ -101,12 +104,15 @@ export default {
     },
     get_puntos() {
       return axios
-        .get("http://127.0.0.1:5000/api/puntos_encuentro/cercanos", {
-          params: {
-            lat: this.center[0],
-            lon: this.center[1],
-          },
-        })
+        .get(
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/puntos_encuentro/cercanos",
+          {
+            params: {
+              lat: this.center[0],
+              lon: this.center[1],
+            },
+          }
+        )
         .then((response) => {
           // JSON responses are automatically parsed.
           this.puntos = response.data;
@@ -118,12 +124,15 @@ export default {
 
     get_recorridos() {
       return axios
-        .get("http://127.0.0.1:5000/api/recorridos_evacuacion/cercanos", {
-          params: {
-            lat: this.center[0],
-            lon: this.center[1],
-          },
-        })
+        .get(
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/recorridos_evacuacion/cercanos",
+          {
+            params: {
+              lat: this.center[0],
+              lon: this.center[1],
+            },
+          }
+        )
         .then((response) => {
           // JSON responses are automatically parsed.
           this.recorridos = response.data;

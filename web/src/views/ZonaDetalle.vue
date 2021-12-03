@@ -1,7 +1,7 @@
 <template>
   <div class="mouseover">
-    <div @mouseover="changeShow">Zona: {{ zone.nombre }}</div>
-    <div v-show="active">Color: {{ zone.color }}</div>
+    <span @mouseover="changeShow"><a v-bind:href="'/zonas_inundables/'+zone.id"> {{ zone.nombre }} </a></span>
+    <span v-show="active"> - Color: {{ zone.color }}</span>
   </div>
 </template>
 <script>

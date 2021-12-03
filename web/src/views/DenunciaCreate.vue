@@ -5,35 +5,56 @@
       <l-marker :lat-lng="markerLatLng"></l-marker>
     </l-map>
   </div>
-  <div>
-    <li v-for="(error, index) in errors" :key="index">{{ error }}</li>
-    <label for="">Título</label>
-    <input placeholder="Título" v-model="title" />
-    <select v-model="category">
-      <option disabled value="">Seleccione una categoria</option>
-      <option
-        v-for="(categoria, index) in categories"
-        :key="index"
-        v-bind:value="categoria.id"
-      >
-        {{ categoria.name }}
-      </option>
-    </select>
-    <label for="">Descripcion</label>
-    <textarea
-      row="3"
-      placeholder="Descripción"
-      v-model="description"
-    ></textarea>
-    <label for="">Teléfono</label>
-    <input placeholder="Teléfono" v-model="tel" />
-    <label for="">Email</label>
-    <input placeholder="Email" v-model="email" />
-    <label for="">Nombre</label>
-    <input placeholder="Nombre" v-model="firstname" />
-    <label for="">Apellido</label>
-    <input placeholder="Apellido" v-model="lastname" />
-    <button @click="save">Guardar</button>
+  <h3>Carga tu denuncia</h3>
+  <li class="success" v-if="success">{{ success }}</li>
+  <li class="errors" v-for="(error, index) in errors" :key="index">
+    {{ error }}
+  </li>
+  <div class="grid-container">
+    <div class="grid-item">
+      <label for="">Título</label>
+      <input placeholder="Título" v-model="title" />
+    </div>
+    <div class="grid-item">
+      <label for="">Categoría</label>
+      <select v-model="category">
+        <option disabled value="">Seleccione una categoria</option>
+        <option
+          v-for="(categoria, index) in categories"
+          :key="index"
+          v-bind:value="categoria.id"
+        >
+          {{ categoria.name }}
+        </option>
+      </select>
+    </div>
+    <div class="grid-item">
+      <label for="">Descripcion</label>
+      <textarea
+        row="3"
+        placeholder="Descripción"
+        v-model="description"
+      ></textarea>
+    </div>
+    <div class="grid-item">
+      <label for="">Teléfono</label>
+      <input placeholder="Teléfono" v-model="tel" />
+      <small id="telHelp">Ejemplo: +54 221 4567890</small>
+    </div>
+    <div class="grid-item">
+      <label for="">Email</label>
+      <input placeholder="Email" v-model="email" />
+      <small id="emailHelp">Ejemplo: InundacionesLP@mail.com</small>
+    </div>
+    <div class="grid-item">
+      <label for="">Nombre</label>
+      <input placeholder="Nombre" v-model="firstname" />
+    </div>
+    <div class="grid-item">
+      <label for="">Apellido</label>
+      <input placeholder="Apellido" v-model="lastname" />
+      <button @click="save">Guardar</button>
+    </div>
   </div>
 </template>
 <script>
@@ -63,6 +84,7 @@ export default {
       firstname: "",
       lastname: "",
       errors: [],
+      success: "",
     };
   },
   methods: {
@@ -70,19 +92,30 @@ export default {
       this.checkForm();
       if (this.errors.length == 0) {
         axios
-          .post("http://127.0.0.1:5000/api/denuncias/", {
-            title: this.title,
-            category: this.category,
-            description: this.description,
-            lat: this.markerLatLng.lat,
-            long: this.markerLatLng.lng,
-            firstname: this.firstname,
-            lastname: this.lastname,
-            tel: this.tel,
-            email: this.email,
+          .post(
+            "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/denuncias/",
+            {
+              title: this.title,
+              category: this.category,
+              description: this.description,
+              lat: this.markerLatLng.lat,
+              long: this.markerLatLng.lng,
+              firstname: this.firstname,
+              lastname: this.lastname,
+              tel: this.tel,
+              email: this.email,
+            }
+          )
+          .then((response) => {
+            console.log(response.status);
+            if (response.status == 201) {
+              this.success = "Denuncia cargada exitosamente";
+            }
           })
-          .catch(function (error) {
-            console.log(error);
+          .catch((error) => {
+            if (error.response) {
+              this.errors.push(error.response.data.error_description);
+            }
           });
       }
     },
@@ -118,6 +151,7 @@ export default {
     },
     checkForm() {
       this.errors = [];
+      this.success = "";
       if (!(this.category in this.categories)) {
         this.errors.push("Seleccione una categoria valida");
       }

@@ -1,5 +1,4 @@
 <template>
-
   <link rel="stylesheet" type="text/css" :href="customerStyle" />
   <header>
 	<logo>
@@ -11,7 +10,7 @@
       <menu><router-link to="/home">Home</router-link></menu>
 			<menu><router-link :to="{name:'zonas_inundables', params: {page: 1}}">Zonas inundables</router-link></menu>
 			<menu><router-link to="/puntos_y_recorridos">Puntos y recorridos </router-link></menu>
-			<menu><router-link to="/denuncia">Denuncias</router-link></menu>
+			<menu><router-link :to="{ name: 'denuncia', params: { page: 1 } }">Denuncias</router-link></menu>
 		</line_menu>
 	</menu_bar>
   <div id="app">
@@ -19,16 +18,7 @@
   </div>
   </div>
 </header>
-  <!--
-  <div id="app">
-    <div class="nav" id="nav">
-      <router-link to="/home"><menu>Home</menu></router-link>
-      <router-link :to="{name:'zonas_inundables', params: {page: 1}}">Zonas inundables</router-link>
-      <router-link to="/puntos_y_recorridos">Puntos y recorridos </router-link>
-      <router-link to="/denuncia">Denuncias</router-link>
-    </div>
-  </div>
-  -->
+  
   <router-view />
 </template>
 <script>

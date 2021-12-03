@@ -24,7 +24,7 @@ class DenunciaSchema(object):
         """Serializa un unico objeto"""
         return {
             "categoria_id": obj.category_id,
-            "estado": obj.state.name,
+            "estado": obj.state.value,
             "coordenadas": str(obj.lat) + "," + str(obj.long),
             "apellido_denunciante": obj.lastname,
             "nombre_denunciante": obj.firstname,

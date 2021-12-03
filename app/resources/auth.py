@@ -11,21 +11,15 @@ import requests
 from os import environ
 import json
 
-GOOGLE_CLIENT_ID = environ.get("GOOGLE_CLIENT_ID", None)
-GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET", None)
-GOOGLE_DISCOVERY_URL = (
-    "https://accounts.google.com/.well-known/openid-configuration"
-)
-
-def get_google_provider_cfg():
-    return requests.get(GOOGLE_DISCOVERY_URL).json()
-
-client = WebApplicationClient(GOOGLE_CLIENT_ID)
-
 def login():
     return render_template("auth/login.html")
 
-def google_login():
+def google_login(google_client_id, google_discovery_url):
+
+    def get_google_provider_cfg():
+        return requests.get(google_discovery_url).json()
+
+    client = WebApplicationClient(google_client_id)
     # Find out what URL to hit for Google login
     google_provider_cfg = get_google_provider_cfg()
     authorization_endpoint = google_provider_cfg["authorization_endpoint"]
@@ -39,7 +33,12 @@ def google_login():
     )
     return redirect(request_uri)
 
-def callback():
+def callback(google_client_id, google_client_secret, google_discovery_url):
+
+    def get_google_provider_cfg():
+        return requests.get(google_discovery_url).json()
+
+    client = WebApplicationClient(google_client_id)
     # Get authorization code Google sent back to you
     code = request.args.get("code")
 
@@ -55,7 +54,7 @@ def callback():
         token_url,
         headers=headers,
         data=body,
-        auth=(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET),
+        auth=(google_client_id, google_client_secret),
     )
 
     # Parse the tokens!

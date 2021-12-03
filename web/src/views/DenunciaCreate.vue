@@ -2,7 +2,10 @@
   <div>
     <l-map style="height: 450px" :zoom="zoom" :center="center" @click="onClick">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      <l-marker :lat-lng="markerLatLng"></l-marker>
+      <l-marker
+        v-if="markerLatLng.length != 0"
+        :lat-lng="markerLatLng"
+      ></l-marker>
     </l-map>
   </div>
   <h3>Carga tu denuncia</h3>
@@ -107,7 +110,6 @@ export default {
             }
           )
           .then((response) => {
-            console.log(response.status);
             if (response.status == 201) {
               this.success = "Denuncia cargada exitosamente";
             }
@@ -125,7 +127,7 @@ export default {
       }
     },
 
-    get_categoria() {
+    async get_categoria() {
       return axios
         .get("http://127.0.0.1:5000/api/categorias/")
         .then((response) => {

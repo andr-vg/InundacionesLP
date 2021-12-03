@@ -1,14 +1,34 @@
 <template>
 
   <link rel="stylesheet" type="text/css" :href="customerStyle" />
+  <header>
+	<logo>
+      <img class="logo" src="./assets/logo.png" alt="InundacionesLP">
+  </logo>
+  
+	<menu_bar>
+		<line_menu>
+      <menu><router-link to="/home">Home</router-link></menu>
+			<menu><router-link :to="{name:'zonas_inundables', params: {page: 1}}">Zonas inundables</router-link></menu>
+			<menu><router-link to="/puntos_y_recorridos">Puntos y recorridos </router-link></menu>
+			<menu><router-link to="/denuncia">Denuncias</router-link></menu>
+		</line_menu>
+	</menu_bar>
   <div id="app">
     <div class="nav" id="nav">
-      <router-link to="/home">Home</router-link>
+  </div>
+  </div>
+</header>
+  <!--
+  <div id="app">
+    <div class="nav" id="nav">
+      <router-link to="/home"><menu>Home</menu></router-link>
       <router-link :to="{name:'zonas_inundables', params: {page: 1}}">Zonas inundables</router-link>
       <router-link to="/puntos_y_recorridos">Puntos y recorridos </router-link>
       <router-link to="/denuncia">Denuncias</router-link>
     </div>
   </div>
+  -->
   <router-view />
 </template>
 <script>
@@ -51,3 +71,6 @@ export default {
   margin-top: 60px;
 }
 </style>
+
+
+

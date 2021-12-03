@@ -23,8 +23,17 @@ class EditZonaInundableForm(FlaskForm):
     """
 
     id = HiddenField("id")
-    name = StringField("Nombre", [validators.DataRequired(message="Campo requerido")])
-    state = SelectField("Estado", choices=["Publicado", "Despublicado"])
+    name = StringField(
+        "Nombre",
+        [
+            validators.DataRequired(message="Este campo de puede estar en blanco"),
+            validators.length(min=1, message="Debe tener al menos 1 caracter"),
+        ]        
+    )
+    state = SelectField(
+        "Estado",
+        choices=["Publicado", "Despublicado"],
+    )
     color = SelectField(
         "Color",
         choices=[

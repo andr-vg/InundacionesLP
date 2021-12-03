@@ -2,7 +2,7 @@
   <div>
       <h1>Detalle</h1>
       <div>
-          <l-map style="height: 450px" :zoom="zoom" :center="center" @update:center="forceRenderer">
+          <l-map id="map" style="height: 450px" :zoom="zoom" :center="center" @update:center="forceRenderer">
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
           <div>
           <l-polygon
@@ -49,24 +49,50 @@ export default {
     };
   },
   // consultamos a la api ni bien se crea la componente
-  
-  async created() {
+  methods: {
+      async forceRenderer(){
+          //window.location.reload();
+          this.center = [parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)];
+      }
+  },
+  created() {
+      /*
     try {
         // y en caso de exito jsonificamos la respuesta de la api
-        const response = await fetch("http://localhost:5000/api/zonas_inundables/"+this.$route.params.id);
-        const json = await response.json();
+        */
+        fetch("http://127.0.0.1:5000/api/zonas_inundables/"+this.$route.params.id)
+            .then((response) => {
+                return response.json();
+            })
+            .then((json) => { 
+                this.zone = json.atributos; 
+                this.center = this.forceRenderer();
+            }).catch((e) => {
+                console.log(e);
+            })
+            
+            /*
         this.zone = json.atributos;
         //console.log(this.center);
         //this.center = [this.zone.coordenadas[1].lat, this.zone.coordenadas[1].long];
         this.center = [parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)];
+        //this.zoom = 11;
         //console.log(this.center);
         //console.log(this.center);
         //this.$forceUpdate();
         //this.LMap.setView(this.center, 11.5);
+        this.forceRenderer();
+        this.LMap.invalidateSize();
+
+
+        //document.getElementsByClassName('leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom')[0].click();
+        
+        //this.flyTo([43.372000,-80.987697], 13);
         
     } catch(e) {
         console.log(e);
     }
+    
   },
   
   
@@ -74,6 +100,8 @@ export default {
       forceRenderer() {
           //window.location.reload();
           this.center = [parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)];
+          //document.getElementById('map').click();
+          //
           //return this.center;
           //console.log("aaaaa", this.center);
           //this.LMap.setView(this.center);
@@ -81,8 +109,8 @@ export default {
           
     } 
   }
-  
-  
+  */
+  }
 }
 </script>
 

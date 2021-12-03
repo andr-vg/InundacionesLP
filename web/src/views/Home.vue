@@ -1,18 +1,16 @@
 <template>
-< > 
+<head_text > 
    <h1>Quienes somos? </h1>
         
-  <h5>Inundacion de La Plata 2013</h5> </block>
-  <p> </p>
+  <h5>Inundacion de La Plata 2013</h5> </head_text>
+  <p>Por medio de esta pagina podra saber aquellas zonas que estan en peligro de inundacion, y en el caso de que sucedan , que actividades se pueden realizar. 
+    Entre estas se encuentrarn los recorridos de evacuacion y puntos de encuentro cercanos a su localidad.
+    <br> Podra redactar una denuncia en caso de encontrar un lugar problematico
+      </p>
 <content>
 	<br>
 	<line_cards>
 		<card_box>
-			<card>
-        <h3>Quienes somos?</h3>
-        
-        <h5>Inundacion de La Plata 2013</h5>
-      </card>
 			<card><h3>Puntos de encuentro y recorridos de evacuación</h3></card>
       <card><h3>Zonas inundables</h3></card>
       <card><h3>Realizar denuncias</h3></card>

@@ -283,6 +283,13 @@ menu_bar {
   height: inherit;
   width: 800px;
 }
+head_text {
+ 
+  border-width: medium;
+  border-radius:4px;
+
+
+}
 
 line_menu {
   position: absolute;

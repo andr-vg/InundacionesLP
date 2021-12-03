@@ -5,6 +5,7 @@ from wtforms import (
     validators,
     SelectMultipleField,
     widgets,
+    BooleanField
 )
 from wtforms.fields.simple import HiddenField
 from app.models.rol import Rol
@@ -127,3 +128,25 @@ class EditProfileForm(FlaskForm):
         coerce=int,
         option_widget=widgets.CheckboxInput(),
     )
+
+class AcceptPendingForm(FlaskForm):
+    """
+    Formulario para aceptar y dar permisos a un usuario
+    que se logea por primera vez desde Google
+
+    Args:
+        id(int): id del usuario correspondiente
+
+    """
+
+    id = HiddenField("Id")
+    pending = BooleanField(
+        "Validar Usuario",
+        [validators.DataRequired(message="Para guardar debe marcar en Validar al usuario")],
+    )
+    rol = SelectMultipleField(
+        "Seleccionar rol",
+        [validators.DataRequired(message="Debe tener al menos un rol")],
+        coerce=int,
+        option_widget=widgets.CheckboxInput(),
+    )       

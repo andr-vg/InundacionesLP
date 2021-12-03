@@ -94,7 +94,7 @@ def edit():
         state="Publicado" if zona.state else "Despublicado",
         color=zona.color,
     )
-    return render_template("zonas_inundables/edit.html", form=form)
+    return render_template("zonas_inundables/edit.html", form=form, zona=zona, coords=zona.get_coords_as_list())
 
 
 def delete():
@@ -142,7 +142,9 @@ def update():
         )
         flash("La zona ha sido editada correctamente.")
         return redirect(url_for("zonas_inundables_index"))
-    return render_template("zona_inundable/edit.html", form=form)
+    else:
+        zona = ZonaInundable.get_zona_by_id(request.form["id"])
+        return render_template("zonas_inundables/edit.html", form=form, zona=zona, coords=zona.get_coords_as_list())
 
 
 def show(name):

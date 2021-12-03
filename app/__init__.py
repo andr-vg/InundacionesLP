@@ -1,4 +1,4 @@
-from os import path, environ
+from os import path, environ, urandom
 from flask import Flask, render_template, g, Blueprint, redirect, url_for, request
 from flask_session import Session
 from app import resources
@@ -33,6 +33,19 @@ import logging
 
 csrf = CSRFProtect()
 
+from oauthlib.oauth2 import WebApplicationClient
+from flask_login import (LoginManager,
+    current_user,
+    login_required,
+    login_user,
+    logout_user,
+    )
+# Configuration
+GOOGLE_CLIENT_ID = environ.get("GOOGLE_CLIENT_ID", None)
+GOOGLE_CLIENT_SECRET = environ.get("GOOGLE_CLIENT_SECRET", None)
+GOOGLE_DISCOVERY_URL = (
+    "https://accounts.google.com/.well-known/openid-configuration"
+)
 
 def create_app(environment="development"):
     # Configuración inicial de la app
@@ -44,6 +57,15 @@ def create_app(environment="development"):
     csrf.init_app(app)
     app.config["WTF_CSRF_CHECK_DEFAULT"] = False
     app.config["WTF_CSRF_ENABLED"] = False
+    
+    app.secret_key = environ.get("SECRET_KEY") or urandom(24)
+    
+    # OAuth 2 client setup
+    client = WebApplicationClient(GOOGLE_CLIENT_ID)
+    
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
@@ -70,6 +92,7 @@ def create_app(environment="development"):
     # app.jinja_env.globals.update(get_rol_actual=rol.get_session_rol_actual)
     # app.jinja_env.globals.update(get_roles=rol.get_session_roles)
     app.jinja_env.globals.update(get_username=user.get_session_username)
+    app.jinja_env.globals.update(is_pending=auth.is_pending)
 
     # Autenticación
     app.add_url_rule("/iniciar_sesion", "auth_login", auth.login)
@@ -107,7 +130,12 @@ def create_app(environment="development"):
     )
     # app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
     app.add_url_rule("/usuarios/<username>", "user_show", user.show, methods=["GET"])
-
+    app.add_url_rule("/usuarios/pendientes", "user_show_pendientes", user.show_pendientes, defaults={"page": 1}, methods=["GET"])
+    app.add_url_rule("/usuarios/pendientes/<int:page>", "user_show_pendientes", user.show_pendientes, methods=["GET"])
+    app.add_url_rule("/usuarios/pendientes/aceptar", "user_accept_pendientes", user.accept_pendientes, methods=["POST"])
+    app.add_url_rule(
+        "/usuarios/pendientes/actualizar", "user_pendientes_update", user.update_pendientes, methods=["POST"]
+    )
     # Rutas de perfil propio
     app.add_url_rule("/perfil", "user_edit_profile", user.edit_profile)
     app.add_url_rule(
@@ -411,6 +439,22 @@ def create_app(environment="development"):
         recorridos_evacuacion.show,
         methods=["GET"],
     )
+
+##  Autenticacion Google
+    app.add_url_rule(
+        "/google_autenticacion",
+        "google_authenticate",
+        auth.google_login,
+        methods=["POST"]
+    ) 
+
+    app.add_url_rule(
+        "/login/callback",
+        "auth_callback",
+        auth.callback,
+        methods=["GET"]
+    ) 
+
 
     # Ruta para el Home (usando decorator)
     @app.route("/")

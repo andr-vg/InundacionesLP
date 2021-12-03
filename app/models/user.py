@@ -209,12 +209,14 @@ class User(db.Model):
             return (
                 query.filter(User.deleted == False)
                 .filter(User.id != id)
+                .filter(User.pending == False)
                 .order_by(User.username.asc())
                 .paginate(page, per_page=config.elements_per_page)
             )
         return (
             query.filter(User.deleted == False)
             .filter(User.id != id)
+            .filter(User.pending == False)
             .order_by(User.username.desc())
             .paginate(page, per_page=config.elements_per_page)
         )
@@ -229,19 +231,23 @@ class User(db.Model):
     roles = relationship("Rol", secondary="usuario_tiene_rol", back_populates="users")
     active = Column(Boolean, default=True)
     deleted = Column(Boolean, default=False)
+    pending = Column(Boolean, default=False)
     updated_at = Column(DateTime, onupdate=datetime.datetime.utcnow, default=None)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     complaints = relationship("Denuncia", back_populates="user_assign")
     tracking = relationship("Seguimiento", back_populates="user_assign")
 
     def __init__(
-        self, email, password, username, roles=None, firstname=None, lastname=None
+        self, email, username, password=None, roles=None, firstname=None, lastname=None
+        , pending=False
     ):
         self.email = email
-        self.password_hash = generate_password_hash(password).decode("utf-8")
+        if password:
+            self.password_hash = generate_password_hash(password).decode("utf-8")
         self.username = username
         self.firstname = firstname
         self.lastname = lastname
+        self.pending = pending
 
     @property
     def password(self):
@@ -381,12 +387,48 @@ class User(db.Model):
             return (
                 User.query.filter(User.deleted == False)
                 .filter(User.id != id)
+                .filter(User.pending == False)
                 .order_by(User.username.asc())
                 .paginate(page, per_page=config.elements_per_page)
             )
         return (
             User.query.filter(User.deleted == False)
             .filter(User.id != id)
+            .filter(User.pending == False)
             .order_by(User.username.desc())
             .paginate(page, per_page=config.elements_per_page)
         )
+
+    def get_pending_users(page, config):
+        """
+        Retorna los usuarios de manera paginada según la configuracion dada
+
+        Args:
+            id(int): id del usuario activo en la sesión
+            page(int): número a paginar
+            config(dict): diccionario con los datos de configuracion establecidos
+        """
+        if config.ordered_by == "ascendente":
+            return (
+                User.query.filter(User.deleted == False)
+                .filter(User.pending == True)
+                .order_by(User.username.asc())
+                .paginate(page, per_page=config.elements_per_page)
+            )
+        return (
+            User.query.filter(User.deleted == False)
+            .filter(User.pending == True)
+            .order_by(User.username.desc())
+            .paginate(page, per_page=config.elements_per_page)
+        )
+
+    def accept_pending_user(self, form, roles_deleted):
+        """Edita el perfil del usuario actual"""
+        self.pending = not form.pending.data
+        for rol in roles_deleted:
+            rol_deleted = Rol.get_rol_by_id(rol)
+            self.roles.remove(rol_deleted)
+        for rol in form.rol.data:
+            rol_new = Rol.get_rol_by_id(rol)
+            self.roles.append(rol_new)
+        db.session.commit()

@@ -64,16 +64,26 @@ def __process_csv(file):
     Args:
         file: Archivo csv, previamente verificado.
     """
+    def add_coordenadas(lista_zonas,zona):
+        """
+        Agregara coordenadas segun la zona que corresponda
+        """
+        for lat, long in lista_zonas:
+            coordenadas = Coordenadas(lat, long)
+            coordenadas.assign_zonas_inundables(zona, coordenadas)  
+
     d_reader = csv.DictReader(file)
     for row in d_reader:
         try:
             zona = ZonaInundable.exists_zona_inundable(row["name"])
+            zones_list = json.loads(row["area"])
             if not zona:
-                zones_list = json.loads(row["area"])
                 zona_inundable = ZonaInundable(row["name"])
-                for lat, long in zones_list:
-                    coordenadas = Coordenadas(lat, long)
-                    coordenadas.assign_zonas_inundables(zona_inundable, coordenadas)
+                add_coordenadas(zones_list,zona_inundable)
+            else:
+                for coord in zona.coords:
+                    coord.delete()
+                add_coordenadas(zones_list,zona)
         except:
             abort(400)
 

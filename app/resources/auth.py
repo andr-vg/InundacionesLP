@@ -1,4 +1,4 @@
-from flask import redirect, render_template, request, url_for, abort, session, flash
+from flask import redirect, render_template, request, url_for, abort, session, flash, current_app
 from app.models.user import User, Rol
 from app.models.configuration import Configuration
 from sqlalchemy import and_
@@ -28,9 +28,10 @@ def google_login(google_client_id, google_discovery_url):
     # scopes that let you retrieve user's profile from Google
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri="https://127.0.0.1:5000/login/callback",
+        redirect_uri = current_app.config['REDIRECT_URI'],
         scope=["openid", "email", "profile"],
     )
+    print(current_app.config['REDIRECT_URI'])
     return redirect(request_uri)
 
 def callback(google_client_id, google_client_secret, google_discovery_url):

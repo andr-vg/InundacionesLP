@@ -22,17 +22,15 @@ header {
 .logo {
   max-width: 120px;
 }
-.imagen_tarjeta{
+.imagen_tarjeta {
   max-width: 90%;
   height: auto;
   padding: 5px;
-  
 }
-.imagen_tarjeta2{
+.imagen_tarjeta2 {
   max-width: 65%;
   height: auto;
   padding: 5px;
-  
 }
 nav {
   display: flex;
@@ -295,11 +293,8 @@ menu_bar {
   width: 800px;
 }
 head_text {
- 
   border-width: medium;
-  border-radius:4px;
-
-
+  border-radius: 4px;
 }
 
 line_menu {
@@ -342,10 +337,12 @@ big_img {
   position: relative;
   display: block;
   margin-top: 24px;
-
-  height: 480px;
-
-  background: #1ca1e8;
+  margin: auto;
+  width: 90%;
+  padding: 10px;
+  /*height: 480px;
+*/
+  background: #a2cee6;
   /*box-sizing: border-box;
 	border: 1px solid;*/
 }

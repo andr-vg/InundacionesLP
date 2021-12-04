@@ -1,4 +1,4 @@
-from flask import redirect, render_template, request, url_for, abort, session, flash
+from flask import redirect, render_template, request, url_for, abort, session, flash, current_app
 from app.models.user import User, Rol
 from app.models.configuration import Configuration
 from sqlalchemy import and_
@@ -14,7 +14,7 @@ import json
 def login():
     return render_template("auth/login.html")
 
-def google_login(google_client_id, google_discovery_url, redirect_uri):
+def google_login(google_client_id, google_discovery_url):
 
     def get_google_provider_cfg():
         return requests.get(google_discovery_url).json()
@@ -28,9 +28,10 @@ def google_login(google_client_id, google_discovery_url, redirect_uri):
     # scopes that let you retrieve user's profile from Google
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri = redirect_uri,
+        redirect_uri = current_app.config['REDIRECT_URI'],
         scope=["openid", "email", "profile"],
     )
+    print(current_app.config['REDIRECT_URI'])
     return redirect(request_uri)
 
 def callback(google_client_id, google_client_secret, google_discovery_url):

@@ -59,6 +59,7 @@
     <thead>
       <tr>
         <th>Nombre</th>
+        <th>Codigo</th>
         <th>Color</th>
         <th>Estado</th>
         <th>Acciones</th>
@@ -68,6 +69,7 @@
       {% for zona in zonas.items %}
       <tr>
         <td> <a href="{{ url_for('zonas_inundables_show', name=zona.name) }}"> {{ zona.name }} </a></td>
+        <td> {{zona.code}}</td>
         <td> {{ zona.get_color_español() }} </td>
         <td> {% if zona.state %} 
                 Publicado

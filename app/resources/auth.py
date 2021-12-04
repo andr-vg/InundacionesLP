@@ -14,7 +14,7 @@ import json
 def login():
     return render_template("auth/login.html")
 
-def google_login(google_client_id, google_discovery_url):
+def google_login(google_client_id, google_discovery_url, redirect_uri):
 
     def get_google_provider_cfg():
         return requests.get(google_discovery_url).json()
@@ -28,7 +28,7 @@ def google_login(google_client_id, google_discovery_url):
     # scopes that let you retrieve user's profile from Google
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri="https://127.0.0.1:5000/login/callback",
+        redirect_uri = redirect_uri,
         scope=["openid", "email", "profile"],
     )
     return redirect(request_uri)

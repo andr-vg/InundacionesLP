@@ -65,6 +65,7 @@ def create_app(environment="development"):
     GOOGLE_CLIENT_SECRET = app.config['GOOGLE_CLIENT_SECRET']
     GOOGLE_DISCOVERY_URL = app.config['GOOGLE_DISCOVERY_URL']
 
+
     # OAuth 2 client setup
     client = WebApplicationClient(GOOGLE_CLIENT_ID)
     
@@ -447,7 +448,7 @@ def create_app(environment="development"):
         auth.google_login,
         defaults={
             "google_client_id": GOOGLE_CLIENT_ID,
-            "google_discovery_url": GOOGLE_DISCOVERY_URL
+            "google_discovery_url": GOOGLE_DISCOVERY_URL,
         },
         methods=["POST"],
     ) 

@@ -129,7 +129,9 @@ export default {
 
     async get_categoria() {
       return axios
-        .get("http://127.0.0.1:5000/api/categorias/")
+        .get(
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/categorias/"
+        )
         .then((response) => {
           // JSON responses are automatically parsed.
           this.categories = response.data;

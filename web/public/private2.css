@@ -113,10 +113,23 @@ table.table-sm > thead > tr > th {
   border: 1px solid var(--info);
 }
 
+big_img {
+  background-color: var(--primary);
+}
+
 /* Media queries */
 
 @media screen and (max-width: 768px) {
   nav ul {
     background-color: var(--primary);
   }
+}
+
+.leaflet-container.leaflet-touch.leaflet-grab.leaflet-touch-drag.leaflet-touch-zoom {
+  width: 90%;
+  margin: auto;
+}
+
+* {
+  color: rgb(172, 185, 197);
 }

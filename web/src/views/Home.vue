@@ -20,7 +20,10 @@
       <img class="imagen_tarjeta2" src="../assets/zona.png" alt="mapa_punto_recorrido">
       <p> Informate sobre las zonas que estan en riesgo de inundacion </p>
       </card>
-      <card><h3>Realizar denuncias</h3></card>
+      <card><h3>Realizar denuncias</h3>
+       <img class="imagen_tarjeta2" src="../assets/denuncia.png" alt="mapa_punto_recorrido">
+       <p> Preveni inundaciones al realizar denuncias sobre lugares peligrosos de tu ciudad</p>
+      </card>
 		</card_box>
 	</line_cards>
 </content>

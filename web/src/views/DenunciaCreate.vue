@@ -156,7 +156,11 @@ export default {
     checkForm() {
       this.errors = [];
       this.success = "";
-      if (!(this.category in this.categories)) {
+      let categories = [];
+      this.categories.forEach(function (value) {
+        categories.push(value.id);
+      });
+      if (!categories.includes(this.category)) {
         this.errors.push("Seleccione una categoria valida");
       }
       if (!this.validEmail(this.email)) {

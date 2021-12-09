@@ -82,6 +82,7 @@ label {
 .container-right {
   float: right;
 }
+
 table.table > tbody > tr > td,
 table {
   color: var(--info);

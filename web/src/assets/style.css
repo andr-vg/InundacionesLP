@@ -128,7 +128,6 @@ footer {
   margin-top: 20px;
   min-height: 400px;
 }
-
 a {
   color: #212529;
 }
@@ -156,10 +155,12 @@ a.link {
   margin-top: 50px;
   letter-spacing: 1px;
 }
-
-ul,
+ul {
+  display: inline-block;
+}
 li {
   list-style-type: none;
+  display: inline-block;
 }
 
 h4 {

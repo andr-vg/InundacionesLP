@@ -1,13 +1,9 @@
 <template>
-  <div>
-    <div v-if="show" class="box">
-      <p>{{ recorrido.nombre }}</p>
-      <p>Descripcion:{{ recorrido.descripcion }}</p>
-      <p @click="changeShow">Mostrar menos</p>
-    </div>
-    <div v-else @click="changeShow">
-      <span>Mostrar mas</span>
-    </div>
+  <span class="item1">{{ recorrido.nombre }}</span>
+  <span v-if="show" @click="changeShow" class="item2">Mostrar menos</span>
+  <span v-else @click="changeShow" class="item2">Mostrar mas</span>
+  <div v-if="show" class="box item3">
+    <span>Descripcion:{{ recorrido.descripcion }}</span>
   </div>
 </template>
 <script>

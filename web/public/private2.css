@@ -63,7 +63,6 @@ label {
   font-size: 48px;
 }
 .box {
-  width: 250px;
   margin: 0 0 25px;
   overflow: hidden;
   padding: 20px;
@@ -73,13 +72,38 @@ label {
   border-radius: 5px;
 }
 .container {
-  width: 700px;
-  margin: auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  margin: 15px;
 }
 .container-left {
   float: left;
 }
 .container-right {
+  float: right;
+}
+.container ul {
+  text-align: left;
+}
+.container li {
+  display: flexbox;
+}
+.container h2 {
+  text-align: left;
+}
+.item1 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+.item2 {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+.item3 {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+.mostrar-button {
   float: right;
 }
 table.table > tbody > tr > td,

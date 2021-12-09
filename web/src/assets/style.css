@@ -128,6 +128,7 @@ footer {
   margin-top: 20px;
   min-height: 400px;
 }
+
 a {
   color: #212529;
 }
@@ -155,12 +156,10 @@ a.link {
   margin-top: 50px;
   letter-spacing: 1px;
 }
-ul {
-  display: inline-block;
-}
+
+ul,
 li {
   list-style-type: none;
-  display: inline-block;
 }
 
 h4 {
@@ -188,6 +187,33 @@ h4 {
 .required:after {
   content: " *";
   color: red;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  margin: 15px;
+}
+.container ul {
+  text-align: left;
+}
+.container li {
+  display: flexbox;
+}
+.container h2 {
+  text-align: left;
+}
+.item1 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+.item2 {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+.item3 {
+  grid-column-start: 1;
+  grid-column-end: 4;
 }
 
 #coords-button {

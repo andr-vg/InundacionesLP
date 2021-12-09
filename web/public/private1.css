@@ -63,26 +63,14 @@ label {
   font-size: 48px;
 }
 .box {
-  width: 250px;
   margin: 0 0 25px;
   overflow: hidden;
   padding: 20px;
-  background-color: var(--secondary);
-  border: 1px solid var(--primary);
+  background-color: var(--primary);
+  border: 1px solid var(--secondary);
   -webkit-border-radius: 5px;
   border-radius: 5px;
 }
-.container {
-  width: 700px;
-  margin: auto;
-}
-.container-left {
-  float: left;
-}
-.container-right {
-  float: right;
-}
-
 table.table > tbody > tr > td,
 table {
   color: var(--info);

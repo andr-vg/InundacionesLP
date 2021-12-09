@@ -70,7 +70,24 @@ table.table-sm > thead > tr > th {
   background-color: var(--primary);
   border-color: var(--primary);
 }
-
+.box {
+  margin: 0 0 25px;
+  overflow: hidden;
+  padding: 20px;
+  background-color: var(--primary);
+  border: 1px solid var(--secondary);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.box {
+  margin: 0 0 25px;
+  overflow: hidden;
+  padding: 20px;
+  background-color: var(--primary);
+  border: 1px solid var(--secondary);
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
 #lat,
 #long {
   display: none;

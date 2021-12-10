@@ -23,7 +23,7 @@ const routes = [
         component: PuntosYRecorridos
     },
     {
-        path: '/denuncia/:page',
+        path: '/denuncia',
         name: 'denuncia',
         component: Denuncias
     },

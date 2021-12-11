@@ -20,13 +20,17 @@
           </l-polygon>
         </div>
       </l-map>
+      <br>
       <div class="elem">
         <h2>Información</h2>
-        <ul v-if="zones && zones.length">
-          <li v-for="(zone, index) in zones" :key="index">
-            <detalleZone :zone="zone"></detalleZone>
+        <div >
+          <ul v-if="zones && zones.length">
+          <li v-for="(zone, index) in zones" :key="index" >
+            <detalleZone class="container" style="width: fit-content" :zone="zone"></detalleZone>
           </li>
         </ul>
+        </div>
+        
       </div>
       </div>
 

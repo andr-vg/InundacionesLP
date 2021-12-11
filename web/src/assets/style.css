@@ -104,6 +104,7 @@ header {
 
 div.active {
   min-width: 170px;
+  display: none;
 }
 
 .clear {
@@ -353,7 +354,7 @@ line_menu {
 
 menu {
   float: left;
-  margin: auto 48px auto 48px;
+  margin: auto 28px auto 28px;
 
   height: fit-content;
   width: fit-content;
@@ -440,7 +441,7 @@ card {
   height: 100%;
   width: 325px;
   margin: auto 48px;
-
+  padding: 12px;
   border-radius: 2px;
   box-shadow: 6px 6px 25px -3px rgba(0, 0, 0, 0.75);
 }
@@ -509,31 +510,38 @@ span:hover {
 
 /* Media queries */
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 868px) {
+  a.cerrar2,
+  .logo {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+@media screen and (max-width: 725px) {
   /* propiedades comunes en la pagina */
   header .title .form-group {
     margin-bottom: inherit;
   }
 
+  header {
+    height: 0px;
+  }
+
   li.cerrar {
     visibility: visible;
-  }
-  a.cerrar2,
-  .logo {
-    visibility: hidden;
-    display: none;
   }
 
   header .title {
     max-height: 170px;
   }
 
-  header nav ul {
+  menu_bar line_menu menu {
     top: 90px;
     flex-flow: row wrap;
   }
 
-  #check:checked ~ ul {
+  #check:checked ~ menu {
     top: 173px;
   }
 
@@ -589,7 +597,7 @@ span:hover {
     visibility: visible;
   }
 
-  nav ul {
+  line_menu menu {
     align-content: stretch;
     /*
         height: 67%;
@@ -604,7 +612,7 @@ span:hover {
     position: absolute;
   }
 
-  nav ul li {
+  line_menu menu a {
     width: 100%;
   }
 
@@ -613,7 +621,7 @@ span:hover {
     top: 0%;
   }
 
-  #check:checked ~ ul {
+  #check:checked ~ menu {
     left: 0%;
     top: 36px;
     transition: all 0.5s;

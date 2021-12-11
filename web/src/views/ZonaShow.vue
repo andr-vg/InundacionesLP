@@ -18,8 +18,10 @@
         </div>
       </l-map>
       </div>
-      <div>
-        <h2>Información</h2>
+      <br>
+              <h2>Información</h2>
+
+      <div class="box item3" style="padding:0%; width: fit-content; margin: auto; background-color: lightblue">
         <div>Zona: {{ zone.nombre }}</div>
         <div>Color: {{ zone.color }}</div>
         <div>Código: {{ zone.codigo }}</div>

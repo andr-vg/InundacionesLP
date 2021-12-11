@@ -3,11 +3,20 @@
 
   <link rel="stylesheet" type="text/css" :href="customerStyle" />
   <header>
+    
 	<logo>
       <img class="logo" src="./assets/logo.png" alt="InundacionesLP">
   </logo>
+
+  <div class="active">    
+    <label for="check" id="checkbtn" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+  </div>
+  
   
 	<menu_bar>
+    <input type="checkbox" id="check" class="active">
 		<line_menu>
       <menu><router-link to="/home">Home</router-link></menu>
 			<menu><router-link :to="{name:'zonas_inundables', params: {page: 1}}">Zonas inundables</router-link></menu>
@@ -15,9 +24,12 @@
 			<menu><router-link :to="{ name: 'denuncia', params: { page: 1 } }">Denuncias</router-link></menu>
 		</line_menu>
 	</menu_bar>
+  
   <div id="app">
     <div class="nav" id="nav">
   </div>
+
+  
   </div>
 </header>
   

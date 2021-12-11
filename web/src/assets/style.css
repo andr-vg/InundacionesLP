@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,700");
 @import url("https://fonts.googleapis.com/css?family=Catamaran:400,800");
 body {
-  background-color: #d4e0ec !important;
   font-family: "Montserrat", Helvetica, sans-serif;
   font-size: 18px;
   width: inherit;
@@ -131,6 +130,7 @@ footer {
 
 a {
   color: #212529;
+  text-decoration-line: none !important;
 }
 
 a:hover {
@@ -144,10 +144,10 @@ button a {
 a.link {
   text-transform: uppercase;
   font-size: 14px;
-  background-color: #92a4ad !important;
+  background-color: #92a4ad;
   padding: 10px 15px;
   border-radius: 0;
-  color: #dee6eb !important;
+  color: #dee6eb;
   display: inline-block;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -385,9 +385,9 @@ big_img {
   width: 90%;
   padding: 10px;
   /*height: 480px;
-*/
+
   background: #a2cee6;
-  /*box-sizing: border-box;
+  box-sizing: border-box;
 	border: 1px solid;*/
 }
 
@@ -483,6 +483,28 @@ footer {
   position: absolute;
   height: 200px;
   margin-top: 30%;
+}
+
+.flex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.elem {
+  width: 90%;
+}
+
+span:hover {
+  cursor: pointer !important;
+}
+
+.box {
+  margin: 0 10px 25px !important;
+  overflow: hidden !important;
+  padding: 20px !important;
+  -webkit-border-radius: 5px !important;
+  border-radius: 5px !important;
 }
 
 /* Media queries */

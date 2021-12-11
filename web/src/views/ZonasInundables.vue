@@ -1,8 +1,12 @@
 <template>
+  
   <div>
+
+    <br>
     <h1>Zonas inundables</h1>
     <div>
-      <l-map style="height: 450px" :zoom="zoom" :center="center">
+      <div class="flex">
+      <l-map style="height: 450px; width: 90%; margin:auto" :zoom="zoom" :center="center" class="elem">
         <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
         <div v-for="(zone, index) in zones" :key="index">
           <l-polygon
@@ -16,7 +20,7 @@
           </l-polygon>
         </div>
       </l-map>
-      <div class="container">
+      <div class="elem">
         <h2>Información</h2>
         <ul v-if="zones && zones.length">
           <li v-for="(zone, index) in zones" :key="index">
@@ -24,6 +28,8 @@
           </li>
         </ul>
       </div>
+      </div>
+
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li v-if="previousPage != null" class="page-item"><a class="page-link" v-bind:href="previousPage">Anterior</a></li>
@@ -33,11 +39,11 @@
 
       </nav>     
     </div>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   </div>
 
 </template>
+
 
 <script>
 import axios from "axios";
@@ -114,4 +120,21 @@ export default {
  
 };
 </script>
+
+<style>
+
+  a, a:hover {
+    color: rgb(255, 255, 255);
+  }
+
+  .elem {
+  width: 50%;
+  }
+
+
+  
+</style>
+
+
+
 

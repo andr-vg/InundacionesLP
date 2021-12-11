@@ -1,8 +1,11 @@
 <template>
   <div>
+    <br>
     <h1>Denuncias</h1>
-    <a v-bind:href="'/denuncia/nueva'"> Crear denuncia</a>
-    <l-map style="height: 450px" :zoom="zoom" :center="center">
+    <br>
+    <a class="page-link" style="width: fit-content; margin: auto;" v-bind:href="'/denuncia/nueva'"> Crear denuncia</a>
+    <br>
+    <l-map style="height: 450px; width: 90%; margin:auto" :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <div v-for="(denuncia, index) in denuncias" :key="index">
         <l-marker :lat-lng="denuncia.coordenadas.split(',')">

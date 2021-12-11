@@ -225,6 +225,12 @@ td.actions {
   width: 500px;
 }
 
+.collapse.show{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 /* Media queries */
 
 @media screen and (max-width: 768px) {

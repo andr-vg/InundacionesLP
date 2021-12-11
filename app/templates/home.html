@@ -5,9 +5,26 @@
 {% endblock %}
 {% block content %}
   {% if not is_authenticated() %}
-  <div class="row justify-content-center align-items-center">
-    <a href="{{ url_for('auth_login') }}" class="btn btn-light btn-sm float-center">Iniciar sesión</a>
-  </div>
+    {% if (is_pending()) %}
+    <div class="row justify-content-center align-items-center">
+      <h1> Debe esperar a que un Administrador lo valide en el sistema</h1>
+    </div>
+    <form action="{{ url_for('google_authenticate') }}" method="POST">
+      <div class="form-group">
+        <div class="container">
+          <div class="row">
+            <div class="col align-center">
+              <input class="btn btn-light btn-sm float-center" type="submit" value="Iniciar sesión Con Google">
+            </div>
+          </div>
+        </div>
+      </div>        
+    </form>        
+    {% else %} 
+      <div class="row justify-content-center align-items-center">
+        <a href="{{ url_for('auth_login') }}" class="btn btn-light btn-sm float-center">Iniciar sesión</a>
+      </div>
+    {% endif %}
   {% else %}
   <div class="row justify-content-center align-items-center">
     <h1>InundacionesLP</h1>

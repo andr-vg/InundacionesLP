@@ -81,25 +81,22 @@ def callback(google_client_id, google_client_secret, google_discovery_url):
     else:
         return "User email not available or not verified by Google.", 400
 
-    # Create a user in your db with the information provided
-    # by Google
+    # Crear usuario
     user = User(username=users_name, email=users_email, pending=True)
 
-    # Doesn't exist? Add it to the database.
-    print(userinfo_response.json())
+    #Verificar si existe
     if not User.get_user_by_email(users_email):
         user.add_user()
+        session["pending"] = user.pending
     else:
         user = User.get_user_by_email(users_email)
-    # Begin user session by logging the user in
-    # login_user(user)
-    # authenticate()
-    # Send user back to homepage
-    session["user"] = user.email
-    session["username"] = user.username
-    session["config"] = Configuration.get_configuration()
-    session["permissions"] = User.get_permissions(user_id=user.id)
-    session["pending"] = user.pending
+        if not user.pending:
+            #Iniciar sesion
+            session["user"] = user.email
+            session["username"] = user.username
+            session["config"] = Configuration.get_configuration()
+            session["permissions"] = User.get_permissions(user_id=user.id)
+            session["pending"] = user.pending
     return redirect(url_for("home"))
 
 

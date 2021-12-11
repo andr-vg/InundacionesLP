@@ -211,6 +211,10 @@ h4 {
   grid-column-start: 3;
   grid-column-end: 4;
 }
+.item2b {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
 .item3 {
   grid-column-start: 1;
   grid-column-end: 4;
@@ -263,7 +267,7 @@ button {
   width: 100px;
 }
 textarea {
-  width: 350px;
+  width: 90%;
   display: block;
   outline: none;
   border-radius: 5px;
@@ -272,7 +276,7 @@ textarea {
 select,
 input {
   height: 25px;
-  width: 350px;
+  width: 90%;
   display: block;
   outline: none;
   border-radius: 5px;
@@ -595,6 +599,49 @@ footer {
     left: 0%;
     top: 36px;
     transition: all 0.5s;
+  }
+  .container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    margin: 15px;
+  }
+  .container ul {
+    text-align: left;
+  }
+  .container li {
+    display: flexbox;
+  }
+  .container h2 {
+    text-align: left;
+  }
+  .item1 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+  }
+  .item2 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+  }
+  .item2b {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+  }
+  .item3 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    margin: 5px;
+  }
+  .item4 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+  }
+  .item5 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 2;
   }
 
   #mapid {

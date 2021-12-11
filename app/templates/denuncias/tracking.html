@@ -5,10 +5,13 @@
 {% endblock %}
 {% block content %}
 <h1>Denuncias asignadas a {{get_username()}}</h1>
-<a href="{{ url_for('denuncia_index') }}" class="link">Volver</a>
+<br>
+<a href="{{ url_for('denuncia_index') }}" class="botones btn btn-sm">Volver</a>
 {% if has_permission('denuncias_new') %}
-<a href="{{ url_for('denuncia_new') }}" class="link">Crear denuncia</a>
+<a href="{{ url_for('denuncia_new') }}" class="botones btn btn-sm">Crear denuncia</a>
 {% endif %}
+<br>
+<br>
 <table class="table table-sm">
     <thead>
       <tr>

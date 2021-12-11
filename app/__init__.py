@@ -26,6 +26,7 @@ from app.resources.api.configuration import configuracion_api
 from app.helpers import handler
 from app.helpers import puntos_encuentro as puntos
 
+
 # from app.helpers import auth as helper_auth
 # from app.helpers import permission as helper_permission
 from flask_wtf.csrf import CSRFProtect
@@ -34,12 +35,13 @@ import logging
 csrf = CSRFProtect()
 
 from oauthlib.oauth2 import WebApplicationClient
-from flask_login import (LoginManager,
+from flask_login import (
+    LoginManager,
     current_user,
     login_required,
     login_user,
     logout_user,
-    )
+)
 
 
 def create_app(environment="development"):
@@ -47,28 +49,26 @@ def create_app(environment="development"):
     app = Flask(__name__)
     CORS(app)
 
-
     # CSRF Setup
     # csrf = CSRFProtect(app)
     csrf.init_app(app)
     app.config["WTF_CSRF_CHECK_DEFAULT"] = False
     app.config["WTF_CSRF_ENABLED"] = False
-    
-    app.secret_key = environ.get("SECRET_KEY") or urandom(24)    
+
+    app.secret_key = environ.get("SECRET_KEY") or urandom(24)
 
     # Carga de la configuración
     env = environ.get("FLASK_ENV", environment)
     app.config.from_object(config[env])
 
     # Configuration para Oauth2
-    GOOGLE_CLIENT_ID = app.config['GOOGLE_CLIENT_ID']
-    GOOGLE_CLIENT_SECRET = app.config['GOOGLE_CLIENT_SECRET']
-    GOOGLE_DISCOVERY_URL = app.config['GOOGLE_DISCOVERY_URL']
-
+    GOOGLE_CLIENT_ID = app.config["GOOGLE_CLIENT_ID"]
+    GOOGLE_CLIENT_SECRET = app.config["GOOGLE_CLIENT_SECRET"]
+    GOOGLE_DISCOVERY_URL = app.config["GOOGLE_DISCOVERY_URL"]
 
     # OAuth 2 client setup
     client = WebApplicationClient(GOOGLE_CLIENT_ID)
-    
+
     login_manager = LoginManager()
     login_manager.init_app(app)
 
@@ -89,6 +89,7 @@ def create_app(environment="development"):
     app.jinja_env.globals.update(
         get_configuration=configuration.get_session_configuration
     )
+    app.jinja_env.globals.update(has_tracking=auth.has_tracking)
     app.jinja_env.globals.update(tojson=puntos.tojson)
     # app.jinja_env.globals.update(get_rol_actual=rol.get_session_rol_actual)
     # app.jinja_env.globals.update(get_roles=rol.get_session_roles)
@@ -131,11 +132,30 @@ def create_app(environment="development"):
     )
     # app.add_url_rule("/usuarios/cambiar_rol", "user_change_rol", user.change_rol, methods=["POST"])
     app.add_url_rule("/usuarios/<username>", "user_show", user.show, methods=["GET"])
-    app.add_url_rule("/usuarios/pendientes", "user_show_pendientes", user.show_pendientes, defaults={"page": 1}, methods=["GET"])
-    app.add_url_rule("/usuarios/pendientes/<int:page>", "user_show_pendientes", user.show_pendientes, methods=["GET"])
-    app.add_url_rule("/usuarios/pendientes/aceptar", "user_accept_pendientes", user.accept_pendientes, methods=["POST"])
     app.add_url_rule(
-        "/usuarios/pendientes/actualizar", "user_pendientes_update", user.update_pendientes, methods=["POST"]
+        "/usuarios/pendientes",
+        "user_show_pendientes",
+        user.show_pendientes,
+        defaults={"page": 1},
+        methods=["GET"],
+    )
+    app.add_url_rule(
+        "/usuarios/pendientes/<int:page>",
+        "user_show_pendientes",
+        user.show_pendientes,
+        methods=["GET"],
+    )
+    app.add_url_rule(
+        "/usuarios/pendientes/aceptar",
+        "user_accept_pendientes",
+        user.accept_pendientes,
+        methods=["POST"],
+    )
+    app.add_url_rule(
+        "/usuarios/pendientes/actualizar",
+        "user_pendientes_update",
+        user.update_pendientes,
+        methods=["POST"],
     )
     # Rutas de perfil propio
     app.add_url_rule("/perfil", "user_edit_profile", user.edit_profile)
@@ -441,7 +461,7 @@ def create_app(environment="development"):
         methods=["GET"],
     )
 
-##  Autenticacion Google
+    ##  Autenticacion Google
     app.add_url_rule(
         "/google_autenticacion",
         "google_authenticate",
@@ -451,20 +471,19 @@ def create_app(environment="development"):
             "google_discovery_url": GOOGLE_DISCOVERY_URL,
         },
         methods=["POST"],
-    ) 
+    )
 
     app.add_url_rule(
         "/login/callback",
         "auth_callback",
         auth.callback,
-            defaults={
-                "google_client_id": GOOGLE_CLIENT_ID,
-                "google_client_secret": GOOGLE_CLIENT_SECRET,
-                "google_discovery_url": GOOGLE_DISCOVERY_URL
-            },
-        methods=["GET"]
-    ) 
-
+        defaults={
+            "google_client_id": GOOGLE_CLIENT_ID,
+            "google_client_secret": GOOGLE_CLIENT_SECRET,
+            "google_discovery_url": GOOGLE_DISCOVERY_URL,
+        },
+        methods=["GET"],
+    )
 
     # Ruta para el Home (usando decorator)
     @app.route("/")

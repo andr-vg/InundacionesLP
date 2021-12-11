@@ -189,6 +189,43 @@ h4 {
   color: red;
 }
 
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  margin: 15px;
+}
+.container ul {
+  text-align: left;
+}
+.container li {
+  display: flexbox;
+}
+.container h2 {
+  text-align: left;
+}
+.item1 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+}
+.item2 {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
+.item3 {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  margin: 5px;
+}
+.item4 {
+  grid-column-start: 2;
+  grid-column-end: 4;
+}
+.item5 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+}
+
 #coords-button {
   margin-bottom: 10px;
 }
@@ -222,20 +259,27 @@ td div.row {
   margin: auto;
 }
 
-.grid-container {
-  display: grid;
-  justify-content: center;
-  grid-template-columns: 300px 300px;
-  padding: 10px;
+button {
+  width: 100px;
 }
-.grid-item {
-  padding: 20px;
-  text-align: left;
-}
-
-input,
-label {
+textarea {
+  width: 350px;
   display: block;
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid #39c;
+}
+select,
+input {
+  height: 25px;
+  width: 350px;
+  display: block;
+  outline: none;
+  border-radius: 5px;
+  border: 1px solid #39c;
+}
+label {
+  display: flex;
 }
 td.actions {
   display: flex;

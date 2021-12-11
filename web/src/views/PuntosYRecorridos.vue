@@ -28,11 +28,10 @@
     </l-map>
   </div>
   <div class="container">
-    <div class="container-left">
+    <div class="item1">
       <h2>Puntos de encuentro</h2>
       <ul v-if="puntos && puntos.length">
-        <li v-for="(punto, index) in puntos" :key="index">
-          <span>{{ punto.name }}</span>
+        <li v-for="(punto, index) in puntos" :key="index" class="container">
           <detallePunto :punto="punto"></detallePunto>
         </li>
       </ul>
@@ -42,11 +41,14 @@
         </li>
       </ul>
     </div>
-    <div class="container-right">
+    <div class="item2">
       <h2>Recorridos de evacuación</h2>
       <ul v-if="puntos && puntos.length">
-        <li v-for="(recorrido, index) in recorridos" :key="index">
-          <span>{{ recorrido.nombre }}</span>
+        <li
+          v-for="(recorrido, index) in recorridos"
+          :key="index"
+          class="container"
+        >
           <detalleRecorrido :recorrido="recorrido"></detalleRecorrido>
         </li>
       </ul>
@@ -155,19 +157,3 @@ export default {
   },
 };
 </script>
-<style>
-ul {
-  list-style-type: none;
-}
-#container {
-  margin: 200px;
-  max-width: 48rem;
-  width: 90%;
-}
-.container ul {
-  text-align: left;
-}
-.container h2 {
-  text-align: left;
-}
-</style>

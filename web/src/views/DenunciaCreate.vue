@@ -1,62 +1,81 @@
 <template>
-  <div>
-    <l-map style="height: 450px" :zoom="zoom" :center="center" @click="onClick">
-      <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      <l-marker
-        v-if="markerLatLng.length != 0"
-        :lat-lng="markerLatLng"
-      ></l-marker>
-    </l-map>
-  </div>
-  <h3>Carga tu denuncia</h3>
-  <li class="success" v-if="success">{{ success }}</li>
-  <li class="errors" v-for="(error, index) in errors" :key="index">
-    {{ error }}
-  </li>
-  <div class="grid-container">
-    <div class="grid-item">
-      <label for="">Título</label>
-      <input placeholder="Título" v-model="title" />
+  <h1>Carga tu denuncia</h1>
+  <span class="success" v-if="success">{{ success }}</span>
+  <ul>
+    <li class="errors" v-for="(error, index) in errors" :key="index">
+      {{ error }}
+    </li>
+  </ul>
+  <div class="container">
+    <div class="item4">
+      <l-map
+        style="height: 450px"
+        :zoom="zoom"
+        :center="center"
+        @click="onClick"
+      >
+        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+        <l-marker
+          v-if="markerLatLng.length != 0"
+          :lat-lng="markerLatLng"
+        ></l-marker>
+      </l-map>
     </div>
-    <div class="grid-item">
-      <label for="">Categoría</label>
-      <select v-model="category">
-        <option disabled value="">Seleccione una categoria</option>
-        <option
-          v-for="(categoria, index) in categories"
-          :key="index"
-          v-bind:value="categoria.id"
+    <div class="item5">
+      <div class="container">
+        <div class="item3">
+          <label for="">Título*</label>
+          <input placeholder="Título" v-model="title" />
+        </div>
+        <div class="item3">
+          <label for="">Categoría</label>
+          <select v-model="category">
+            <option disabled value="">Seleccione una categoria*</option>
+            <option
+              v-for="(categoria, index) in categories"
+              :key="index"
+              v-bind:value="categoria.id"
+            >
+              {{ categoria.name }}
+            </option>
+          </select>
+        </div>
+        <div class="item3">
+          <label for="">Descripción*</label>
+          <textarea
+            row="3"
+            placeholder="Descripción"
+            v-model="description"
+          ></textarea>
+        </div>
+        <div class="item3">
+          <label for="">Teléfono*</label>
+          <input placeholder="Teléfono" v-model="tel" />
+          <small id="telHelp" style="display: flex"
+            >Ejemplo: +54 221 4567890</small
+          >
+        </div>
+        <div class="item3">
+          <label for="">Email*</label>
+          <input placeholder="Email" v-model="email" />
+          <small id="emailHelp" style="display: flex"
+            >Ejemplo: InundacionesLP@mail.com</small
+          >
+        </div>
+        <div class="item3">
+          <label for="">Nombre*</label>
+          <input placeholder="Nombre" v-model="firstname" />
+        </div>
+        <div class="item3">
+          <label for="">Apellido*</label>
+          <input placeholder="Apellido" v-model="lastname" />
+        </div>
+        <small class="item3" style="display: flex">* Campos obligatorios</small>
+        <small class="item3" style="display: flex"
+          >Se debe marcar un punto en el mapa</small
         >
-          {{ categoria.name }}
-        </option>
-      </select>
-    </div>
-    <div class="grid-item">
-      <label for="">Descripcion</label>
-      <textarea
-        row="3"
-        placeholder="Descripción"
-        v-model="description"
-      ></textarea>
-    </div>
-    <div class="grid-item">
-      <label for="">Teléfono</label>
-      <input placeholder="Teléfono" v-model="tel" />
-      <small id="telHelp">Ejemplo: +54 221 4567890</small>
-    </div>
-    <div class="grid-item">
-      <label for="">Email</label>
-      <input placeholder="Email" v-model="email" />
-      <small id="emailHelp">Ejemplo: InundacionesLP@mail.com</small>
-    </div>
-    <div class="grid-item">
-      <label for="">Nombre</label>
-      <input placeholder="Nombre" v-model="firstname" />
-    </div>
-    <div class="grid-item">
-      <label for="">Apellido</label>
-      <input placeholder="Apellido" v-model="lastname" />
-      <button @click="save">Guardar</button>
+        <button @click="save" class="item3">Guardar</button>
+      </div>
     </div>
   </div>
 </template>
@@ -129,7 +148,9 @@ export default {
 
     async get_categoria() {
       return axios
-        .get("http://127.0.0.1:5000/api/categorias/")
+        .get(
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/categorias/"
+        )
         .then((response) => {
           // JSON responses are automatically parsed.
           this.categories = response.data;
@@ -154,7 +175,11 @@ export default {
     checkForm() {
       this.errors = [];
       this.success = "";
-      if (!(this.category in this.categories)) {
+      let categories = [];
+      this.categories.forEach(function (value) {
+        categories.push(value.id);
+      });
+      if (!categories.includes(this.category)) {
         this.errors.push("Seleccione una categoria valida");
       }
       if (!this.validEmail(this.email)) {

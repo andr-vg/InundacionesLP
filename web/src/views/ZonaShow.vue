@@ -2,7 +2,7 @@
   <div>
       <h1>Detalle</h1>
       <div>
-          <l-map id="map" style="height: 450px" :zoom="zoom" :center="[parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)]" @update:center="forceRenderer">
+          <l-map id="map" style="height: 450px; width: 90%; margin:auto" :zoom="zoom" :center="[parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)]" @update:center="forceRenderer">
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
           <div>
           <l-polygon

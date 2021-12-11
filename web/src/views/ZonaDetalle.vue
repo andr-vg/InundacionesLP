@@ -1,25 +1,29 @@
 <template>
-  <div class="mouseover">
-    <span @mouseover="changeShow"><a v-bind:href="'/zona_inundable/'+zone.id"> {{ zone.nombre }} </a></span>
-    <span v-show="active"> - Color: {{ zone.color }}</span>
-    <span v-show="active"> - Código: {{ zone.codigo }}</span>
+  <div>
+    <span class="item1"><a v-bind:href="'/zona_inundable/'+zone.id"> {{ zone.nombre }} </a></span>
+    <span v-if="show" @click="changeShow" class="item2">Mostrar menos</span>
+    <span v-else @click="changeShow" class="item2">Mostrar mas</span>
+    <div v-if="show" class="box item3">
+      <p> Color: {{ zone.color }}</p>
+      <p> Código: {{ zone.codigo }}</p>
+    </div>
   </div>
 </template>
 <script>
 export default {
-  el: ".mouseover",
   props: {
     zone: Object,
   },
   data() {
     return {
-      active: false,
+      show: false,
     };
   },
   methods: {
     changeShow() {
-      this.active = !this.active;
+      this.show = !this.show;
     },
   },
 };
 </script>
+

@@ -14,7 +14,12 @@
     {% if has_permission('user_new') %}
     <a href="{{ url_for('user_new') }}" class="botones btn btn-sm">Nuevo</a>
     {% endif %}
-    <a href="{{ url_for('user_show_pendientes') }}" class="botones btn btn-sm">Pendientes</a>
+    <a href="{{ url_for('user_show_pendientes') }}" class="botones btn btn-sm">Pendientes 
+      {% if pending_user_count > 0 %}
+      <span class="badge badge-danger">{{pending_user_count}} 
+      {% endif %}
+    </span>
+    </a>
   </div>
   <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET">
   <div class="container-fluid">

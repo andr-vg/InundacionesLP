@@ -1,15 +1,15 @@
 :root {
-  --primary: #1f2833;
-  --secondary: #0b0c10;
-  --success: #1a1a1d;
-  --danger: #c5c6c7;
-  --info: #66fcf1;
-  --normal: aliceblue;
+  --primary: #1f2833 !important;
+  --secondary: #0b0c10 !important;
+  --success: #1a1a1d !important;
+  --danger: #c5c6c7 !important;
+  --info: #66fcf1 !important;
+  --normal: aliceblue !important;
 }
 
 body {
   background-color: var(--success) !important;
-  color: var(--info);
+  color: var(--info) !important;
 }
 
 .navcolor {
@@ -18,13 +18,13 @@ body {
 
 a {
   margin: 10px;
-  color: var(--normal);
+  color: var(--normal) !important;
   text-decoration: none;
   font-weight: bolder;
 }
 
 a:hover {
-  color: var(--info);
+  color: var(--info) !important;
 }
 
 a.link,
@@ -63,24 +63,13 @@ label {
   font-size: 48px;
 }
 .box {
-  width: 250px;
-  margin: 0 0 25px;
-  overflow: hidden;
-  padding: 20px;
-  background-color: var(--primary);
-  border: 1px solid var(--secondary);
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-}
-.container {
-  width: 700px;
-  margin: auto;
-}
-.container-left {
-  float: left;
-}
-.container-right {
-  float: right;
+  margin: 0 10px 25px !important;
+  overflow: hidden !important;
+  padding: 20px !important;
+  background-color: var(--primary) !important;
+  border: 1px solid var(--secondary) !important;
+  -webkit-border-radius: 5px !important;
+  border-radius: 5px !important;
 }
 table.table > tbody > tr > td,
 table {
@@ -114,7 +103,7 @@ table.table-sm > thead > tr > th {
 }
 
 big_img {
-  background-color: var(--primary);
+  background-color: var(--primary) !important;
 }
 
 /* Media queries */

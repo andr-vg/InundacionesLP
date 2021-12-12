@@ -30,7 +30,9 @@
           <div class="form-group">
             <button id="coords-button" class="btn btn-secondary" data-toggle="collapse" data-target="#coords">Ver Coordenadas</button>
             <div class="collapse" id="coords">
-              <p>Coordenadas: {{ zona.get_coords_as_list() }} </p>
+              <div class="container">
+                <p>Coordenadas: {{ zona.get_coords_as_list() }} </p>
+              </div>
             </div>
           </div>
           <div class="container" >

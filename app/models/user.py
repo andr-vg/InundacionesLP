@@ -399,6 +399,12 @@ class User(db.Model):
             .paginate(page, per_page=config.elements_per_page)
         )
 
+    def get_pending_users_count():
+            return (
+                User.query.filter(User.deleted == False)
+                .filter(User.pending == True).count()
+            )        
+
     def get_pending_users(page, config):
         """
         Retorna los usuarios de manera paginada según la configuracion dada

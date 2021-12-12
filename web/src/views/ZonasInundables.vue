@@ -1,29 +1,36 @@
-<template>
+<template>  
   <div>
+    <br>
     <h1>Zonas inundables</h1>
     <div>
-      <l-map style="height: 450px" :zoom="zoom" :center="center">
-        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-        <div v-for="(zone, index) in zones" :key="index">
-          <l-polygon
-            :lat-lngs="zone.coordenadas.map(({ lat, long }) => [lat, long])"
-            :color="zone.color"
-            :fill="true"
-            :fillColor="zone.color"
-            :fillOpacity="0.3"
-          >
-            <l-popup>{{ zone.nombre }} </l-popup>
-          </l-polygon>
-        </div>
-      </l-map>
-      <div class="container">
+      <div class="flex">
+        <Map>
+          <div v-for="(zone, index) in zones" :key="index">
+            <l-polygon
+              :lat-lngs="zone.coordenadas.map(({ lat, long }) => [lat, long])"
+              :color="zone.color"
+              :fill="true"
+              :fillColor="zone.color"
+              :fillOpacity="0.3"
+            >
+              <l-popup>{{ zone.nombre }} </l-popup>
+            </l-polygon>
+          </div>
+        </Map>
+      <br>
+      <div class="elem">
         <h2>Información</h2>
-        <ul v-if="zones && zones.length">
-          <li v-for="(zone, index) in zones" :key="index">
-            <detalleZone :zone="zone"></detalleZone>
+        <div >
+          <ul v-if="zones && zones.length">
+          <li v-for="(zone, index) in zones" :key="index" >
+            <detalleZone class="container" style="width: fit-content" :zone="zone"></detalleZone>
           </li>
         </ul>
+        </div>
+        
       </div>
+      </div>
+
       <nav aria-label="Page navigation example">
         <ul class="pagination">
           <li v-if="previousPage != null" class="page-item"><a class="page-link" v-bind:href="previousPage">Anterior</a></li>
@@ -33,34 +40,27 @@
 
       </nav>     
     </div>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   </div>
 
 </template>
 
+
 <script>
 import axios from "axios";
-
-import { LMap, LTileLayer, LPolygon, LPopup } from "@vue-leaflet/vue-leaflet";
+import {LPolygon, LPopup } from "@vue-leaflet/vue-leaflet";
 import detalleZone from "./ZonaDetalle.vue";
-
+import Map from './../components/Map.vue'
 
 export default {
   components: {
-    LMap,
-    LTileLayer,
+    Map,
     LPolygon,
     LPopup,
     detalleZone,   
   },
   data() {
     return {
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution:
-        '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      center: [-34.898575851767255, -57.95788336826374],
-      zoom: 11,
       zones: [],
       showZone: false,
       actualPage: document.location.pathname.split('/').at(-1),
@@ -114,4 +114,21 @@ export default {
  
 };
 </script>
+
+<style>
+
+  a, a:hover {
+    color: rgb(255, 255, 255);
+  }
+
+  .elem {
+  width: 50%;
+  }
+
+
+  
+</style>
+
+
+
 

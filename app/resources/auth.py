@@ -1,21 +1,32 @@
-from flask import redirect, render_template, request, url_for, abort, session, flash, current_app
+from flask import (
+    redirect,
+    render_template,
+    request,
+    url_for,
+    abort,
+    session,
+    flash,
+    current_app,
+)
 from app.models.user import User, Rol
 from app.models.configuration import Configuration
 from sqlalchemy import and_
 from app.helpers.auth import authenticated as auth
 from app.helpers.auth import get_pending_state as pend
 from app.helpers.permission import has_permission as perm
+from app.helpers.denuncia import has_tracking as track
 from app.resources import rol
 from oauthlib.oauth2 import WebApplicationClient
 import requests
 from os import environ
 import json
 
+
 def login():
     return render_template("auth/login.html")
 
-def google_login(google_client_id, google_discovery_url):
 
+def google_login(google_client_id, google_discovery_url):
     def get_google_provider_cfg():
         return requests.get(google_discovery_url).json()
 
@@ -28,14 +39,14 @@ def google_login(google_client_id, google_discovery_url):
     # scopes that let you retrieve user's profile from Google
     request_uri = client.prepare_request_uri(
         authorization_endpoint,
-        redirect_uri = current_app.config['REDIRECT_URI'],
+        redirect_uri=current_app.config["REDIRECT_URI"],
         scope=["openid", "email", "profile"],
     )
-    print(current_app.config['REDIRECT_URI'])
+    print(current_app.config["REDIRECT_URI"])
     return redirect(request_uri)
 
-def callback(google_client_id, google_client_secret, google_discovery_url):
 
+def callback(google_client_id, google_client_secret, google_discovery_url):
     def get_google_provider_cfg():
         return requests.get(google_discovery_url).json()
 
@@ -49,7 +60,7 @@ def callback(google_client_id, google_client_secret, google_discovery_url):
         token_endpoint,
         authorization_response=request.url,
         redirect_url=request.base_url,
-        code=code
+        code=code,
     )
     token_response = requests.post(
         token_url,
@@ -60,7 +71,7 @@ def callback(google_client_id, google_client_secret, google_discovery_url):
 
     # Parse the tokens!
     client.parse_request_body_response(json.dumps(token_response.json()))
-    
+
     userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
     uri, headers, body = client.add_token(userinfo_endpoint)
     userinfo_response = requests.get(uri, headers=headers, data=body)
@@ -69,29 +80,25 @@ def callback(google_client_id, google_client_secret, google_discovery_url):
         users_name = userinfo_response.json()["given_name"]
     else:
         return "User email not available or not verified by Google.", 400
-        
-    # Create a user in your db with the information provided
-    # by Google
-    user = User(
-        username=users_name, email=users_email, pending=True
-    )
 
-    # Doesn't exist? Add it to the database.
-    print (userinfo_response.json())
+    # Crear usuario
+    user = User(username=users_name, email=users_email, pending=True)
+
+    #Verificar si existe
     if not User.get_user_by_email(users_email):
         user.add_user()
+        session["pending"] = user.pending
     else:
         user = User.get_user_by_email(users_email)
-    # Begin user session by logging the user in
-    # login_user(user)
-    #authenticate()
-    # Send user back to homepage
-    session["user"] = user.email
-    session["username"] = user.username
-    session["config"] = Configuration.get_configuration()
-    session["permissions"] = User.get_permissions(user_id=user.id)
-    session["pending"] = user.pending
-    return redirect(url_for("home"))    
+        if not user.pending:
+            #Iniciar sesion
+            session["user"] = user.email
+            session["username"] = user.username
+            session["config"] = Configuration.get_configuration()
+            session["permissions"] = User.get_permissions(user_id=user.id)
+            session["pending"] = user.pending
+    return redirect(url_for("home"))
+
 
 def authenticate():
     params = request.form
@@ -108,8 +115,10 @@ def authenticate():
 
     return render_template("home.html")
 
+
 def is_pending():
     return pend(session)
+
 
 def authenticated():
     return auth(session)
@@ -117,6 +126,10 @@ def authenticated():
 
 def has_permission(permission):
     return perm(permission, session)
+
+
+def has_tracking():
+    return track(session)
 
 
 def logout():

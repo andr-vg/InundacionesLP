@@ -167,7 +167,7 @@ def show(name):
     user_email = authenticated(session)
     if not user_email:
         abort(401)
-    if not check_permission("user_show", session):
+    if not check_permission("zonas_inundables_index", session):
         abort(401)
     zona = ZonaInundable.get_zona_by_name(name)
     return render_template(

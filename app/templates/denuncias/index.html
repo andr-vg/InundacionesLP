@@ -11,11 +11,12 @@
 <div class="row justify-content-center align-items-center">
 
   <div class="form-group">
-    <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
     {% if has_permission('denuncias_new') %}
     <a href="{{ url_for('denuncia_new') }}" class="botones btn btn-sm">Crear denuncia</a>
     {% endif %}
+    {% if has_tracking() %}
     <a href="{{ url_for('denuncia_tracking') }}" class="botones btn btn-sm">Mis Seguimientos</a>
+    {% endif %}
   </div>
   <form action="{{ url_for('denuncia_search',title=title,state=state,previous=previous,later=later ) }}" method="GET"> 
   <div class="container-fluid">
@@ -58,7 +59,7 @@
         <th>Categoria</th>
         <th>Fecha de creacion</th>
         <th>Estado</th>
-        <th>Email</th>
+        <th>Email del denunciante</th>
         <th>Usuario Asignado</th>
         <th>Acciones</th>
       </tr>

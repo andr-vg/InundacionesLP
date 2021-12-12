@@ -1,7 +1,9 @@
 <template>
   <div>
+    <br>
+    <h1>Puntos de encuentro y recorridos</h1>
     <l-map
-      style="height: 450px"
+      style="height: 450px; width: 90%; margin:auto"
       :zoom="zoom"
       :center="center"
       @update:center="get_puntos"
@@ -157,3 +159,11 @@ export default {
   },
 };
 </script>
+
+<style>
+
+span:hover {
+  cursor: pointer;
+}
+
+</style>

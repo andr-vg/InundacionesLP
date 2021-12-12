@@ -10,7 +10,6 @@
 <br>
 <div class="row justify-content-center align-items-center">
   <div class="form-group">
-    <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
     {% if has_permission('user_new') %}
     <a href="{{ url_for('user_new') }}" class="botones btn btn-sm">Nuevo</a>
     {% endif %}

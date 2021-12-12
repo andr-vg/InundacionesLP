@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,700");
 @import url("https://fonts.googleapis.com/css?family=Catamaran:400,800");
 body {
-  background-color: #d4e0ec !important;
   font-family: "Montserrat", Helvetica, sans-serif;
   font-size: 18px;
   width: inherit;
@@ -105,6 +104,7 @@ header {
 
 div.active {
   min-width: 170px;
+  display: none;
 }
 
 .clear {
@@ -131,6 +131,7 @@ footer {
 
 a {
   color: #212529;
+  text-decoration-line: none !important;
 }
 
 a:hover {
@@ -144,10 +145,10 @@ button a {
 a.link {
   text-transform: uppercase;
   font-size: 14px;
-  background-color: #92a4ad !important;
+  background-color: #92a4ad;
   padding: 10px 15px;
   border-radius: 0;
-  color: #dee6eb !important;
+  color: #dee6eb;
   display: inline-block;
   margin-right: 5px;
   margin-bottom: 5px;
@@ -211,6 +212,10 @@ h4 {
   grid-column-start: 3;
   grid-column-end: 4;
 }
+.item2b {
+  grid-column-start: 3;
+  grid-column-end: 4;
+}
 .item3 {
   grid-column-start: 1;
   grid-column-end: 4;
@@ -263,7 +268,7 @@ button {
   width: 100px;
 }
 textarea {
-  width: 350px;
+  width: 90%;
   display: block;
   outline: none;
   border-radius: 5px;
@@ -272,7 +277,7 @@ textarea {
 select,
 input {
   height: 25px;
-  width: 350px;
+  width: 90%;
   display: block;
   outline: none;
   border-radius: 5px;
@@ -353,7 +358,7 @@ line_menu {
 
 menu {
   float: left;
-  margin: auto 48px auto 48px;
+  margin: auto 28px auto 28px;
 
   height: fit-content;
   width: fit-content;
@@ -385,9 +390,9 @@ big_img {
   width: 90%;
   padding: 10px;
   /*height: 480px;
-*/
+
   background: #a2cee6;
-  /*box-sizing: border-box;
+  box-sizing: border-box;
 	border: 1px solid;*/
 }
 
@@ -440,7 +445,7 @@ card {
   height: 100%;
   width: 325px;
   margin: auto 48px;
-
+  padding: 12px;
   border-radius: 2px;
   box-shadow: 6px 6px 25px -3px rgba(0, 0, 0, 0.75);
 }
@@ -485,33 +490,62 @@ footer {
   margin-top: 30%;
 }
 
+.flex {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.elem {
+  width: 90%;
+}
+
+span:hover {
+  cursor: pointer !important;
+}
+
+.box {
+  margin: 0 10px 25px !important;
+  overflow: hidden !important;
+  padding: 20px !important;
+  -webkit-border-radius: 5px !important;
+  border-radius: 5px !important;
+}
+
 /* Media queries */
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 868px) {
+  a.cerrar2,
+  .logo {
+    visibility: hidden;
+    display: none;
+  }
+}
+
+@media screen and (max-width: 725px) {
   /* propiedades comunes en la pagina */
   header .title .form-group {
     margin-bottom: inherit;
   }
 
+  header {
+    height: 0px;
+  }
+
   li.cerrar {
     visibility: visible;
-  }
-  a.cerrar2,
-  .logo {
-    visibility: hidden;
-    display: none;
   }
 
   header .title {
     max-height: 170px;
   }
 
-  header nav ul {
+  menu_bar line_menu menu {
     top: 90px;
     flex-flow: row wrap;
   }
 
-  #check:checked ~ ul {
+  #check:checked ~ menu {
     top: 173px;
   }
 
@@ -567,7 +601,7 @@ footer {
     visibility: visible;
   }
 
-  nav ul {
+  line_menu menu {
     align-content: stretch;
     /*
         height: 67%;
@@ -582,7 +616,7 @@ footer {
     position: absolute;
   }
 
-  nav ul li {
+  line_menu menu a {
     width: 100%;
   }
 
@@ -591,10 +625,53 @@ footer {
     top: 0%;
   }
 
-  #check:checked ~ ul {
+  #check:checked ~ menu {
     left: 0%;
     top: 36px;
     transition: all 0.5s;
+  }
+  .container {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    margin: 15px;
+  }
+  .container ul {
+    text-align: left;
+  }
+  .container li {
+    display: flexbox;
+  }
+  .container h2 {
+    text-align: left;
+  }
+  .item1 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+  }
+  .item2 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+  }
+  .item2b {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+  }
+  .item3 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    margin: 5px;
+  }
+  .item4 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+  }
+  .item5 {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 2;
   }
 
   #mapid {

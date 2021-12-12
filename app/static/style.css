@@ -230,6 +230,12 @@ td.actions {
   justify-content: center;
   align-items: center;
 }
+.collapse {
+  overflow: scroll;
+  max-width: fit-content;
+  max-height: 300px;
+  font-size: x-small;
+}
 
 /* Media queries */
 
@@ -346,7 +352,14 @@ td.actions {
   #mapid {
     width: auto;
     height: 300px;
-    
+  }
+
+  .collapse.show {
+    max-height: 150px;
+  }
+
+  .collapse.show p {
+    font-size: x-small;
   }
 }
 
@@ -427,5 +440,9 @@ td.actions {
 
   #check:checked ~ ul {
     top: 32px;
+  }
+
+  .collapse.show {
+    max-height: 100px;
   }
 }

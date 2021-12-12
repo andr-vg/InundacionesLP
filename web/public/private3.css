@@ -8,7 +8,7 @@
 
 body {
   background-color: var(--secondary) !important;
-  color: var(--success);
+  color: var(--success) !important;
 }
 
 .navcolor {
@@ -16,12 +16,12 @@ body {
 }
 
 a {
-  color: var(--success);
-  font-weight: bolder;
+  color: var(--success) !important;
+  font-weight: bolder !important;
 }
 
 a:hover {
-  color: var(--info);
+  color: var(--info) !important;
 }
 
 a.link,
@@ -32,7 +32,7 @@ a.link,
 }
 
 h4 {
-  color: var(--secondary);
+  color: var(--secondary) !important;
 }
 
 .material-icons {
@@ -57,9 +57,9 @@ h4 {
 
 table.table > tbody > tr > td,
 table {
-  color: var(--info);
+  color: var(--info) !important;
   font-size: 16px;
-  background-color: var(--danger);
+  background-color: var(--danger) !important;
   border-color: var(--danger);
 }
 
@@ -71,23 +71,15 @@ table.table-sm > thead > tr > th {
   border-color: var(--primary);
 }
 .box {
-  margin: 0 0 25px;
-  overflow: hidden;
-  padding: 20px;
-  background-color: var(--primary);
-  border: 1px solid var(--secondary);
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
+  margin: 0 10px 25px !important;
+  overflow: hidden !important;
+  padding: 20px !important;
+  background-color: var(--primary) !important;
+  border: 1px solid var(--secondary) !important;
+  -webkit-border-radius: 5px !important;
+  border-radius: 5px !important;
 }
-.box {
-  margin: 0 0 25px;
-  overflow: hidden;
-  padding: 20px;
-  background-color: var(--primary);
-  border: 1px solid var(--secondary);
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-}
+
 #lat,
 #long {
   display: none;
@@ -96,22 +88,22 @@ table.table-sm > thead > tr > th {
 .page-link {
   background-color: var(--primary) !important;
   color: var(--info);
-  border: 1px solid var(--danger);
+  border: 1px solid var(--danger) !important;
 }
 
 .page-link:hover {
-  color: var(--secondary);
+  color: var(--secondary) !important;
 }
 
 big_img {
-  background-color: var(--primary);
+  background-color: var(--primary) !important;
 }
 
 /* Media queries */
 
 @media screen and (max-width: 768px) {
   nav ul {
-    background-color: var(--primary);
+    background-color: var(--primary) !important;
   }
 }
 

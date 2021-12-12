@@ -4,9 +4,7 @@
     <h1>Denuncias</h1>
     <br>
     <a class="page-link" style="width: fit-content; margin: auto;" v-bind:href="'/denuncia/nueva'"> Crear denuncia</a>
-    <br>
-    <l-map style="height: 450px; width: 90%; margin:auto" :zoom="zoom" :center="center">
-      <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+    <Map>
       <div v-for="(denuncia, index) in denuncias" :key="index">
         <l-marker :lat-lng="denuncia.coordenadas.split(',')">
           <l-popup
@@ -19,17 +17,18 @@
             <span>Descripción: {{ denuncia.descripcion }}</span>
           </l-popup>
         </l-marker>
-      </div>
-    </l-map>
+      </div>    
+    </Map>
+    <br>
   </div>
 </template>
 <script>
 import axios from "axios";
-import { LMap, LTileLayer, LMarker, LPopup } from "@vue-leaflet/vue-leaflet";
+import {LMarker, LPopup } from "@vue-leaflet/vue-leaflet";
+import Map from './../components/Map.vue'
 export default {
   components: {
-    LMap,
-    LTileLayer,
+    Map,
     LPopup,
     LMarker,
   },

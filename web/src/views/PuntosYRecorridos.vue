@@ -11,9 +11,8 @@
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <div v-for="(punto, index) in puntos" :key="index">
         <l-marker :lat-lng="punto.coords.split(',')">
-          <l-popup
-            >Nombre: {{ punto.name }} Correo: {{ punto.email }} Teléfono:
-            {{ punto.tel }}
+          <l-popup>
+          Nombre: {{ punto.name }} Correo: {{ punto.email }} Teléfono:{{ punto.tel }}
           </l-popup>
         </l-marker>
       </div>

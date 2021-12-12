@@ -1,25 +1,22 @@
-<template>
-  
+<template>  
   <div>
-
     <br>
     <h1>Zonas inundables</h1>
     <div>
       <div class="flex">
-      <l-map style="height: 450px; width: 90%; margin:auto" :zoom="zoom" :center="center" class="elem">
-        <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-        <div v-for="(zone, index) in zones" :key="index">
-          <l-polygon
-            :lat-lngs="zone.coordenadas.map(({ lat, long }) => [lat, long])"
-            :color="zone.color"
-            :fill="true"
-            :fillColor="zone.color"
-            :fillOpacity="0.3"
-          >
-            <l-popup>{{ zone.nombre }} </l-popup>
-          </l-polygon>
-        </div>
-      </l-map>
+        <Map>
+          <div v-for="(zone, index) in zones" :key="index">
+            <l-polygon
+              :lat-lngs="zone.coordenadas.map(({ lat, long }) => [lat, long])"
+              :color="zone.color"
+              :fill="true"
+              :fillColor="zone.color"
+              :fillOpacity="0.3"
+            >
+              <l-popup>{{ zone.nombre }} </l-popup>
+            </l-polygon>
+          </div>
+        </Map>
       <br>
       <div class="elem">
         <h2>Información</h2>
@@ -51,26 +48,19 @@
 
 <script>
 import axios from "axios";
-
-import { LMap, LTileLayer, LPolygon, LPopup } from "@vue-leaflet/vue-leaflet";
+import {LPolygon, LPopup } from "@vue-leaflet/vue-leaflet";
 import detalleZone from "./ZonaDetalle.vue";
-
+import Map from './../components/Map.vue'
 
 export default {
   components: {
-    LMap,
-    LTileLayer,
+    Map,
     LPolygon,
     LPopup,
     detalleZone,   
   },
   data() {
     return {
-      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-      attribution:
-        '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      center: [-34.898575851767255, -57.95788336826374],
-      zoom: 11,
       zones: [],
       showZone: false,
       actualPage: document.location.pathname.split('/').at(-1),

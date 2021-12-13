@@ -30,15 +30,8 @@
         
       </div>
       </div>
-
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
-          <li v-if="previousPage != null" class="page-item"><a class="page-link" v-bind:href="previousPage">Anterior</a></li>
-          <li v-for="(pagina, index) in total" :key="index" class="page-item" v-bind:class="isActive(pagina)"><a class="page-link" v-bind:href="pagina">{{ pagina }}</a></li>
-          <li v-if="nextPage != null" class="page-item"><a class="page-link" v-bind:href="nextPage">Siguiente</a></li>
-        </ul>
-
-      </nav>     
+<Paginado :previousPage=previousPage  :nextPage=nextPage :pagina=pagina :index=index />
+         
     </div>
 
   </div>
@@ -51,13 +44,16 @@ import axios from "axios";
 import {LPolygon, LPopup } from "@vue-leaflet/vue-leaflet";
 import detalleZone from "./ZonaDetalle.vue";
 import Map from './../components/Map.vue'
+import Paginado from './../components/Paginado.vue';
 
 export default {
   components: {
     Map,
     LPolygon,
     LPopup,
-    detalleZone,   
+    detalleZone,
+    Paginado,   
+    
   },
   data() {
     return {

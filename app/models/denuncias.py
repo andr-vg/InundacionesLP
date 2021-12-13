@@ -281,6 +281,11 @@ class Denuncia(db.Model):
         """Retorna la denuncia con el titulo recibido por parametro"""
         return Denuncia.query.filter(Denuncia.title == title).first()
 
+    def get_assigned(id):
+        """Retorna el listado de denuncias asignadas
+        param id:numero entero que representa el id del usuario"""
+        return Denuncia.query.filter(Denuncia.assigned_to == id).all()
+
     def get_index_denuncias_assigned(page, config, id):
         """ " Retorna el listado de denuncias asignadas ordenado con la configuracion del sistema y paginado con
         la cantidad de elementos por pagina definidos en la configuracion del sistema.

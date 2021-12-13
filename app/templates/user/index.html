@@ -10,11 +10,15 @@
 <br>
 <div class="row justify-content-center align-items-center">
   <div class="form-group">
-    <a href="{{ url_for('home') }}" class="botones btn btn-sm">Volver</a>
     {% if has_permission('user_new') %}
     <a href="{{ url_for('user_new') }}" class="botones btn btn-sm">Nuevo</a>
     {% endif %}
-    <a href="{{ url_for('user_show_pendientes') }}" class="botones btn btn-sm">Pendientes</a>
+    <a href="{{ url_for('user_show_pendientes') }}" class="botones btn btn-sm">Pendientes 
+      {% if pending_user_count > 0 %}
+      <span class="badge badge-danger">{{pending_user_count}} 
+      {% endif %}
+    </span>
+    </a>
   </div>
   <form action="{{ url_for('user_search', name=name, active=active) }}" method="GET">
   <div class="container-fluid">
@@ -59,8 +63,18 @@
     <tr>
       <!-- ver de poner id o email como id del tr de cada user-->
       <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
-      <td class="hidde"> {{ user.firstname }} </td>
-      <td class="hidde"> {{ user.lastname }} </td>
+
+      <!-- En el caso de que el usuario a mostrar, se usuario google, en nombre y apellido no se muestra nada-->
+      {% if user.firstname %}
+        <td class="hidde"> {{ user.firstname }} </td>       
+      {% else %}
+        <td class="hidde"></td>
+      {% endif %}
+      {% if user.lastname %}
+        <td class="hidde"> {{ user.lastname }} </td>       
+      {% else %}
+        <td class="hidde"></td>
+      {% endif %}
       <td class="hidde"> {{ user.email }} </td>
       <td class="hidde"> {% if user.active == 1 %}
         Activo

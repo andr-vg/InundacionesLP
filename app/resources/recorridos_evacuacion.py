@@ -60,6 +60,14 @@ def create():
     form = CreateRecorrido(request.form)
     # convierto el string de coordenadas en una lista de listas de coords
     coordinates = json.loads(form.coordinates.data)
+    # verifico que sean todos numeros
+    are_numbers = any(
+        filter(
+            lambda x: isinstance(x[0], (int, float)) and isinstance(x[1], (int, float)),
+            coordinates,
+        )
+    )
+    print(are_numbers)
     if form.validate():
         recorrido = Recorridos.unique_field(form.name.data)
         if recorrido:
@@ -69,10 +77,14 @@ def create():
         elif len(coordinates) < 3:
             flash("Debe seleccionar al menos 3 puntos.")
             return render_template("recorridos_evacuacion/new.html", form=form)
+        elif len(form.name.data) == 0:
+            flash("El título es un campo requerido.")
+        elif not are_numbers:
+            flash("Las coordenadas ingresadas no son números.")
         else:
-            print("AAAAAA", len(form.description.data))
-            desc = "" if len(form.description.data) == 0 else form.description.data
-            new_recorrido = Recorridos(name=form.name.data, description=desc)
+            new_recorrido = Recorridos(
+                name=form.name.data, description=form.description.data
+            )
             for coords in coordinates:
                 # creo las coordenadas
                 new_coords = Coordenadas(coords[0], coords[1])
@@ -124,23 +136,34 @@ def update():
         coordinates=request.form["coordinates"],
     )
     coordinates = json.loads(form.coordinates.data)
+    # verifico que sean todos numeros
+    are_numbers = any(
+        filter(
+            lambda x: isinstance(x[0], (int, float)) and isinstance(x[1], (int, float)),
+            coordinates,
+        )
+    )
     if form.validate():
         recorrido = Recorridos.get_recorrido_by_id(form.id.data)
         query = Recorridos.get_recorrido_by_name(form.name.data)
         if query and query.id != recorrido.id:
             flash("Ya existe un recorrido con ese nombre")
             return render_template("recorridos_evacuacion/edit.html", form=form)
-        recorrido.edit(name=form.name.data, description=form.description.data)
-        for coords in coordinates:
-            # creo las coordenadas
-            new_coords = Coordenadas(coords[0], coords[1])
-            # se las agrego al recorrido
-            recorrido.add_coordinate(new_coords)
-            # agrego las coordenadas creadas a la tabla
-            Coordenadas.add_coords(new_coords)
-
-        flash("El recorrido ha sido editado correctamente.")
-        return redirect(url_for("recorridos_index"))
+        elif len(form.name.data) == 0:
+            flash("El título es un campo requerido.")
+        elif not are_numbers:
+            flash("Las coordenadas ingresadas no son números.")
+        else:
+            recorrido.edit(name=form.name.data, description=form.description.data)
+            for coords in coordinates:
+                # creo las coordenadas
+                new_coords = Coordenadas(coords[0], coords[1])
+                # se las agrego al recorrido
+                recorrido.add_coordinate(new_coords)
+                # agrego las coordenadas creadas a la tabla
+                Coordenadas.add_coords(new_coords)
+            flash("El recorrido ha sido editado correctamente.")
+            return redirect(url_for("recorridos_index"))
     return render_template("recorridos_evacuacion/edit.html", form=form)
 
 

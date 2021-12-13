@@ -24,18 +24,18 @@
 	<br>
 	<line_cards>
 		<card_box>
-			<card><h3>Puntos de encuentro y recorridos de evacuación</h3>
+			<card><router-link to="/puntos_y_recorridos"><h3>Puntos de encuentro y recorridos de evacuación</h3>
        <img class="imagen_tarjeta" src="../assets/punto_recorrido.png" alt="mapa_punto_recorrido">
        <p>Puntos de encuentro en caso de inundaciones y rutas para llegar a éstos.</p>
-      </card>
-      <card><h3>Zonas inundables</h3>
+      </router-link></card>
+      <card><router-link :to="{name:'zonas_inundables', params: {page: 1}}"><h3>Zonas inundables</h3>
       <img class="imagen_tarjeta2" src="../assets/zona.png" alt="mapa_punto_recorrido">
       <p> Informate sobre las zonas que están en riesgo de inundacion. </p>
-      </card>
-      <card><h3>Realizar denuncias</h3>
+      </router-link></card>
+      <card><router-link :to="{ name: 'denuncia', params: { page: 1 } }"><h3>Realizar denuncias</h3>
        <img class="imagen_tarjeta2" src="../assets/denuncia.png" alt="mapa_punto_recorrido">
        <p> Prevení inundaciones al realizar denuncias sobre lugares peligrosos de tu ciudad.</p>
-      </card>
+      </router-link></card>
 		</card_box>
 	</line_cards>
 </content>

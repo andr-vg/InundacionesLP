@@ -1,15 +1,12 @@
 <template>
-  <div>
-    <div v-if="show" class="box">
-      <p>Descripción: {{ punto.description }}</p>
-      <p>Dirección: {{ punto.address }}</p>
-      <p>Teléfono: {{ punto.tel }}</p>
-      <p>Email: {{ punto.email }}</p>
-      <p @click="changeShow">Mostrar menos</p>
-    </div>
-    <div v-else @click="changeShow">
-      <span>Mostrar mas</span>
-    </div>
+  <span class="item1">{{ punto.name }}</span>
+  <span v-if="show" @click="changeShow" class="item2 item2b page-link" style="width: fit-content; margin: auto;">Mostrar menos</span>
+  <span v-else @click="changeShow" class="item2 item2b page-link" style="width: fit-content; margin: auto;">Mostrar mas</span>
+  <div v-if="show" class="box item3">
+    <p>Descripción: {{ punto.description }}</p>
+    <p>Dirección: {{ punto.address }}</p>
+    <p>Teléfono: {{ punto.tel }}</p>
+    <p>Email: {{ punto.email }}</p>
   </div>
 </template>
 <script>

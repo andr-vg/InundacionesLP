@@ -38,7 +38,9 @@ def index(page):
     except OperationalError:
         flash("No hay usuarios aún.")
         users = None
-    return render_template("user/index.html", users=users)
+    pending_user_count = User.get_pending_users_count()
+    print(pending_user_count)
+    return render_template("user/index.html", users=users, pending_user_count = pending_user_count)
 
 
 def new():
@@ -207,9 +209,10 @@ def search(page):
         elif request.args["active"] == "bloqueado":
             users = User.get_with_state(users, False)
     users = User.search_paginate(users, id, page, config)
-
+    pending_user_count = User.get_pending_users_count()
     return render_template(
-        "user/index.html", users=users, filter=1, name=name, active=active
+        "user/index.html", users=users, filter=1, name=name, active=active,
+         pending_user_count = pending_user_count
     )
 
 

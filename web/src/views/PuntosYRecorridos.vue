@@ -1,7 +1,9 @@
 <template>
   <div>
+    <br>
+    <h1>Puntos de encuentro y recorridos</h1>
     <l-map
-      style="height: 450px"
+      style="height: 450px; width: 90%; margin:auto"
       :zoom="zoom"
       :center="center"
       @update:center="get_puntos"
@@ -9,9 +11,8 @@
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <div v-for="(punto, index) in puntos" :key="index">
         <l-marker :lat-lng="punto.coords.split(',')">
-          <l-popup
-            >Nombre: {{ punto.name }} Correo: {{ punto.email }} Teléfono:
-            {{ punto.tel }}
+          <l-popup>
+          Nombre: {{ punto.name }} Correo: {{ punto.email }} Teléfono:{{ punto.tel }}
           </l-popup>
         </l-marker>
       </div>
@@ -28,11 +29,10 @@
     </l-map>
   </div>
   <div class="container">
-    <div class="container-left">
+    <div class="item1">
       <h2>Puntos de encuentro</h2>
       <ul v-if="puntos && puntos.length">
-        <li v-for="(punto, index) in puntos" :key="index">
-          <span>{{ punto.name }}</span>
+        <li v-for="(punto, index) in puntos" :key="index" class="container">
           <detallePunto :punto="punto"></detallePunto>
         </li>
       </ul>
@@ -42,11 +42,14 @@
         </li>
       </ul>
     </div>
-    <div class="container-right">
+    <div class="item2">
       <h2>Recorridos de evacuación</h2>
       <ul v-if="puntos && puntos.length">
-        <li v-for="(recorrido, index) in recorridos" :key="index">
-          <span>{{ recorrido.nombre }}</span>
+        <li
+          v-for="(recorrido, index) in recorridos"
+          :key="index"
+          class="container"
+        >
           <detalleRecorrido :recorrido="recorrido"></detalleRecorrido>
         </li>
       </ul>
@@ -155,19 +158,11 @@ export default {
   },
 };
 </script>
+
 <style>
-ul {
-  list-style-type: none;
+
+span:hover {
+  cursor: pointer;
 }
-#container {
-  margin: 200px;
-  max-width: 48rem;
-  width: 90%;
-}
-.container ul {
-  text-align: left;
-}
-.container h2 {
-  text-align: left;
-}
+
 </style>

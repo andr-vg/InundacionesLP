@@ -53,7 +53,7 @@ def create(id):
         seguimiento.add()
         denuncia.assign_tracking(seguimiento)
         user.assign_tracking(seguimiento)
-        return redirect(url_for("denuncia_tracking"))
+        return redirect(url_for("denuncia_index"))
     return render_template(
         "seguimientos/new.html", denuncia=denuncia, user=denuncia.user_assign, form=form
     )

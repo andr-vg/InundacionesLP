@@ -1,10 +1,10 @@
 :root {
-  --primary: #17252a;
-  --secondary: #2b7a78;
-  --success: #3aafa9;
-  --danger: #def2f1;
-  --info: #feffff;
-  --normal: aliceblue;
+  --primary: #17252a !important;
+  --secondary: #2b7a78 !important;
+  --success: #3aafa9 !important;
+  --danger: #506665 !important;
+  --info: #feffff !important;
+  --normal: aliceblue !important;
 }
 
 body {
@@ -18,13 +18,13 @@ body {
 
 a {
   margin: 10px;
-  color: var(--normal);
+  color: var(--normal) !important;
   text-decoration: none;
   font-weight: bolder;
 }
 
 a:hover {
-  color: var(--info);
+  color: var(--info) !important;
 }
 
 a.link,
@@ -63,24 +63,13 @@ label {
   font-size: 48px;
 }
 .box {
-  width: 250px;
-  margin: 0 0 25px;
-  overflow: hidden;
-  padding: 20px;
-  background-color: var(--secondary);
-  border: 1px solid var(--primary);
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-}
-.container {
-  width: 700px;
-  margin: auto;
-}
-.container-left {
-  float: left;
-}
-.container-right {
-  float: right;
+  margin: 0 10px 25px !important;
+  overflow: hidden !important;
+  padding: 20px !important;
+  background-color: var(--primary) !important;
+  border: 1px solid var(--secondary) !important;
+  -webkit-border-radius: 5px !important;
+  border-radius: 5px !important;
 }
 table.table > tbody > tr > td,
 table {
@@ -114,7 +103,7 @@ table.table-sm > thead > tr > th {
 }
 
 big_img {
-  background-color: #a4e6e2;
+  background-color: #a4e6e2 !important;
 }
 
 /* Media queries */

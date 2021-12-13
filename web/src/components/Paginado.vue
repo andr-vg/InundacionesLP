@@ -12,6 +12,7 @@
 </div>
 </template>
 <script>
+
 export default {
   name: 'Paginado',
   props: {
@@ -19,6 +20,7 @@ export default {
     nextPage:Object,
     pagina:Object,
     index:Object,
+    total:Object,
   },
   methods: {
     isActive(nroPagina) {

@@ -30,7 +30,7 @@
         
       </div>
       </div>
-<Paginado :previousPage=previousPage  :nextPage=nextPage :pagina=pagina :index=index />
+<Paginado :previousPage=previousPage  :nextPage=nextPage :pagina=pagina :index=index :total=total />
          
     </div>
 

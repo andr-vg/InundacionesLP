@@ -1,10 +1,11 @@
 <template>
-  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <link rel="stylesheet" type="text/css" :href="customerStyle" />
   <header>
-   
+     <fixed-header>
+    <div class="navbar">
+    
 	<logo>
       <img class="logo" src="./assets/logo.png" alt="InundacionesLP">
   </logo>
@@ -14,9 +15,7 @@
       <i class="fas fa-bars"></i>
     </label>
   </div>
-  <div>
-  <VueScrollFixedNavbar>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  
   
 	<menu_bar>
     <input type="checkbox" id="check" class="active">
@@ -34,9 +33,9 @@
 
   
   </div>
-  </nav>
-    </VueScrollFixedNavbar>
+
   </div>
+  </fixed-header>
 </header>
   
   <router-view />
@@ -44,12 +43,11 @@
 </template>
 <script>
 import axios from "axios";
-import {VueScrollFixedNavbar} from "vue-scroll-fixed-navbar";
+import FixedHeader from 'vue-fixed-header'
 export default {
-   name: 'App',
-    components: {
-        VueScrollFixedNavbar
-    },
+  components: {
+    FixedHeader
+  },
   data() {
     return {
       config: "",
@@ -86,6 +84,13 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+.navbar.vue-fixed-header--isFixed {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+}
+
 </style>
 
 

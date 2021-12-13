@@ -3,8 +3,6 @@
 
   <link rel="stylesheet" type="text/css" :href="customerStyle" />
   <header>
-     <fixed-header>
-    <div class="navbar">
     
 	<logo>
       <img class="logo" src="./assets/logo.png" alt="InundacionesLP">
@@ -33,9 +31,6 @@
 
   
   </div>
-
-  </div>
-  </fixed-header>
 </header>
   
   <router-view />
@@ -43,11 +38,7 @@
 </template>
 <script>
 import axios from "axios";
-import FixedHeader from 'vue-fixed-header'
 export default {
-  components: {
-    FixedHeader
-  },
   data() {
     return {
       config: "",
@@ -84,13 +75,6 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-.navbar.vue-fixed-header--isFixed {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-}
-
 </style>
 
 

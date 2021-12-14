@@ -4,7 +4,7 @@
     <h1>Zonas inundables</h1>
     <div>
       <div class="flex">
-        <Map>
+        <Map :zoomMap="11" :centerMap="[parseFloat(zones[0].coordenadas[1].lat), parseFloat(zones[0].coordenadas[1].long)]">
           <div v-for="(zone, index) in zones" :key="index">
             <l-polygon
               :lat-lngs="zone.coordenadas.map(({ lat, long }) => [lat, long])"
@@ -30,7 +30,7 @@
         
       </div>
       </div>
-<Paginado :previousPage=previousPage  :nextPage=nextPage :pagina=pagina :index=index :total=total />
+<Paginado :previousPage=previousPage  :nextPage=nextPage :pagina="actualPage" :index=index :total=total />
          
     </div>
 

@@ -87,7 +87,7 @@ export default {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      zoom: 15,
+      zoom: 14,
       center: [-34.9187, -57.956],
       puntos: [],
       recorridos: [],

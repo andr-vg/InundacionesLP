@@ -4,7 +4,7 @@
     <h1>Denuncias</h1>
     <br>
     <a class="page-link" style="width: fit-content; margin: auto;" v-bind:href="'/denuncia/nueva'"> Crear denuncia</a>
-    <Map>
+    <Map :centerMap="[-34.9187, -57.956]" :zoomMap="13">
       <div v-for="(denuncia, index) in denuncias" :key="index">
         <l-marker :lat-lng="denuncia.coordenadas.split(',')">
           <l-popup

@@ -42,7 +42,6 @@ def google_login(google_client_id, google_discovery_url):
         redirect_uri=current_app.config["REDIRECT_URI"],
         scope=["openid", "email", "profile"],
     )
-    print(current_app.config["REDIRECT_URI"])
     return redirect(request_uri)
 
 
@@ -84,14 +83,14 @@ def callback(google_client_id, google_client_secret, google_discovery_url):
     # Crear usuario
     user = User(username=users_name, email=users_email, pending=True)
 
-    #Verificar si existe
+    # Verificar si existe
     if not User.get_user_by_email(users_email):
         user.add_user()
         session["pending"] = user.pending
     else:
         user = User.get_user_by_email(users_email)
-        if not user.pending:
-            #Iniciar sesion
+        if user.active and not user.deleted and not user.pending:
+            # Iniciar sesion
             session["user"] = user.email
             session["username"] = user.username
             session["config"] = Configuration.get_configuration()

@@ -1,7 +1,7 @@
 <template>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-  <link rel="stylesheet" type="text/css" :href="customerStyle" />
+  <link rel="stylesheet"  type="text/css" :href="customerStyle" />
   <header>
     
 	<logo>
@@ -51,7 +51,7 @@ export default {
           "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/configuracion"
         )
         .then((response) => {
-          this.config = response.data.css_public;
+          this.config = "/" + response.data.css_public;
         })
         .catch((e) => {
           console.log(e);

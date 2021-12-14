@@ -512,6 +512,11 @@ span:hover {
   border-radius: 5px !important;
 }
 
+.page-item.active .page-link {
+  border-color: cadetblue !important;
+  color: cadetblue !important;
+}
+
 /* Media queries */
 
 @media screen and (max-width: 868px) {

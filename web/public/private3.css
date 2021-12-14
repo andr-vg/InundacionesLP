@@ -99,6 +99,11 @@ big_img {
   background-color: var(--primary) !important;
 }
 
+.page-item.active .page-link {
+  border-color: rgb(68, 60, 141) !important;
+  color: white !important;
+}
+
 /* Media queries */
 
 @media screen and (max-width: 768px) {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <l-map style="height: 450px; width: 90%; margin:auto" :zoom="zoom" :center="center">
+    <l-map style="height: 450px; width: 90%; margin:auto" :zoom="zoomMap" :center="centerMap">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <slot></slot>
     </l-map>
@@ -12,6 +12,10 @@
 import { LMap, LTileLayer} from "@vue-leaflet/vue-leaflet";
 export default {
   name: "Map",
+  props: {
+    zoomMap:Object,
+    centerMap:Object,
+  },
   components: {
     LMap,
     LTileLayer,

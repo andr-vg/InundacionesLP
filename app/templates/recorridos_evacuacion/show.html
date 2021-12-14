@@ -22,7 +22,7 @@
 </div>
 <div class="row justify-content-center align-items-center"> 
   <div class="row justify-content-center align-items-center h-100">
-    <div class="col align-items-center" >
+    <div class="col align-items-center description" >
         <p>Nombre: {{ recorrido.name }}</p>
         <p>Descripción: {{ recorrido.description }}</p>
         {% if recorrido.state %}
@@ -39,12 +39,10 @@
           <div class="container">
             <div class="row">
               <div class="col">
-                <a href="{{ url_for('recorridos_index') }}" class="col-6 btn btn-primary btn-sm float-left">Volver</a>
+                <a href="{{ url_for('recorridos_index') }}" class="btn btn-primary btn-sm float-center">Volver</a>
     
               </div>
-              <div class="col">
-
-              </div>
+              
             </div>
           </div>
         </div>

@@ -16,14 +16,8 @@
 <div class="row justify-content-center align-items-center">
   <h1>Editar denuncia</h1>
 </div>
-  <div class="row justify-content-center align-items-center"> 
-    <div class="row justify-content-center align-items-center h-100 w-75">
-      <div class="col align-items-center" >
   <form action="{{ url_for('denuncia_update', id=denuncia.id) }}" method="POST" id="edit-denuncia">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
       {% include 'denuncias/form_edit.html' %}
   </form>
-</div>
-</div>
-</div>
 {% endblock %}

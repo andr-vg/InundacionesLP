@@ -7,19 +7,19 @@
 <table class="table table-sm">
     <thead>
       <tr>
-        <th>Descripcion</th>
-        <th>Fecha de creacion</th>
-        <th>Autor</th>
-        <th>Acciones</th>
+        <th scope="col">Descripcion</th>
+        <th scope="col">Fecha de creacion</th>
+        <th scope="col">Autor</th>
+        <th scope="col">Acciones</th>
     </tr>
 </thead>
 <tbody>
   {% for seguimiento in seguimientos.items %}
   <tr>
-    <td> {{ seguimiento.description }} </td>
-    <td> {{ seguimiento.created_at.strftime('%d-%m-%Y') }} </td>
-    <td> {{ seguimiento.user_assign.email}} </td>
-    <td>{% if has_permission('denuncias_destroy') %}
+    <td data-label="Descripcion"> {{ seguimiento.description }} </td>
+    <td data-label="Fecha de creacion"> {{ seguimiento.created_at.strftime('%d-%m-%Y') }} </td>
+    <td data-label="Autor"> {{ seguimiento.user_assign.email}} </td>
+    <td data-label="Acciones">{% if has_permission('denuncias_destroy') %}
       <a href="{{url_for('seguimiento_delete', id=seguimiento.id,page=seguimientos.page) }}" class="btn btn-sm btn-danger" onclick="return confirm('Está seguro que desea eliminar este seguimiento');"> Eliminar <i class="glyphicon glyphicon-trash" ></i></a>
     {% endif%}</td>
 </tr>

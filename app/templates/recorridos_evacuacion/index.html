@@ -44,23 +44,23 @@
   <table class="table table-sm">
     <thead>
       <tr>
-        <th>Nombre</th>
-        <th>Estado</th>
-        <th>Acciones</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
       {% for recorrido in recorridos.items %}
       <tr> <!-- ver de poner id o email como id del tr de cada user-->
-        <td> <a href="{{ url_for('recorridos_show', name=recorrido.name) }}"> {{ recorrido.name }} </a> </td>
-        <td> {% if recorrido.state %}
+        <td data-label="Nombre"> <a href="{{ url_for('recorridos_show', name=recorrido.name) }}"> {{ recorrido.name }} </a> </td>
+        <td data-label="Estado"> {% if recorrido.state %}
                Publicado 
              {% else %}
                Despublicado 
              {% endif %}
         </td>   
         <!-- mostrar acciones a realizar segun permisos del usuario actual -->    
-        <td>
+        <td data-label="Acciones">
           <div class="row">
             <div class="column mx-1">
               {% if has_permission('recorridos_edit') %}

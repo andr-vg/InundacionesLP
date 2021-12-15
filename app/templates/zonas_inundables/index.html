@@ -58,27 +58,27 @@
   <table class="table table-sm">
       <thead>
         <tr>
-          <th>Nombre</th>
-          <th>Codigo</th>
-          <th>Color</th>
-          <th>Estado</th>
-          <th>Acciones</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Codigo</th>
+          <th scope="col">Color</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Acciones</th>
         </tr>
       </thead>
       <tbody>
         {% for zona in zonas.items %}
         <tr>
-          <td> <a href="{{ url_for('zonas_inundables_show', name=zona.name) }}"> {{ zona.name }} </a></td>
-          <td> {{zona.code}}</td>
-          <td> {{ zona.get_color_español() }} </td>
-          <td> {% if zona.state %} 
+          <td  data-label="Nombre"> <a href="{{ url_for('zonas_inundables_show', name=zona.name) }}"> {{ zona.name }} </a></td>
+          <td  data-label="Codigo"> {{zona.code}}</td>
+          <td  data-label="Color"> {{ zona.get_color_español() }} </td>
+          <td  data-label="Estado"> {% if zona.state %} 
                   Publicado
               {% else %}
                   Despublicado
               {% endif %}
           </td>
           
-          <td id="actions">
+          <td  data-label="Acciones" id="actions">
             <div class="row">
               {% if has_permission('zonas_inundables_update') %}
                 <div class="column mx-1">

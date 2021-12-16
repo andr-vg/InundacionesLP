@@ -1,3 +1,4 @@
+import uuid
 from flask import (
     redirect,
     render_template,
@@ -76,10 +77,9 @@ def callback(google_client_id, google_client_secret, google_discovery_url):
     userinfo_response = requests.get(uri, headers=headers, data=body)
     if userinfo_response.json().get("email_verified"):
         users_email = userinfo_response.json()["email"]
-        users_name = userinfo_response.json()["given_name"]
     else:
         return "User email not available or not verified by Google.", 400
-
+    users_name = uuid.uuid1()
     # Crear usuario
     user = User(username=users_name, email=users_email, pending=True)
 

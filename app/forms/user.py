@@ -5,7 +5,7 @@ from wtforms import (
     validators,
     SelectMultipleField,
     widgets,
-    BooleanField
+    BooleanField,
 )
 from wtforms.fields.simple import HiddenField
 from app.models.rol import Rol
@@ -106,6 +106,16 @@ class EditProfileForm(FlaskForm):
     """
 
     id = HiddenField("Id")
+    username = StringField(
+        "Nombre de usuario",
+        [
+            validators.DataRequired(message="Ingrese un usuario valido"),
+            validators.length(min=5, message="Debe tener al menos 5 caracteres"),
+            validators.regexp(
+                "^[0-9]*[a-zA-Z]+[a-zA-Z0-9]*$", message="Nombre de usuario inválido"
+            ),
+        ],
+    )
     firstname = StringField(
         "Nombre",
         [validators.regexp("^[a-zA-Z]+$", message="El nombre no puede estar vacío.")],
@@ -129,6 +139,7 @@ class EditProfileForm(FlaskForm):
         option_widget=widgets.CheckboxInput(),
     )
 
+
 class AcceptPendingForm(FlaskForm):
     """
     Formulario para aceptar y dar permisos a un usuario
@@ -142,11 +153,15 @@ class AcceptPendingForm(FlaskForm):
     id = HiddenField("Id")
     pending = BooleanField(
         "Validar Usuario",
-        [validators.DataRequired(message="Para guardar debe marcar en Validar al usuario")],
+        [
+            validators.DataRequired(
+                message="Para guardar debe marcar en Validar al usuario"
+            )
+        ],
     )
     rol = SelectMultipleField(
         "Seleccionar rol",
         [validators.DataRequired(message="Debe tener al menos un rol")],
         coerce=int,
         option_widget=widgets.CheckboxInput(),
-    )       
+    )

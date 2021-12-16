@@ -20,7 +20,7 @@
                 </router-link>
             </div>
             <div class="title-page">
-                <h1>INUNDACIONESLP  </h1>
+                <h1>InundacionesLP  </h1>
             </div>
             <div class="active">    
                 <label for="check" id="checkbtn" class="checkbtn" @click="bringToFront">

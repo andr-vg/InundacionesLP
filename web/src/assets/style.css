@@ -18,6 +18,10 @@ header {
   align-items: center;
 }
 
+.title-page {
+  margin: auto;
+}
+
 .logo {
   max-width: 120px;
 }
@@ -25,6 +29,7 @@ header {
   max-width: 90%;
   height: auto;
   padding: 5px;
+  margin: auto;
 }
 .imagen_tarjeta2 {
   max-width: 65%;

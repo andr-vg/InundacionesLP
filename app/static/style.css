@@ -299,12 +299,12 @@ td.actions {
   }
 
   * {
-    font-size: 1rem;
+    font-size: 0.85rem !important;
   }
 
   nav ul li a,
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
   }
 
   div.active {
@@ -376,7 +376,7 @@ td.actions {
 
   #check:checked ~ ul {
     left: 0%;
-    top: 36px;
+    top: 27px;
     transition: all 0.5s;
   }
 
@@ -437,7 +437,7 @@ td.actions {
   }
 
   table tr {
-    border-bottom: 3px solid;
+    border-bottom: 1.5px solid;
     display: block;
     margin-bottom: 0.625em;
   }
@@ -489,12 +489,12 @@ td.actions {
   }
 
   * {
-    font-size: 0.85rem;
+    font-size: 0.85rem !important;
   }
 
   nav ul li a,
   h1 {
-    font-size: 1rem;
+    font-size: 1rem !important;
   }
 
   .contenedor .item-img,
@@ -544,7 +544,7 @@ td.actions {
   }
 
   #check:checked ~ ul {
-    top: 32px;
+    top: 27px;
   }
 
   .collapse.show {

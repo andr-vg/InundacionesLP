@@ -4,7 +4,7 @@
     <span v-if="show" @click="changeShow" class="item2 page-link" style="width: fit-content; margin: auto;">Mostrar menos</span>
     <span v-else @click="changeShow" class="item2 page-link" style="width: fit-content; margin: auto;">Mostrar mas</span>
     <div v-if="show" class="box item3">
-      <p> Color: {{ zone.color }}</p>
+      <p> Color: {{ zone.color_esp }}</p>
       <p> Código: {{ zone.codigo }}</p>
     </div>
   </div>

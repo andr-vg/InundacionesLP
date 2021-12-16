@@ -23,9 +23,9 @@
       <br>
               <h2>Información</h2>
 
-      <div class="box item3" style="padding:0%; width: fit-content; margin: auto; background-color: lightblue">
+      <div class="box item3" style="padding:0%; width: fit-content; margin: auto !important; background-color: lightblue">
         <div>Zona: {{ zone.nombre }}</div>
-        <div>Color: {{ zone.color }}</div>
+        <div>Color: {{ zone.color_esp }}</div>
         <div>Código: {{ zone.codigo }}</div>
       </div>
   </div>

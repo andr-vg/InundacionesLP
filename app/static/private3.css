@@ -86,6 +86,10 @@ table.table-sm > thead > tr > th {
   color: var(--secondary);
 }
 
+table tbody tr td {
+  border-color: #4390d3 !important;
+}
+
 /* Media queries */
 
 @media screen and (max-width: 768px) {

@@ -2,7 +2,12 @@ import datetime
 import bcrypt
 from flask import redirect, render_template, request, url_for, session, abort, flash
 from sqlalchemy.exc import OperationalError
-from app.forms.user import RegistrationUserForm, EditUserForm, EditProfileForm, AcceptPendingForm
+from app.forms.user import (
+    RegistrationUserForm,
+    EditUserForm,
+    EditProfileForm,
+    AcceptPendingForm,
+)
 from app.models.user import User
 from app.models.rol import Rol
 from app.models.configuration import Configuration
@@ -40,7 +45,9 @@ def index(page):
         users = None
     pending_user_count = User.get_pending_users_count()
     print(pending_user_count)
-    return render_template("user/index.html", users=users, pending_user_count = pending_user_count)
+    return render_template(
+        "user/index.html", users=users, pending_user_count=pending_user_count
+    )
 
 
 def new():
@@ -211,8 +218,12 @@ def search(page):
     users = User.search_paginate(users, id, page, config)
     pending_user_count = User.get_pending_users_count()
     return render_template(
-        "user/index.html", users=users, filter=1, name=name, active=active,
-         pending_user_count = pending_user_count
+        "user/index.html",
+        users=users,
+        filter=1,
+        name=name,
+        active=active,
+        pending_user_count=pending_user_count,
     )
 
 
@@ -226,7 +237,12 @@ def edit_profile():
     if not check_permission("user_edit_profile", session):
         abort(401)
     user = User.get_user_by_email(user_email)
-    form = EditProfileForm(id=user.id, firstname=user.firstname, lastname=user.lastname)
+    form = EditProfileForm(
+        id=user.id,
+        username=user.username,
+        firstname=user.firstname,
+        lastname=user.lastname,
+    )
     form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     form.rol.data = [(rol.id) for rol in user.roles]
     return render_template("user/profile.html", form=form)
@@ -246,6 +262,10 @@ def update_profile():
     form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     if form.validate():
         user = User.get_user_by_id(form.id.data)
+        query = User.get_user_by_username(form.username.data)
+        if query and query.id != user.id:
+            flash("Ya existe un usuario con dicho nombre de usuario")
+            return render_template("user/profile.html", form=form)
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles) - set(form.rol.data)
         user.edit_profile(form, roles_deleted)
@@ -274,6 +294,7 @@ def show(username):
 def get_session_username():
     return session["username"]
 
+
 def show_pendientes(page):
     user_email = authenticated(session)
     if not user_email:
@@ -281,8 +302,9 @@ def show_pendientes(page):
     if not check_permission("user_show", session):
         abort(401)
     config = get_configuration(session)
-    users = User.get_pending_users(page,config)
+    users = User.get_pending_users(page, config)
     return render_template("user/pending.html", users=users)
+
 
 def accept_pendientes():
     user_email = authenticated(session)
@@ -293,10 +315,11 @@ def accept_pendientes():
     user = User.get_user_by_id(request.form["id"])
     form = AcceptPendingForm(
         id=user.id,
-        pending= not user.pending,
+        pending=not user.pending,
     )
     form.rol.choices = [(rol.id, rol.name) for rol in Rol.get_all_roles()]
     return render_template("user/pending_accept.html", form=form)
+
 
 def update_pendientes():
     """
@@ -314,7 +337,7 @@ def update_pendientes():
         user = User.get_user_by_id(form.id.data)
         user_roles = [(rol.id) for rol in user.roles]
         roles_deleted = set(user_roles) - set(form.rol.data)
-        user.accept_pending_user(form,roles_deleted)
+        user.accept_pending_user(form, roles_deleted)
         flash(f"El usuario {user.username} ha sido aceptado")
         return redirect(url_for("home"))
     return render_template("user/pending_accept.html", form=form)

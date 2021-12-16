@@ -13,10 +13,10 @@
 <div class="row justify-content-center align-items-center" style="column-gap: 3px;">
   <div class="form-group">
       <form action="{{ url_for('zonas_inundables_upload') }}"enctype=multipart/form-data method="post">
-        <div class="row">
+        <div class="row" style="width: 100%; margin: 0px;">
           <div class="col-sm-auto">
             <div class="form-group">
-                <label for="inputFile" >Subir</label>
+                <label for="inputFile" ></label>
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="file" class="botones btn btn-sm" name="inputFile">
                 <button type="submit" class="botones btn btn-sm">
@@ -31,7 +31,7 @@
   <div class="form-group">
 
   <form action="{{ url_for('zonas_inundables_search', name=name, active=active) }}" method="GET"> 
-      <div class="row">
+      <div class="row" style="margin: 0px;">
         <div class="col-sm-auto">
           <input type="text" name="name">
         </div>
@@ -58,27 +58,27 @@
   <table class="table table-sm">
       <thead>
         <tr>
-          <th>Nombre</th>
-          <th>Codigo</th>
-          <th>Color</th>
-          <th>Estado</th>
-          <th>Acciones</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Codigo</th>
+          <th scope="col">Color</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Acciones</th>
         </tr>
       </thead>
       <tbody>
         {% for zona in zonas.items %}
         <tr>
-          <td> <a href="{{ url_for('zonas_inundables_show', name=zona.name) }}"> {{ zona.name }} </a></td>
-          <td> {{zona.code}}</td>
-          <td> {{ zona.get_color_español() }} </td>
-          <td> {% if zona.state %} 
+          <td  data-label="Nombre"> <a href="{{ url_for('zonas_inundables_show', name=zona.name) }}"> {{ zona.name }} </a></td>
+          <td  data-label="Codigo"> {{zona.code}}</td>
+          <td  data-label="Color"> {{ zona.get_color_español() }} </td>
+          <td  data-label="Estado"> {% if zona.state %} 
                   Publicado
               {% else %}
                   Despublicado
               {% endif %}
           </td>
           
-          <td id="actions">
+          <td  data-label="Acciones" id="actions">
             <div class="row">
               {% if has_permission('zonas_inundables_update') %}
                 <div class="column mx-1">

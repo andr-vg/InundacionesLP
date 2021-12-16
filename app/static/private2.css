@@ -89,7 +89,11 @@ table.table-sm > thead > tr > th {
 /* Media queries */
 
 @media screen and (max-width: 768px) {
-  nav ul {
+  header nav ul {
     background-color: var(--primary);
+  }
+
+  div.title {
+    background: #5a6b67 !important;
   }
 }

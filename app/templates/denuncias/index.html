@@ -55,30 +55,27 @@
 <table class="table table-sm">
     <thead>
       <tr>
-        <th>Titulo</th>
-        <th>Categoria</th>
-        <th>Fecha de creacion</th>
-        <th>Estado</th>
-        <th>Email del denunciante</th>
-        <th>Usuario Asignado</th>
-        <th>Acciones</th>
+        <th scope="col">Titulo</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Fecha de creacion</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Email del denunciante</th>
+        <th scope="col">Usuario Asignado</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
       {% for denuncia in denuncias.items %}
       <tr>
-        <td> {{ denuncia.title }} </td>
-        <td> {% if denuncia.category!=None %}{{ denuncia.category.name }}
+        <td data-label="Titulo">  <a href="{{url_for('denuncia_show', id=denuncia.id) }}"> {{ denuncia.title }}</a> </td>
+        <td data-label="Categoría"> {% if denuncia.category!=None %}{{ denuncia.category.name }}
           {% else %}  Sin asignar {% endif %}</td>
-        <td> {{ denuncia.created_at.strftime('%d-%m-%Y') }} </td>
-        <td> {{ denuncia.state.value }}</td>
-        <td> {{ denuncia.email }} </td>
-        <td> {% if denuncia.assigned_to!=None %}{{ denuncia.user_assign.email }}
+        <td data-label="Fecha de creacion"> {{ denuncia.created_at.strftime('%d-%m-%Y') }} </td>
+        <td data-label="Estado"> {{ denuncia.state.value }}</td>
+        <td data-label="Email del denunciante"> {{ denuncia.email }} </td>
+        <td data-label="Usuario asignado"> {% if denuncia.assigned_to!=None %}{{ denuncia.user_assign.email }}
           {% else %}  Sin asignar {% endif %}</td>
-        <td> 
-          {% if has_permission('denuncias_show') %}
-            <a href="{{url_for('denuncia_show', id=denuncia.id) }}" class="btn btn-sm btn-success"> Ver detalle <i class="glyphicon glyphicon-info"></i></a>
-          {% endif%}
+        <td data-label="Acciones"> 
           {% if has_permission('denuncias_update') and denuncia.state.name!="cerrada" and denuncia.state.name!="resuelta" %}
             <a href="{{url_for('denuncia_edit', id=denuncia.id) }}" class="btn btn-sm btn-info"> Editar <i class="glyphicon glyphicon-info" ></i></a>
           {% endif%}

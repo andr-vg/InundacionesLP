@@ -64,13 +64,14 @@ def __process_csv(file):
     Args:
         file: Archivo csv, previamente verificado.
     """
-    def add_coordenadas(lista_zonas,zona):
+
+    def add_coordenadas(lista_zonas, zona):
         """
         Agregara coordenadas segun la zona que corresponda
         """
         for lat, long in lista_zonas:
             coordenadas = Coordenadas(lat, long)
-            coordenadas.assign_zonas_inundables(zona, coordenadas)  
+            coordenadas.assign_zonas_inundables(zona, coordenadas)
 
     d_reader = csv.DictReader(file)
     for row in d_reader:
@@ -79,11 +80,11 @@ def __process_csv(file):
             zones_list = json.loads(row["area"])
             if not zona:
                 zona_inundable = ZonaInundable(row["name"])
-                add_coordenadas(zones_list,zona_inundable)
+                add_coordenadas(zones_list, zona_inundable)
             else:
                 for coord in zona.coords:
                     coord.delete()
-                add_coordenadas(zones_list,zona)
+                add_coordenadas(zones_list, zona)
         except:
             abort(400)
 
@@ -104,7 +105,12 @@ def edit():
         state="Publicado" if zona.state else "Despublicado",
         color=zona.color,
     )
-    return render_template("zonas_inundables/edit.html", form=form, zona=zona, coords=zona.get_coords_as_list())
+    return render_template(
+        "zonas_inundables/edit.html",
+        form=form,
+        zona=zona,
+        coords=zona.get_coords_as_list(),
+    )
 
 
 def delete():
@@ -144,7 +150,12 @@ def update():
         query = ZonaInundable.get_zona_by_name(form.name.data)
         if query and zona.id != query.id:
             flash("Ya se encuentra una Zona con dicho nombre en el sistema")
-            return render_template("zonas_inundables/edit.html", form=form)
+            return render_template(
+                "zonas_inundables/edit.html",
+                form=form,
+                zona=zona,
+                coords=zona.get_coords_as_list(),
+            )
         zona.edit(
             name=form.name.data,
             color=form.color.data,
@@ -154,7 +165,12 @@ def update():
         return redirect(url_for("zonas_inundables_index"))
     else:
         zona = ZonaInundable.get_zona_by_id(request.form["id"])
-        return render_template("zonas_inundables/edit.html", form=form, zona=zona, coords=zona.get_coords_as_list())
+        return render_template(
+            "zonas_inundables/edit.html",
+            form=form,
+            zona=zona,
+            coords=zona.get_coords_as_list(),
+        )
 
 
 def show(name):

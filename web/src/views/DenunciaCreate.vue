@@ -74,7 +74,7 @@
         <small class="item3" style="display: flex"
           >Se debe marcar un punto en el mapa</small
         >
-        <button @click="save" class="item3">Guardar</button>
+        <button @click="save" class="item3 page-link">Guardar</button>
       </div>
     </div>
   </div>

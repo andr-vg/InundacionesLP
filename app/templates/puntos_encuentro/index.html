@@ -40,26 +40,26 @@
   <table class="table table-sm">
     <thead>
       <tr>
-        <th>Nombre</th>
-        <th>Dirección</th>
-        <th>Email</th>
-        <th>Estado</th>
-        <th>Acciones</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Dirección</th>
+        <th scope="col">Email</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
       {% for punto in puntos_encuentro.items %}
       <tr>
-        <td><a href="{{ url_for('punto_encuentro_show', name=punto.name) }}"> {{ punto.name }} </a></td>
-        <td> {{ punto.address }} </td>
-        <td> {{ punto.email }} </td>
-        <td> {% if punto.state %}
+        <td data-label="Nombre"><a href="{{ url_for('punto_encuentro_show', name=punto.name) }}"> {{ punto.name }} </a></td>
+        <td data-label="Direccion"> {{ punto.address }} </td>
+        <td data-label="Email"> {{ punto.email }} </td>
+        <td data-label="Estado"> {% if punto.state %}
             Publicado
              {% else %}
             Despublicado
              {% endif %}
         </td>
-        <td>
+        <td data-label="Acciones">
           <div class="row">
             {% if has_permission('punto_encuentro_update') %}
               <form action="{{ url_for('punto_encuentro_edit') }}" method="POST">

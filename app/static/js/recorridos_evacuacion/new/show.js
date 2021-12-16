@@ -4,7 +4,7 @@ const latlngs = JSON.parse(document.querySelector('#coordinates').value);
 // Creating map options
 var mapOptions = {
     center: latlngs[0],
-    zoom: 15
+    zoom: 13
  }
  var map = new L.map('mapid', mapOptions); // Creating a map object
  

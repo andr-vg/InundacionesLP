@@ -1,3 +1,6 @@
+from app.helpers.colors import get_spanish_translated_color
+
+
 class ZonasInundablesSchema(object):
     """
     Clase utilizada para la serialización de los objetos
@@ -38,5 +41,6 @@ class ZonasInundablesSchema(object):
                 {"lat": coord.lat, "long": coord.long} for coord in obj.coords
             ],
             "color": obj.color,
+            "color_esp": get_spanish_translated_color(obj.color),
             "codigo": obj.code,
         }

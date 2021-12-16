@@ -1,10 +1,10 @@
-<template>  
-  <div>
+<template>
+  <div class="frontTo">
     <br>
-    <h1>Zonas inundables</h1>
-    <div>
-      <div class="flex">
-        <Map>
+    <h1 class="frontTo">Zonas inundables</h1>
+    <div class="frontTo">
+      <div class="flex frontTo">
+        <Map :zoomMap="11" :centerMap="center">
           <div v-for="(zone, index) in zones" :key="index">
             <l-polygon
               :lat-lngs="zone.coordenadas.map(({ lat, long }) => [lat, long])"
@@ -17,34 +17,39 @@
             </l-polygon>
           </div>
         </Map>
-      <br>
-      <div class="elem">
-        <h2>Información</h2>
-        <div >
-          <ul v-if="zones && zones.length">
-          <li v-for="(zone, index) in zones" :key="index" >
-            <detalleZone class="container" style="width: fit-content" :zone="zone"></detalleZone>
-          </li>
-        </ul>
+        <br />
+        <div class="elem">
+          <h2>Información</h2>
+          <div>
+            <ul v-if="zones && zones.length">
+              <li v-for="(zone, index) in zones" :key="index">
+                <detalleZone
+                  class="container"
+                  style="width: fit-content"
+                  :zone="zone"
+                ></detalleZone>
+              </li>
+            </ul>
+          </div>
         </div>
-        
       </div>
-      </div>
-<Paginado :previousPage=previousPage  :nextPage=nextPage :pagina=pagina :index=index :total=total />
-         
+      <Paginado
+        :previousPage="previousPage"
+        :nextPage="nextPage"
+        :pagina="actualPage"
+        :index="index"
+        :total="total"
+      />
     </div>
-
   </div>
-
 </template>
-
 
 <script>
 import axios from "axios";
-import {LPolygon, LPopup } from "@vue-leaflet/vue-leaflet";
+import { LPolygon, LPopup } from "@vue-leaflet/vue-leaflet";
 import detalleZone from "./ZonaDetalle.vue";
-import Map from './../components/Map.vue'
-import Paginado from './../components/Paginado.vue';
+import Map from "./../components/Map.vue";
+import Paginado from "./../components/Paginado.vue";
 
 export default {
   components: {
@@ -52,29 +57,35 @@ export default {
     LPolygon,
     LPopup,
     detalleZone,
-    Paginado,   
-    
+    Paginado,
   },
   data() {
     return {
       zones: [],
+      errors: [],
+      center: [-34.9187, -57.956],
       showZone: false,
-      actualPage: document.location.pathname.split('/').at(-1),
+      actualPage: document.location.pathname.split("/").at(-1),
       previousPage: null,
       nextPage: null,
       total: 1,
       baseUrl: window.location.href,
     };
   },
-  methods : {
-    get_zonas() {
+  methods: {
+    async get_zonas() {
       return axios
         .get(
-          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/?page="+document.location.pathname.split('/').at(-1),
+          "https://admin-grupo22.proyecto2021.linti.unlp.edu.ar/api/zonas_inundables/?page=" +
+            document.location.pathname.split("/").at(-1)
         )
         .then((response) => {
           // JSON responses are automatically parsed.
           this.zones = response.data.zonas;
+          this.center = [
+            parseFloat(this.zones[0].coordenadas[1].lat),
+            parseFloat(this.zones[0].coordenadas[1].long),
+          ];
           const totalRows = response.data.total;
           const per_page = response.data.por_pagina;
           const resto = totalRows % per_page;
@@ -95,36 +106,26 @@ export default {
     },
     isActive(nroPagina) {
       if (nroPagina == this.actualPage) {
-        return 'active';
+        return "active";
       } else {
-        return '';
+        return "";
       }
     },
-    
   },
   // consultamos a la api ni bien se crea la componente
   created() {
     this.get_zonas();
   },
- 
- 
 };
 </script>
 
 <style>
+a,
+a:hover {
+  color: rgb(255, 255, 255);
+}
 
-  a, a:hover {
-    color: rgb(255, 255, 255);
-  }
-
-  .elem {
+.elem {
   width: 50%;
-  }
-
-
-  
+}
 </style>
-
-
-
-

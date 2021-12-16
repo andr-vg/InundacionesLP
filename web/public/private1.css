@@ -106,6 +106,15 @@ big_img {
   background-color: #a4e6e2 !important;
 }
 
+.item2.page-link {
+  color: var(--info);
+}
+
+.page-item.active .page-link {
+  border-color: var(--info) !important;
+  color: rgb(137, 231, 231) !important;
+}
+
 /* Media queries */
 
 @media screen and (max-width: 768px) {

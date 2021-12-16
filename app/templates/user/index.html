@@ -49,12 +49,12 @@
 <table class="table table-sm">
   <thead>
     <tr>
-      <th>Nombre de usuario</th>
-      <th class="hidde">Nombre</th>
-      <th class="hidde">Apellido</th>
-      <th class="hidde">Mail</th>
-      <th class="hidde">Estado</th>
-      <th class="hidde">Roles</th>
+      <th scope="col">Nombre de usuario</th>
+      <th scope="col" class="hidde">Nombre</th>
+      <th scope="col" class="hidde">Apellido</th>
+      <th scope="col" class="hidde">Mail</th>
+      <th scope="col" class="hidde">Estado</th>
+      <th scope="col" class="hidde">Roles</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -62,34 +62,34 @@
     {% for user in users.items %}
     <tr>
       <!-- ver de poner id o email como id del tr de cada user-->
-      <td> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
+      <td  data-label="Nombre de usuario"> <a href="{{ url_for('user_show', username=user.username) }}"> {{ user.username }} </a> </td>
 
       <!-- En el caso de que el usuario a mostrar, se usuario google, en nombre y apellido no se muestra nada-->
       {% if user.firstname %}
-        <td class="hidde"> {{ user.firstname }} </td>       
+        <td  data-label="Nombre" class="hidde"> {{ user.firstname }} </td>       
       {% else %}
-        <td class="hidde"></td>
+        <td  data-label="Nombre" class="hidde"></td>
       {% endif %}
       {% if user.lastname %}
-        <td class="hidde"> {{ user.lastname }} </td>       
+        <td  data-label="Apellido"class="hidde"> {{ user.lastname }} </td>       
       {% else %}
-        <td class="hidde"></td>
+        <td  data-label="Apellido" class="hidde"></td>
       {% endif %}
-      <td class="hidde"> {{ user.email }} </td>
-      <td class="hidde"> {% if user.active == 1 %}
+      <td  data-label="Email" class="hidde"> {{ user.email }} </td>
+      <td  data-label="Estado" class="hidde"> {% if user.active == 1 %}
         Activo
         {% else %}
         Inactivo
         {% endif %}
       </td>
       {% set roles = [] %}
-      <td class="hidde"> {% for rol in user.roles %}
+      <td  data-label="Roles" class="hidde"> {% for rol in user.roles %}
         {{ rol.name }}
         {{ roles.append(rol.id) or "" }}
         {% endfor %}
       </td>
       <!-- mostrar acciones a realizar segun permisos del usuario actual -->
-      <td class="actions">
+      <td  data-label="Acciones">
         <div class="row">
           {% if has_permission('user_edit') %}
           <form action="{{ url_for('user_edit') }}" method="POST">

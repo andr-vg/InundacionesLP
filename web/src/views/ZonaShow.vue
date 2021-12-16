@@ -1,7 +1,8 @@
 <template>
-  <div>
-      <h1>Detalle</h1>
-      <div>
+  <div class="frontTo">
+      <h1 class="frontTo">Detalle</h1>
+      <div class="frontTo">
+        <div class="flex frontTo">
           <l-map id="map" style="height: 450px; width: 90%; margin:auto" :zoom="zoom" :center="[parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)]" @update:center="forceRenderer">
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
           <div>
@@ -18,12 +19,13 @@
         </div>
       </l-map>
       </div>
+      </div>
       <br>
               <h2>Información</h2>
 
-      <div class="box item3" style="padding:0%; width: fit-content; margin: auto; background-color: lightblue">
+      <div class="box item3" style="padding:0%; width: fit-content; margin: auto !important; background-color: lightblue">
         <div>Zona: {{ zone.nombre }}</div>
-        <div>Color: {{ zone.color }}</div>
+        <div>Color: {{ zone.color_esp }}</div>
         <div>Código: {{ zone.codigo }}</div>
       </div>
   </div>
@@ -47,7 +49,7 @@ export default {
       attribution:
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       center: [-34.90397977693234, -57.947371498538885],
-      zoom: 11.5,
+      zoom: 12,
       zone: [],
     };
   },

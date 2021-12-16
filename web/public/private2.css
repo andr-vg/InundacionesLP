@@ -106,6 +106,11 @@ big_img {
   background-color: var(--primary) !important;
 }
 
+.page-item.active .page-link {
+  border-color: var(--info) !important;
+  color: var(--info) !important;
+}
+
 /* Media queries */
 
 @media screen and (max-width: 768px) {

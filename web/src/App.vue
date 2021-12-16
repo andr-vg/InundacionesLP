@@ -1,4 +1,8 @@
+
+
+
 <template>
+  
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
     rel="stylesheet"
@@ -7,6 +11,41 @@
   />
 
   <link rel="stylesheet" type="text/css" :href="customerStyle" />
+
+  <header>
+        <div class="title">
+            <div class="logo">
+                <a href="index.html">
+                    <img class="logo" src="./assets/logo.png" alt="InundacionesLP" />
+                </a>
+            </div>
+            <div class="title-page">
+                <h1>INUNDACIONESLP  </h1>
+            </div>
+            <div class="active">    
+                <label for="check" id="checkbtn" class="checkbtn">
+                  <img src="./assets/bars-solid.svg" alt="Boton menu" />
+                </label>
+            </div>
+        </div>
+        <nav>
+            <input type="checkbox" id="check" class="active">
+            <ul>
+                <li><router-link to="/home">HOME</router-link></li>
+                <li><router-link :to="{ name: 'zonas_inundables', params: { page: 1 } }"
+            >ZONAS INUNDABLES</router-link
+          ></li>
+                <li><router-link to="/puntos_y_recorridos"
+            >PUNTOS Y RECORRIDOS
+          </router-link></li>
+                <li><router-link :to="{ name: 'denuncia', params: { page: 1 } }"
+            >DENUNCIAS</router-link
+          ></li>
+            </ul>
+        </nav>
+    </header>
+  <br>
+  <!--
   <header>
     <logo>
       <img class="logo" src="./assets/logo.png" alt="InundacionesLP" />
@@ -44,8 +83,23 @@
       <div class="nav" id="nav"></div>
     </div>
   </header>
-
+  -->
+ 
   <router-view />
+   <footer>
+     <br>
+     <br>
+     <br>
+     <br>
+     <br>
+
+  <div class="links">
+        <a href="https://www.facebook.com/InundacionesLP" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/InundacionesLP" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.twitter.com/InundacionesLP" target="_blank"><i class="fab fa-twitter"></i></a>
+    </div>
+    <p> Copyright 2021 © Todos los derechos reservados.</p>
+</footer>
 </template>
 <script>
 import axios from "axios";
@@ -76,14 +130,63 @@ export default {
     },
   },
 };
+
+window.onload = function() {
+  var a_clicked = document.getElementsByTagName("header nav ul li a");
+  a_clicked.addEventListener("active", close);
+}
+
+function close(){
+  var btn= document.getElementById("checkbtn");
+
+  btn.checked = false;
+  var ul = document.getElementByTagName("header nav ul");
+  ul.style.display = "none";
+  
+    
+}
+
+window.onload = function() {
+    var check_icon = document.getElementById("checkbtn");
+    check_icon.addEventListener("click", bringToFront);
+}
+
+function bringToFront() {
+    var forms = document.getElementsByClassName("frontTo");
+    var forms2 = document.getElementsByClassName("leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom");
+    if (this.style.zIndex == ""){
+        this.style.zIndex = 10;       
+        for (let form of forms){
+            form.style.zIndex = -1;
+        }       
+        for (let form of forms2){
+            form.style.zIndex = -1;
+        }
+    } else {
+        // bring to back
+        this.style.zIndex = "";
+        for (let form of forms){
+            form.style.zIndex = 0;
+        }
+        for (let form of forms2){
+            form.style.zIndex = 0;
+        }
+    }
+    
+}
+
+
 </script>
 <style>
+
+
+
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

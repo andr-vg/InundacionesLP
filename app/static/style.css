@@ -350,7 +350,7 @@ td.actions {
     visibility: visible;
   }
 
-  nav ul {
+  header nav ul {
     align-content: stretch;
     /*
         height: 67%;
@@ -365,7 +365,7 @@ td.actions {
     position: absolute;
   }
 
-  nav ul li {
+  header nav ul li {
     width: 100%;
   }
 

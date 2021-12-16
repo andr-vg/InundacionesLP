@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <br />
-    <h1>Zonas inundables</h1>
-    <div>
-      <div class="flex">
+  <div class="frontTo">
+    <br>
+    <h1 class="frontTo">Zonas inundables</h1>
+    <div class="frontTo">
+      <div class="flex frontTo">
         <Map :zoomMap="11" :centerMap="center">
           <div v-for="(zone, index) in zones" :key="index">
             <l-polygon

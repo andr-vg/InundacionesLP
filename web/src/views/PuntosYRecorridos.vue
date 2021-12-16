@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="frontTo">
     <br>
     <h1>Puntos de encuentro y recorridos</h1>
     <l-map

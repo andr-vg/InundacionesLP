@@ -37,27 +37,22 @@ nav {
   justify-content: center;
   align-content: center;
   align-items: center;
-  margin: 50px;
 }
 
 .navbar {
   padding: 0.25rem 0.25rem;
 }
-.checkbtn i,
-li.cerrar {
-  visibility: hidden;
-}
 
-.cerrar3 {
+div.active,
+.checkbtn {
   visibility: hidden;
-  display: none;
 }
 
 #check {
   display: none;
 }
 
-.checkbtn {
+label.checkbtn {
   cursor: pointer;
 }
 
@@ -76,7 +71,6 @@ header nav {
   /*
   padding: 1% 1%;
   */
-  border-bottom: rgb(162, 177, 190) solid 2px;
   max-height: 70px;
 }
 
@@ -97,7 +91,7 @@ header nav ul li {
 }
 
 header {
-  position: sticky;
+  position: inherit;
   top: 0%;
   box-shadow: 0px 7px 15px #888888;
 }
@@ -319,13 +313,13 @@ body {
   min-height: 100%;
   min-width: 100%;
 }
-
+/*
 header {
   position: relative;
   height: 75px;
   box-shadow: 0px 3px 10px -1px rgba(0, 0, 0, 0.5);
 }
-
+*/
 logo {
   position: absolute;
   left: 48px;
@@ -444,10 +438,14 @@ card {
   float: left;
   height: 100%;
   width: 325px;
-  margin: auto 48px;
+  margin: 10px 48px;
   padding: 12px;
   border-radius: 2px;
   box-shadow: 6px 6px 25px -3px rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 footer {
@@ -533,10 +531,6 @@ span:hover {
     margin-bottom: inherit;
   }
 
-  header {
-    height: 0px;
-  }
-
   li.cerrar {
     visibility: visible;
   }
@@ -565,6 +559,8 @@ span:hover {
 
   div.active {
     min-width: auto;
+    width: 50px;
+    height: 50px;
   }
 
   div.active label {
@@ -585,11 +581,21 @@ span:hover {
   .form-group .container .row .col.align-right,
   div.active {
     display: flex;
-    flex-flow: row nowrap;
+    flex-flow: row wrap;
     justify-content: center;
     align-content: center;
     align-items: center;
     align-self: stretch;
+  }
+
+  header nav ul {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    column-gap: 3%;
+    font-size: initial;
   }
   /* barra de navegacion oculta */
 
@@ -600,13 +606,11 @@ span:hover {
 
   .checkbtn {
     padding: 10%;
-  }
-
-  .checkbtn i {
     visibility: visible;
+    color: aliceblue !important;
   }
 
-  line_menu menu {
+  header nav ul {
     align-content: stretch;
     /*
         height: 67%;
@@ -620,8 +624,11 @@ span:hover {
     transition: all 0.5s;
     position: absolute;
   }
+  nav ul li {
+    width: 100%;
+  }
 
-  line_menu menu a {
+  nav ul li a {
     width: 100%;
   }
 
@@ -630,11 +637,14 @@ span:hover {
     top: 0%;
   }
 
-  #check:checked ~ menu {
+  #check:checked ~ ul {
     left: 0%;
-    top: 36px;
+    top: 49px;
     transition: all 0.5s;
+    height: 50%;
+    justify-content: space-evenly;
   }
+
   .container {
     display: grid;
     grid-template-columns: 2fr 1fr 2fr;
@@ -683,6 +693,10 @@ span:hover {
     width: auto;
     height: 300px;
   }
+
+  card_box {
+    width: min-content;
+  }
 }
 
 @media screen and (max-width: 360px) {
@@ -695,6 +709,14 @@ span:hover {
   }
 
   /* header */
+
+  div.active {
+    height: 30px;
+  }
+
+  div.active label.checkbtn img {
+    height: 20px;
+  }
 
   .checkbtn {
     visibility: visible;
@@ -762,5 +784,23 @@ span:hover {
 
   #check:checked ~ ul {
     top: 32px;
+    justify-content: center;
+    row-gap: 30px;
+    height: 70%;
+  }
+
+  line_cards {
+    margin-top: 0px;
+    height: 300px;
+  }
+
+  card_box {
+    width: fit-content;
+    margin: 5px;
+  }
+
+  card {
+    width: auto;
+    margin: 10px 0px;
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="frontTo">
     <l-map style="height: 450px; width: 90%; margin:auto" :zoom="zoomMap" :center="centerMap">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <slot></slot>

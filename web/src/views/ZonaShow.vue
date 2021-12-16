@@ -1,7 +1,8 @@
 <template>
-  <div>
-      <h1>Detalle</h1>
-      <div>
+  <div class="frontTo">
+      <h1 class="frontTo">Detalle</h1>
+      <div class="frontTo">
+        <div class="flex frontTo">
           <l-map id="map" style="height: 450px; width: 90%; margin:auto" :zoom="zoom" :center="[parseFloat(this.zone.coordenadas[1].lat), parseFloat(this.zone.coordenadas[1].long)]" @update:center="forceRenderer">
           <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
           <div>
@@ -17,6 +18,7 @@
           </l-polygon>
         </div>
       </l-map>
+      </div>
       </div>
       <br>
               <h2>Información</h2>

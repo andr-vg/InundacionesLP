@@ -92,4 +92,8 @@ table.table-sm > thead > tr > th {
   header nav ul {
     background-color: var(--primary);
   }
+
+  table tbody tr {
+    border-color: #4390d3;
+  }
 }

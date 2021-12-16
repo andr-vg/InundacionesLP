@@ -440,17 +440,17 @@ td.actions {
   table tr {
     border-bottom: 1.5px solid;
     display: block;
-    margin-bottom: 0.625em;
+    border-color: aliceblue;
   }
   tr:nth-child(even) {
     background-color: #f2f2f2;
   }
 
   table td {
-    border-bottom: 1px solid;
     display: block;
     font-size: 0.8em;
     text-align: right;
+    border-top: 0px solid !important;
   }
 
   table td::before {

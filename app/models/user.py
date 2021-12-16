@@ -67,6 +67,7 @@ class User(db.Model):
             user
             and not user.deleted
             and user.active
+            and not user.pending
             and user.verify_password(params["password"])
         ):
             return user
@@ -238,8 +239,14 @@ class User(db.Model):
     tracking = relationship("Seguimiento", back_populates="user_assign")
 
     def __init__(
-        self, email, username, password=None, roles=None, firstname=None, lastname=None
-        , pending=False
+        self,
+        email,
+        username,
+        password=None,
+        roles=None,
+        firstname=None,
+        lastname=None,
+        pending=False,
     ):
         self.email = email
         if password:
@@ -400,10 +407,11 @@ class User(db.Model):
         )
 
     def get_pending_users_count():
-            return (
-                User.query.filter(User.deleted == False)
-                .filter(User.pending == True).count()
-            )        
+        return (
+            User.query.filter(User.deleted == False)
+            .filter(User.pending == True)
+            .count()
+        )
 
     def get_pending_users(page, config):
         """

@@ -96,6 +96,8 @@ def callback(google_client_id, google_client_secret, google_discovery_url):
             session["config"] = Configuration.get_configuration()
             session["permissions"] = User.get_permissions(user_id=user.id)
             session["pending"] = user.pending
+        if user.pending:
+            session["pending"] = user.pending
     return redirect(url_for("home"))
 
 
